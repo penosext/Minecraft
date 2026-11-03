@@ -1,0 +1,33 @@
+{
+  "asset": "steve.png",
+  "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/char.png",
+  "upstream_repository": "https://github.com/gstaaij/minecraft-console",
+  "upstream_reference_commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "upstream_asset_path": "Minecraft.Client/Common/res/mob/char.png",
+  "copy_method": "Byte-for-byte local copy; not re-encoded or resized. Commit describes the reference repository; this local asset was not downloaded or remotely reverified in this task.",
+  "source_sha256": "1a683a41813ff8b6f4633053b38412a506f2e6e666b0351941d0bb48f49534f0",
+  "source_git_blob_sha1": "7cfa08a869366adf395cc443c14a5f59ecfb92d3",
+  "decoded_rgba_sha256": "5de568439f0433e51ed0757ab816d27d7a5a4dcfa746425fe8883c23f3276900",
+  "file_bytes": 1360,
+  "dimensions": [64, 32],
+  "mode": "RGBA",
+  "alpha_counts": {"0": 864, "255": 1184},
+  "uv_reference": {
+    "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Cube.cpp",
+    "lines": "57-98, especially six face UV rectangles at 78-90",
+    "head": {"uv": [0, 0], "size": [8, 8, 8]},
+    "torso": {"uv": [16, 16], "size": [8, 12, 4]},
+    "arm": {"uv": [40, 16], "size": [4, 12, 4]},
+    "leg": {"uv": [0, 16], "size": [4, 12, 4]},
+    "classic_left_limbs": "Mirror geometry and winding, sharing the right limb texture in the original 64x32 layout.",
+    "polygon_uv_assignment": "Conventional original cube order: vertex 0=(u1,v0), 1=(u0,v0), 2=(u0,v1), 3=(u1,v1). Down face uses the non-bFlipPoly3UVs layout. Polygon.cpp was not fetched; this assignment is a reconstruction, not a compiled original Polygon function."
+  },
+  "reference_fetch": {
+    "date": "2026-10-31",
+    "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+    "files": ["Minecraft.Client/HumanoidModel.cpp", "Minecraft.Client/PlayerRenderer.cpp", "Minecraft.Client/Polygon.cpp"],
+    "transport": "urllib.request raw.githubusercontent.com, 6 second timeout per parallel request",
+    "result": "All three failed: connection reset by peer. No retry loop and no downloaded source claimed."
+  },
+  "renderer_scope": "New independent CPU triangle rasterizer with perspective-correct nearest skin sampling and actor-only z-buffer. First person uses a purpose-built projection/pose, not an original first-person matrix port. View 1 is a third-person character preview over the still-first-person world image, NOT a true tracking camera; no world depth/occlusion or camera changes. The original hat layer is entirely transparent and is omitted. No original HumanoidModel/PlayerRenderer function is compiled."
+}

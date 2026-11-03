@@ -1,0 +1,36 @@
+**/node_modules
+ui/.*
+ui/libs
+**/*.amr
+jsapi/build
+jsapi/toolchains
+vendor/
+dist/
+
+# CMake / Ninja build outputs (including port/original-core build* dirs)
+**/build*/
+**/.ninja_deps
+**/.ninja_log
+**/CMakeCache.txt
+**/CMakeFiles/
+**/cmake_install.cmake
+**/CTestTestfile.cmake
+**/Testing/
+**/compile_commands.json
+
+# Python bytecode caches
+**/__pycache__/
+**/*.pyc
+
+# Vendored upstream reference: keep source for offline generators, not binaries/media
+port/upstream/Minecraft.Client/**
+!port/upstream/Minecraft.Client/**/
+!port/upstream/Minecraft.Client/**/*.c
+!port/upstream/Minecraft.Client/**/*.cpp
+!port/upstream/Minecraft.Client/**/*.h
+!port/upstream/Minecraft.Client/**/*.hpp
+!port/upstream/Minecraft.Client/**/*.inl
+!port/upstream/Minecraft.Client/**/*.ipp
+!port/upstream/Minecraft.Client/**/*.cmake
+!port/upstream/Minecraft.Client/**/CMakeLists.txt
+!port/upstream/Minecraft.Client/Common/res/TitleUpdate/res/items.png

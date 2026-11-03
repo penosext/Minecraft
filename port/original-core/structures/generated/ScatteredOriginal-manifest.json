@@ -1,0 +1,1099 @@
+{
+  "extractions": [
+    {
+      "adaptations": [],
+      "byteEndExclusive": 191,
+      "byteStart": 157,
+      "sha256": "26b25253b0abb61e3088377c2e03a948c9435ef23fe741d3a5ed56c8c6e2dd15",
+      "source": "SandStoneTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 231,
+      "byteStart": 193,
+      "sha256": "99b2c98dace2f24f44c159ce476967ffbbb72ee93abaa55bddf295928dea2e92",
+      "source": "SandStoneTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 270,
+      "byteStart": 233,
+      "sha256": "57c0610f2677df3f1dbad5f1075c9a6ee4d46220e5a7f4b676c4972ecc7d0ca3",
+      "source": "SandStoneTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 231,
+      "byteStart": 200,
+      "sha256": "addeb7504a0b24a9ad052c07e1b27e22e15abd2b3700560b0aaa77d5dfdd3b28",
+      "source": "StoneSlabTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 182,
+      "byteStart": 145,
+      "sha256": "58dc21c34d2a459b31607b4a1a6c02348bb248f374b8f8f447afba1960a820e3",
+      "source": "TripWireSourceTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 219,
+      "byteStart": 182,
+      "sha256": "58dc21c34d2a459b31607b4a1a6c02348bb248f374b8f8f447afba1960a820e3",
+      "source": "TripWireTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 285,
+      "byteStart": 252,
+      "sha256": "e0f2f85f3749f0f1c6f337ce54e2c44e38b95087df56a2631eb419299d022eb3",
+      "source": "SmoothStoneBrickTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 373,
+      "byteStart": 334,
+      "sha256": "0f1a717e3ca02ed0127cd02e2d339d0db520f75bd831b0cf1bdcc384cedf605d",
+      "source": "FlowerPotTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 471,
+      "byteStart": 440,
+      "sha256": "7d35e5d90a26c01b67ea4de930af6b31c533f19f93d7dca61c11593de8687cad",
+      "source": "StairTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 405,
+      "byteStart": 375,
+      "sha256": "6cbf0578e046531b25e9200a1d7bde54b206e25efdb5efe62a92f88de7db8d0f",
+      "source": "StairTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 373,
+      "byteStart": 343,
+      "sha256": "5caca190dadd8bf3cb012bc01e67f3ae1e66cf11fdeaded5a5472acf521fa7d7",
+      "source": "StairTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 438,
+      "byteStart": 407,
+      "sha256": "bfb47a1b653f34f73e1d1a8940fea3b99663b17025cd6925f5bd88baf92e0329",
+      "source": "StairTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 223,
+      "byteStart": 191,
+      "sha256": "473c36c7998f9a78959942dd9dbe20e760af79b6e38e10697991f951ddbbfaae",
+      "source": "TreeTile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8902,
+      "byteStart": 8865,
+      "sha256": "dbb88e118a80598813dfd6d227b394531f405db4d586726878f77fefe0c5f480",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8942,
+      "byteStart": 8904,
+      "sha256": "abd9e374005840f9c9f5a205993d841e4b6549e9baf1b13d24ace688d8b172a4",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8982,
+      "byteStart": 8944,
+      "sha256": "3636384d8c1c2683a9a5549208472e9812bee1e1c597c54446bcac8ec6abb08f",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 14697,
+      "byteStart": 14659,
+      "sha256": "5af410949e8e0a25ce41b56974051374cfa5f3cbe679d728f71261942174980e",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12512,
+      "byteStart": 12478,
+      "sha256": "61696b3fcfcf2608eb8b4b64a370e12aba8258d5a41e89adad22c6a9f57f3fa4",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13125,
+      "byteStart": 13085,
+      "sha256": "f8a7aa06e7c6bcb8fd6f9bdcb6d6405025b38cf32d0acfb08fe4de4a1b763152",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11613,
+      "byteStart": 11577,
+      "sha256": "b8d7b443ce85f3a302264f7e1ec900c5b100ee28873237395170d39cce87fc4b",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15471,
+      "byteStart": 15429,
+      "sha256": "db9cd69e8e866df41833050b6fdc4286aea773ae491678f3f4a5beae75cae282",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15514,
+      "byteStart": 15473,
+      "sha256": "8dacc7a1c9ac6cf5b486d2fb0aec7650cf250d442b434e7352d438cd507b53b3",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15560,
+      "byteStart": 15516,
+      "sha256": "fe6acec20075911daa56500c90582d269c78f3bbdc5ed85ef600bac2647c8df7",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8827,
+      "byteStart": 8792,
+      "sha256": "af7cbca43dbac046874353297081548c91ab311aeee0d6173e2449a60583f476",
+      "source": "Item.h"
+    },
+    {
+      "adaptations": [
+        "Remove platform includes and unsupported declarations: ['CompoundTag', '^class Random;', 'GetType\\\\(', 'isInChunk\\\\(', 'getLocatorPosition\\\\(', 'edgesLiquid\\\\(', 'createDoor\\\\(']"
+      ],
+      "byteEndExclusive": 5785,
+      "byteStart": 0,
+      "sha256": "a777a0778312387aa5c0e3f17f135462b5f839b1136f8aeac7ff145187f73597",
+      "source": "StructurePiece.h"
+    },
+    {
+      "adaptations": [
+        "Remove platform includes and unsupported declarations: ['CompoundTag', 'GetType\\\\(', '\\\\*Create\\\\(', 'loadStatic\\\\(']"
+      ],
+      "byteEndExclusive": 2856,
+      "byteStart": 0,
+      "sha256": "69da9b840ca64fb06e4a0331779d460a53f768abf4365a2166812d2b9b6dfba8",
+      "source": "ScatteredFeaturePieces.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2150,
+      "byteStart": 2038,
+      "sha256": "cc4ae216067cae6a23679ce3f38b9a696a84eea1c319df845b4099359bf1d414",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2291,
+      "byteStart": 2152,
+      "sha256": "e7b44aaf636ff657860c9131939dadf271d832c5262140f69fd983a3cb36584d",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2378,
+      "byteStart": 2293,
+      "sha256": "e2844a98a6177192f675670498f38153893834edda53985f116afd6b5aa037d7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3051,
+      "byteStart": 2936,
+      "sha256": "2ebcd78cd3571561eb6809aa8e9f647188f4c1e630034a41ae78c0343793376a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3123,
+      "byteStart": 3053,
+      "sha256": "e4b0ce5349d474d3cbcfb23d0c3d967fa098c14c3c3f57a7ee1c353a58e777db",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3180,
+      "byteStart": 3125,
+      "sha256": "f92ac1175c9fa200f6934db4b312ba0f4af6879ad0ac01a231e8734a98dc02d9",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3623,
+      "byteStart": 3351,
+      "sha256": "1dd21236fab57673f71772fbefb4b4b6f489137f80dad93a1209bf84231e710a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5612,
+      "byteStart": 5327,
+      "sha256": "23f0db2322487b69cbd343565a583cabd17b971098bf9adae50811bb549ba610",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5747,
+      "byteStart": 5614,
+      "sha256": "1092c17b1f7b65877f9f7bed14826f20d36b1e46e3fd0b66e0db5c151df2d832",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6034,
+      "byteStart": 5749,
+      "sha256": "26705406458047a99ad7880bebe483df05d20b4c3052548ade8130510d8d7025",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11036,
+      "byteStart": 6036,
+      "sha256": "ea6fc8a4f51b43535882691685f76c4c430a346065cfeba0f88771ea0a88c5e4",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11517,
+      "byteStart": 11038,
+      "sha256": "4dc7662b597c01f5e2e9f44f6d206aa268854e40309cb1a1e285f003f1cc4f6e",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12114,
+      "byteStart": 11804,
+      "sha256": "cef721266dd9ae4dbc0f2b661840e60bcb562d1c671838c5ecd2cedea29ccaa7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12409,
+      "byteStart": 12116,
+      "sha256": "bd13cbfc75ba18d8e56ad1acebdb1762315bef4e2255fc76f969e6e3bf544be7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13026,
+      "byteStart": 12411,
+      "sha256": "7cf7f6a282769d3a629b90a5f76e1d02486d8671f32b685b622ae9dc6bbb6e5a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13658,
+      "byteStart": 13028,
+      "sha256": "40317148df759762d9e3b42048861b23a7e35182d58bc9267cdd90c46e47fc72",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13934,
+      "byteStart": 13660,
+      "sha256": "64a5c90d01096735529b30779bbd39af422d7db169800a85b4de1346971a62a6",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 14553,
+      "byteStart": 13936,
+      "sha256": "3470b92a91c6486d0cdcb04bbfe634a9e90bb673c2f92c76497611a920c859eb",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 14856,
+      "byteStart": 14555,
+      "sha256": "159188e3dc5f4bb2e73934cfb7b17e7d885b1e660913ee016e05e7c01eddb43e",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15598,
+      "byteStart": 14858,
+      "sha256": "8f9cd54057c76a054c094151cbf2d50d447a013b9e17c97eea73341b5990114f",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15868,
+      "byteStart": 15600,
+      "sha256": "c32c1d988518a64ba9b295c38b6b034f636b6b5fdf68ff7d61c2045c0f6521fd",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 16939,
+      "byteStart": 15870,
+      "sha256": "6572885a4ef779277ab4d7a3abaa2b138159b2296ec4a8c25daf2d1ae5df9a75",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17412,
+      "byteStart": 16941,
+      "sha256": "d952f309c29d11f9f58cf7a75b3e439ff85add3573a453bd215fa2a45d186214",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17954,
+      "byteStart": 17414,
+      "sha256": "fd5a9bd27fe9031231225392d1d98b91a7805857d26e3429546aaed85a774806",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [
+        "Inventory omitted, RNG-only extracted loop retained"
+      ],
+      "byteEndExclusive": 18700,
+      "byteStart": 17956,
+      "sha256": "69984d7ce2bbde510929eeeb3af6ffedf68b9b908574aeb84740705e6e1a15d7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [
+        "Inventory omitted, RNG-only extracted loop retained"
+      ],
+      "byteEndExclusive": 19498,
+      "byteStart": 18702,
+      "sha256": "e3aed8bb48f71e6284d49edd061aa1a03756e06733a3ecb8217b559652d46500",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 307,
+      "byteStart": 200,
+      "sha256": "3125ea79b853cd08110bb5aa11445c2205e34eb7aabf8e3ace024651220e9962",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 419,
+      "byteStart": 309,
+      "sha256": "93af802172f3cb7e7d1042d0553d1009530f47be3b24d415ac99b830ea615785",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 528,
+      "byteStart": 421,
+      "sha256": "4e635f4b3138ffdd1947e7d111eaa616837b147e790e981ea753350a024ea51d",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 600,
+      "byteStart": 530,
+      "sha256": "cb7abb0b0035456a41ca1b868f80c4cc6dca1a489de04e54f0cf1ad40eed90a4",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1244,
+      "byteStart": 1070,
+      "sha256": "070c7b6f172740b2ac406ed79932eb4718c4bfebd0b2c2878057504fa4903b17",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 899,
+      "byteStart": 748,
+      "sha256": "5394416289b6038a0fc9bbccfb0a40aa9a03b97e60bba54ac12d981adba8f5b9",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove forced orientation block; exact ranges in transformations"
+      ],
+      "byteEndExclusive": 1822,
+      "byteStart": 901,
+      "sha256": "dfa52134d9a1fb6f40a6081336fc1a1cbb7ba5c1a2f18fe3821ffeac9be5a350",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2932,
+      "byteStart": 2289,
+      "sha256": "4f037868991e6b75e446464712342fff91dfb49c90869d65a00842050163f5f8",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3876,
+      "byteStart": 3677,
+      "sha256": "2058644b0fec6cc5c72acf42e02f5c3d4e63b1b18cc3f20bd5c895ea68cc7c76",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4154,
+      "byteStart": 3878,
+      "sha256": "784b4e115742ecb41986822c96344ddeea6af07538490416912edacdecc18919",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 19297,
+      "byteStart": 4906,
+      "sha256": "4ff324b3cafbd2dae5a4c99c97867f6df5fa7b3ece25ab2a1785d2f008e01a0c",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20400,
+      "byteStart": 20313,
+      "sha256": "2370b4e08083c52e54feb9451b7cf0d55e1bef0cf8a084a2018dccf647a3078f",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20664,
+      "byteStart": 20402,
+      "sha256": "86ec22551f7be196edf6a7a1fbe31f8e43b8bd7bbbf36b43171537bad7d1188f",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 33232,
+      "byteStart": 21376,
+      "sha256": "3407a2aba17aace81260ccea01c37f30031d37d30d181bf2948f6bb3f703ae24",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 33496,
+      "byteStart": 33234,
+      "sha256": "2c69ea57ce499b07f0c3ddc738c0ae69c667a3abeb52df51cb312b891dc6dc2d",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 33718,
+      "byteStart": 33620,
+      "sha256": "561f1b57c53c6c56bd076747069ad17888be4040629cd2c7f8f46f30ea1a6666",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 33892,
+      "byteStart": 33720,
+      "sha256": "8c02d008477c921df5d3be021745e13232c535f599f4f44103d7e1f6a0851aaf",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 37885,
+      "byteStart": 34257,
+      "sha256": "87cd031a74d37e29545acd98a746784f87e96ef1875e779b895b5eaef445da39",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3675,
+      "byteStart": 2934,
+      "sha256": "f237a2bfa5bb29120d652878c42f8141906d65ac3d8500cb0be41c47d43571db",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20040,
+      "byteStart": 19299,
+      "sha256": "b0a1cedfa4cf03aec884133024c6e5588b39d9baa68ef620c431e9be00d90d53",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20311,
+      "byteStart": 20043,
+      "sha256": "0df0bf0e1a1d9e69031457131328bf6e8487f2c1ccf6317bf7040a8def3ec2af",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 33618,
+      "byteStart": 33498,
+      "sha256": "c21c0362011426092f67a524d53b0eeb7c9db6378cf5e3fce482840c192424e9",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 652,
+      "byteStart": 374,
+      "sha256": "64f524931561cf274c25cf0524649578e5ca584e04b9677e3238ef7c52ca148a",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [
+        "Omit ambient mob-spawn registry"
+      ],
+      "byteEndExclusive": 812,
+      "byteStart": 654,
+      "sha256": "d9738958461985e4aaef587bfa59aea96a47c4b6f79e4fa64821b2930687cddd",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 886,
+      "byteStart": 814,
+      "sha256": "c6d20dfb9fcf2f50fa77b430354021e9260c01ecf2d951c3d80114de5c6ca08c",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove forced placement block; exact ranges in transformations"
+      ],
+      "byteEndExclusive": 2278,
+      "byteStart": 1241,
+      "sha256": "a9dc498610e15664e1535af4b41feeca5780fd07e96ae789470c36adcf058540",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2419,
+      "byteStart": 2280,
+      "sha256": "2195f4cd1259cd4e49063371a75950e2e60d1bc26070d2d93a7d197b944e6d10",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3400,
+      "byteStart": 2521,
+      "sha256": "ee53b6bc08c896256fe4a1ffce7e419a89593f345e2284f602120530c7296bc2",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3350,
+      "byteStart": 3078,
+      "sha256": "9135caf0fd97110a02e28f3c026420bef9964fa9327e14761b4e4c761b371f64",
+      "source": "LeverTile.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2510,
+      "byteStart": 2473,
+      "sha256": "eb943af4d616325dba8f641d0b8db83f03062bda5188503fc2d9cb667483704d",
+      "source": "DyePowderItem.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2138,
+      "byteStart": 2104,
+      "sha256": "d6b45b1306b0ec8f61346c98bee8f9dc9f25eab546182a193444202e12486ecf",
+      "source": "DyePowderItem.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 113,
+      "byteStart": 64,
+      "sha256": "c8bd2b955620a873fe56b33da0c8438d2726581b31f82c918f231708ef9467be",
+      "source": "Direction.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 164,
+      "byteStart": 115,
+      "sha256": "b6db64dc8cd298306a36eab8f0727aac6556b1f54fce8184892e8ac761861c73",
+      "source": "Direction.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1018,
+      "byteStart": 796,
+      "sha256": "5804aa1124b47d00eb72f6e6e2c0a7242918cf4f8e02e6696eb7931af73a7253",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1422,
+      "byteStart": 1020,
+      "sha256": "f9742809e5c8bf4f7503f939054ad431def485fe50e34b7b399af909cd8e91b8",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1583,
+      "byteStart": 1425,
+      "sha256": "c0ae35f54920671347b6d5bf6cb8ba09a2a75e3e8d31ace80747664656641113",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1478,
+      "byteStart": 634,
+      "sha256": "361c012da2aa9aae56a48631c188f6121de0a0f09ce81f2647835f1db10da73a",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3901,
+      "byteStart": 3772,
+      "sha256": "7862c2e91a2db6132bbc0dad443c703b29379d30b055ad2adb04f9a7971d0995",
+      "source": "EnchantedBookItem.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4437,
+      "byteStart": 3903,
+      "sha256": "b2ba4cf62409de3191e000042aed1e0de5a67acefd099c9d122520be97cd6e98",
+      "source": "EnchantedBookItem.cpp"
+    }
+  ],
+  "helperSha256": "57bd981113595b6716d07bb28433c54c615bb6b1ed774827a2842a850e57cdb9",
+  "limitations": [
+    "Canonical whole-piece postProcess and immutable bounded 128-region LRU, like Village: not original chunk decoration RNG or first-chunk ground averaging.",
+    "Original LargeFeature chunk seed and clear-nextInt flow retained; original Level::getRandomFor salt 14357617, spacing 32, separation 8.",
+    "Biome center sample is original full-resolution biome, IDs 2/17 desert,21/22 jungle,6 swamp; no Village containsOnly check.",
+    "Chest/dispenser placement retained, original weighted/count/slot and enchanted-book RNG consumed, but no inventories or tile entities exposed.",
+    "Original Witch construction/moveTo/finalizeMobSpawn/addEntity call sites retained with explicit SpawnRequest alias, no entity or AI instantiated.",
+    "No persistence, app forced placement, superflat options, neighbor physics, redstone, explosions, lighting or loot functionality.",
+    "Reuse frozen Village detail Level/BoundingBox/Tile constants only; all additional classes isolated in scattered_detail, no global upstream class ODR."
+  ],
+  "outputs": {
+    "ScatteredOriginal.cpp": "8218d80d0d9af4971caf0147fd223bcdc1b71e88b23abcd2a83f31e3771d33f8",
+    "ScatteredOriginal.h": "1a2963d21904c8ce738f0568a362f75328865cb708e87158cf32676ef2848e2f"
+  },
+  "scope": "RandomScatteredLargeFeature / all three ScatteredFeaturePieces postProcess bodies",
+  "sources": {
+    "ArrowDamageEnchantment.cpp": {
+      "bytes": 464,
+      "sha256": "26ead604234d3a3f06a7fcf810a46160d7f2b606a2db0c4b3d4c1618760d6eca"
+    },
+    "ArrowFireEnchantment.cpp": {
+      "bytes": 412,
+      "sha256": "bf8f2b4cd454b45588209fd4ec097d5d1dce84e8d12f7c7f3fbaa9d38e388fd6"
+    },
+    "ArrowInfiniteEnchantment.cpp": {
+      "bytes": 440,
+      "sha256": "4ff44947c65da057af962513b2ecb697db57e5823d70e6acd5736437fd9f0869"
+    },
+    "ArrowKnockbackEnchantment.cpp": {
+      "bytes": 486,
+      "sha256": "012608b26b28316c85565e8b308949f6f66553899fafd429854a7f7d0e73e55b"
+    },
+    "BaseRailTile.h": {
+      "bytes": 2447,
+      "sha256": "53734c1fbc41910bcf10f8488fca8c78e05da4d110c53ebf986ba369b25361bf"
+    },
+    "BiomeSource.cpp": {
+      "bytes": 17144,
+      "sha256": "ed4e9325a8a181c90da869f130a04c971d10ab46054ddab39e2e02e17b98e134"
+    },
+    "BoundingBox.cpp": {
+      "bytes": 4659,
+      "sha256": "ef978f6cb6959cc6d5b480a063fc297f0ca26ef65b88d4ff356ad6a2977e160e"
+    },
+    "BoundingBox.h": {
+      "bytes": 971,
+      "sha256": "75af1d1f311c8a8c36350521e2c72c775089e1344276525fb2304fc106b0c40e"
+    },
+    "DamageEnchantment.cpp": {
+      "bytes": 1564,
+      "sha256": "f27103f96ee2d06de3c63c3895ef2aba083a8e1896e9c5a9cf40d5a00192ea03"
+    },
+    "DigDurabilityEnchantment.cpp": {
+      "bytes": 969,
+      "sha256": "c77d3ddfc50949b6d0d97f9a2c48354ccff62483f332a4cdd679fa1b1dfad324"
+    },
+    "DiggingEnchantment.cpp": {
+      "bytes": 658,
+      "sha256": "c117576e3b39195f0d5783d71fd9a531dc226aec811b32d48b74ccd4aed70cab"
+    },
+    "Dimension.cpp": {
+      "bytes": 6348,
+      "sha256": "2ab8358f69657284a12dbe7d1d4f5ae17d2941fd592df704a6603f412225c9f3"
+    },
+    "Direction.cpp": {
+      "bytes": 1752,
+      "sha256": "b3ae610f9f8f68e9b1c28de2a06eea32f1255297d2e24672ff23ec9c1978d5e3"
+    },
+    "DirectionalTile.h": {
+      "bytes": 288,
+      "sha256": "c2c8d4b4f6fa994cc07130448a724a3a049ef6f23f43f5121076525f45081f0d"
+    },
+    "DoorItem.cpp": {
+      "bytes": 2536,
+      "sha256": "35a1430d31affc8e998d2604c35c9b561fccf042c461eb273cbbf9bfb23fbe20"
+    },
+    "DyePowderItem.cpp": {
+      "bytes": 9323,
+      "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3"
+    },
+    "EnchantedBookItem.cpp": {
+      "bytes": 4437,
+      "sha256": "2bca38e736ce1f1993aec3ece2ea6fc4a5a39a7526cc7915700c7c91da450ff0"
+    },
+    "Enchantment.cpp": {
+      "bytes": 5639,
+      "sha256": "bc323a01bb747e84017dbbee0da0d47dbf1645db78a3a4aa6364380af76b0985"
+    },
+    "Facing.cpp": {
+      "bytes": 374,
+      "sha256": "c47361c60be17ab1568615a7df826a32f2f89aa59ce5b96da74786c97297e6a0"
+    },
+    "FireAspectEnchantment.cpp": {
+      "bytes": 467,
+      "sha256": "6de14a251d729a3277d27ac7559d77bc15afc1b5b1cebde2ad3ed4bee589ef87"
+    },
+    "FlowerPotTile.h": {
+      "bytes": 1399,
+      "sha256": "7350274666ae38f63d544a1749d48414d3f5872ddb89c9843d20f67323c3dfbe"
+    },
+    "Item.h": {
+      "bytes": 20815,
+      "sha256": "59b07341605d60b76271b3e6776e1dc3f250525726ac30bd086edbed93fc99bc"
+    },
+    "KnockbackEnchantment.cpp": {
+      "bytes": 465,
+      "sha256": "b8a124f0df9d1132f9bc8fae5de25f5eac8b3672c53b163e079408121bd1ac34"
+    },
+    "LargeFeature.cpp": {
+      "bytes": 853,
+      "sha256": "e6b7fe955cba91199f16a748d5c97f53dff4a81a3d471f3511fb6125f5745bb8"
+    },
+    "Level.cpp": {
+      "bytes": 126182,
+      "sha256": "1f0b5d54179e6dcd7defa4a61b39c16449203c2be5ed5d508e5506f6bf367543"
+    },
+    "LeverTile.cpp": {
+      "bytes": 8586,
+      "sha256": "bc5631104be24a8eaaa75b0b753055e1e9aff1c7544b198a70464cd31b0a15bd"
+    },
+    "LootBonusEnchantment.cpp": {
+      "bytes": 728,
+      "sha256": "58e42ac88fe5dc4f13a71cb70d14f5bfc962c7d698b13c51f09533fa1add076a"
+    },
+    "Material.cpp": {
+      "bytes": 6072,
+      "sha256": "656f96a06266e6bebf17c0f07f2139cd78a14a8b9c0793aca15efedf08e2e6cb"
+    },
+    "Mth.cpp": {
+      "bytes": 4361,
+      "sha256": "3b86fd381c759a4e69c717530c9e83a3fd537bac7be37c4a085d71f3394fd911"
+    },
+    "OxygenEnchantment.cpp": {
+      "bytes": 425,
+      "sha256": "7d79955f6b676d57d33ee946e6241737708f24340948190c6052e86da7842b3e"
+    },
+    "ProtectionEnchantment.cpp": {
+      "bytes": 2693,
+      "sha256": "c58939d8b7e4294ca34fec502fc0c19b5e6b6460fb7609a455229819e591b1c7"
+    },
+    "Random.cpp": {
+      "bytes": 2203,
+      "sha256": "d0a0952991ca9cace3200fa709a8fea8aeb8f7f3144dcac2a5869cbd97a38193"
+    },
+    "RandomScatteredLargeFeature.cpp": {
+      "bytes": 4019,
+      "sha256": "87c5b0d6f3a9137b630719b32341990f29818e55347fefdd64340d3f22c86efd"
+    },
+    "SandStoneTile.h": {
+      "bytes": 886,
+      "sha256": "6f176bae1bd6b10fe440fa7e1c7749542a3ea00516236bce752ec281c3ea62da"
+    },
+    "ScatteredFeaturePieces.cpp": {
+      "bytes": 37885,
+      "sha256": "6b7975215110027f383c44d952ae132125682e1aa5e0d248a7ef4760dafa663d"
+    },
+    "ScatteredFeaturePieces.h": {
+      "bytes": 2856,
+      "sha256": "69da9b840ca64fb06e4a0331779d460a53f768abf4365a2166812d2b9b6dfba8"
+    },
+    "SmoothStoneBrickTile.h": {
+      "bytes": 752,
+      "sha256": "78e86e0a709d40514c0b9569c2e0a239bb9b7ef04255db85a882f5ec4036b7ad"
+    },
+    "StairTile.h": {
+      "bytes": 3310,
+      "sha256": "65afb3f4e50e811befcf3a4d92556768eb074b71aa80594672d461ef32885c49"
+    },
+    "StoneSlabTile.h": {
+      "bytes": 980,
+      "sha256": "22b8fae844cbea7b336b997afc4efb23744f48fe84fdc597efbd1ab01118d5c8"
+    },
+    "StructureFeature.cpp": {
+      "bytes": 7821,
+      "sha256": "f97ac1f7ec9161788ba64790432c10e7759cc3b1920c1066fec91c048d9276c1"
+    },
+    "StructurePiece.cpp": {
+      "bytes": 19873,
+      "sha256": "6328b2888d6c559cc4dd643f9af0c27f54bcac423072a6ae6b51ab674e017ab6"
+    },
+    "StructurePiece.h": {
+      "bytes": 5785,
+      "sha256": "a777a0778312387aa5c0e3f17f135462b5f839b1136f8aeac7ff145187f73597"
+    },
+    "StructureStart.cpp": {
+      "bytes": 3528,
+      "sha256": "af1b4aef19905cf171d7861a99af985c0793bb64d9579ad3601cc303c0660eda"
+    },
+    "ThornsEnchantment.cpp": {
+      "bytes": 1770,
+      "sha256": "0c3f6cfca4df9136779e0eef936edaa03452f4d98f304590175872cda3eaef0f"
+    },
+    "Tile.h": {
+      "bytes": 25411,
+      "sha256": "b7afa5c8740ebc0b834b6b6c355edc1162600c2b9557508d44dadaffedc9420a"
+    },
+    "TreeTile.h": {
+      "bytes": 1331,
+      "sha256": "3dfe9c429847d72889010d56e714542daa098c60918910b9c5079181a5919952"
+    },
+    "TripWireSourceTile.h": {
+      "bytes": 1778,
+      "sha256": "0095423a3c96faddd01f4c29453981448effe7edeeac40f12e52e813cbc37760"
+    },
+    "TripWireTile.h": {
+      "bytes": 1448,
+      "sha256": "41a056911f36f897ff8403ab51bf9b49033c1f5c56112a13c698673e6f5fa1ca"
+    },
+    "UntouchingEnchantment.cpp": {
+      "bytes": 820,
+      "sha256": "38c2fe80e369a05501ab551c1a946d766cab853ff71b20904f448959b3a1d0b8"
+    },
+    "VillageFeature.cpp": {
+      "bytes": 5086,
+      "sha256": "a7b0f9cc420531a3657439ec0c43371df731adefb4035efee695a7c6ef797339"
+    },
+    "VillagePieces.cpp": {
+      "bytes": 74868,
+      "sha256": "b749d3c46644d146df3a2d8e75c18bcdc1b7530df626a9319ad56562fab00237"
+    },
+    "VillagePieces.h": {
+      "bytes": 14269,
+      "sha256": "793b88999695fe1a9c33377c2e815c5c09ce9e237390e49cb56e78d9c5a4b30e"
+    },
+    "WaterWorkerEnchantment.cpp": {
+      "bytes": 452,
+      "sha256": "edbde8dcd4603bc265b767cd0b15291864f20c6afb64af895d65711bd342ccfc"
+    },
+    "WeighedRandom.cpp": {
+      "bytes": 1583,
+      "sha256": "799bfeb44192712a9f5b80b268c114695aa324ccafb3624f0a4db5534765e9bb"
+    },
+    "WeighedTreasure.cpp": {
+      "bytes": 2620,
+      "sha256": "d82f8e7488893b103751a22e1b0cf5c320418ad5d1f32b879bf24b12454da8d7"
+    }
+  },
+  "transformations": [
+    {
+      "byteEndExclusive": 18660,
+      "byteStart": 18439,
+      "lineEnd": 819,
+      "lineStart": 818,
+      "reason": "Replace inventory allocation/writes with original RNG-only treasure loop",
+      "replacement": "\t\t\tconsumeTreasure(random, treasure, numRolls, 27);",
+      "sha256": "c5c7c8cf97b767f522f9753adc6c55c0cbd436df2059c67210329da13eb2c9bc",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "byteEndExclusive": 19458,
+      "byteStart": 19222,
+      "lineEnd": 838,
+      "lineStart": 837,
+      "reason": "Replace inventory allocation/writes with original RNG-only treasure loop",
+      "replacement": "\t\t\tconsumeTreasure(random, items, numRolls, 9);",
+      "sha256": "cd15870da419e7f7a1242fa54b59810108acac637074d7c541a4f058400570a2",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "byteEndExclusive": 1496,
+      "byteStart": 1201,
+      "lineEnd": 46,
+      "lineStart": 37,
+      "reason": "Remove only app forced orientation; original nextInt(4) remains",
+      "replacement": "",
+      "sha256": "3ea3ce6d1e7fa89394bc47a0d24f391677903e62dd17488535be947340071caa",
+      "source": "ScatteredFeaturePieces.cpp"
+    },
+    {
+      "byteEndExclusive": 810,
+      "byteStart": 734,
+      "lineEnd": 25,
+      "lineStart": 25,
+      "reason": "No ambient mob-spawner registry; not entity/AI emulation",
+      "replacement": "",
+      "sha256": "e425508558ee2376684babd87a6f1df0e622bdf69d2166201dacd846d84934e8",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "byteEndExclusive": 2004,
+      "byteStart": 1815,
+      "lineEnd": 73,
+      "lineStart": 69,
+      "reason": "Remove only app forced placement; forcePlacement stays false",
+      "replacement": "",
+      "sha256": "c53b9f36a77df8067b7db1c2adaf5443c8fcf849cc2f0aa932c709b1aff6b34a",
+      "source": "RandomScatteredLargeFeature.cpp"
+    },
+    {
+      "reason": "Array-only overloads; WeighedRandomItemArray/Item replaced by same-layout treasure adapter; DEBUG_BREAK replaced assert(false). No RNG changes.",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "byteEndExclusive": 860,
+      "byteStart": 796,
+      "lineEnd": 40,
+      "lineStart": 39,
+      "operation": "replace",
+      "reason": "RNG-only weighted array type substitution; original draws unchanged",
+      "replacement": "int WeighedRandom::getTotalWeight(WeighedTreasureArray items)\n",
+      "sha256": "d5ff15324a96c293c0225acb414d0e98b31ad0c2e90b16a1565c3fe25ce33136",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "byteEndExclusive": 1131,
+      "byteStart": 1020,
+      "lineEnd": 50,
+      "lineStart": 49,
+      "operation": "replace",
+      "reason": "RNG-only weighted array type substitution; original draws unchanged",
+      "replacement": "WeighedTreasure *WeighedRandom::getRandomItem(Random *random, WeighedTreasureArray items, int totalWeight)\n",
+      "sha256": "a72d18ed9f36146bf46e713a54d8e2fe04c3f6cd9a4d388f3ff5880b09be779d",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "byteEndExclusive": 1179,
+      "byteStart": 1162,
+      "lineEnd": 54,
+      "lineStart": 53,
+      "operation": "replace",
+      "reason": "RNG-only weighted array type substitution; original draws unchanged",
+      "replacement": "\t\tassert(false);\n",
+      "sha256": "94abee2ecc0ac4abaa04a39ab5650c915f2b623d10396a7233fc98c77f4ef421",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "byteEndExclusive": 1519,
+      "byteStart": 1424,
+      "lineEnd": 70,
+      "lineStart": 68,
+      "operation": "replace",
+      "reason": "RNG-only weighted array type substitution; original draws unchanged",
+      "replacement": "WeighedTreasure *WeighedRandom::getRandomItem(Random *random, WeighedTreasureArray items)\n",
+      "sha256": "9df3a388bd7c3cd813046cea5a02d92f736cec22342ae89d9329362f8b27b57f",
+      "source": "WeighedRandom.cpp"
+    },
+    {
+      "reason": "addChestItems projected to consumeTreasure: remove ItemInstance copies/count writes; retain original weighted/count/slot draws. All source treasure counts <=7 and all nonstackable entries count=1, so original stack-size branch is always true. Slots=27 chest,9 dispenser.",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "byteEndExclusive": 756,
+      "byteStart": 634,
+      "lineEnd": 22,
+      "lineStart": 21,
+      "operation": "replace",
+      "reason": "Inventory-only projection; exact removed/replaced source lines",
+      "replacement": "void consumeTreasure(Random *random, WeighedTreasureArray items, int numRolls, int slots)\n",
+      "sha256": "997808ab457ab6bef6887f1d70ab90b7f830bd10be9ebc30c5feae3fe320e401",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "byteEndExclusive": 934,
+      "byteStart": 797,
+      "lineEnd": 26,
+      "lineStart": 25,
+      "operation": "replace",
+      "reason": "Inventory-only projection; exact removed/replaced source lines",
+      "replacement": "\t\tWeighedTreasure *treasure = static_cast<WeighedTreasure *>(WeighedRandom::getRandomItem(random, items));\n",
+      "sha256": "41b477a6bc9416b35e415072c57021fe52418e2f50e5461ade78fadcd0456d97",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "byteEndExclusive": 1082,
+      "byteStart": 1032,
+      "lineEnd": 29,
+      "lineStart": 28,
+      "operation": "replace",
+      "reason": "Inventory-only projection; exact removed/replaced source lines",
+      "replacement": "\t\tif (64 >= count)\n",
+      "sha256": "06270795e9e7376d0d0f48839ba1adc4c68a3844730a68fc62557e3289d7fd77",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "byteEndExclusive": 1236,
+      "byteStart": 1086,
+      "lineEnd": 33,
+      "lineStart": 30,
+      "operation": "replace",
+      "reason": "Inventory-only projection; exact removed/replaced source lines",
+      "replacement": "\n\n\t\t\trandom->nextInt(slots);\n",
+      "sha256": "9767cb5e178e1c94c4dc6f1346302fb7c64c547e590be13f6b5baae1af59f6a4",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "byteEndExclusive": 1465,
+      "byteStart": 1316,
+      "lineEnd": 42,
+      "lineStart": 39,
+      "operation": "replace",
+      "reason": "Inventory-only projection; exact removed/replaced source lines",
+      "replacement": "\n\n\t\t\t\trandom->nextInt(slots);\n",
+      "sha256": "4f9b6983f10a98fd32c3881280b6724ff38b454ac46cf85e9c68be45da46dc65",
+      "source": "WeighedTreasure.cpp"
+    },
+    {
+      "reason": "Keep enchantment index and Mth inclusive level draws with exact sorted original enchantment max levels; remove ItemInstance/tag allocation, return RNG-only treasure weight=1/count=1.",
+      "source": "EnchantedBookItem.cpp"
+    },
+    {
+      "byteEndExclusive": 4019,
+      "byteStart": 3903,
+      "lineEnd": 135,
+      "lineStart": 134,
+      "operation": "replace",
+      "reason": "RNG-only book adapter; exact removed/replaced source lines",
+      "replacement": "WeighedTreasure *BookRandom::createForRandomTreasure(Random *random)\n",
+      "sha256": "e5ed70b03dc210226d0964f970e0eb88747b5dbe91c3c78c5577ae81535e9124",
+      "source": "EnchantedBookItem.cpp"
+    },
+    {
+      "byteEndExclusive": 4303,
+      "byteStart": 4021,
+      "lineEnd": 139,
+      "lineStart": 136,
+      "operation": "replace",
+      "reason": "RNG-only book adapter; exact removed/replaced source lines",
+      "replacement": "\tint enchantment = enchantmentMaxLevels[random->nextInt(sizeof(enchantmentMaxLevels)/sizeof(*enchantmentMaxLevels))];\n",
+      "sha256": "8cb40dfbf413f3ee4f8650ce29acc5b487b2e6ed4b29ea5cffa6f352b668993e",
+      "source": "EnchantedBookItem.cpp"
+    },
+    {
+      "byteEndExclusive": 4372,
+      "byteStart": 4304,
+      "lineEnd": 141,
+      "lineStart": 140,
+      "operation": "replace",
+      "reason": "RNG-only book adapter; exact removed/replaced source lines",
+      "replacement": "\tint level = Mth::nextInt(random, 1, enchantment);\n",
+      "sha256": "846f823010d7d8587491e3d6bd98f9fddf0584ce0656f047c2b1779591770640",
+      "source": "EnchantedBookItem.cpp"
+    },
+    {
+      "byteEndExclusive": 4436,
+      "byteStart": 4373,
+      "lineEnd": 143,
+      "lineStart": 142,
+      "operation": "replace",
+      "reason": "RNG-only book adapter; exact removed/replaced source lines",
+      "replacement": "\n\treturn new WeighedTreasure(0, 0, 1, 1, 1);\n",
+      "sha256": "4497aecc158f9b14b7b0d86e67f0b8ed8982c61e69a1a709171eb980d6fcd006",
+      "source": "EnchantedBookItem.cpp"
+    }
+  ]
+}

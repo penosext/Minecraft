@@ -1,0 +1,231 @@
+{
+  "sha": "662fc39f6c10cacdff41bafab0febd9eac48aabb",
+  "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/662fc39f6c10cacdff41bafab0febd9eac48aabb",
+  "tree": [
+    {
+      "path": ".clang-format",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4d4a4c2a0a4d41fa0da2929aecdb1387c3a6e43",
+      "size": 1234,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/a4d4a4c2a0a4d41fa0da2929aecdb1387c3a6e43"
+    },
+    {
+      "path": ".clang-tidy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ad114044e21a972379b9d16f6cd7f1a51d383b0",
+      "size": 491,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/3ad114044e21a972379b9d16f6cd7f1a51d383b0"
+    },
+    {
+      "path": ".gitattributes",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": ".github",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1d89291057e2fb471d57eb970488afdc47e11db8",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/1d89291057e2fb471d57eb970488afdc47e11db8"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38295e031575b9658fc0b325e72ffbad68a11d14",
+      "size": 7349,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/38295e031575b9658fc0b325e72ffbad68a11d14"
+    },
+    {
+      "path": ".gitmodules",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ef1d83b895bdb7b21bfbf27d1f2db846762d018b",
+      "size": 134,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/ef1d83b895bdb7b21bfbf27d1f2db846762d018b"
+    },
+    {
+      "path": ".vscode",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0216114a1639403b1cfcfb703e2e5e09c59a99f7",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/0216114a1639403b1cfcfb703e2e5e09c59a99f7"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a797b1170cddca5b5f13b04cf3dd4add64ea2b2",
+      "size": 341,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/4a797b1170cddca5b5f13b04cf3dd4add64ea2b2"
+    },
+    {
+      "path": "BACKPORTING.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "484fb3d23bf3c043e39a378c7ac14b95dd0fed72",
+      "size": 1531,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/484fb3d23bf3c043e39a378c7ac14b95dd0fed72"
+    },
+    {
+      "path": "CLAUDE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ef0bd18bd7d307e71183729460f3718f76096796",
+      "size": 117,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/ef0bd18bd7d307e71183729460f3718f76096796"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3807e04701ccdcaaee86af165b5f50bc4e4cc23c",
+      "size": 3362,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/3807e04701ccdcaaee86af165b5f50bc4e4cc23c"
+    },
+    {
+      "path": "CMakePresets.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eb37f11b269e7f99f4c155c0f3123fd2b8ffa32c",
+      "size": 3754,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/eb37f11b269e7f99f4c155c0f3123fd2b8ffa32c"
+    },
+    {
+      "path": "COMPILE.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05bf089826debca99a5da8839e5d154dc299187f",
+      "size": 5495,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/05bf089826debca99a5da8839e5d154dc299187f"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fd5d7f03f887da0eb808137d06b8d6e4957bba68",
+      "size": 4385,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/fd5d7f03f887da0eb808137d06b8d6e4957bba68"
+    },
+    {
+      "path": "Minecraft.Client",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5084337bd4e949f0a9d26127588cd66d8243d7e5",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/5084337bd4e949f0a9d26127588cd66d8243d7e5"
+    },
+    {
+      "path": "Minecraft.Server",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3e59a5cdf82d9b078f73aee80f9bce9b8f7d1c99",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/3e59a5cdf82d9b078f73aee80f9bce9b8f7d1c99"
+    },
+    {
+      "path": "Minecraft.World",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2ab95905f3053ebe2721a2fa03f83d6fd849c8c9",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/2ab95905f3053ebe2721a2fa03f83d6fd849c8c9"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "db73f7f002af047ebee8a98c37e2d4daf1e7a07f",
+      "size": 9544,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/db73f7f002af047ebee8a98c37e2d4daf1e7a07f"
+    },
+    {
+      "path": "build-start-dedicated-server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f6bd3a7989060222fd4004fcb1bb167e06cf041",
+      "size": 2601,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/7f6bd3a7989060222fd4004fcb1bb167e06cf041"
+    },
+    {
+      "path": "cmake",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "348f9850ee6b20d9307b41b21cf0fa8c91a4fa54",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/348f9850ee6b20d9307b41b21cf0fa8c91a4fa54"
+    },
+    {
+      "path": "copilot-instructions.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e21a5917a48c0d4baf810993339f0432885fa12",
+      "size": 976,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/5e21a5917a48c0d4baf810993339f0432885fa12"
+    },
+    {
+      "path": "docker-build-dedicated-server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d84f7c61bbe74b10fa861ae6c2250b753e1843cf",
+      "size": 59,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/d84f7c61bbe74b10fa861ae6c2250b753e1843cf"
+    },
+    {
+      "path": "docker-compose.dedicated-server.ghcr.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f311f834c11316d63423b1988120fa7d3c2fa56d",
+      "size": 950,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/f311f834c11316d63423b1988120fa7d3c2fa56d"
+    },
+    {
+      "path": "docker-compose.dedicated-server.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "23caf26fd386d30f93df15a8a2782db724646d70",
+      "size": 1048,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/23caf26fd386d30f93df15a8a2782db724646d70"
+    },
+    {
+      "path": "docker",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b5a1e61a82ebf4216e495f2cde11aea324fd228e",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/b5a1e61a82ebf4216e495f2cde11aea324fd228e"
+    },
+    {
+      "path": "flake.lock",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f86a22a873a72b3c7f11ba4a836818a802d4f3f1",
+      "size": 1497,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/f86a22a873a72b3c7f11ba4a836818a802d4f3f1"
+    },
+    {
+      "path": "flake.nix",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87d7e0d930234183f27a13cc05e4b63eed45290f",
+      "size": 19499,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/87d7e0d930234183f27a13cc05e4b63eed45290f"
+    },
+    {
+      "path": "include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "474e6a01d06880ff83d529a90a6c4bc58448c151",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/474e6a01d06880ff83d529a90a6c4bc58448c151"
+    },
+    {
+      "path": "start-dedicated-server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8169601c23906eb3de24f87373457ccf05835172",
+      "size": 1143,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/8169601c23906eb3de24f87373457ccf05835172"
+    }
+  ],
+  "truncated": false
+}

@@ -1,0 +1,685 @@
+{
+  "repository": "https://github.com/gstaaij/minecraft-console",
+  "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "listing": {
+    "contents_url": "https://api.github.com/repos/gstaaij/minecraft-console/contents/Minecraft.World?ref=09df8928eeb15328bca499d225e48ea95af6d119",
+    "contents_entries": 1000,
+    "contents_truncated_at": "Mob.h",
+    "complete_world_tree_sha": "2ab95905f3053ebe2721a2fa03f83d6fd849c8c9",
+    "world_tree_entries": 1834,
+    "world_tree_recursive": false,
+    "world_tree_truncated": false
+  },
+  "download_policy": "只新增缺失文件；raw域名连接失败改用GitHub contents raw；全部新增文件git blob SHA与固定World tree核对。未下载仓库整体递归tree。",
+  "network_budget": {
+    "approximate_body_bytes_upper_bound": 3000000,
+    "limit_target_bytes": 5000000,
+    "note": "含contents目录约1.21MB、两个单层tree约0.55MB、新源码约0.60MB及少量头文件/API响应；HTTP/TLS头和失败握手未精确计量。"
+  },
+  "original_files_modified": [],
+  "new_file_count": 88,
+  "new_file_bytes": 577807,
+  "files": [
+    {
+      "path": "port/upstream/Minecraft.World/BasicTree.cpp",
+      "bytes": 20264,
+      "git_blob_sha": "fc08a5f7a3aebe0bdbd67e05548863c1e5413ff4",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/BeachBiome.cpp",
+      "bytes": 477,
+      "git_blob_sha": "475f8468f95b47524d8771699d61ca52f0ef138f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/BiomeDecorator.cpp",
+      "bytes": 9532,
+      "git_blob_sha": "2fd196a568795e5a5ab8925b25c647cc5328fd2b",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/BirchFeature.cpp",
+      "bytes": 2373,
+      "git_blob_sha": "3c423564a1bd8785984ec6ce28581bf934a16ea6",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/BonusChestFeature.cpp",
+      "bytes": 3436,
+      "git_blob_sha": "86dc97258429f3c18199c3b93c9760f1124cec5f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CactusFeature.cpp",
+      "bytes": 730,
+      "git_blob_sha": "13f5535a0020cae528d093a809442cd2786c80bc",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CactusTile.cpp",
+      "bytes": 2865,
+      "git_blob_sha": "c306f11a93594c2bd21465513a683a06878b8685",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CanyonFeature.cpp",
+      "bytes": 4990,
+      "git_blob_sha": "d25def53869ba7e0e799a449d3a6e9b0ff203393",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CarrotTile.cpp",
+      "bytes": 652,
+      "git_blob_sha": "8841e199b690e329a594d1cd61f08c9976ae28e3",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CauldronTile.cpp",
+      "bytes": 5017,
+      "git_blob_sha": "9acd229475cd46d2d2786e0bd9d68cc1a6212ef9",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CaveFeature.cpp",
+      "bytes": 2903,
+      "git_blob_sha": "edd81788239dcc2c9f18ed6659b2b2d762a97318",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ChestTile.cpp",
+      "bytes": 11927,
+      "git_blob_sha": "ff3c0b4063bea313efb7dd57b76e4344adca466f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ClayFeature.cpp",
+      "bytes": 898,
+      "git_blob_sha": "277849f06db84df98e23aa52eb3b2e65d19973c3",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CropTile.cpp",
+      "bytes": 3605,
+      "git_blob_sha": "1a161199683426f022ca1921832fa06f9661ada6",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/CustomLevelSource.cpp",
+      "bytes": 20237,
+      "git_blob_sha": "09698880c0fe8345032ece7eb5874d8c7743f24e",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/DeadBushFeature.cpp",
+      "bytes": 785,
+      "git_blob_sha": "23bdd488f797acdc6324958e312d1e60dde0c79a",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/DesertBiome.cpp",
+      "bytes": 957,
+      "git_blob_sha": "e67faef571cf5ef65d901e1997faae30b35f7b0b",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/DesertWellFeature.cpp",
+      "bytes": 2795,
+      "git_blob_sha": "62e19bb8ace123ed03582a19949b3ac872e30464",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/DispenserTile.cpp",
+      "bytes": 7249,
+      "git_blob_sha": "5098fe3085351ae5b27cdc82f72e1718db71d657",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/DungeonFeature.cpp",
+      "bytes": 5236,
+      "git_blob_sha": "8c9abbe5e01f0fa6f49cb48eb535ad07c997cc86",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/EndPodiumFeature.cpp",
+      "bytes": 2126,
+      "git_blob_sha": "7cf742fa0fa294912b6025a493075e635dfec48b",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ExtremeHillsBiome.cpp",
+      "bytes": 1167,
+      "git_blob_sha": "26d97dd4b5038d0a3a8196fa049068c622a6dfbb",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FarmTile.cpp",
+      "bytes": 3494,
+      "git_blob_sha": "39bf685f5da14b118ebb26549c71b7070695f219",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/Feature.cpp",
+      "bytes": 687,
+      "git_blob_sha": "b4d9a6eeec2a497f5b3900f98e39ce5bd8abcae2",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FlatGeneratorInfo.cpp",
+      "bytes": 6008,
+      "git_blob_sha": "c983fd2c40e0212a73c2d37f6ddc8fbfa17e89de",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FlatLevelSource.cpp",
+      "bytes": 4057,
+      "git_blob_sha": "9ea1ed36eb884f47204d8ccbc7e40adb5971d828",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FlowerFeature.cpp",
+      "bytes": 1258,
+      "git_blob_sha": "c5cd68c62025af7840f1ccdecc8f102f4ba18268",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FlowerPotTile.cpp",
+      "bytes": 4704,
+      "git_blob_sha": "80fdf2e4515c1b6e1c375e20555ca91e3dfa4a1d",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ForestBiome.cpp",
+      "bytes": 1097,
+      "git_blob_sha": "b22b8b39659ac076840aa0686adc86fbdfe6a1ef",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/FurnaceTile.cpp",
+      "bytes": 6980,
+      "git_blob_sha": "d8856f4e36bc3f803d8f0d95d959dfe9aa60ac6a",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/GroundBushFeature.cpp",
+      "bytes": 1151,
+      "git_blob_sha": "88b7f733752391896b31dfc6fd089a5ce1c61a2e",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HellBiome.cpp",
+      "bytes": 507,
+      "git_blob_sha": "d023c01d3f448de42f80c83699e0277af3df16f5",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HellFireFeature.cpp",
+      "bytes": 631,
+      "git_blob_sha": "4b32134cbd8266af8baaae4ad11b70849079af20",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HellFlatLevelSource.cpp",
+      "bytes": 6639,
+      "git_blob_sha": "c4ba062cc0413b5f40044da450c497fd2adef66f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HellPortalFeature.cpp",
+      "bytes": 1209,
+      "git_blob_sha": "664855783970c8106239742ccb0d8e6e35fbf4eb",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HellSpringFeature.cpp",
+      "bytes": 1501,
+      "git_blob_sha": "1b62b9b2ab3dee9815f08fdc4f30b78a99b60dc1",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HouseFeature.cpp",
+      "bytes": 4494,
+      "git_blob_sha": "b6bba5a5e56d0f2c4ff5aeb5b37e0353e0b95793",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HugeMushroomFeature.cpp",
+      "bytes": 2793,
+      "git_blob_sha": "cc8696ae8dd00954327180f0442ee793d00b78fb",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/HugeMushroomTile.cpp",
+      "bytes": 1908,
+      "git_blob_sha": "8d3ef144da2b2e5b3d43e794872582afd69097dc",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/IceBiome.cpp",
+      "bytes": 86,
+      "git_blob_sha": "3156d8696aa3e1c7697c1429b8e7495ea3e3209d",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/JungleBiome.cpp",
+      "bytes": 1870,
+      "git_blob_sha": "1388e97f5f638ad21382bce7d86d6b1804faff02",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LakeFeature.cpp",
+      "bytes": 4658,
+      "git_blob_sha": "a25a7ece3cb5f7d06386d8e6a0fecb603b13a39b",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LargeCaveFeature.cpp",
+      "bytes": 5575,
+      "git_blob_sha": "c70f1156f67069b90919880bca1160bf7c88bd62",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LargeFeature.cpp",
+      "bytes": 853,
+      "git_blob_sha": "23dc532f526842049aba025f4809ab6a5666b8c2",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LargeHellCaveFeature.cpp",
+      "bytes": 4999,
+      "git_blob_sha": "9472c8556a162fe57a8eec235be830b668fadbaa",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LeafTile.cpp",
+      "bytes": 9591,
+      "git_blob_sha": "6bb9cbfd796b9f4624a4f4f81c80c3eedce6056a",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LightGemFeature.cpp",
+      "bytes": 1205,
+      "git_blob_sha": "6ad1193aefbf58df4235a0d822611a4168f1f964",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/LiquidTile.cpp",
+      "bytes": 11439,
+      "git_blob_sha": "be6c582d3322d1ba33c6449de9eb938e59c93b4e",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/MegaTreeFeature.cpp",
+      "bytes": 6481,
+      "git_blob_sha": "db4a336ac079fe3945ac1cc844bc09ba815fa5b1",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/MineShaftPieces.cpp",
+      "bytes": 29420,
+      "git_blob_sha": "97caf36636bd27d9ec75de01cd61f9f54ba67ea3",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/MonsterRoomFeature.cpp",
+      "bytes": 4529,
+      "git_blob_sha": "e11ebcb29e043930172884264043c8a8b0eebe94",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/MushroomIslandBiome.cpp",
+      "bytes": 733,
+      "git_blob_sha": "91bd8097e7e5d57575abcff69ee541471e733a9b",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/MycelTile.cpp",
+      "bytes": 2207,
+      "git_blob_sha": "76b742e341e1fc504133cd04565ded4c148c3c42",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/NetherBridgePieces.cpp",
+      "bytes": 68999,
+      "git_blob_sha": "d9fbbf35b2705f5bead58dd5fdb2ba7c7bc4cbf5",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/NetherWartTile.cpp",
+      "bytes": 2370,
+      "git_blob_sha": "afe45aec5e96059e4a5fec1cc1b6a077589b5c11",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/OreFeature.cpp",
+      "bytes": 4313,
+      "git_blob_sha": "cea881aad0bd892d9524d4b41cd7c44762b635dd",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/PineFeature.cpp",
+      "bytes": 3098,
+      "git_blob_sha": "bbe424aa04efff05ebaf1b532949e98b06fb9599",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/PlainsBiome.cpp",
+      "bytes": 268,
+      "git_blob_sha": "df6f4785289a6f0f3fc7afbb2fcab17fb904de50",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/PumpkinFeature.cpp",
+      "bytes": 690,
+      "git_blob_sha": "95f306b3fb2bb18dc17c92b911411d7848e65910",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/RainforestBiome.cpp",
+      "bytes": 338,
+      "git_blob_sha": "6e39038d0feafc3547520cc0f33c48d07daba49f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ReedsFeature.cpp",
+      "bytes": 1411,
+      "git_blob_sha": "ec46f0538186d5d55406485a0a149fcf43a3fc8f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/RotatedPillarTile.cpp",
+      "bytes": 1569,
+      "git_blob_sha": "6475cd7271e515f321167d5064812af4841f6bbe",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SandFeature.cpp",
+      "bytes": 1704,
+      "git_blob_sha": "9c0dc67c07324c0023997d4361469c559eb15a65",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SandStoneTile.cpp",
+      "bytes": 1419,
+      "git_blob_sha": "bd7309b9d1519bd3bbba67b3d6587353dbafade6",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/ScatteredFeaturePieces.cpp",
+      "bytes": 37885,
+      "git_blob_sha": "07630ef7a164e865af1f964d1dcfb8f91bb8bdec",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SmoothStoneBrickTile.cpp",
+      "bytes": 1319,
+      "git_blob_sha": "a42af97be53cd95c7e7f9753ceb4ccbbcf3e51b8",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SpikeFeature.cpp",
+      "bytes": 4248,
+      "git_blob_sha": "912e3aff455c8043555dfc522ac275ec3905bf08",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SpringFeature.cpp",
+      "bytes": 1688,
+      "git_blob_sha": "fdd1cbef11336815f3d874ba3aeac2b69458c59a",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SpruceFeature.cpp",
+      "bytes": 3454,
+      "git_blob_sha": "d42e46f38fa04c073dc402b51d7d0cd624b86925",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/StoneSlabTile.cpp",
+      "bytes": 2299,
+      "git_blob_sha": "10f1ee71c37f2eed9645c2f7ed3cdb9c20905e59",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/StrongholdPieces.cpp",
+      "bytes": 66989,
+      "git_blob_sha": "d98d94881ff2dfd91ed8cebe20099e0c07e48cba",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/StructurePiece.cpp",
+      "bytes": 19873,
+      "git_blob_sha": "bb3887c0fcab22604890552c12beeff49fe9694d",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SwampBiome.cpp",
+      "bytes": 1128,
+      "git_blob_sha": "33403d9016b64ecee03d37707ac07eea35f197cd",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/SwampTreeFeature.cpp",
+      "bytes": 3682,
+      "git_blob_sha": "5b94767ac973c46e197aad24caa85928db14f801",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TaigaBiome.cpp",
+      "bytes": 562,
+      "git_blob_sha": "7a9cc105b9842e0d7f9d43c45a51b4a346a70a7d",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TallGrass.cpp",
+      "bytes": 3054,
+      "git_blob_sha": "943d9e1d39ff79e3c3d33b3ab07762d3478a9903",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TallGrassFeature.cpp",
+      "bytes": 822,
+      "git_blob_sha": "f509ce68b39b9c7a57236cd9909ec1e4275a8d96",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TheEndBiome.cpp",
+      "bytes": 705,
+      "git_blob_sha": "d54efb36eeb5c97083f59734da4fa7db514772d9",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TheEndBiomeDecorator.cpp",
+      "bytes": 2553,
+      "git_blob_sha": "2b80bcfcafa2df8116aba96c8834c8db4cf58fb8",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TheEndLevelRandomLevelSource.cpp",
+      "bytes": 12035,
+      "git_blob_sha": "3b42f8cae8a7c3bdda2066ea8af3b79a7d76351f",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TreeFeature.cpp",
+      "bytes": 5672,
+      "git_blob_sha": "2bfec14798da99878028eba2127e8f1d561d7eda",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/TreeTile.cpp",
+      "bytes": 2433,
+      "git_blob_sha": "6a5860f3ae8f5cf6853a09649ab322f933aa2ee4",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/VillagePieces.cpp",
+      "bytes": 74868,
+      "git_blob_sha": "dcd765e0195e6b6f31ea4255122242cbb92001a2",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/VinesFeature.cpp",
+      "bytes": 796,
+      "git_blob_sha": "1f2dacf4d9d4d494297310bdad933d3b0efbd1c8",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/WaterlilyFeature.cpp",
+      "bytes": 629,
+      "git_blob_sha": "eccfcaf6aeb41da3db2164dfcbd0b72b73e7f3f6",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/net.minecraft.world.level.biome.h",
+      "bytes": 639,
+      "git_blob_sha": "dc082d702dc1c2c94c0031042d8070ae1e4d785d",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/net.minecraft.world.level.levelgen.feature.h",
+      "bytes": 925,
+      "git_blob_sha": "81ac86372ef87f7448d4f0a423798cf1ace47beb",
+      "verified": true
+    },
+    {
+      "path": "port/upstream/Minecraft.World/net.minecraft.world.level.levelgen.h",
+      "bytes": 385,
+      "git_blob_sha": "ea17a33c280680102a357d62e1511f671220e4bf",
+      "verified": true
+    }
+  ],
+  "unavailable_sources": [
+    "BiomeCache.cpp",
+    "BiomeInitLayer.cpp",
+    "BiomeOverrideLayer.cpp",
+    "BiomeSource.cpp",
+    "FixedBiomeSource.cpp",
+    "FlatLayer.cpp",
+    "FlatLayerInfo.cpp",
+    "MineShaftFeature.cpp",
+    "MineShaftStart.cpp",
+    "NetherBridgeFeature.cpp",
+    "RandomScatteredLargeFeature.cpp",
+    "StrongholdFeature.cpp",
+    "StructureFeature.cpp",
+    "StructureFeatureIO.cpp",
+    "StructureFeatureSavedData.cpp",
+    "StructureStart.cpp",
+    "VillageFeature.cpp"
+  ],
+  "scope_note": "所有缺失直接方块写入feature、全部已枚举biome cpp和五大结构Pieces已补；17个编排/缓存/保存层cpp因API额度截止而未下载。网络停止。",
+  "catalog_summary": {
+    "entries": 206,
+    "tile_id_count": 97,
+    "exact_only_tile_ids": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      21,
+      23,
+      24,
+      31,
+      32,
+      37,
+      38,
+      39,
+      40,
+      43,
+      48,
+      49,
+      56,
+      61,
+      73,
+      74,
+      80,
+      81,
+      82,
+      83,
+      87,
+      88,
+      89,
+      98,
+      99,
+      100,
+      110,
+      111,
+      112,
+      121,
+      129,
+      153
+    ],
+    "has_simplified_variant_tile_ids": [
+      5,
+      8,
+      9,
+      10,
+      11,
+      17,
+      20,
+      30,
+      35,
+      44,
+      46,
+      47,
+      50,
+      52,
+      53,
+      55,
+      58,
+      59,
+      60,
+      64,
+      65,
+      66,
+      67,
+      71,
+      78,
+      79,
+      85,
+      86,
+      97,
+      101,
+      102,
+      106,
+      109,
+      113,
+      114,
+      115,
+      128,
+      132,
+      134,
+      141,
+      142
+    ],
+    "missing_tile_ids": [
+      29,
+      51,
+      54,
+      69,
+      70,
+      72,
+      77,
+      93,
+      118,
+      120,
+      127,
+      131,
+      140
+    ],
+    "entry_quality_counts": {
+      "exact": 104,
+      "simplified": 86,
+      "missing": 16
+    },
+    "interpretation": "exact仅已选静态纹理和孤立形状；simplified含正确icon但几何/方向简化或缺subclass源；missing禁止伪装立方体。"
+  }
+}

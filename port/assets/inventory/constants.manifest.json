@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "generator": "tools/extract-inventory.py",
+  "source_commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "generated_header": "InventoryAssets.hpp",
+  "generated_sha256": "3283f40ad37e51852478211b1b83067f5d993eefd44dac22c436621ff7b4b12a",
+  "assets": [
+    {
+      "source": "Minecraft.Client/Common/res/gui/gui.png",
+      "local_file": "port/assets/inventory/gui.png",
+      "sha256": "e223bea0b5004a3b5497607c6d529daf840396526a46eff75c299364cf9dc795",
+      "git_blob_sha1": "81af329e601467a046f59bdff22f450d23b7c7c4",
+      "size": [
+        256,
+        256
+      ],
+      "tree_pin": "Common subtree f6e2cbbb8fa59c258653e491b02f8e32b66454c0; PNG blob pinned locally"
+    },
+    {
+      "source": "Minecraft.Client/Common/res/gui/inventory.png",
+      "local_file": "port/assets/inventory/inventory.png",
+      "sha256": "53dd5bde88588215b1700aee4a7dd70a3049e7e53f914982774ebdc26d6862b0",
+      "git_blob_sha1": "0b5f2916dd4baf95803ef797b7cf2d7fca6c8c8a",
+      "size": [
+        256,
+        256
+      ],
+      "tree_pin": "Common subtree f6e2cbbb8fa59c258653e491b02f8e32b66454c0; PNG blob pinned locally"
+    },
+    {
+      "source": "Minecraft.Client/Common/res/gui/icons.png",
+      "local_file": "port/assets/inventory/icons.png",
+      "sha256": "8b5a8cfd44b933559c36aecaa722165ad048f1e942f1eeae616554124d6dac43",
+      "git_blob_sha1": "73fe9bbda3709ce97c94522210e477a899d75941",
+      "size": [
+        256,
+        256
+      ],
+      "tree_pin": "Common subtree f6e2cbbb8fa59c258653e491b02f8e32b66454c0; PNG blob pinned locally"
+    }
+  ],
+  "sources": [
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/Gui.cpp",
+      "git_blob_sha1": "7e056e15bfee780aa0bab847c57e40dfd92756fc",
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664"
+    },
+    {
+      "source": "Minecraft.Client/GuiComponent.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/GuiComponent.cpp",
+      "git_blob_sha1": "c6b5f518b6c3c5afe20c7efadeab2d75e6eacec2",
+      "sha256": "01a64d4adc54e4c5cfc6d00e20ff4813ef1226ead3e53e4d3780036a69e8d280"
+    },
+    {
+      "source": "Minecraft.Client/InventoryScreen.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/InventoryScreen.cpp",
+      "git_blob_sha1": "17df86c1462e8d8a2277d337e79592dc4449cf35",
+      "sha256": "979c5cf5fa268483b260ca581548f4b507b76037865125da58f4df04aaa064a5"
+    },
+    {
+      "source": "Minecraft.Client/AbstractContainerScreen.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/AbstractContainerScreen.cpp",
+      "git_blob_sha1": "5c80aec6b1dd039af405ee65d3eba86c0721930a",
+      "sha256": "970cf4fe954198a0fa0396c8239179a1aa6f82e929d6aaf285e7379431e01b33"
+    },
+    {
+      "source": "Minecraft.Client/ItemRenderer.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/ItemRenderer.cpp",
+      "git_blob_sha1": "ead8016f5ba4a4746948d0aa3866abfe479f550d",
+      "sha256": "a6789e7b0119368db22a039cca9f4526fd2dff2f9d9edf3369efe8fd692dcc1e"
+    },
+    {
+      "source": "Minecraft.World/Inventory.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Inventory.cpp",
+      "git_blob_sha1": "ad0fc3ec1275019a3f61897885eed4278ebb33af",
+      "sha256": "f2c247bac53bd7f48ae054fa9f13d0507d58b89f46db0d9874d6b6f905f2f05e"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/InventoryMenu.cpp",
+      "git_blob_sha1": "9c6c661f0e4c53de5e1e6824e164fa3f5de0ab69",
+      "sha256": "b2b3a7eeca79835eb04fdec846cf81188006d29ab51177294d9af66990d413c3"
+    },
+    {
+      "source": "Minecraft.World/ItemInstance.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/ItemInstance.cpp",
+      "git_blob_sha1": "e4af60c67169127622e97ad921137df05e6e5548",
+      "sha256": "4fe4e58a108e0a3a51c6a74105b6e9e6c747c71512f3f60ddc0cab4f7af8bd61"
+    },
+    {
+      "source": "Minecraft.World/Item.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Item.cpp",
+      "git_blob_sha1": "ffb310704ce6472cfc02936aa54876da25d33ae4",
+      "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d"
+    },
+    {
+      "source": "Minecraft.World/Item.h",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Item.h",
+      "git_blob_sha1": "22d0a9d158443f484d0f61ed9ba8e4d1b8891df1",
+      "sha256": "59b07341605d60b76271b3e6776e1dc3f250525726ac30bd086edbed93fc99bc"
+    },
+    {
+      "source": "Minecraft.World/TileItem.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/TileItem.cpp",
+      "git_blob_sha1": "4e2e5081d41fb59e8a46e454447663e9446891b3",
+      "sha256": "19eaceb00fb8b44b29a2c961d6288c962bba4473f9b73c100e6d182b99784ade"
+    },
+    {
+      "source": "Minecraft.World/Container.h",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Container.h",
+      "git_blob_sha1": "bfd7a9b757a15ab5ac91636a2b13fec6809d311f",
+      "sha256": "daa91c6fdbb833570321dc717cbcb97693d3f103c571478ceb7cd3f7d625c174"
+    }
+  ],
+  "rules": [
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "line": 93,
+      "text": "int quickSelectWidth=182;",
+      "sha256": "e43baf4449fd75934f4c53d912018fbc9210b04a6e2e174a5eeb0a2acac39906"
+    },
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "line": 334,
+      "text": "blit(iWidthOffset + (screenWidth - quickSelectWidth)/2, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset , 0, 0, 182, 22);",
+      "sha256": "0a4d89eb3b35b2efca49f11558759f145e47c9e78817d1c3887224be44328372"
+    },
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "line": 335,
+      "text": "blit(iWidthOffset + (screenWidth - quickSelectWidth)/2 - 1 + inventory->selected * 20, iHeightOffset + screenHeight - iSafezoneYHalf - iTooltipsYOffset  - 1, 0, 22, 24, 22);",
+      "sha256": "cb06e33cb2f05519dc1761fd560d1789195a3048a9e8e05eccdd1737552fdb57"
+    },
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "line": 652,
+      "text": "x = screenWidth / 2 - 9 * 10 + i * 20 + 2;",
+      "sha256": "3bd39b14075c4dfdbbd9a4dd400994379e1decfe65a6915ca01a549b40895336"
+    },
+    {
+      "source": "Minecraft.Client/Gui.cpp",
+      "line": 653,
+      "text": "y = screenHeight - iSafezoneYHalf - iTooltipsYOffset - 16 - 3 + 22;",
+      "sha256": "043d3e3d90d594909427ef62c87fd2680f6d7d124c03f4b7f45a77bc44ad240b"
+    },
+    {
+      "source": "Minecraft.Client/GuiComponent.cpp",
+      "line": 115,
+      "text": "float us = 1 / 256.0f;",
+      "sha256": "64adc675993f984ac7f47a43192a1f3fcf424a3cec0840caeee7b407d8fdea98"
+    },
+    {
+      "source": "Minecraft.Client/GuiComponent.cpp",
+      "line": 116,
+      "text": "float vs = 1 / 256.0f;",
+      "sha256": "f79cb4f648edbc20746836d1c23d0eb050d8530e98ea707a7306c372bffd83a7"
+    },
+    {
+      "source": "Minecraft.Client/InventoryScreen.cpp",
+      "line": 45,
+      "text": "int xo = (width - imageWidth) / 2;",
+      "sha256": "2abbbf5f59133c894f0d1dfb11ef575a9275ee5d57e4dee6042423e8fd3d8761"
+    },
+    {
+      "source": "Minecraft.Client/InventoryScreen.cpp",
+      "line": 46,
+      "text": "int yo = (height - imageHeight) / 2;",
+      "sha256": "8cac1b8b17f81eb7716bd11f049a54d557ffd9f16447fd01bbae5abfe5bb31e6"
+    },
+    {
+      "source": "Minecraft.Client/InventoryScreen.cpp",
+      "line": 47,
+      "text": "this->blit(xo, yo, 0, 0, imageWidth, imageHeight);",
+      "sha256": "9377d25aa33adbe805dc00c46d17047abe7973a7bc7a72a069798557ba3815d3"
+    },
+    {
+      "source": "Minecraft.Client/AbstractContainerScreen.cpp",
+      "line": 18,
+      "text": "imageWidth = 176;",
+      "sha256": "26cf5a6f2ebe7e1fead17ad197c5162dcadeeed4cb74b4b43ef22f9092f1954d"
+    },
+    {
+      "source": "Minecraft.Client/AbstractContainerScreen.cpp",
+      "line": 19,
+      "text": "imageHeight = 166;",
+      "sha256": "c619c8bfca4e98f4ea9cabfc00d4a3a761856e84946470eb9485cf04409c62a8"
+    },
+    {
+      "source": "Minecraft.Client/ItemRenderer.cpp",
+      "line": 620,
+      "text": "font->drawShadow(amount, x + 19 - 2 - font->width(amount), y + 6 + 3, 0xffffff |(static_cast<unsigned int>(fAlpha * 0xff)<<24));",
+      "sha256": "77c1cef21d927af4c52c749b4898d77b695fc2c5c9ed9fefa2b46b1f8c60c850"
+    },
+    {
+      "source": "Minecraft.World/Inventory.cpp",
+      "line": 11,
+      "text": "const int Inventory::MAX_INVENTORY_STACK_SIZE = 64;",
+      "sha256": "0f9362f48c8aa65ada10b4c54a42ef3cfc2fb3e859855f0efc94282bd85e8474"
+    },
+    {
+      "source": "Minecraft.World/Inventory.cpp",
+      "line": 13,
+      "text": "const int Inventory::INVENTORY_SIZE = 4 * 9;",
+      "sha256": "3b0355def617eece36aef7890da6247c5ed41151cbcd624263063fa51f2a17ba"
+    },
+    {
+      "source": "Minecraft.World/Inventory.cpp",
+      "line": 14,
+      "text": "const int Inventory::SELECTION_SIZE = 9;",
+      "sha256": "9365be3ea0631b814c3f352149f82c96cdba01cbb7e488e183d4b33c5003bf33"
+    },
+    {
+      "source": "Minecraft.World/Inventory.cpp",
+      "line": 21,
+      "text": "armor = ItemInstanceArray( 4 );",
+      "sha256": "bbff0d1faaa3b8122732e3c39f8d3261994c00d4c2c3086c3d5ddd215ca5b14c"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "line": 50,
+      "text": "addSlot(new ArmorSlot(i, inventory, inventory->getContainerSize() - 1 - i, 8, 8 + i * 18) );",
+      "sha256": "c8992c18c09187d8e673a49262054cd26a73a4d5d54448772b439d9d7019d9a0"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "line": 56,
+      "text": "addSlot(new Slot(inventory, x + (y + 1) * 9, 8 + x * 18, 84 + y * 18));",
+      "sha256": "df8749bb9cb5e305c2d4eed6275183fd0ca2ace475a7a4fb8eb53860b3f634f8"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "line": 61,
+      "text": "addSlot(new Slot(inventory, x, 8 + x * 18, 142));",
+      "sha256": "5a526d9931c8a1c33010dc6a33cd8a4d095b3027635b69bc6f4c58974953ec15"
+    },
+    {
+      "source": "Minecraft.World/ItemInstance.cpp",
+      "line": 174,
+      "text": "return getItem()->getMaxStackSize();",
+      "sha256": "61088aabff754546df09d1eb1a2bedd31cf0bbe5b2da14ff56b391ca7c24c450"
+    },
+    {
+      "source": "Minecraft.World/Item.cpp",
+      "line": 569,
+      "text": "maxStackSize = Item::MAX_STACK_SIZE;",
+      "sha256": "697b3c9d98e8a2584c216c2334bb4d2fec26979b2c612eaf420857888c2f4fb2"
+    },
+    {
+      "source": "Minecraft.World/Item.h",
+      "line": 187,
+      "text": "static const int MAX_STACK_SIZE = Container::LARGE_MAX_STACK_SIZE;",
+      "sha256": "64551eb605d216fd8a637dcad44e5d15a6de21496d05b209efa863afc6f0dc99"
+    },
+    {
+      "source": "Minecraft.World/Container.h",
+      "line": 10,
+      "text": "static const int LARGE_MAX_STACK_SIZE = 64;",
+      "sha256": "52bbbb216aa4225b09e37d87ce64b7a9504d4a4bef63fd68eceb4169fc5340da"
+    },
+    {
+      "source": "Minecraft.World/TileItem.cpp",
+      "line": 20,
+      "text": "TileItem::TileItem(int id) : Item(id)",
+      "sha256": "6ebdc30ad8628c1b94fc917c8ef0a47477f20c28c93320ecfad4ad4ad0a1b007"
+    }
+  ],
+  "layout": {
+    "hotbar": [
+      182,
+      22
+    ],
+    "selection_uv": [
+      0,
+      22,
+      24,
+      22
+    ],
+    "selection_offset": [
+      -1,
+      -1
+    ],
+    "hotbar_icon_offset": [
+      3,
+      3
+    ],
+    "hotbar_pitch": 20,
+    "panel": [
+      176,
+      166
+    ],
+    "main_grid": [
+      8,
+      84,
+      18,
+      18
+    ],
+    "panel_hotbar": [
+      8,
+      142,
+      18
+    ],
+    "armor": [
+      8,
+      8,
+      18
+    ],
+    "count_anchor": [
+      17,
+      9
+    ]
+  },
+  "boundaries": [
+    "Source Client uses gui/gui.png, not widgets.png; local original bytes are unmodified.",
+    "InventoryScreen::renderBg and AbstractContainerScreen::render are #if 0 (4J unused); reproduces their legacy texture/layout, not console XUI/Scaleform.",
+    "1x GUI units at normal viewport including 960x266 is an explicit platform choice, NOT evidence of original console GUI scaling.",
+    "Uniform nearest-neighbor shrink only below 184x168; no console safe-zone, split-screen or GUI scale settings.",
+    "36 main slots including hotbar 0..8; 4 armor state slots retained without equip/armor stats.",
+    "Existing terrain catalog blocks/state variants ONLY, not full Item registry, tools, original drops or crafting.",
+    "TileItem inherits Item max stack 64; these are block-state stacks, not original items for doors/liquids/crops.",
+    "Software terrain-mesh thumbnails replace huge original GUI item renderer closure.",
+    "Counts use platform 3x5 bitmap digits at original right-aligned (17,9) anchor; not original font glyphs.",
+    "Default inventory is EMPTY; creative catalog selection is an explicit platform action.",
+    "Crafting/character preview are inactive background artwork only; no original character/menu behavior.",
+    "Save identity pins parent/world at Inventory.open plus exact level.json bytes and validates public seed/dimensions/state source hashes; without World friend cannot attest the pre-open private directory identity.",
+    "FNV32 detects corruption, not hostile cryptographic forgery; save is main-thread only with last-byte checks, not a multiwriter lock."
+  ]
+}

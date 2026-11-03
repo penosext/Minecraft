@@ -1,0 +1,243 @@
+{
+  "sha": "e684756dea8f32597241d2b368cb646405873a6c",
+  "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/e684756dea8f32597241d2b368cb646405873a6c",
+  "tree": [
+    {
+      "path": "gdraw",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b52e46a2d2aba9109df5d5f6c77bb37229950878",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/b52e46a2d2aba9109df5d5f6c77bb37229950878"
+    },
+    {
+      "path": "gdraw/gdraw_d3d.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "50dabfc322abd98b20868a37943171bf8366f225",
+      "size": 75361,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/50dabfc322abd98b20868a37943171bf8366f225"
+    },
+    {
+      "path": "gdraw/gdraw_d3d.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "927688e420e9306fd2c427410a644742e26c9721",
+      "size": 5838,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/927688e420e9306fd2c427410a644742e26c9721"
+    },
+    {
+      "path": "gdraw/gdraw_d3d10.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "225f258126170375a9478680bb95fe160f9e7638",
+      "size": 4546,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/225f258126170375a9478680bb95fe160f9e7638"
+    },
+    {
+      "path": "gdraw/gdraw_d3d10.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "929146b251d421f370332e6677551a9521d1603c",
+      "size": 7377,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/929146b251d421f370332e6677551a9521d1603c"
+    },
+    {
+      "path": "gdraw/gdraw_d3d10_shaders.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ea0d142f12601e3af96dabed5457303dbc613c5",
+      "size": 312329,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/6ea0d142f12601e3af96dabed5457303dbc613c5"
+    },
+    {
+      "path": "gdraw/gdraw_d3d11.cpp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b9fb627bf1e84a661abc366d95075f5f2b08013b",
+      "size": 5068,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/b9fb627bf1e84a661abc366d95075f5f2b08013b"
+    },
+    {
+      "path": "gdraw/gdraw_d3d11.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "47fe3c29beeef4f5729c3bf28896dbe78bdef268",
+      "size": 7739,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/47fe3c29beeef4f5729c3bf28896dbe78bdef268"
+    },
+    {
+      "path": "gdraw/gdraw_d3d1x_shared.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "62e97e0fe1082c52aa04bed5c2ad45191e793053",
+      "size": 86373,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/62e97e0fe1082c52aa04bed5c2ad45191e793053"
+    },
+    {
+      "path": "gdraw/gdraw_d3d9_shaders.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ce13993b1515a7e21ed37cdd7bc832aa07ed104a",
+      "size": 81587,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/ce13993b1515a7e21ed37cdd7bc832aa07ed104a"
+    },
+    {
+      "path": "gdraw/gdraw_gl_shaders.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74a292212adc1037ec91bcb598218de12c6aab30",
+      "size": 43475,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/74a292212adc1037ec91bcb598218de12c6aab30"
+    },
+    {
+      "path": "gdraw/gdraw_gl_shared.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f134b7407c8bfeb7e9c0c5516aa1cca5a2885bd4",
+      "size": 80085,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/f134b7407c8bfeb7e9c0c5516aa1cca5a2885bd4"
+    },
+    {
+      "path": "gdraw/gdraw_shared.inl",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1790de77e4baa3705ab94a3ed0bbe26be9074fb5",
+      "size": 90595,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/1790de77e4baa3705ab94a3ed0bbe26be9074fb5"
+    },
+    {
+      "path": "gdraw/gdraw_wgl.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4f477aa431a5b84b293e1b0590ab8fd62628889",
+      "size": 10193,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/f4f477aa431a5b84b293e1b0590ab8fd62628889"
+    },
+    {
+      "path": "gdraw/gdraw_wgl.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aa9db0347d1161ae3bbebfc913156fe9e928a8ab",
+      "size": 1505,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/aa9db0347d1161ae3bbebfc913156fe9e928a8ab"
+    },
+    {
+      "path": "include",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "004a6a52fa2d36485387eb43c08c532e4bf7eac2",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/004a6a52fa2d36485387eb43c08c532e4bf7eac2"
+    },
+    {
+      "path": "include/gdraw.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2512731102ccafaab59717a920fdd2739c0a8f8",
+      "size": 32868,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/f2512731102ccafaab59717a920fdd2739c0a8f8"
+    },
+    {
+      "path": "include/iggy.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d38ccae67a39c650ba243377872c81bf30271cdd",
+      "size": 61756,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/d38ccae67a39c650ba243377872c81bf30271cdd"
+    },
+    {
+      "path": "include/iggyexpruntime.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a42ccbfffc512be03e208951447dda49a4153fce",
+      "size": 1939,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/a42ccbfffc512be03e208951447dda49a4153fce"
+    },
+    {
+      "path": "include/iggyperfmon.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85b84b60ba4b5fac959ae4076d56f7df7329b5cd",
+      "size": 4125,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/85b84b60ba4b5fac959ae4076d56f7df7329b5cd"
+    },
+    {
+      "path": "include/rrCore.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d3f4f41e0883265f10c4a304a615e1ee1b046790",
+      "size": 75232,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/d3f4f41e0883265f10c4a304a615e1ee1b046790"
+    },
+    {
+      "path": "lib",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3da9af9f626ef19a8dd32a0c0b84d499fc9d0427",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/3da9af9f626ef19a8dd32a0c0b84d499fc9d0427"
+    },
+    {
+      "path": "lib/iggy_w32.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3c6ad976fbecdb6d732a80868d7ef6766af3282b",
+      "size": 49766,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/3c6ad976fbecdb6d732a80868d7ef6766af3282b"
+    },
+    {
+      "path": "lib/iggy_w64.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64effcbf37da36981dedce647f546fda3fa5257e",
+      "size": 51572,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/64effcbf37da36981dedce647f546fda3fa5257e"
+    },
+    {
+      "path": "lib/iggyexpruntime_w32.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06905e7cf6e1675ef2a86f6cb50e38b2e9b1ee3b",
+      "size": 2430,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/06905e7cf6e1675ef2a86f6cb50e38b2e9b1ee3b"
+    },
+    {
+      "path": "lib/iggyexpruntime_w64.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "693fa9a25552b898013ab0e860b395524a193402",
+      "size": 2386,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/693fa9a25552b898013ab0e860b395524a193402"
+    },
+    {
+      "path": "lib/iggyperfmon_w32.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "25ba046eebb48a9d8615fd06207b62e00cadf590",
+      "size": 2436,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/25ba046eebb48a9d8615fd06207b62e00cadf590"
+    },
+    {
+      "path": "lib/iggyperfmon_w64.lib",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e58859299237989a0fa12a202ed4ea741819ca77",
+      "size": 2390,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/e58859299237989a0fa12a202ed4ea741819ca77"
+    },
+    {
+      "path": "lib/redist64",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "57e083cea67a53b44a6af7fa403491169a6f5430",
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/trees/57e083cea67a53b44a6af7fa403491169a6f5430"
+    },
+    {
+      "path": "lib/redist64/iggy_w64.dll",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43430508c8a9ac29ebf137c28ca7cc20ecdd9667",
+      "size": 1071616,
+      "url": "https://api.github.com/repos/gstaaij/minecraft-console/git/blobs/43430508c8a9ac29ebf137c28ca7cc20ecdd9667"
+    }
+  ],
+  "truncated": false
+}

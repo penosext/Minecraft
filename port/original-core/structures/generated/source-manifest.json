@@ -1,0 +1,2280 @@
+{
+  "adapterFiles": {
+    "Platform.cpp": "14fbea694c66cdf119bfbbb7272c6e112a75c7552e0232bc86413a642e02d048",
+    "Platform.h": "e2230769415dfb8adb793bb5fc86862646ac663cefb5ef81f935e954ec8b416f",
+    "Structures.cpp": "7b1cb41b7cc30b41fc0f3c564c07bcb60aab04d981fa9487cc52c84de4ad0ac3",
+    "Structures.h": "462e4c21e75034809c97401fc66db801d9dd5fb375fe57d957b30f714f3f0e42"
+  },
+  "adapterPolicy": {
+    "coordinates": "Source-absolute output; caller maps +worldSize/2 and applies baseline -> structures -> edits",
+    "height": "BASE first-air-above-solid; one full-world chunkBB per village before clipping, not first-generated-chunk slice",
+    "lifetime": "Exhausted piece weights owned by StartPiece adapter; no selection/RNG change",
+    "materials": "Door hinge solidBlocking table for village IDs, conservative opaque fallback for unknown base IDs; only IDs8..11 treated liquid",
+    "metadata": "Original TileID and 4-bit data unchanged; WHITE=15; original orientation and DoorItem::place helpers",
+    "missing": [
+      "CompoundTag persistence",
+      "loot/inventory",
+      "villagers/entities",
+      "neighbor updates/lighting/tile ticking",
+      "ScatteredFeature"
+    ],
+    "plan": "FULL original VillageStart and VillagePieces selection/queues; NOT a rewritten plan",
+    "random": "Whole-plan postProcess continues start RNG; NOT original per-chunk decoration RNG",
+    "seed": "LargeFeature original two signed Random halves nextLong value computed with uint64 shifts to avoid upstream signed-left-shift UB; addFeature clear-key nextInt retained",
+    "worldSize": "Public blocks; LevelData/Dimension getXZSize return blocks/16, original VillageStart bound parameter supplied in blocks"
+  },
+  "extractions": [
+    {
+      "adaptations": [
+        "Remove platform includes and unsupported declarations: ['intArray', 'IntArrayTag']"
+      ],
+      "byteEndExclusive": 971,
+      "byteStart": 0,
+      "sha256": "75af1d1f311c8a8c36350521e2c72c775089e1344276525fb2304fc106b0c40e",
+      "source": "BoundingBox.h"
+    },
+    {
+      "adaptations": [
+        "Remove platform includes and unsupported declarations: ['CompoundTag', '^class Random;', 'GetType\\\\(', 'isInChunk\\\\(', 'getLocatorPosition\\\\(', 'edgesLiquid\\\\(', 'createChest\\\\(', 'createDispenser\\\\(']"
+      ],
+      "byteEndExclusive": 5785,
+      "byteStart": 0,
+      "sha256": "a777a0778312387aa5c0e3f17f135462b5f839b1136f8aeac7ff145187f73597",
+      "source": "StructurePiece.h"
+    },
+    {
+      "adaptations": [
+        "Remove platform includes and unsupported declarations: ['CompoundTag', 'GetType\\\\(', '\\\\*Create\\\\(', 'WeighedTreasureArray', 'loadStatic\\\\(', 'staticCtor\\\\(', 'spawnVillagers\\\\(', 'getVillagerProfession\\\\(']",
+        "Add ownedPieceWeights vector for exhausted-weight lifetime; original fields and constants preserved"
+      ],
+      "byteEndExclusive": 14269,
+      "byteStart": 0,
+      "sha256": "793b88999695fe1a9c33377c2e815c5c09ce9e237390e49cb56e78d9c5a4b30e",
+      "source": "VillagePieces.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 201,
+      "byteStart": 91,
+      "sha256": "f127f1f6e6ee09dfd8d639adc1da4acf0ea71c478a9d5e466917803d332ee5e5",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 546,
+      "byteStart": 421,
+      "sha256": "079e18567dc43a676698a4cbba8c752099b6eccd20e66d4940ebf6a480c3c093",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1742,
+      "byteStart": 548,
+      "sha256": "5137f40d169b674513c8aae6a89907ad3ac019b20dcd40df9705c2e45ac96dfb",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1894,
+      "byteStart": 1744,
+      "sha256": "d5c01e4798625517039fee1afade34bb5481693a0997e89000b6f23f5c5f26e8",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2068,
+      "byteStart": 1896,
+      "sha256": "fc03f232c968c7d4036ed19b868a7a5de04eb27de0edd5efdc55b66210c0fd53",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2311,
+      "byteStart": 2070,
+      "sha256": "d4265d836cb3ba340a19adc57c211c54b6d8bf978293f16de240a216fcbe4e0c",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2518,
+      "byteStart": 2313,
+      "sha256": "3ccd5547b37024e0bde23e4752178de29955fbebe3457d22afc3dd3147fbfd12",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2711,
+      "byteStart": 2520,
+      "sha256": "a2b9b099218612bf8015614eb019e24f1f838e5ea60e117e2ca35e57061ab3cf",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2854,
+      "byteStart": 2713,
+      "sha256": "de5c23a5b22bcf621e20ba79aa6a26444f3ccbdb9127332eb4a62cc73c1fec7e",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3102,
+      "byteStart": 2856,
+      "sha256": "1d6033cd96bc4a82af36bf5623ec8a53fcfff635f5da1171600c36270f0438c2",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3523,
+      "byteStart": 3104,
+      "sha256": "b13f951c88aa02a812064a64bdcdf3682111307dae9866ee555efdbb0634cd70",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3641,
+      "byteStart": 3525,
+      "sha256": "5ef17287fed9813c14d391847882c4e16b32bbc1c2e41e870abfa4203d8b8af9",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3768,
+      "byteStart": 3643,
+      "sha256": "7b3901cd685fe02f6c73fdaf38be66e1fd18ea8e4db995a5602600701be97c55",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3822,
+      "byteStart": 3770,
+      "sha256": "65156461f1188cd7086f90803811c9503de22b9f754b405598a28432e26bc3f9",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3876,
+      "byteStart": 3824,
+      "sha256": "d77353ed979042913c98582e83ce52bc3422f6984fdbf4c6606d3472bc8f8e6e",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3930,
+      "byteStart": 3878,
+      "sha256": "480e623172431a304de6741932c4f7e20533ef3f07015f575de1184b8eb8023a",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3997,
+      "byteStart": 3932,
+      "sha256": "f8b432308a4383b9cdb8e497661a61533a169cde1a9b786f7b7027f61ae07431",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4064,
+      "byteStart": 3999,
+      "sha256": "083711ed41b91c9d9585b0eb78f7c681f60a135c036d35ab8753ead6a6106f36",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4131,
+      "byteStart": 4066,
+      "sha256": "0e849148621f84e5be87a5152117071d6c6a04a20753895d0d088089ec88247c",
+      "source": "BoundingBox.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2150,
+      "byteStart": 2038,
+      "sha256": "cc4ae216067cae6a23679ce3f38b9a696a84eea1c319df845b4099359bf1d414",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2291,
+      "byteStart": 2152,
+      "sha256": "e7b44aaf636ff657860c9131939dadf271d832c5262140f69fd983a3cb36584d",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2378,
+      "byteStart": 2293,
+      "sha256": "e2844a98a6177192f675670498f38153893834edda53985f116afd6b5aa037d7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3051,
+      "byteStart": 2936,
+      "sha256": "2ebcd78cd3571561eb6809aa8e9f647188f4c1e630034a41ae78c0343793376a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3123,
+      "byteStart": 3053,
+      "sha256": "e4b0ce5349d474d3cbcfb23d0c3d967fa098c14c3c3f57a7ee1c353a58e777db",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3180,
+      "byteStart": 3125,
+      "sha256": "f92ac1175c9fa200f6934db4b312ba0f4af6879ad0ac01a231e8734a98dc02d9",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3623,
+      "byteStart": 3351,
+      "sha256": "1dd21236fab57673f71772fbefb4b4b6f489137f80dad93a1209bf84231e710a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5612,
+      "byteStart": 5327,
+      "sha256": "23f0db2322487b69cbd343565a583cabd17b971098bf9adae50811bb549ba610",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5747,
+      "byteStart": 5614,
+      "sha256": "1092c17b1f7b65877f9f7bed14826f20d36b1e46e3fd0b66e0db5c151df2d832",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6034,
+      "byteStart": 5749,
+      "sha256": "26705406458047a99ad7880bebe483df05d20b4c3052548ade8130510d8d7025",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11036,
+      "byteStart": 6036,
+      "sha256": "ea6fc8a4f51b43535882691685f76c4c430a346065cfeba0f88771ea0a88c5e4",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11517,
+      "byteStart": 11038,
+      "sha256": "4dc7662b597c01f5e2e9f44f6d206aa268854e40309cb1a1e285f003f1cc4f6e",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12114,
+      "byteStart": 11804,
+      "sha256": "cef721266dd9ae4dbc0f2b661840e60bcb562d1c671838c5ecd2cedea29ccaa7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12409,
+      "byteStart": 12116,
+      "sha256": "bd13cbfc75ba18d8e56ad1acebdb1762315bef4e2255fc76f969e6e3bf544be7",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13026,
+      "byteStart": 12411,
+      "sha256": "7cf7f6a282769d3a629b90a5f76e1d02486d8671f32b685b622ae9dc6bbb6e5a",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13658,
+      "byteStart": 13028,
+      "sha256": "40317148df759762d9e3b42048861b23a7e35182d58bc9267cdd90c46e47fc72",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13934,
+      "byteStart": 13660,
+      "sha256": "64a5c90d01096735529b30779bbd39af422d7db169800a85b4de1346971a62a6",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 14553,
+      "byteStart": 13936,
+      "sha256": "3470b92a91c6486d0cdcb04bbfe634a9e90bb673c2f92c76497611a920c859eb",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 14856,
+      "byteStart": 14555,
+      "sha256": "159188e3dc5f4bb2e73934cfb7b17e7d885b1e660913ee016e05e7c01eddb43e",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15598,
+      "byteStart": 14858,
+      "sha256": "8f9cd54057c76a054c094151cbf2d50d447a013b9e17c97eea73341b5990114f",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15868,
+      "byteStart": 15600,
+      "sha256": "c32c1d988518a64ba9b295c38b6b034f636b6b5fdf68ff7d61c2045c0f6521fd",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 16939,
+      "byteStart": 15870,
+      "sha256": "6572885a4ef779277ab4d7a3abaa2b138159b2296ec4a8c25daf2d1ae5df9a75",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17412,
+      "byteStart": 16941,
+      "sha256": "d952f309c29d11f9f58cf7a75b3e439ff85add3573a453bd215fa2a45d186214",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17954,
+      "byteStart": 17414,
+      "sha256": "fd5a9bd27fe9031231225392d1d98b91a7805857d26e3429546aaed85a774806",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 19872,
+      "byteStart": 19500,
+      "sha256": "62220a0fd60e837af4840977936e223272a1e3ee4ea0895d2292a358faf7aff5",
+      "source": "StructurePiece.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2076,
+      "byteStart": 1829,
+      "sha256": "7186a134de07233f1ce51f6a87d2e351a9463b01f2b4ca8630cdb64ba0b98859",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2191,
+      "byteStart": 2078,
+      "sha256": "a4ef1a91654596f8d95ff4f458f3eea45b9a0072f8b2bbba438049ce6f5885f7",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2297,
+      "byteStart": 2193,
+      "sha256": "80e1f3343f62071df8a3c09a4537fdc7e3f0333bbe0d5b01f1fbadbada3f45ad",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 3964,
+      "byteStart": 2299,
+      "sha256": "99570bc44097b5aa3d88a7b8eb289dfdebbf85c041e0e0e8236fef4e0e67453b",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4316,
+      "byteStart": 3966,
+      "sha256": "e8f20bfd354498fc17726af0170fab9f35c0c534db8db08dd9d79b163f754e5c",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6271,
+      "byteStart": 4318,
+      "sha256": "e1d21b53e31208df109f83b464e1b708ec8fe71f81c2b2dbf0c8d398b0f01f6c",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7634,
+      "byteStart": 6273,
+      "sha256": "48252bc9972875b0a73442b08e75cf8f38da73ee24761a3f99e52ea6017c8890",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8719,
+      "byteStart": 7636,
+      "sha256": "a02706fbf55e782509d51e3bdbc9d4d99a151a84e96df46b8de6f5cb4c5efca3",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10035,
+      "byteStart": 8721,
+      "sha256": "dfb542e69f3f31364bc7f7193b365ec93344e9ae20d78da77a94974e35568e85",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10201,
+      "byteStart": 10037,
+      "sha256": "af5a7a80ca6e7a3c897be8ac4edbe92542ed0a39f38fb3ec54f17326133c6c3a",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10509,
+      "byteStart": 10203,
+      "sha256": "2b8738c76bde60404c0041557f42a9fee8ce120a297b3af0082151ea67de06a0",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11878,
+      "byteStart": 10935,
+      "sha256": "f1b4288d2fb38ca739f52c26d14118d58f2a49b8d9ffa9fac3b46d0640cb1d55",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 12824,
+      "byteStart": 11880,
+      "sha256": "6d141fe3a2af64f124b6d39540ba50684c7766cd5260a2b7671ac14c3011cbcf",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13298,
+      "byteStart": 12826,
+      "sha256": "58093b613359f24e9f52d93a1e171685777cadd44eca06ffa0b1e1647d6dd8c3",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 13818,
+      "byteStart": 13300,
+      "sha256": "da8864ac69559188be356d0d7feb2f59bdb3c269e7a1cf6a0232f8de109b89a0",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15173,
+      "byteStart": 14594,
+      "sha256": "55bbf995c83d2d8f00bb6a2105b14a65ddf39e8af7e8bfbeaed5dda78313ed03",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15510,
+      "byteStart": 15175,
+      "sha256": "bbac3787903b98543ef385290f46a38472fe0f79537bdc7d1e9ba71ae6aabd7a",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 15783,
+      "byteStart": 15512,
+      "sha256": "3cec72c47ffce67a8ee16aba0f5f8e5905386f37288bb7752b12c69822c9072d",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 16233,
+      "byteStart": 15785,
+      "sha256": "c5a308392043adad6656c3b2c290d10d9c1f3b4b4679a1d1bb964f4fbfb061c8",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 16524,
+      "byteStart": 16235,
+      "sha256": "cde38b4981fed5fba8f5c9b466b8a06e08dc6a76f847643256c179ae27266e72",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 16576,
+      "byteStart": 16526,
+      "sha256": "e71222e528640ec9a7a65423ef3601cee2d1eb18770d561d705b4d0f8fc69e7f",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17067,
+      "byteStart": 16578,
+      "sha256": "aef301fed112ca1b1294bbd60bc4e98e620b2aaf7d3c2038a16cea60af1daa01",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 17280,
+      "byteStart": 17069,
+      "sha256": "a38c741fe0757532ecb3f42dc6838de1ee22086204edb1795c111afbe12a4423",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 18105,
+      "byteStart": 17282,
+      "sha256": "d3d1c120a745f93b7fdf19a48d843d34a00e19cc3590fad3fece47ee5d6564cd",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 19670,
+      "byteStart": 18107,
+      "sha256": "61d0ac21707a7f8f97aae04b977732b81364c124bcd319c3bf7fb5d246c57aad",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 19734,
+      "byteStart": 19672,
+      "sha256": "cbe35568d6997a19a2075f00c58b115935ed8d7fc1fdf611061e6519d1218aaa",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Track ownership of all original weights, including exhausted weights removed from selection list"
+      ],
+      "byteEndExclusive": 20302,
+      "byteStart": 19736,
+      "sha256": "22993223bd32220aa8ca7871b2bfc240e669ae94fac1909cb6c9c576e52099d8",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Free exhausted weights too; no RNG or selection change"
+      ],
+      "byteEndExclusive": 20412,
+      "byteStart": 20304,
+      "sha256": "98f92a5bb3a052db5117c2f33a64e3c79905212a3d356acde44533748198f1bf",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20495,
+      "byteStart": 20414,
+      "sha256": "ae48c2871633d6f4957abe813f0d5743011ede6c49d754ff9fb6adde09b1708e",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20563,
+      "byteStart": 20497,
+      "sha256": "35191bc3afd4e7ba3b1bda597fec6e4d714daf78f675ba2111854ad6eea4208d",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 20864,
+      "byteStart": 20565,
+      "sha256": "82b5f3385d35331b20b9036607af686fac358cb0877f893e8b41249d98a83bd1",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 23914,
+      "byteStart": 21183,
+      "sha256": "aaf500cb9810b07168106151ef620521d10200606d0c1c6afeeda57cc5c653af",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 24439,
+      "byteStart": 23916,
+      "sha256": "df963e31ebf4ffdf14f1a49136c5bcd4c9295d9f1c0bd9062bc00942b9f1bffa",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 24891,
+      "byteStart": 24441,
+      "sha256": "14f374deb952aa3a9442cc3b1442c08a814561a7dff542be54e913a6dbe9217c",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 24978,
+      "byteStart": 24893,
+      "sha256": "2f4807c336fc4d483d1f2c55370344af259aa701ed2b1671e7204757bf62f219",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 25240,
+      "byteStart": 24980,
+      "sha256": "a0f1d4f9de443ec569a2f7e407385dd684fa5ca361121eb3ace7427d471e4c75",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 26084,
+      "byteStart": 25567,
+      "sha256": "ae6e6e64894d12bf48238091c74644ebe43951e9b014ef244bf32458eec87c8a",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 30301,
+      "byteStart": 26086,
+      "sha256": "5f68ca17f9272300c415a717b98f9ebdfcbc7c8610a945572d02f5b801d7ad0b",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 30367,
+      "byteStart": 30303,
+      "sha256": "1d0bea64ff87c184de0aa86afaf947187c188eb8c61b57404585f105a663e4c5",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 30640,
+      "byteStart": 30369,
+      "sha256": "4bb7adff87f054dfa34807f603491be1e3d61e8e2fdadd652bc64b0204494df6",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 31159,
+      "byteStart": 30642,
+      "sha256": "453caa33db70eb8233e429b961380ad05bd9cce2374d6885081e331cdf85b3fe",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 36049,
+      "byteStart": 31161,
+      "sha256": "5e100747c64ad4cf44fa792ec55e15d47b63341bcc0546a25e1bc41ac3fd6fa9",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 36227,
+      "byteStart": 36167,
+      "sha256": "adb24f671db13b2a9f6824038cc28fa635a7e8ad8cef197846ca6c2dd164fde7",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 36496,
+      "byteStart": 36229,
+      "sha256": "5652a977c97a8c0913d5187b5f2348d1feaf07192cebdad5e035b3dd3afc622e",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 37009,
+      "byteStart": 36498,
+      "sha256": "a36459258a1313e2054fd2c318b2ef755ddbb5e43fb80d3122c0de279e2c8052",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 42304,
+      "byteStart": 37011,
+      "sha256": "8f7c3320ba645dde27253eeb1fce9d68adc133cc0546f06cc2f3b89e8ba6950f",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 42481,
+      "byteStart": 42423,
+      "sha256": "e8bd974b32d0613b12b6079f9a977ee7c88174a693edbb278de766cdda8b5b89",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 42820,
+      "byteStart": 42483,
+      "sha256": "04713b91a4a8574fa1dead28b25ea583b35866319c499628267915f5091baedd",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 43710,
+      "byteStart": 43202,
+      "sha256": "10a8c21f4058aa051fd1b24ffc8e0b205e16c28f9df807c1833349415a882094",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 46894,
+      "byteStart": 43712,
+      "sha256": "bd1a1c9e8440da6f4187acb5703ce7054ee8ebec59a1898c97e5b827a547ba2b",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 46954,
+      "byteStart": 46896,
+      "sha256": "a9ee5f4e7968699d016134c68053b865d058c62c3f6952e49b4b51a319274ffc",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 47175,
+      "byteStart": 46956,
+      "sha256": "b40a5de1547c8a3165e7bf110d5c8a21c8c173e911a5e133d192b9bbe4bd6e1e",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 47686,
+      "byteStart": 47177,
+      "sha256": "dc20092857018655fa7fe44becf2a0dc82d1380d1737c54497050d335a3f98ae",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 52467,
+      "byteStart": 47688,
+      "sha256": "7699181c563d19e86b049a7bd44b25987b7d2427ee2e5d5ef8976ddc6cc4a408",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 52719,
+      "byteStart": 52653,
+      "sha256": "3884ce251070300f15c7f385462ad7a75d8f16546ca88949008f430aff8b55c9",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 52995,
+      "byteStart": 52721,
+      "sha256": "34264f8d4353d9b01b819a9c8b8568a3086bf71e1663ee2dbd3c7b8f90402631",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 53517,
+      "byteStart": 52997,
+      "sha256": "322b10ed30e0e34ddb0a04d5e56ade4efecc35bd6a33d376b081f0d3fc8eef57",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided"
+      ],
+      "byteEndExclusive": 59540,
+      "byteStart": 53519,
+      "sha256": "c63b7e78f8bc96cc8cfacab33a5513ba7c24546bb5fecae7957b2f5a0f9818e2",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 60995,
+      "byteStart": 60941,
+      "sha256": "4a25812fd5e9c47d1abd0e580dc63094d311a92ad6dba8321463b9bbd5bf841e",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 61238,
+      "byteStart": 60997,
+      "sha256": "42ccd1f9fc542a27b8e18b3f5f35c847535c9cd56a23c2e3a8f896af730ae31e",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 61742,
+      "byteStart": 61240,
+      "sha256": "e7a49ed79532a1ab23c09cdf69a2376b7902a70e48f141c45e56dd71172f281d",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove entity/villager call; entity support not provided",
+        "Chest block only; original roll-count draw retained, loot generation omitted"
+      ],
+      "byteEndExclusive": 65910,
+      "byteStart": 62063,
+      "sha256": "515c0f2d24f66e3bdcb5c938f59ff8657c13b2e0c15e5fb69e4fc6e2b1e38da2",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 66106,
+      "byteStart": 66022,
+      "sha256": "b31cee2ed33c19403d09787a6b81f735009c4a1fae23f8af93f0ba4a974065ca",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 66390,
+      "byteStart": 66108,
+      "sha256": "e778bfcba8b891c6bf42a7d1d842454f5d28a09874a928907e6312598fe38000",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 66595,
+      "byteStart": 66392,
+      "sha256": "8ac86376af5f991a0ced48960746074ae6c3105345a7f9d65d44486a4f83c474",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 67457,
+      "byteStart": 66949,
+      "sha256": "a40f9c78d4c9923fe7468e4415ad600c102789e4ad9246e1a5295925f2365228",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 69110,
+      "byteStart": 67459,
+      "sha256": "353991d2e9a8b5e01b1c7f4256962d70f723755477a23884f90a5fa640fd535c",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 69234,
+      "byteStart": 69112,
+      "sha256": "cc4a4ead19f38452b62bd5cb04fd0bbaa3eb859f989b8d414bcadc4700384022",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 69638,
+      "byteStart": 69236,
+      "sha256": "13267cc5c7ee88a9348640b3caf3e7e4753d00711b92253eda62784debbee772",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 70331,
+      "byteStart": 70122,
+      "sha256": "6cceba21cec469ed8e3586dbd1763a30397f7385d6dd1527dc06a273db3a52de",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 70859,
+      "byteStart": 70333,
+      "sha256": "8a9edb6e24756d4a73c93ecfac94e95bcdd04c760e1cf6e36a828886a3721065",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 73196,
+      "byteStart": 70861,
+      "sha256": "99e72b9bc47bc097b9113e4416dc7fa89a7641b83e703392864ffe57591e231b",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 73258,
+      "byteStart": 73198,
+      "sha256": "ae0ddeb065682046e4be6dfffdf5bec07dcb45f30ebd64bf13bed1e2ac2dadf8",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 73517,
+      "byteStart": 73260,
+      "sha256": "426677c21d3888cd96fc785808cf3086a81c6f7ff1de68601d999ae63fb88321",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 73948,
+      "byteStart": 73519,
+      "sha256": "57f632863ae1e3234a5ed4bea20a13647541f2415fa610546ea8f3c9d070e9c3",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 74867,
+      "byteStart": 73950,
+      "sha256": "b080ef9db4f6b510c07e3df7b203a1abc716598533ac20da5c5dbef794f07a00",
+      "source": "VillagePieces.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 503,
+      "byteStart": 380,
+      "sha256": "150b7c8018da525d7ff3d321e6363ef6016a19d2bd8b7bdd3ee807c8a904f4db",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 638,
+      "byteStart": 505,
+      "sha256": "e2c823ee69f71abba12f2378ae534ac287c27f1038b6cb543e1af9540bc2e06b",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 704,
+      "byteStart": 640,
+      "sha256": "efebd9cf29d38966421dd4115322a4f4f819c72573317112589483ba10dbbda2",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove app forced-placement options; forcePlacement remains false"
+      ],
+      "byteEndExclusive": 2488,
+      "byteStart": 1199,
+      "sha256": "2c4dce61de3ab12eaaba3730908b2f17615edbfc312cdcc92bff445ca8347f66",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [
+        "Remove app notification only"
+      ],
+      "byteEndExclusive": 2714,
+      "byteStart": 2490,
+      "sha256": "4cca7ad2b96c63e503869777cb7d7f64ebe3c26bc0cff3cb6d9b5ee692282c32",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [
+        "Negative chunk signed shift replaced by defined multiply by 16"
+      ],
+      "byteEndExclusive": 4407,
+      "byteStart": 2841,
+      "sha256": "36275df30bd4345f41eb0b38e2862c027bc0387bb27d1b4b5e090d9310206946",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 4766,
+      "byteStart": 4409,
+      "sha256": "3ae438ffcc1b2ab4cea3da8c8230d720d9d61d0176c6d81c541b4a4a85c97910",
+      "source": "VillageFeature.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 307,
+      "byteStart": 200,
+      "sha256": "3125ea79b853cd08110bb5aa11445c2205e34eb7aabf8e3ace024651220e9962",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 528,
+      "byteStart": 421,
+      "sha256": "4e635f4b3138ffdd1947e7d111eaa616837b147e790e981ea753350a024ea51d",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 600,
+      "byteStart": 530,
+      "sha256": "cb7abb0b0035456a41ca1b868f80c4cc6dca1a489de04e54f0cf1ad40eed90a4",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 674,
+      "byteStart": 602,
+      "sha256": "795d2cdbfd23ddb0c990ddb0f278a263d2941ca0797bd2f5bd25386b2778d5ae",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 1244,
+      "byteStart": 1070,
+      "sha256": "070c7b6f172740b2ac406ed79932eb4718c4bfebd0b2c2878057504fa4903b17",
+      "source": "StructureStart.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2534,
+      "byteStart": 1424,
+      "sha256": "f03d798885b21b58095ee35b8616c1c3acfab07f7e71dcde9d942483c5b874a5",
+      "source": "DoorItem.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 2298,
+      "byteStart": 2089,
+      "sha256": "8f79a94036a5899bfe8f5db26dec7132d14e5a421d4426ddac099be617a9bc8d",
+      "source": "Mth.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 118860,
+      "byteStart": 118671,
+      "sha256": "570d684ea01f1d338a3d1661ffff30191cf2fb7eab39091cf5fc5506d9afffdd",
+      "source": "Level.cpp"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5697,
+      "byteStart": 5667,
+      "sha256": "d9ad79e51e9795765064661400c79bef95d1ad6c904f0c21bd019a8cab0f2116",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5729,
+      "byteStart": 5699,
+      "sha256": "e30566f9fb8477039fa0e6af09c145af39093be5b947a1c52a22401cedc6bc5f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5760,
+      "byteStart": 5731,
+      "sha256": "289bdb402f64fac582608dbd81f7ebe6306ace37d676a0c9255c78ea566f2abc",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5798,
+      "byteStart": 5762,
+      "sha256": "478d9b4ba86d3170b794b1b575011761a99c387bc4703184085a43502425d75b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5829,
+      "byteStart": 5800,
+      "sha256": "fd069d7be413c13d4693adef25f0c7acaaa45f3858ccefb3a7263a7b15d400c0",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5863,
+      "byteStart": 5831,
+      "sha256": "e160a74cf4d6bed0e2cd85aeef16ef78195e1897d05290f5acbef362ad859646",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5901,
+      "byteStart": 5865,
+      "sha256": "5467a32bad457188f80fa985d98a6ac6e923c882de0aac77c2eae3d2903aced8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5933,
+      "byteStart": 5903,
+      "sha256": "3e2c6c8c7cd26b06c8542c287b4f79b876755495a74df692a409fa8518029cb8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 5969,
+      "byteStart": 5935,
+      "sha256": "2e98cd81400e204664715268217bc6df256e5832199c0586214d910fb74a9ae0",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6001,
+      "byteStart": 5971,
+      "sha256": "5706b4cfbdead178ff530a7fbce54140ddfe015da429bdc9fdc3217c310a4d34",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6038,
+      "byteStart": 6004,
+      "sha256": "9985378160765924a65694a31c410f8573efcc4f40848a1bfa8122a537af20c8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6070,
+      "byteStart": 6040,
+      "sha256": "3f0349155ab0e7f73450c6f8fc7c77aef5ac0653e568f22b8a321728b870f6c7",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6104,
+      "byteStart": 6072,
+      "sha256": "c29fcf5e9b38f472c48882dde91131b59c1a8f041a2fe4978105b10e9ec4bd44",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6139,
+      "byteStart": 6106,
+      "sha256": "ec2d74718ffd0430024befd1b5fa44d7ca1094fb7524972fbc080a6efb98fded",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6174,
+      "byteStart": 6141,
+      "sha256": "22fecebe0569e5011b5c89c7af4acee7710fc7f9133aa1f36f3bf5df5d398637",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6209,
+      "byteStart": 6176,
+      "sha256": "4324ebccb3b159fd2380171f4728c22fcebf909cdcf9fe99ccb7eccaf6c842d2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6246,
+      "byteStart": 6211,
+      "sha256": "b7e7d60223394fa555e5cd02d4af8923b216cc1d2128d2c304eeb549bf694004",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6280,
+      "byteStart": 6248,
+      "sha256": "ac6ce34011474f03a06eb22d3bfe918183fa1d3778a5ac6a92539bc211424aeb",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6314,
+      "byteStart": 6282,
+      "sha256": "9e1209c10b7b93a6e369089c2714282b49ce5ec442561de2e8d55c56da54d97a",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6347,
+      "byteStart": 6316,
+      "sha256": "c6abcc13788bddca2542ba2494bd4cb8d3167efb75c12cf62ed386718152cc87",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6384,
+      "byteStart": 6350,
+      "sha256": "ac6811dec07cb5945a2d2511fd9248bb1b5ec05aa77d98784c5a9368ba5214eb",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6422,
+      "byteStart": 6386,
+      "sha256": "7595a4bd37ba88fc2965649f263f2e0fe47b0859704e2a16954e481a7ea714cc",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6459,
+      "byteStart": 6424,
+      "sha256": "b39b64e111d71c4ec7ebcd746a8eefd01aa67e9973e1aa8e20d19b649690b159",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6496,
+      "byteStart": 6461,
+      "sha256": "445a6ade3b6d6217851d2f0ce4f5d09c00eb5d43f6476eb292a5a53382a93a77",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6533,
+      "byteStart": 6498,
+      "sha256": "5d9991b933ea5c8066f15780558785259a64cde63fa319b1e384a2a543c580c8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6564,
+      "byteStart": 6535,
+      "sha256": "c36b3dc49fb4c62ae4b7fa5c2b130e3810623fe601c1009dc3b62793565f927a",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6602,
+      "byteStart": 6566,
+      "sha256": "14f13c3e4d3e007ae9b7cc05e7cf6dcd0e3b412c8f6e8ce1c39290fd781af5ab",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6642,
+      "byteStart": 6604,
+      "sha256": "44bd46e5e298ee906953d82c0ed24c5d61f73ac84f5bedc2a4719a85468bd1b1",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6686,
+      "byteStart": 6644,
+      "sha256": "c2ed4835042ffff129d635d15c26eaba997eaccaab1c84d0e52ba58f8db01c2c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6717,
+      "byteStart": 6688,
+      "sha256": "7c18d9605efa3dbc57fc133de282cc1f15d8448efdb5083c9a7f30e7eeb09fec",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6755,
+      "byteStart": 6720,
+      "sha256": "b4ecb0160158015c7960a23fc140cbdcd508304dae5e83827cac38ffb5e27a2e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6791,
+      "byteStart": 6757,
+      "sha256": "2b0cf89c7497e0f4f3242e5c2c52ad7b63dbd3249721624cceffed4b6c46e909",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6829,
+      "byteStart": 6793,
+      "sha256": "bfb84af281cbedbae22d85733f7328987e8a5278d56c9caac7b8af0f401d8719",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6877,
+      "byteStart": 6831,
+      "sha256": "be6ff624edfeb4538a6b136fbd3eba329e5e181216ec93365208651dc8b467c5",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6909,
+      "byteStart": 6879,
+      "sha256": "0660c6fefea00184a4a99140264f768d37115b39aac0d1dd37a0139efe27c6d2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6954,
+      "byteStart": 6911,
+      "sha256": "1ec238b62c178ff3ba91a8e6d858298c1889f6dd1b14119bc9cc93d85c42f382",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 6988,
+      "byteStart": 6956,
+      "sha256": "6145e840a9ceef491d63e8257f7107d181664822933124e9e6bc1246a02446f0",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7020,
+      "byteStart": 6990,
+      "sha256": "5ddeda386123ce44df2d28261dcc1eeb3e82c493289337a505ecaa00107f76d8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7062,
+      "byteStart": 7022,
+      "sha256": "6315e7d7d5551a755b8281b2d0201d4738f06c9b159b8627283a09778e86574b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7102,
+      "byteStart": 7064,
+      "sha256": "ab76a9a3c37fa41372ba87221ffbbf2965e359a5524c39087a9e4ab2b393bf7b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7140,
+      "byteStart": 7105,
+      "sha256": "95efbf8cb9e1cc211e1d9ea089e76a230e5c6c074a88101e9dc7109d6346e2b2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7177,
+      "byteStart": 7142,
+      "sha256": "cda16d7b3081d151021fbe4139b5a41cf3dc944963b863fa16ee5f96b5227758",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7214,
+      "byteStart": 7179,
+      "sha256": "0d2f47a2f801319fe6538fae68b42c5399df1f7fe96360e24a975e7924d07b1c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7255,
+      "byteStart": 7216,
+      "sha256": "9782e11c1d26fcdad2d9986aff6e6739cac034081e5402eafb7d31dd0ace2a05",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7291,
+      "byteStart": 7257,
+      "sha256": "b1176695544768c40523bd2d7425660eba2c3cd19ae907d0faba8f1383d1ef21",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7322,
+      "byteStart": 7293,
+      "sha256": "51c1af5ef559ddce3dd572bf25e4f25e1f6a40fda6de0e32d8629c71f907cbb5",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7359,
+      "byteStart": 7324,
+      "sha256": "ecac5b3698975fe6eaecbecba162cd5effc7af84d33e0184f05767c3a1ce0dbe",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7403,
+      "byteStart": 7361,
+      "sha256": "7cd59562717db7044a61c457c41bafd713076162cad9d757adb639b77a140222",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7439,
+      "byteStart": 7405,
+      "sha256": "1cb44b2516523abca74e1ed27759c205b0692f5c650676fd79963328014a1433",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7472,
+      "byteStart": 7441,
+      "sha256": "aac5fa6873362055c101a723eae57e444a57f7116635184346c6cd7317e12b04",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7505,
+      "byteStart": 7475,
+      "sha256": "939d497e2ea83828cc43577ef0ca1bf70e1c021edee37edf2b36aa074c1c085b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7543,
+      "byteStart": 7507,
+      "sha256": "f8332375b2da114f2c5d00fd78c504c7f5e20aca9da46b1b3ab672ffdae94138",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7582,
+      "byteStart": 7545,
+      "sha256": "474cbbbc88b62c6e1ef3da42cd1aeccb828c1e569005af3e1fc04c93cb592a2e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7615,
+      "byteStart": 7584,
+      "sha256": "4b1e648f65d6ce5a152540bcb98b8ef164e0f28a43af56b4129c55e3de4ada6e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7655,
+      "byteStart": 7617,
+      "sha256": "c1cb3f20cef20d60cdf7ce5a9b4e629fdd84bf992af00e04aab9149c0348b9bc",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7693,
+      "byteStart": 7657,
+      "sha256": "7c85a722c18107f4ee4b93925f6925c14d45facd4de5a32e745e3a3bfdc776e2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7733,
+      "byteStart": 7695,
+      "sha256": "e0f3d232f93e4c1aa99e1a572f9cb4e2450057bfc9abe11896d01b862989ec93",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7770,
+      "byteStart": 7735,
+      "sha256": "5962b2a04eccf999704a6fca8d2924d918af328cd8b8dd1a715ff8b405067ef5",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7803,
+      "byteStart": 7772,
+      "sha256": "dd9803d2b542cee3f4c688958d3d8796c9ecfeb9996e327390249295ef3e96a7",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7839,
+      "byteStart": 7805,
+      "sha256": "422a9392e809830d13dc9c84ba959155a9ebc571dcc42c73474f38b60547472c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7875,
+      "byteStart": 7842,
+      "sha256": "e9991b07eb7ebfa4af60c65f9cda51dd8e8234340927b5c81dbd729f84fd9ef3",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7914,
+      "byteStart": 7877,
+      "sha256": "14b30de0ecdaa5e28f62e23211f6d0e3e654b4789ab051ea28f70eac94a8ee3b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7946,
+      "byteStart": 7916,
+      "sha256": "11934779810312eab42fb9c0dd31fc7bd161691ef729cc77c08e6e6206495f04",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 7983,
+      "byteStart": 7948,
+      "sha256": "e26e3125d2063fe18665dfa402525cf7c4c3e865eea9e990d136d71b5f615255",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8017,
+      "byteStart": 7985,
+      "sha256": "9d8bba6f6a3086b33ec4079138a977171101e892db8ad698bd609aab0afbff41",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8049,
+      "byteStart": 8019,
+      "sha256": "1f30422381d847c49620880fcda282ae11529411e70be43f862779ce08baa67b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8089,
+      "byteStart": 8051,
+      "sha256": "a9e7a5ed9f60873285327f2542f3cd7522d3da393f19c415098133ea8d3956b3",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8125,
+      "byteStart": 8091,
+      "sha256": "a00afa759b45258850a99946e3683f9855c634426545a8da8d876e4ef58f7b31",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8158,
+      "byteStart": 8127,
+      "sha256": "79247bba9f2a958b609dd6ba182e0d3f7b075698501bb851be1ab15ed7a2f75d",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8205,
+      "byteStart": 8160,
+      "sha256": "ceb6bcd693990bbb987e1282735275c5fd59f5625e02ffdc5d19b020c064fc65",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8243,
+      "byteStart": 8208,
+      "sha256": "980f65ca0828ad582450b24a90a46da670d07ef95749b75c1b694d399ec37cda",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8289,
+      "byteStart": 8245,
+      "sha256": "a014cf6a011596756674eba1d2e4b2071cddc508b86bb3a672a8001db7a30a4f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8328,
+      "byteStart": 8291,
+      "sha256": "8501b211137c74159c6a1c83752acc937f084017c4f32ba8df9a78ba491380f9",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8371,
+      "byteStart": 8330,
+      "sha256": "52dcae9e84024426e67f237f8602539d9618f2c9cf9e314ba98969762757c392",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8416,
+      "byteStart": 8373,
+      "sha256": "a695d9b8c7001807d499bbb72932aa12159844202afef71dc5f4fe53180cca73",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8460,
+      "byteStart": 8418,
+      "sha256": "5f6831beab4bbe8ed49896ee725c327d565a2e0ac0eb6c807a56946f8ac1bf2c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8500,
+      "byteStart": 8462,
+      "sha256": "6c99cbb48e2e46fff17d6368980ba4757d9a78b630f4c1e748ccb648169f000a",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8535,
+      "byteStart": 8502,
+      "sha256": "abe856791579139207a7b29635c43365b948b5b3520cfd315130889c2ca29ca2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8566,
+      "byteStart": 8537,
+      "sha256": "d5237c5ec6e83e97a823ceb550a13eb4c7c230d347718cf230acb667d715d78b",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8598,
+      "byteStart": 8568,
+      "sha256": "949639abd5434c42c2d7e394ea6a71c11b71e3292f4b290a6a4ab9abf88a8440",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8633,
+      "byteStart": 8601,
+      "sha256": "0a4e2fa072b47864bf8d712c3e111c30dae84422ab1cfa3ea050ed876c463f17",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8665,
+      "byteStart": 8635,
+      "sha256": "e682ec954558e6a40a359e3ca9656d7fa08270d48907125bef11e172639e1aaf",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8698,
+      "byteStart": 8667,
+      "sha256": "0ddb4e1b269aa9d1d77df8daba621ff6d2516defb262878855f0a5592dc4b6a5",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8733,
+      "byteStart": 8700,
+      "sha256": "12b48ff70775988ad17d40a011136cc7696d7892ea9dbb7c77bf656b20e4f5e9",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8766,
+      "byteStart": 8735,
+      "sha256": "80fdb20d9d1dec52e25d3a138de1f73712e1f5ed656d140930df67bd1cc2d306",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8801,
+      "byteStart": 8768,
+      "sha256": "98092293ecf58df341f9c6dcff3a809ba6d7fcf329edcd618641428fdf05ec8f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8839,
+      "byteStart": 8803,
+      "sha256": "ca287f32afff0e7b338813be601de66193492066a5d3d9435e10fb51fbf85062",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8875,
+      "byteStart": 8841,
+      "sha256": "0806e4729c1751c617b35792d6e7c7e13d0021b06ad11f8781377ed5e22d302d",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8912,
+      "byteStart": 8877,
+      "sha256": "618f0ddb9a9f4bea9d532b29df1d08373c61ac75e4c3a6ef53d9a36518c21322",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8950,
+      "byteStart": 8914,
+      "sha256": "bba12b27a739e5ac73a8cd66cf47f69aecf575f3d3c71051bbc9328f31e7c35e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 8989,
+      "byteStart": 8953,
+      "sha256": "1dd0b60f1ec328570f067a8e8a807a63c7584758d4594fe38bc99473d4716b34",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9021,
+      "byteStart": 8991,
+      "sha256": "5d0f3977d439d64f5fe537f1b2bcf4401db41328e0dbf794826d1af09b025586",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9058,
+      "byteStart": 9023,
+      "sha256": "a0b635ec85ee8ff19ec0530cad2fbab306726fb4172e450a536bb1dbb236ac9d",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9094,
+      "byteStart": 9060,
+      "sha256": "d2f70e439152b24d105a07c5266defa878cb52e030b2f2efa583be76e69eece3",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9135,
+      "byteStart": 9096,
+      "sha256": "3c96bcf0d8d68f8e4075f4b84429e339d6d3966f987c327b0b316b7c9c57a8d4",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9171,
+      "byteStart": 9137,
+      "sha256": "08e2bda6ae91df74d6ff7cc4ce9672bdcf5789d1c7cba7ad318995787e607137",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9214,
+      "byteStart": 9173,
+      "sha256": "8ea451531d8a095b7cb32c3e26336b821c08c76ba65f1c72153f65ca3df0c3d3",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9252,
+      "byteStart": 9216,
+      "sha256": "ea940396c64fe79dc778812b565cf69f22f83af088a9559f57cedfbe6d1f0703",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9298,
+      "byteStart": 9254,
+      "sha256": "d79c13f1a36cb87ade9df9401529cc0fae7cfc7a448baec22ca80b9681d546f2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9343,
+      "byteStart": 9300,
+      "sha256": "e9fbd7d40680c53ea33cb157c1adaeef60e028bef1b554fc61ed187db9f02f4c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9382,
+      "byteStart": 9346,
+      "sha256": "9b7bab5bb4ec205e16dba570a3301101686767bfc9cdbb592dcc2a241dfa09df",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9420,
+      "byteStart": 9384,
+      "sha256": "ef144693aa4f5aecbb001b0a0abe3ba1264eadce66f5a7bd8c55e3e1a902a6d8",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9454,
+      "byteStart": 9422,
+      "sha256": "77e401863143ab99c94b01cf4ba13d61b2a84e20bc5d9cf6c6d23e2ed897c241",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9494,
+      "byteStart": 9456,
+      "sha256": "e86166e9c289a8f42179c85d4487df18222758e889fac1ffeec108e6ce624b4d",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9532,
+      "byteStart": 9496,
+      "sha256": "94b5299f21096242af290d32e39fe8f3eb1ae1837825cc818fc65e18a428e610",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9565,
+      "byteStart": 9534,
+      "sha256": "2fcdcb02f9d9d7624f9de1e9d89bb76f18cf5e5c62fbbdb54b7afa2eedefac5f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9603,
+      "byteStart": 9567,
+      "sha256": "c2015a62c4923a65f7371dbfc0310252f9aaf3d20f3b6f9f753af402dc8b0d99",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9645,
+      "byteStart": 9605,
+      "sha256": "a49268318628b235b2f9d1f8f46280d0068695d974004b5a6601e24e16e1bb1f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9691,
+      "byteStart": 9647,
+      "sha256": "92fbafc14421acfd045868060f2a063f9c23f40b5498e571ceb33646b3345227",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9725,
+      "byteStart": 9693,
+      "sha256": "4a430cd7eb0138837d5db8693ad3296f257ea39d043728e660f8525d75b64ae4",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9764,
+      "byteStart": 9728,
+      "sha256": "60bd1e3e6e4e4fa66a879cf22eebccc6fbd3b37ce09617f6017ef64b450dd9da",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9804,
+      "byteStart": 9766,
+      "sha256": "8f393ec0eb0456eac7533fd628afd407710ce6cb04f852a76d6a69cd620c2d28",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9844,
+      "byteStart": 9806,
+      "sha256": "3edf5dd0b217bd235222941392c1c8004ca3bec4d894c14ff6d9e5198f742283",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9892,
+      "byteStart": 9846,
+      "sha256": "b4fc0680ccc9d392122e820f802f5858b86a5b143b1972265afd1551d6877242",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9932,
+      "byteStart": 9894,
+      "sha256": "a0106d563caf2e2c35511c04eed86e38bda34293bded21ab66f29b653f098fe9",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 9973,
+      "byteStart": 9934,
+      "sha256": "58744c62681216821362836f32b9b02c5a904facfc6a998d42f89c1099fee788",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10014,
+      "byteStart": 9975,
+      "sha256": "d0353746e77541bbcc7a32c56882b3dc436c5b74b219308a4e9ae4f1f5fe2390",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10051,
+      "byteStart": 10016,
+      "sha256": "f5d5db80932407d2b2a6f0d29611e788def1e64b9eee8ef7b0f9e69602bc52b7",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10093,
+      "byteStart": 10053,
+      "sha256": "1a17177c06b45604e2d417b50501dd04cd7774487c64ddea8617563b210db44c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10140,
+      "byteStart": 10095,
+      "sha256": "27ef9324b9315204a373a46db5c71e3e463fc1775323bb6bd07aaa5185b20358",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10178,
+      "byteStart": 10143,
+      "sha256": "c719a60c1cef09664a1ccd022d2b1a7716d2a1831ff5b44c13d94d70ae56b860",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10216,
+      "byteStart": 10180,
+      "sha256": "69944d12e2bac8a2d550f05c15922e212772724b921e8bba7af853f15f2b8121",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10258,
+      "byteStart": 10218,
+      "sha256": "1794a5d6ad1f05982d4b9bc98c1fe80b6e758dabb8a0383555d738116b04f283",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10304,
+      "byteStart": 10260,
+      "sha256": "2234631fef7225481c54714639df2c6618071b9b5e84013f2b449c25f9e34ba7",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10341,
+      "byteStart": 10306,
+      "sha256": "0fb3d949bf9d63e20158a6690c62eefc05d3b3b8eeb32b1a72a45122615e4ceb",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10382,
+      "byteStart": 10343,
+      "sha256": "3406413df6812d1a4afa092960311b825775f815cc334a4265cf8e58c59d6531",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10416,
+      "byteStart": 10384,
+      "sha256": "c4c7e565de183373c79eb1af7e767d744ce1826fb841c6124d181b696fdf9c20",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10461,
+      "byteStart": 10418,
+      "sha256": "922fecff4eff2b4ea8d03f29b1d7fdfec4b4dc22831c843566cae9d44b1ce427",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10500,
+      "byteStart": 10463,
+      "sha256": "d57d9ea4f233dc72f0d4bdad76e5d3efbc5f891c3aacd4d39d16e72587bba8e9",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10539,
+      "byteStart": 10502,
+      "sha256": "d3137dfb2c10cde6ae63bcaa6e3dfb0a66d1da65af676f0ad4133f00b88fd4dc",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10583,
+      "byteStart": 10542,
+      "sha256": "b39061421137774e20ac18275486aa65b7c2ad5a14e7823dbfb76e9fc11bff3c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10620,
+      "byteStart": 10585,
+      "sha256": "6f612e3a6354864191645ba5326ea9bfe55d5699e9d908f40ed714969c71ec65",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10661,
+      "byteStart": 10622,
+      "sha256": "358a9498d9a2f7b615ece3485bcec11b5f0a9c505e77de0e4f2444f5c468ba39",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10707,
+      "byteStart": 10663,
+      "sha256": "b676c113c16af2b078dd256e79f521f3ff1f0a89151de6bbfebbe06775d12283",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10752,
+      "byteStart": 10709,
+      "sha256": "c1c3044d7b0a5b3abc47af99923be5ed06a1ff69c17847b0a44525c0cb5c1a31",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10798,
+      "byteStart": 10754,
+      "sha256": "02b54386211fecdccc58bcf1aedcafdb4f63bbd13f36709b526523a56a2df36a",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10839,
+      "byteStart": 10800,
+      "sha256": "597048d3da2e293b0ea05c247ea44137218fb4c1f64317ccee01013ef6ba97d2",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10874,
+      "byteStart": 10841,
+      "sha256": "976fee54ab11901fb0cf3b555ae24737b72ae135b51af163d273c41c710e6960",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10913,
+      "byteStart": 10876,
+      "sha256": "1b7a492f584ec45fc475dc0c37a09531ede35913ca9029dd172b6adbb701706e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10951,
+      "byteStart": 10915,
+      "sha256": "9c98e87c07268160f78a7a990d6df0bb0a4fb4b40df9d82ec3c638217d072e37",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 10988,
+      "byteStart": 10954,
+      "sha256": "2a3eaa21332124571d538c0ff7ef03a4a699c6d162ad0eee4f4009e2cda94c05",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11025,
+      "byteStart": 10990,
+      "sha256": "b4d072f2fd5ebf74f4265f17135517644fcbc74aac4f554a5a7a046fee5ecc1f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11065,
+      "byteStart": 11027,
+      "sha256": "97c05b776f9a134da7dd513d3af6dc0adb430f7ed0e8c2093c63973c2ff74494",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11099,
+      "byteStart": 11067,
+      "sha256": "fb9232c0b034824bbdfa8df3de9cb097691846e4851130731c37df581ae0db9e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11133,
+      "byteStart": 11101,
+      "sha256": "22eff495c17ede5a037ed81d6cffcb031a1e6bf2e612bdf7d46fa282e8310a9e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11172,
+      "byteStart": 11135,
+      "sha256": "e79a39629304cf14760bdf2656f0559e9f4a4964c88b77ce92a7c668a81e9154",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11220,
+      "byteStart": 11174,
+      "sha256": "72c0b8262081d0aa2494b380973bdaf1aea123701e559989a3ca4b8fdde08998",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11268,
+      "byteStart": 11222,
+      "sha256": "18b4f133dc229e6969573679f8fa316851bc8204a91888ad096f4bb68600c718",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11311,
+      "byteStart": 11270,
+      "sha256": "6ea029ec6d9545b878e116c394bd9f34d37c57630176829f582d1607440653f9",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11353,
+      "byteStart": 11313,
+      "sha256": "81895dfb27ea514c3fe56500d0dc1c114ddc928a4cce36349768c0d3b38246c3",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11399,
+      "byteStart": 11356,
+      "sha256": "89dd760e11be3d09fcdb6ddf60e12edc834add418807778c95426c698aa90f62",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11441,
+      "byteStart": 11401,
+      "sha256": "1d629d7a7aa217dd09e26ba561cad193d9dbc3d5d11f4f3c4eff6ee61704d691",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11482,
+      "byteStart": 11443,
+      "sha256": "219f2a89257227c663325b89a10ec87ab776c5fdbfd0859862eabd75958bd7ee",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11517,
+      "byteStart": 11484,
+      "sha256": "5bd8182130d7fdc1b7d78cd87c66b3d808700fccbfbcb1b93ac051e8df7ae4ec",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11557,
+      "byteStart": 11519,
+      "sha256": "fabb60bed49806f3d1bcee3585a51b864512b9737f1879745b39860fbbbcc0af",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11599,
+      "byteStart": 11559,
+      "sha256": "3807da958a21af123f288646c5e4c0b57787c079f8a84d035f5ef00a2a84db7c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11641,
+      "byteStart": 11601,
+      "sha256": "73de1a368a0669299f92a1817fa0dda822193372cf047e56e18b734467c6eea7",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11677,
+      "byteStart": 11643,
+      "sha256": "c993b18b757a842e9ba1df84917a1efb60dc5ebbd4ae2cc1c8953e0fea7e802c",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11726,
+      "byteStart": 11679,
+      "sha256": "c24ebae146b8b7695ff295f12b57237e9891d981ce2f0f64b35a1470526bb759",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11773,
+      "byteStart": 11728,
+      "sha256": "b9878d745dfeb8f916d524342d077d013c25a19f73d1f4c74662cd141062a091",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11811,
+      "byteStart": 11776,
+      "sha256": "82b9ab4e3db6a2f3f9fab023d0f68e6220cdc03ce37b65a74e2f3dc3baec0d3e",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11850,
+      "byteStart": 11813,
+      "sha256": "f007c15b2aeb27318e3716afd594a8531f30aeb2e4a9dd92f1d70dd73fe0c91f",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11891,
+      "byteStart": 11852,
+      "sha256": "84955fbeb3fdf4bf82336792e19178759025b512a2dfc4a7eab9458fb252c826",
+      "source": "Tile.h"
+    },
+    {
+      "adaptations": [],
+      "byteEndExclusive": 11929,
+      "byteStart": 11893,
+      "sha256": "0f09c245d71be7e99c3bb73585f4b1153fc0b13cfd3536a663e8986dbb69a28d",
+      "source": "Tile.h"
+    }
+  ],
+  "limitations": [
+    "No CompoundTag persistence, entities/villagers, chest inventory/loot, neighbor physics or lighting",
+    "No ScatteredFeature yet",
+    "Default size=0, spacing=32 (16 for worlds <128 chunks), no superflat/options/forced placement",
+    "Whole-village postProcess over BASE ground, then immutable clipped emission; not vanilla chunk decoration RNG/height scheduling",
+    "BiomeSource::containsOnly uses optional original quarter Layer callback; fallback full biome at q*4 is approximate"
+  ],
+  "outputs": {
+    "Original.cpp": "fd39d05950ccce6a00bea44594d86a3a1227c2b8b3950a60ca573539014f46ea",
+    "Original.h": "8c3154d80ad19a5fc85b2459357d446875fe4c4d457acc254fb994beeb4953fb"
+  },
+  "scope": "source-derived VillageFeature/VillageStart/all VillagePieces",
+  "sources": {
+    "BaseRailTile.h": {
+      "bytes": 2447,
+      "sha256": "53734c1fbc41910bcf10f8488fca8c78e05da4d110c53ebf986ba369b25361bf"
+    },
+    "BiomeSource.cpp": {
+      "bytes": 17144,
+      "sha256": "ed4e9325a8a181c90da869f130a04c971d10ab46054ddab39e2e02e17b98e134"
+    },
+    "BoundingBox.cpp": {
+      "bytes": 4659,
+      "sha256": "ef978f6cb6959cc6d5b480a063fc297f0ca26ef65b88d4ff356ad6a2977e160e"
+    },
+    "BoundingBox.h": {
+      "bytes": 971,
+      "sha256": "75af1d1f311c8a8c36350521e2c72c775089e1344276525fb2304fc106b0c40e"
+    },
+    "Dimension.cpp": {
+      "bytes": 6348,
+      "sha256": "2ab8358f69657284a12dbe7d1d4f5ae17d2941fd592df704a6603f412225c9f3"
+    },
+    "Direction.cpp": {
+      "bytes": 1752,
+      "sha256": "b3ae610f9f8f68e9b1c28de2a06eea32f1255297d2e24672ff23ec9c1978d5e3"
+    },
+    "DirectionalTile.h": {
+      "bytes": 288,
+      "sha256": "c2c8d4b4f6fa994cc07130448a724a3a049ef6f23f43f5121076525f45081f0d"
+    },
+    "DoorItem.cpp": {
+      "bytes": 2536,
+      "sha256": "35a1430d31affc8e998d2604c35c9b561fccf042c461eb273cbbf9bfb23fbe20"
+    },
+    "DyePowderItem.cpp": {
+      "bytes": 9323,
+      "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3"
+    },
+    "Facing.cpp": {
+      "bytes": 374,
+      "sha256": "c47361c60be17ab1568615a7df826a32f2f89aa59ce5b96da74786c97297e6a0"
+    },
+    "LargeFeature.cpp": {
+      "bytes": 853,
+      "sha256": "e6b7fe955cba91199f16a748d5c97f53dff4a81a3d471f3511fb6125f5745bb8"
+    },
+    "Level.cpp": {
+      "bytes": 126182,
+      "sha256": "1f0b5d54179e6dcd7defa4a61b39c16449203c2be5ed5d508e5506f6bf367543"
+    },
+    "Material.cpp": {
+      "bytes": 6072,
+      "sha256": "656f96a06266e6bebf17c0f07f2139cd78a14a8b9c0793aca15efedf08e2e6cb"
+    },
+    "Mth.cpp": {
+      "bytes": 4361,
+      "sha256": "3b86fd381c759a4e69c717530c9e83a3fd537bac7be37c4a085d71f3394fd911"
+    },
+    "Random.cpp": {
+      "bytes": 2203,
+      "sha256": "d0a0952991ca9cace3200fa709a8fea8aeb8f7f3144dcac2a5869cbd97a38193"
+    },
+    "SandStoneTile.h": {
+      "bytes": 886,
+      "sha256": "6f176bae1bd6b10fe440fa7e1c7749542a3ea00516236bce752ec281c3ea62da"
+    },
+    "StructurePiece.cpp": {
+      "bytes": 19873,
+      "sha256": "6328b2888d6c559cc4dd643f9af0c27f54bcac423072a6ae6b51ab674e017ab6"
+    },
+    "StructurePiece.h": {
+      "bytes": 5785,
+      "sha256": "a777a0778312387aa5c0e3f17f135462b5f839b1136f8aeac7ff145187f73597"
+    },
+    "StructureStart.cpp": {
+      "bytes": 3528,
+      "sha256": "af1b4aef19905cf171d7861a99af985c0793bb64d9579ad3601cc303c0660eda"
+    },
+    "Tile.h": {
+      "bytes": 25411,
+      "sha256": "b7afa5c8740ebc0b834b6b6c355edc1162600c2b9557508d44dadaffedc9420a"
+    },
+    "VillageFeature.cpp": {
+      "bytes": 5086,
+      "sha256": "a7b0f9cc420531a3657439ec0c43371df731adefb4035efee695a7c6ef797339"
+    },
+    "VillagePieces.cpp": {
+      "bytes": 74868,
+      "sha256": "b749d3c46644d146df3a2d8e75c18bcdc1b7530df626a9319ad56562fab00237"
+    },
+    "VillagePieces.h": {
+      "bytes": 14269,
+      "sha256": "793b88999695fe1a9c33377c2e815c5c09ce9e237390e49cb56e78d9c5a4b30e"
+    }
+  }
+}

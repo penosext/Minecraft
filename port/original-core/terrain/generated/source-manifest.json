@@ -1,0 +1,872 @@
+{
+  "adaptations": [
+    "namespace original_terrain_detail isolates all game shells",
+    "global Random, PerlinNoise, arrayWithLength and Mth::lfloor come from original_core",
+    "local Mth sqrt overloads are exact extractions; no handwritten math replacement",
+    "Vec3 geometry/newTemp and pool ctor/dtor exact; TLS lookup uses C++ thread_local storage",
+    "LARGE_INTEGER timing union and chrono-counter boundary, not terrain logic",
+    "BiomeSource callback ownership bridge, no biome algorithm implementation or default",
+    "app boundary returns nullptr: original default settings, no biome overrides",
+    "getChunk is NOT ported; wrapper uses exact seed line then prepareHeights -> zoomed biomes -> buildSurfaces",
+    "original buildSurfaces biome/block transposition retained, no seam correction"
+  ],
+  "claim": "Source-byte identity and native deterministic build, NOT binary equivalence to an unavailable console executable",
+  "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "constructor": "NOT the complete original constructor: only exact source segments (size/moats and level/random/pprandom/all noise). Original empty pows initialized lazily by exact getHeights.",
+  "exact_segments": [
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        91,
+        4663
+      ],
+      "purpose": "Both original edge branches; select _LARGE_WORLDS=1",
+      "sha256": "cc5daa423e6d2a7deaccc7e97f2cb46244570f7a1f4e06b7f65d944615fef256",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        3087,
+        7659
+      ],
+      "source_lines_inclusive": [
+        109,
+        243
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        4665,
+        9290
+      ],
+      "purpose": "void RandomLevelSource::prepareHeights(",
+      "sha256": "880f931495b79355466a3783c2844ff81ca86a7d9b03ba4b960e63283b4a2082",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        7661,
+        12286
+      ],
+      "source_lines_inclusive": [
+        245,
+        361
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        9292,
+        11684
+      ],
+      "purpose": "void RandomLevelSource::buildSurfaces(",
+      "sha256": "91064a7c5e4a892b7908ccec68b8581e0c6ad17ca5c8091cd34076a188cb04d3",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        12289,
+        14681
+      ],
+      "source_lines_inclusive": [
+        364,
+        459
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        11686,
+        15861
+      ],
+      "purpose": "doubleArray RandomLevelSource::getHeights(",
+      "sha256": "1205f1780fab53aee57ddcc863c08ebed4fe59b98bb2e8baf7c4ceef8e1457b7",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        17645,
+        21820
+      ],
+      "source_lines_inclusive": [
+        526,
+        688
+      ]
+    },
+    {
+      "output": "TerrainCounters.inc",
+      "output_byte_range": [
+        0,
+        33
+      ],
+      "purpose": "int g_numPrepareHeightCalls = 0;",
+      "sha256": "0a08ae77c2e6bb5a9a176032e8952af15c3ddbf2508faab7ea9d4626e98e35d6",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        2947,
+        2980
+      ],
+      "source_lines_inclusive": [
+        100,
+        100
+      ]
+    },
+    {
+      "output": "TerrainCounters.inc",
+      "output_byte_range": [
+        33,
+        82
+      ],
+      "purpose": "LARGE_INTEGER g_totalPrepareHeightsTime = {0,0};",
+      "sha256": "9e318c0c95bcf27470b943a096b34fb5453a22a7b3f8160f407a162a9a63fa38",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        2980,
+        3029
+      ],
+      "source_lines_inclusive": [
+        101,
+        101
+      ]
+    },
+    {
+      "output": "TerrainCounters.inc",
+      "output_byte_range": [
+        82,
+        134
+      ],
+      "purpose": "LARGE_INTEGER g_averagePrepareHeightsTime = {0, 0};",
+      "sha256": "5c9dde9782bcfa9f7a5adf78d78735caa9901d8d5a56abd4bc10e35159bd3be5",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        3029,
+        3081
+      ],
+      "source_lines_inclusive": [
+        102,
+        102
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        15863,
+        15917
+      ],
+      "purpose": "float Biome::getTemperature()",
+      "sha256": "25885925847ed5cf27ece0e509061350560c69eff9a87547eec9377262e2e946",
+      "source": "Biome.cpp",
+      "source_byte_range": [
+        14148,
+        14202
+      ],
+      "source_lines_inclusive": [
+        279,
+        282
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        15919,
+        16006
+      ],
+      "purpose": "Vec3::ThreadStorage::ThreadStorage()",
+      "sha256": "89921e2ed80b48f3f8224d7eb944d1b4c71a03a66856a7ff4fbb188845d73243",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        131,
+        218
+      ],
+      "source_lines_inclusive": [
+        8,
+        12
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16008,
+        16066
+      ],
+      "purpose": "Vec3::ThreadStorage::~ThreadStorage()",
+      "sha256": "a1b7215c7bf34b9ad857668727a550cc7c35d6983a22a212f326805d03047e06",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        220,
+        278
+      ],
+      "source_lines_inclusive": [
+        14,
+        17
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16068,
+        16355
+      ],
+      "purpose": "Vec3 *Vec3::newTemp(",
+      "sha256": "7dba8b1b192cf4bf4563eab0b5ccaa0ed7e72238c314fb2387298b36f562894e",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        845,
+        1132
+      ],
+      "source_lines_inclusive": [
+        56,
+        63
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16357,
+        16462
+      ],
+      "purpose": "Vec3 *Vec3::set(",
+      "sha256": "dd6b6ba551e4f8294f6a4e759a3ec8474c422c7abd43053b192cc9b6be8ceb91",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        1297,
+        1402
+      ],
+      "source_lines_inclusive": [
+        75,
+        81
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16464,
+        16533
+      ],
+      "purpose": "double Vec3::dot(",
+      "sha256": "22318b10c3307cf3803105893cd0b6856e5c6943e49c4b7a7c52128a3e1fae36",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        1866,
+        1935
+      ],
+      "source_lines_inclusive": [
+        105,
+        108
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16535,
+        16597
+      ],
+      "purpose": "double Vec3::length()",
+      "sha256": "fd2ef353434f7de445986a47ec09bd12cc4fc991290fb6055a9c9a8799224488",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        2716,
+        2778
+      ],
+      "source_lines_inclusive": [
+        149,
+        152
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16599,
+        16989
+      ],
+      "purpose": "Vec3* Vec3::closestPointOnLine(",
+      "sha256": "7e4dae09b05e1d5fbcfee28ccd1a9f6b28ee2f2d1744a5d65fca80e5b124274a",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        5149,
+        5539
+      ],
+      "source_lines_inclusive": [
+        269,
+        284
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        16991,
+        17198
+      ],
+      "purpose": "double Vec3::distanceFromLine(",
+      "sha256": "e2038e04919a4ada8209b171ab21f3adb56b197ad94b1c8a40b92634afc3920b",
+      "source": "Vec3.cpp",
+      "source_byte_range": [
+        5542,
+        5749
+      ],
+      "source_lines_inclusive": [
+        287,
+        292
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        17200,
+        17255
+      ],
+      "purpose": "float Mth::sqrt(float x)",
+      "sha256": "faff2c12d1e911d818d818de058fdef8343404484da819ca4b0b49f9e41400a2",
+      "source": "Mth.cpp",
+      "source_byte_range": [
+        830,
+        885
+      ],
+      "source_lines_inclusive": [
+        38,
+        41
+      ]
+    },
+    {
+      "output": "TerrainOriginal.cpp",
+      "output_byte_range": [
+        17257,
+        17325
+      ],
+      "purpose": "float Mth::sqrt(double x)",
+      "sha256": "8b86e74cdb93b69b12af0d50c12420832b0db541fc6ab8d6d1ea51b932b2f787",
+      "source": "Mth.cpp",
+      "source_byte_range": [
+        887,
+        955
+      ],
+      "source_lines_inclusive": [
+        43,
+        46
+      ]
+    },
+    {
+      "output": "TerrainConstructor.inc",
+      "output_byte_range": [
+        0,
+        171
+      ],
+      "purpose": "Terrain-only ctor segment: world size and original moat conditional",
+      "sha256": "da9f3fb7839b4b2f294d1d79c293981065a14e8025ffe6ce789fb5f86ae05cdb",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        1264,
+        1435
+      ],
+      "source_lines_inclusive": [
+        31,
+        34
+      ]
+    },
+    {
+      "output": "TerrainConstructor.inc",
+      "output_byte_range": [
+        171,
+        881
+      ],
+      "purpose": "Terrain-only ctor segment: level/random/pprandom and every original noise in original order",
+      "sha256": "8f092a4d75e9aca96044cb1c68972223462f6dc3372a7480f738706cc0fc0ef4",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        1706,
+        2416
+      ],
+      "source_lines_inclusive": [
+        42,
+        65
+      ]
+    },
+    {
+      "output": "TerrainChunkSeed.inc",
+      "output_byte_range": [
+        0,
+        64
+      ],
+      "purpose": "random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);",
+      "sha256": "9306f7e7e8664041285e1a7ef0988ce0a4bf03e475b30b61ad5b63b2e9942412",
+      "source": "RandomLevelSource.cpp",
+      "source_byte_range": [
+        14828,
+        14892
+      ],
+      "source_lines_inclusive": [
+        468,
+        468
+      ]
+    },
+    {
+      "output": "TerrainArrays.inc",
+      "output_byte_range": [
+        0,
+        41
+      ],
+      "purpose": "typedef arrayWithLength<byte> byteArray;",
+      "sha256": "f9bd4aa3657559d8ca6e9d442e48d667ae72d925ea4e16522c888b0e2485998e",
+      "source": "ArrayWithLength.h",
+      "source_byte_range": [
+        2372,
+        2413
+      ],
+      "source_lines_inclusive": [
+        87,
+        87
+      ]
+    },
+    {
+      "output": "TerrainArrays.inc",
+      "output_byte_range": [
+        41,
+        84
+      ],
+      "purpose": "typedef arrayWithLength<float> floatArray;",
+      "sha256": "c5f2f8b16d7a70e73861866e3526e44800d585cb9366d9a1f6b51ba136c2ee39",
+      "source": "ArrayWithLength.h",
+      "source_byte_range": [
+        2536,
+        2579
+      ],
+      "source_lines_inclusive": [
+        91,
+        91
+      ]
+    },
+    {
+      "output": "TerrainArrays.inc",
+      "output_byte_range": [
+        84,
+        129
+      ],
+      "purpose": "typedef arrayWithLength<Biome *> BiomeArray;",
+      "sha256": "744430c704152157bcd5bf6e95dd51833b7c6323a31871a3baccc8e11581d733",
+      "source": "ArrayWithLength.h",
+      "source_byte_range": [
+        2579,
+        2624
+      ],
+      "source_lines_inclusive": [
+        92,
+        92
+      ]
+    },
+    {
+      "output": "TerrainLevelConstants.inc",
+      "output_byte_range": [
+        0,
+        246
+      ],
+      "purpose": "Original generation depth and sea-level constants",
+      "sha256": "e0d05e6d99cbd675fdb5b2a07e444c60bd912b5934d04b94cccbc8cb8301af96",
+      "source": "Level.h",
+      "source_byte_range": [
+        1866,
+        2112
+      ],
+      "source_lines_inclusive": [
+        76,
+        80
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        13,
+        44
+      ],
+      "purpose": "#define LEVEL_WIDTH_CLASSIC 54",
+      "sha256": "d1d3cf0166b69b2cbd696599cbb0d73d992f9b6e35133c06097a4ed12a521edc",
+      "source": "ChunkSource.h",
+      "source_byte_range": [
+        266,
+        297
+      ],
+      "source_lines_inclusive": [
+        12,
+        12
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        44,
+        73
+      ],
+      "purpose": "#define LEVEL_WIDTH_SMALL 64",
+      "sha256": "cdf118043e8460f1657e26e5b301310f82b244043926080a1cd3b66f32f95bcb",
+      "source": "ChunkSource.h",
+      "source_byte_range": [
+        297,
+        326
+      ],
+      "source_lines_inclusive": [
+        13,
+        13
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        73,
+        107
+      ],
+      "purpose": "#define LEVEL_WIDTH_MEDIUM (3*64)",
+      "sha256": "e1a0d9b4b3ff2df3d75b3ebd6c3da504ae38670fe4f1205f05dae2dc48e68cc9",
+      "source": "ChunkSource.h",
+      "source_byte_range": [
+        326,
+        360
+      ],
+      "source_lines_inclusive": [
+        14,
+        14
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        179,
+        207
+      ],
+      "purpose": "static float sqrt(float x);",
+      "sha256": "78c94f53c8ecfa14e16f6dc46124b8d85d61a3e68483fd11f7db14d5d2a3988f",
+      "source": "Mth.h",
+      "source_byte_range": [
+        627,
+        655
+      ],
+      "source_lines_inclusive": [
+        25,
+        25
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        207,
+        236
+      ],
+      "purpose": "static float sqrt(double x);",
+      "sha256": "b1bea1a4f0467b6034aa33a58144704c30f1d0f14adffabe858f74d7a301200b",
+      "source": "Mth.h",
+      "source_byte_range": [
+        656,
+        685
+      ],
+      "source_lines_inclusive": [
+        26,
+        26
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        260,
+        291
+      ],
+      "purpose": "static const int stone_Id = ",
+      "sha256": "492951ab2016fed83405f8d90386e1f960b963078c3481aa44aaf277c72ee4d2",
+      "source": "Tile.h",
+      "source_byte_range": [
+        5667,
+        5698
+      ],
+      "source_lines_inclusive": [
+        187,
+        187
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        291,
+        322
+      ],
+      "purpose": "static const int grass_Id = ",
+      "sha256": "43341e687f1a01dfeb6749f6faaaf68ae1c00606bdf351de960b64f66265b8e6",
+      "source": "Tile.h",
+      "source_byte_range": [
+        5699,
+        5730
+      ],
+      "source_lines_inclusive": [
+        188,
+        188
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        322,
+        352
+      ],
+      "purpose": "static const int dirt_Id = ",
+      "sha256": "b285c9ecabc700dfa4db48a841aec65351d33a09aafab7be328dc08ca1a684de",
+      "source": "Tile.h",
+      "source_byte_range": [
+        5731,
+        5761
+      ],
+      "source_lines_inclusive": [
+        189,
+        189
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        352,
+        389
+      ],
+      "purpose": "static const int unbreakable_Id = ",
+      "sha256": "a01730bdda223a2b32f2aa9c3fb2b941f22a4e76d7c36b2d867dc5351c2c51c5",
+      "source": "Tile.h",
+      "source_byte_range": [
+        5865,
+        5902
+      ],
+      "source_lines_inclusive": [
+        193,
+        193
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        389,
+        424
+      ],
+      "purpose": "static const int calmWater_Id = ",
+      "sha256": "b83fff9082fe331b8a9e57a66fdb4cb8ea6989872cd57970189328ffbe074032",
+      "source": "Tile.h",
+      "source_byte_range": [
+        5935,
+        5970
+      ],
+      "source_lines_inclusive": [
+        195,
+        195
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        424,
+        455
+      ],
+      "purpose": "static const int sand_Id = ",
+      "sha256": "e55586b3bfec79115c9920744bbf89998eae9805fab9bb99fdf5deef0721683a",
+      "source": "Tile.h",
+      "source_byte_range": [
+        6040,
+        6071
+      ],
+      "source_lines_inclusive": [
+        199,
+        199
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        455,
+        491
+      ],
+      "purpose": "static const int sandStone_Id = ",
+      "sha256": "87cc5430906f0c1736320952471fd2f2feed7bb285f29209a9cb810dd6c0dd31",
+      "source": "Tile.h",
+      "source_byte_range": [
+        6461,
+        6497
+      ],
+      "source_lines_inclusive": [
+        212,
+        212
+      ]
+    },
+    {
+      "output": "TerrainExtracted.h",
+      "output_byte_range": [
+        491,
+        521
+      ],
+      "purpose": "static const int ice_Id = ",
+      "sha256": "58580d7a613fccfc6c39f5147d0cd0c313fe70816c5a49a37c37ad1831190163",
+      "source": "Tile.h",
+      "source_byte_range": [
+        8537,
+        8567
+      ],
+      "source_lines_inclusive": [
+        272,
+        272
+      ]
+    }
+  ],
+  "fixed_build": [
+    "_LARGE_WORLDS=1",
+    "FLOATING_ISLANDS=false (upstream)",
+    "not __PS3__; no SPU simulation",
+    "C++11",
+    "-fwrapv",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-UNDEBUG"
+  ],
+  "generated": {
+    "TerrainArrays.inc": {
+      "bytes": 129,
+      "sha256": "c0523fae615aa814ca51c8ab6f0030dc546cdbcbd73d9d2f4abc1c9e10897670"
+    },
+    "TerrainChunkSeed.inc": {
+      "bytes": 64,
+      "sha256": "9306f7e7e8664041285e1a7ef0988ce0a4bf03e475b30b61ad5b63b2e9942412"
+    },
+    "TerrainConstructor.inc": {
+      "bytes": 882,
+      "sha256": "6678a54f700ad290e64948c9887335aa8c3d4b07e3933a4071802e56c8b4e806"
+    },
+    "TerrainCounters.inc": {
+      "bytes": 134,
+      "sha256": "0cf29c98cfdc8a2ef28bd2afdb73f5836f349ac39153998ad6d82b4efcb718ee"
+    },
+    "TerrainExtracted.h": {
+      "bytes": 563,
+      "sha256": "93e577097c92883a6344ff996e0b7481854874de3a865d2f3ddb05e6128e6548"
+    },
+    "TerrainLevelConstants.inc": {
+      "bytes": 246,
+      "sha256": "e0d05e6d99cbd675fdb5b2a07e444c60bd912b5934d04b94cccbc8cb8301af96"
+    },
+    "TerrainOriginal.cpp": {
+      "bytes": 17366,
+      "sha256": "d8825e2cdef4ef4f557f33b0f640133a2e5324b4510ce1673a755d9d4bc18c16"
+    }
+  },
+  "local_adapters": {
+    "Adapter.cpp": "3d5cd8ed82c67d9eb7b34374ddb025591b3ba88a91b72fb2436d2a2507c6c883",
+    "Adapter.h": "e8aebe7655d2d989fdbf287c64178cba84d0d2a42f0c7e3a9a276a2120d49cbc",
+    "CMakeLists.txt": "fe118f66d6d6c69c5aeae0a5847de4d4a7911bb9241bacaac63ded68fffbcefc",
+    "Generator.h": "6ce363b0139237d0829d49b48f9c2fd6bd0a7847d9f039fb4391b5714904e7f1"
+  },
+  "not_ported": [
+    "complete original constructor/destructor",
+    "Level/LevelChunk runtime",
+    "caves",
+    "canyons",
+    "structures",
+    "postprocessing/decorations/ores",
+    "physics",
+    "lighting",
+    "save",
+    "game options",
+    "app"
+  ],
+  "range_convention": "zero-based half-open bytes; one-based inclusive lines",
+  "schema": 1,
+  "scope": "Original base density and surface generation only, before caves/canyons/structures/postProcess",
+  "selected_complete_terrain_functions": [
+    {
+      "output_byte_range": [
+        113,
+        1533
+      ],
+      "sha256": "61134e5b23a02412fa8f56cb02c856c925cd72cf837c93fe9189f0a8eaab2b0a",
+      "signature": "int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize, float falloffStart)",
+      "source_byte_range": [
+        3109,
+        4529
+      ]
+    },
+    {
+      "output_byte_range": [
+        1536,
+        3115
+      ],
+      "sha256": "08a70eb33003b81316d1950ffcb323c8a09872c4c48bc0dbf1234c9bb92ef132",
+      "signature": "float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin)",
+      "source_byte_range": [
+        4532,
+        6111
+      ]
+    },
+    {
+      "output_byte_range": [
+        4665,
+        9290
+      ],
+      "sha256": "880f931495b79355466a3783c2844ff81ca86a7d9b03ba4b960e63283b4a2082",
+      "signature": "void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks)",
+      "source_byte_range": [
+        7661,
+        12286
+      ]
+    },
+    {
+      "output_byte_range": [
+        9292,
+        11684
+      ],
+      "sha256": "91064a7c5e4a892b7908ccec68b8581e0c6ad17ca5c8091cd34076a188cb04d3",
+      "signature": "void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks, BiomeArray biomes)",
+      "source_byte_range": [
+        12289,
+        14681
+      ]
+    },
+    {
+      "output_byte_range": [
+        11686,
+        15861
+      ],
+      "sha256": "1205f1780fab53aee57ddcc863c08ebed4fe59b98bb2e8baf7c4ceef8e1457b7",
+      "signature": "doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y, int z, int xSize, int ySize, int zSize, BiomeArray& biomes)",
+      "source_byte_range": [
+        17645,
+        21820
+      ]
+    }
+  ],
+  "sources": {
+    "ArrayWithLength.h": {
+      "bytes": 3831,
+      "sha256": "8ae25b36b2811843c436e2a1b4f5270a30a58c30ef05c884900d6643419ba1bf"
+    },
+    "Biome.cpp": {
+      "bytes": 14976,
+      "sha256": "4403d31956dfc20cabbc56516abab1f5c595de71c6535d06a682861800e55143"
+    },
+    "ChunkSource.h": {
+      "bytes": 2772,
+      "sha256": "7fec3e37c928f0af7ba4cb72c6e6acc25bf380125ed7c23289109722475448d8"
+    },
+    "Level.h": {
+      "bytes": 22782,
+      "sha256": "5c775affc30abbdb4e98e6458cc418810cef71f2abcecbc939f2b1354c42c078"
+    },
+    "Mth.cpp": {
+      "bytes": 4361,
+      "sha256": "3b86fd381c759a4e69c717530c9e83a3fd537bac7be37c4a085d71f3394fd911"
+    },
+    "Mth.h": {
+      "bytes": 1781,
+      "sha256": "406b4b6168e78f0aa1489802106ed58ede7bd4ad12ad80afa00d68c409b1148c"
+    },
+    "RandomLevelSource.cpp": {
+      "bytes": 28157,
+      "sha256": "16ffda342fc843167ee4114748e86717ae89aff12c18fb5cad4eb31b7215346c"
+    },
+    "RandomLevelSource.h": {
+      "bytes": 2475,
+      "sha256": "5b3f8ed463bd596cc1e54d5600170b57f58f745f688d70fc60248e4d883462ca"
+    },
+    "Tile.h": {
+      "bytes": 25411,
+      "sha256": "b7afa5c8740ebc0b834b6b6c355edc1162600c2b9557508d44dadaffedc9420a"
+    },
+    "Vec3.cpp": {
+      "bytes": 5750,
+      "sha256": "6dbc5447726fcd4550576b87e16da29107046684cc0c2a0a0885ad7183a598a3"
+    },
+    "Vec3.h": {
+      "bytes": 1741,
+      "sha256": "f53ec3276e70f1b41162b576cb3bf4e29f2bfd4e5b229fc4b9ea8da0e6550abb"
+    }
+  }
+}

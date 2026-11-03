@@ -1,0 +1,2498 @@
+{
+  "atlas": "port/assets/terrain.png",
+  "atlas_sha256": "f870d386df7e6765eba320f15816c76a8673603d0e46b535fc9e6e6eac12805f",
+  "mapping_source": "port/upstream/Minecraft.Client/PreStitchedTextureMap.cpp",
+  "mapping_sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+  "catalog_names_source": "jsapi/build/generated/LegacyCatalog.hpp",
+  "catalog_sha256": "8af1a69cc64f187c544015fd74c7a53e2def9a91da3b1c5c13c7776b2a11efec",
+  "stage_alias": "destroy_stage0..9 = upstream destroy_0..9 (LevelRenderer.cpp registerTextures)",
+  "pixel_format": "RGBA SHA-256 before exact ARGB32 packing, nearest sampling",
+  "crack_blend": "alpha <= 0.1 discarded; surviving texels use source GL_DST_COLOR/GL_SRC_COLOR (2*src*dst)",
+  "particle_source": "ParticleEngine.cpp destroy: 4x4x4; TerrainParticle.cpp: face 0 texture, quarter-tile fragments",
+  "limitations": [
+    "Cracks only on full-height cube/grass shapes; anvil/dragon egg excluded.",
+    "Occlusion uses conservative voxel DDA, matching World::pick, not special-shape triangles.",
+    "Particle gravity/lifetime are bounded seconds-based approximation; no collision or biome tint.",
+    "Missing source face mappings are skipped without substituted textures."
+  ],
+  "missing_face_textures": [
+    "chest_bottom",
+    "chest_front",
+    "chest_side",
+    "chest_top",
+    "lava_flow",
+    "water_flow"
+  ],
+  "textures": [
+    {
+      "name": "destroy_0",
+      "rect": [
+        0,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "92fd53d8b9076a2ed4a926569eec8dfad87d5013478a792289678acb4bba367a"
+    },
+    {
+      "name": "destroy_1",
+      "rect": [
+        16,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "61c7bc57427aa330f0153cefb2792ecf867e13513346742e53057fef1d237bfb"
+    },
+    {
+      "name": "destroy_2",
+      "rect": [
+        32,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "7478948faf08e185d9933ab6eafb7a5e193a3c4b6881f96006c89ce97a950d19"
+    },
+    {
+      "name": "destroy_3",
+      "rect": [
+        48,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "14bdf2b01d86cc898e3ab41dfa500eacca98ebc4620c2c8880993537d29b8a4a"
+    },
+    {
+      "name": "destroy_4",
+      "rect": [
+        64,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "07b2c22d8b19c36501599da27a7cdb3a606608cd474d752bf5ef54810d9945a2"
+    },
+    {
+      "name": "destroy_5",
+      "rect": [
+        80,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "f16aaf21215cf43554e11c25f6d2301b29f6fedce709241b8b9889ced1b25737"
+    },
+    {
+      "name": "destroy_6",
+      "rect": [
+        96,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "b8a8f3887920284e961e292a9242c95befc5ac9c84dc516b009c0c167f985cc8"
+    },
+    {
+      "name": "destroy_7",
+      "rect": [
+        112,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "b8da724c99f9e59dd00c901dfd9e10e31610bf053fc91ddd7c848889e6f483af"
+    },
+    {
+      "name": "destroy_8",
+      "rect": [
+        128,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "73916f7e957bc80acf9e893e2c75a1d9eb75bfb227a06fdc81b74a2900af152c"
+    },
+    {
+      "name": "destroy_9",
+      "rect": [
+        144,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "6849d6b5673a943b05f98b873c3ec78fe5d97c0365adf885a850c985e87781a7"
+    },
+    {
+      "name": "anvil_base",
+      "rect": [
+        112,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "ca2467a449c98a0b7b6ad3b0818f14e986ccf8f141371a29f9f1fc62c2db9500"
+    },
+    {
+      "name": "anvil_top",
+      "rect": [
+        112,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "afcb717d3e8a7d01da72434ca2ac7dd10917e243598d347dd13be47fcdf4db7c"
+    },
+    {
+      "name": "anvil_top_damaged_1",
+      "rect": [
+        128,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "d20a9156f9a4ca524c043c323ddaa7d49e072ef9fed18de61f087b7fbf0983ef"
+    },
+    {
+      "name": "anvil_top_damaged_2",
+      "rect": [
+        128,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "9df51f14a017a667afd9add984b56d3e8d223ce941eb270274a75eb207c4c4e1"
+    },
+    {
+      "name": "bedrock",
+      "rect": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "0fddd326cd10bd8795da2e9206bd13fdc5bb2e814a2ff6b40e9aef90f8477ea3"
+    },
+    {
+      "name": "bookshelf",
+      "rect": [
+        48,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "93b23817734665b954d6beaafd57e5e440f161f9e0ffcfdeee69672e4322f40a"
+    },
+    {
+      "name": "brick",
+      "rect": [
+        112,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "c94f134043f7a23c1095169017d4d10d7dcfaa32b6b58b2e3c9929079c035f5b"
+    },
+    {
+      "name": "cactus_bottom",
+      "rect": [
+        112,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "d63769de2406ad5b91c7bbbf6f3fc25b9511599bd5c2eec422ec426833d974e2"
+    },
+    {
+      "name": "cactus_side",
+      "rect": [
+        96,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "03306c83d18ce1ce368f5b46b99f317bf8dca39466f44526d06a1d9490b6135e"
+    },
+    {
+      "name": "cactus_top",
+      "rect": [
+        80,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "696a21c0e034cc538453f510389b101d23d2b99262355d6c673e3449f3bb340c"
+    },
+    {
+      "name": "carrots_stage_0",
+      "rect": [
+        128,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "470105c58791cb8db98cdcc263cc7cd42ea2505a1b944c8ed8ba05e3f56ef246"
+    },
+    {
+      "name": "carrots_stage_1",
+      "rect": [
+        144,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "b9cc1c84ab586e1186eb067d63089d0a15b836a767ff767688d30a21bce74d28"
+    },
+    {
+      "name": "carrots_stage_2",
+      "rect": [
+        160,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "de677516c7bbd6b253cab304249f73a3c65b35de1649e8276d1cb471d4da001c"
+    },
+    {
+      "name": "carrots_stage_3",
+      "rect": [
+        176,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "f2f99898e69d7f0e098fa1ac5f4642af5fdc943e333b6fbfab966906ec72169e"
+    },
+    {
+      "name": "cauldron_bottom",
+      "rect": [
+        176,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "7457260defe4e120479c48ec0142a8eb9bc6850c9ac8648763ee2c8fa8025dd5"
+    },
+    {
+      "name": "cauldron_side",
+      "rect": [
+        160,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "15a024df90f540e00d0b7c1fa8c325213eeb7dfce8c32f131e81ecbf629030a6"
+    },
+    {
+      "name": "cauldron_top",
+      "rect": [
+        160,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "fe2d157c8c368b085d1e67a5b5c31e61c58e120e969d0e10ffacffb5de5a9df2"
+    },
+    {
+      "name": "clay",
+      "rect": [
+        128,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "cef2fbd8c19cac1fa12a156e9616b9fe3c357697e79c24521ebae316c87dffd7"
+    },
+    {
+      "name": "coal_block",
+      "rect": [
+        0,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "c9308efcb0f2594d6b85aee9ac8e2fe3f615253ad4411eb4e590041bdd8b57ad"
+    },
+    {
+      "name": "coal_ore",
+      "rect": [
+        32,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "90f2a1dcef6bb9cdc6c2b4933fa187d629cf626f22b2de3c05139babba37bbb8"
+    },
+    {
+      "name": "cobblestone",
+      "rect": [
+        0,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "fbe382c79d4071ac122905b1c4ccb7e6331fc3ce064ae3a5008eff8bc9aafd31"
+    },
+    {
+      "name": "cobblestone_mossy",
+      "rect": [
+        64,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "193db33f60d028b3965c430added7939dd30740cbe073c4169d537c910c5546f"
+    },
+    {
+      "name": "cocoa_0",
+      "rect": [
+        160,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "2c3374e4daefc3986b4bf26b5788c3332590683836225db0e84df1f3e5dec148"
+    },
+    {
+      "name": "cocoa_1",
+      "rect": [
+        144,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "c6ce5d5bd384f2a477fd8266482810cdbdba9bb68f11db1e39ae7625d941c6f3"
+    },
+    {
+      "name": "cocoa_2",
+      "rect": [
+        128,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "25ced763c5c61ee8786c020be6f09d7a310d2c5289abae9717b80099d18b506a"
+    },
+    {
+      "name": "crops_0",
+      "rect": [
+        128,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "ab8648448b511cc1236a9887a2467e311375242af5dfa96b5c12ab7c62c3b0f2"
+    },
+    {
+      "name": "crops_1",
+      "rect": [
+        144,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "8f5acc6570049d4a24429d496f9b668a74fd3af89991e2b2d2ceb43d5e7fe319"
+    },
+    {
+      "name": "crops_2",
+      "rect": [
+        160,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "2f6ac46d0c213435b34a1c0be787844417ca1ffacbf93ef9633280e89583e889"
+    },
+    {
+      "name": "crops_3",
+      "rect": [
+        176,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "35e2c227caa8be2f0a0a0e66e4744f1ed967a88eec445e6f4b877e5e484b00a7"
+    },
+    {
+      "name": "crops_4",
+      "rect": [
+        192,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "dc0972f36d91e7da170bd2f78f0d8dd1decb8b1a2df3b1e2916bee09de365b63"
+    },
+    {
+      "name": "crops_5",
+      "rect": [
+        208,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "5ecb354f8c4bd23d50aa7bd89b8790d256d4e762a24d556c26b573f92cce12de"
+    },
+    {
+      "name": "crops_6",
+      "rect": [
+        224,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "6c6303d4009c573ce1835a37a1d82ac996bf577aa01de14668c70d94ef9bf020"
+    },
+    {
+      "name": "crops_7",
+      "rect": [
+        240,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "fea1de6d150b1a14833aa34fb90cc82b16bc631f9c24cc7e93bcb09c14c7d2b0"
+    },
+    {
+      "name": "deadbush",
+      "rect": [
+        112,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "80d22e7cf2c1d5153a02564c280f7e6b1186c388107e26fac9a1f5a355942416"
+    },
+    {
+      "name": "diamond_block",
+      "rect": [
+        128,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "6b377d1e04c5792452a84a84bf0ea6e1605ddcf93394ca869ffa95e0c1f406a3"
+    },
+    {
+      "name": "diamond_ore",
+      "rect": [
+        32,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "6c92df1cbdca8e471fb4f399e5ba8c26d51ecc4660777aa4cb4e5a29c4757c93"
+    },
+    {
+      "name": "dirt",
+      "rect": [
+        32,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "327b802852d3662bb8bded6acd1cfbd559be990d521d2609ec1a91de6f27b4c9"
+    },
+    {
+      "name": "dispenser_front",
+      "rect": [
+        224,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "9c5a7ed3a753923d81b05f3623e38de73e4d8a61bce8433960576b5f8a11375a"
+    },
+    {
+      "name": "door_iron_lower",
+      "rect": [
+        32,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "60260c463cff37c916708e337a48a301e35564d0fd1c8edf46c8593ca7a4dc48"
+    },
+    {
+      "name": "door_iron_upper",
+      "rect": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "48d4de795175ea7f7fde93d5fb1a39130de77c8ff8a7827ff48d09dde6ebb717"
+    },
+    {
+      "name": "door_wood_lower",
+      "rect": [
+        16,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "63fd43046c864d52f728b597b9d334972b8f1d50cea85a3943ce9b41d1aed6a3"
+    },
+    {
+      "name": "door_wood_upper",
+      "rect": [
+        16,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "562fda645a07219b27d092589579751570d0a7d102ac206a4ca4852a6e00389d"
+    },
+    {
+      "name": "dragon_egg",
+      "rect": [
+        112,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "6a7bb81d53126d0b44272a6803d78b195e08f59126af356830107cda51ffd703"
+    },
+    {
+      "name": "emerald_block",
+      "rect": [
+        144,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "98da97ec8d9d05809de9bb3ebdff1f71bafc1b3a5c95ded147576b01e2743a76"
+    },
+    {
+      "name": "emerald_ore",
+      "rect": [
+        176,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "48251b9ac7d19c94fe62d7c59a4ff8e6e83f6deba1bb3e4b3a172e4a591bb180"
+    },
+    {
+      "name": "enchantment_bottom",
+      "rect": [
+        112,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "9f2bdb174eb59892b640994e9070c5df8e024c63ba2f1b590b51fb0498bc916d"
+    },
+    {
+      "name": "enchantment_side",
+      "rect": [
+        96,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "28cf05b421a0774098caabfd04e97a7b3e6370d4fe62e97efaf3b2e68446e917"
+    },
+    {
+      "name": "enchantment_top",
+      "rect": [
+        96,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "2025c7d341b7908914999f143b99b6cdf62c4e63b79dbd1c4ca06921320e4017"
+    },
+    {
+      "name": "end_stone",
+      "rect": [
+        240,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "a38a7eeb67838053221733081110926bab3093aa47dd5e6817c0a4c4050bd108"
+    },
+    {
+      "name": "endframe_side",
+      "rect": [
+        240,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "6ac3e1baddf0fd5d9f6a7ac3c28c44f9411dc7aea3127a6d62323e76844b5f97"
+    },
+    {
+      "name": "endframe_top",
+      "rect": [
+        224,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "f5d7b4e2af34d1cb570c556b443917f49b776a865678f1b97551f588ef8507a6"
+    },
+    {
+      "name": "farmland_dry",
+      "rect": [
+        112,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "1d02ba3eb6c54a8735f17e6105b549430944b7925e018810427cdc02bd11ff13"
+    },
+    {
+      "name": "farmland_wet",
+      "rect": [
+        96,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "46633a33ce57247b8671bf696771d1448a909a64d98d23d31a66564c27e5649f"
+    },
+    {
+      "name": "fern",
+      "rect": [
+        128,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "ba90d94ed3d22b15d446c0a5dc3a87629ae973ee4277181e240dc6f17abaf4a9"
+    },
+    {
+      "name": "fire_0",
+      "rect": [
+        240,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "024de953836de57ee963e652abd1eefe0a6ff5d711c2da1dff70b9336cb0755d"
+    },
+    {
+      "name": "flower_dandelion",
+      "rect": [
+        208,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "efa2ce74343991e521ff4bbf3605860199661e508e8b055c65ddad2128e97984"
+    },
+    {
+      "name": "flower_pot",
+      "rect": [
+        160,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "c0ef480a8f8089deb4362ed385418a905d1e3e459afb8706dd00e810be8295d9"
+    },
+    {
+      "name": "flower_rose",
+      "rect": [
+        192,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "09d59efaa5a33fb8846224613c03ecfa9c54d902d6524a24a0950b57bb6d0cb6"
+    },
+    {
+      "name": "furnace_front",
+      "rect": [
+        192,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "18c6a3e36652cc56ed802a4535dc93742779a0a34a1fa772fd5839a817e2d375"
+    },
+    {
+      "name": "furnace_side",
+      "rect": [
+        208,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "22f3743e35d6fbda88880981f629b7d3afb545c4ecdabef9dfea60e404ac578f"
+    },
+    {
+      "name": "furnace_top",
+      "rect": [
+        224,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "24841966afa156b58cafca0e21514399482c7cc90633901a563097ad1a542fc4"
+    },
+    {
+      "name": "glass",
+      "rect": [
+        16,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "0b55a36d5eee739f79fbc68505611c3a4c88e4425d4f810aaaba9be1166ab8a7"
+    },
+    {
+      "name": "glass_black",
+      "rect": [
+        0,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "f3e20cb86e758f1d32208a1e1cbd865f74bf4eac8799a458d4e41c52748f962e"
+    },
+    {
+      "name": "glass_blue",
+      "rect": [
+        16,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "e08cca7f5a9eabd8622997e73d00cf61e5fe417850e5f9cead6e99d0ff640ca8"
+    },
+    {
+      "name": "glass_brown",
+      "rect": [
+        32,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "056159f53199d36a3e8670d567d093d8afc74b46182dea8fc4a0f802d5c5c772"
+    },
+    {
+      "name": "glass_cyan",
+      "rect": [
+        48,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "4782a57286b9deb7f060cced82a0feb260d8c9263cebb26967a62fcdc808bf79"
+    },
+    {
+      "name": "glass_gray",
+      "rect": [
+        64,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "c3125c4ce730374932992bdea8f6be576bf8c3e6028fd16b9bcc894c5e5e2788"
+    },
+    {
+      "name": "glass_green",
+      "rect": [
+        80,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "8209467249bceba241a903dfb5d5e8cc5921524a8a4f4b8b600e68821b4c8f36"
+    },
+    {
+      "name": "glass_light_blue",
+      "rect": [
+        96,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "f7122052a092c6c072632f3748893b207492a1934736a4ad3e0c3c26b0209f04"
+    },
+    {
+      "name": "glass_lime",
+      "rect": [
+        112,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "4ed4a6cc40edc6847dc4a147010d879788f08c99bdf2b04ef4e245ec28f13f29"
+    },
+    {
+      "name": "glass_magenta",
+      "rect": [
+        128,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "05a8aea8cb55bfc46ce27dd0a7f6bd45ced187c8e1e8a47b2ef8a0b4388bc0a5"
+    },
+    {
+      "name": "glass_orange",
+      "rect": [
+        144,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "18f341a63e112d72cc976f4efbd5fdf64ce1c232a6627ad86b1664764124bb13"
+    },
+    {
+      "name": "glass_pane_top_black",
+      "rect": [
+        0,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "45a170affcc6cbc1c66e973a10f5be28ec8ee83092b79594d527aa11b537811f"
+    },
+    {
+      "name": "glass_pane_top_blue",
+      "rect": [
+        16,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "c6858064670600d0620f3d95d37d535d43633a79649b07f651033d6609922300"
+    },
+    {
+      "name": "glass_pane_top_brown",
+      "rect": [
+        32,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "bb3a05a425864f3a33e79546cfc24fe57785f078e060ff61f03ad48a8ddea07b"
+    },
+    {
+      "name": "glass_pane_top_cyan",
+      "rect": [
+        48,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "e3c38402beb880f832e8a9fdfc8a9c7c5565b5e19ce0c478ea2ad7ee0b5058bc"
+    },
+    {
+      "name": "glass_pane_top_gray",
+      "rect": [
+        64,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "6320e813047682e26634e830952caba7846a4371bbd7e18ad17d1fe856d26d64"
+    },
+    {
+      "name": "glass_pane_top_green",
+      "rect": [
+        80,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "77c0b822a9b4a7da4031056d21f6fab581b43c96810378a741fe477fc4bc1bde"
+    },
+    {
+      "name": "glass_pane_top_light_blue",
+      "rect": [
+        96,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "f6218135c585dbd26410a36c994c7bf46ec8c33d89a8bd7fef231fd42ca322cd"
+    },
+    {
+      "name": "glass_pane_top_lime",
+      "rect": [
+        112,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "b9a79651134b6411c2ec1657bd230eed15fadbbb1a751de451025cf04589b263"
+    },
+    {
+      "name": "glass_pane_top_magenta",
+      "rect": [
+        128,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "046f0dbc6f9b9210ef276f8e06b6abd3688183df73bff42dd7f73176055bf818"
+    },
+    {
+      "name": "glass_pane_top_orange",
+      "rect": [
+        144,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "d9612442589b405db7c52eb7d62aa1a3c8607233964e037c0cb0506b651eef26"
+    },
+    {
+      "name": "glass_pane_top_pink",
+      "rect": [
+        160,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "ab6e1bf2351c06ec1f200bdfdcac8c161c2adfb3271a21fae2d1bd7b025a7502"
+    },
+    {
+      "name": "glass_pane_top_purple",
+      "rect": [
+        176,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "d07284006c89dc64635bb47ffb08728b778e393242e648e98f378146d2ebc717"
+    },
+    {
+      "name": "glass_pane_top_red",
+      "rect": [
+        192,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "12416d19b897b53d7b403a97b1514797d8cea14fd01ec665364d0983597a89a3"
+    },
+    {
+      "name": "glass_pane_top_silver",
+      "rect": [
+        208,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "895f88a1f6114803b0584abb6663f12f81938a3a557777e056eaacb5298d1ff9"
+    },
+    {
+      "name": "glass_pane_top_white",
+      "rect": [
+        224,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "59c729c476cef1ba31e874511917869dc35116912ebc376f26b87dc0e1b4cc86"
+    },
+    {
+      "name": "glass_pane_top_yellow",
+      "rect": [
+        240,
+        304,
+        16,
+        16
+      ],
+      "rgba_sha256": "9580b777073755b254aba2a14f9eb0e38365641b65267502b0fbb815d775c9d8"
+    },
+    {
+      "name": "glass_pink",
+      "rect": [
+        160,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "0853a9edba554253d762644b93fafc9f73d2b2f2201d0adac8a122cdb963632e"
+    },
+    {
+      "name": "glass_purple",
+      "rect": [
+        176,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "2355099aeb62a8cae202ea0cb5fa32ef13d54a0d4317537a20c568f65c5cc3b0"
+    },
+    {
+      "name": "glass_red",
+      "rect": [
+        192,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "d3f196b517a1e0da2fa3c0e0ac4b8c6f48652fc2267fcfe894d30556e0baa0a9"
+    },
+    {
+      "name": "glass_silver",
+      "rect": [
+        208,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "64da1d9ba222f86e00cee981804cf6221b5affb9daf7ecd958360cc69a45a755"
+    },
+    {
+      "name": "glass_white",
+      "rect": [
+        224,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "7718c79e7a5a10709bee8377854cd73399d3037c94ad2d5b7fabd40981329309"
+    },
+    {
+      "name": "glass_yellow",
+      "rect": [
+        240,
+        288,
+        16,
+        16
+      ],
+      "rgba_sha256": "ebc7088ed4e1f712a01138c73c4033f5c05bf3c2a386772b4786436a6794ad7c"
+    },
+    {
+      "name": "glowstone",
+      "rect": [
+        144,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "f599964495ed43f789f113ba6577e1831a559082727bbf9f17aa491899299011"
+    },
+    {
+      "name": "gold_block",
+      "rect": [
+        112,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "fd0bb8a0f0e4728b89244fd58f30f3c7e044702e826049aa857a76600a631814"
+    },
+    {
+      "name": "gold_ore",
+      "rect": [
+        0,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "772f949014a04a5e20313748138449c40fc578619bf685c1e454cf53d9dce796"
+    },
+    {
+      "name": "grass_side",
+      "rect": [
+        48,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "62c47cebea3514034a031ca1199a2ce0dfcedf4be0d3d669f0067087ffe95419"
+    },
+    {
+      "name": "grass_top",
+      "rect": [
+        0,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "31bb5d5d3c5516aadfd1fd5c605fa46252c0f0612091d753c0621ca6890549fd"
+    },
+    {
+      "name": "gravel",
+      "rect": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "6c298fc77e92ebc41cf5d1479d190597f4af9d00bcafc25531d77c6a8c9af03c"
+    },
+    {
+      "name": "hardened_clay",
+      "rect": [
+        16,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "b89c8895f8323fd1434ab04be20a0966a6b0a03bce7b0f41bbe5cdffcb280a37"
+    },
+    {
+      "name": "hardened_clay_stained_black",
+      "rect": [
+        0,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "ec91a6557ac6a8d0f3a8d46598a80edbdaaa805ab2bec6cc902608d6ca7ef4e8"
+    },
+    {
+      "name": "hardened_clay_stained_blue",
+      "rect": [
+        16,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "d95f03605d3b8f47320b943d638669a0b5f20f9660fe8430a4b2a0e2d944bf1c"
+    },
+    {
+      "name": "hardened_clay_stained_brown",
+      "rect": [
+        32,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "09980ad79c516622d593cbe25c3c740dd30f1a053310485c86ecce2448de05bc"
+    },
+    {
+      "name": "hardened_clay_stained_cyan",
+      "rect": [
+        48,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "e66c991966fc6e3f23defbef4fc515160d0502a0ed813ffc1d8b9b21c8d5abf7"
+    },
+    {
+      "name": "hardened_clay_stained_gray",
+      "rect": [
+        64,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "cc7798697dd7a2689c7de136c776c77c0d38966d61362beaefbb781251a9b03d"
+    },
+    {
+      "name": "hardened_clay_stained_green",
+      "rect": [
+        80,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "7903f522d31d698f925f7b59968186fdc720c0e19761030774a989014e365ce4"
+    },
+    {
+      "name": "hardened_clay_stained_light_blue",
+      "rect": [
+        96,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "7a5c7bdfd0b6ff85139d5f43862181d99e067883f3a39bfd6c349a88cfe53da5"
+    },
+    {
+      "name": "hardened_clay_stained_lime",
+      "rect": [
+        112,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "8381a5b65937aea6f35622b8e0fa2baa0bf59e8d00f666ede2e0fb83ea19f33b"
+    },
+    {
+      "name": "hardened_clay_stained_magenta",
+      "rect": [
+        128,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "c79047f462b242b02fcf640fb0cf639b84827cf572380c6cb2a63894fa5add64"
+    },
+    {
+      "name": "hardened_clay_stained_orange",
+      "rect": [
+        144,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "1872b56644948a7825ecc7e4a2b90acb70aab999f7def8d69fedc5534c998a93"
+    },
+    {
+      "name": "hardened_clay_stained_pink",
+      "rect": [
+        160,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "ef5406bae366c84d14c174f7656aab4e9799bb7de195f937f4c65b3052a180f4"
+    },
+    {
+      "name": "hardened_clay_stained_purple",
+      "rect": [
+        176,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "1678128645a15fcbd6229069c4f653413416ba5bbd7e466459532ecd84fa412c"
+    },
+    {
+      "name": "hardened_clay_stained_red",
+      "rect": [
+        192,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "72f422ebfee337b343c88cb18af808afc5c52ccffe8e9f4f654faf06dc730167"
+    },
+    {
+      "name": "hardened_clay_stained_silver",
+      "rect": [
+        208,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "25c220e6ea2a201c15a73f00fe40f2575e4548cef5688cb3b2f5a9e2e2978227"
+    },
+    {
+      "name": "hardened_clay_stained_white",
+      "rect": [
+        224,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "2366725df2d7a43a0417f600ae32c72d75faf82ebdc38d412eeab26333e69ed3"
+    },
+    {
+      "name": "hardened_clay_stained_yellow",
+      "rect": [
+        240,
+        272,
+        16,
+        16
+      ],
+      "rgba_sha256": "722235723d247a379f778577dea5d8f911900650125e383907beb937a83f61d6"
+    },
+    {
+      "name": "hay_block_side",
+      "rect": [
+        160,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "aba8d50917d6ff1b047d4be9ce85b7fed5fc8911d50d765a5e6997c469124273"
+    },
+    {
+      "name": "hay_block_top",
+      "rect": [
+        208,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "c4d73b293749c12fe94e8bbe90e72b2959fa6a15c603978759aa5b995d81baad"
+    },
+    {
+      "name": "ice",
+      "rect": [
+        48,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "db4a1cf0d62f889ceec6d742ffe498b74d7dec6790247a934fd651bde23694f7"
+    },
+    {
+      "name": "iron_bars",
+      "rect": [
+        80,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "5fdb79936d9a8f3fe585c8488beaa54453740435bf50da5c2c542820fc7136d5"
+    },
+    {
+      "name": "iron_block",
+      "rect": [
+        96,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "1ade6f9dd899994d2852f213b2d3af1399d3eb5efe80181335523e9c9c96f77e"
+    },
+    {
+      "name": "iron_ore",
+      "rect": [
+        16,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "f8b6e228ba9ee3e33dcf58d7b15e00ec7a4f5a1736605bb85dccd69aa18779b1"
+    },
+    {
+      "name": "ladder",
+      "rect": [
+        48,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "7fa0c4d2b23540295fbe8fa5198d17ddef5965b4ae1c1553164ffd38413557a2"
+    },
+    {
+      "name": "lapis_block",
+      "rect": [
+        0,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "116a348a19cb1beb8f8d2a1ad209746e696747fadb05a028a887170aafb71acf"
+    },
+    {
+      "name": "lapis_ore",
+      "rect": [
+        0,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "dbdaa1bf117a9a2ae1404ec757bdac2545573a1e9f9d7be3343d2d0e79528c1f"
+    },
+    {
+      "name": "lava",
+      "rect": [
+        208,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "df9eeeccfd55c2231608d10a8fb9ed5a62d05f0bf66a3ab737574cd176b980a2"
+    },
+    {
+      "name": "leaves",
+      "rect": [
+        64,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "c3455b1aa3922ebfb9495acb215381870761dfe105eb7dab13411ff8c3ff2085"
+    },
+    {
+      "name": "leaves_jungle",
+      "rect": [
+        64,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "cdc9599fdcfd973848c76cb422be3c32d63e886403a8853c28bf84fe304c6012"
+    },
+    {
+      "name": "leaves_jungle_opaque",
+      "rect": [
+        80,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "bb53f64928dd6913e62d2a0a2b5541d7d9a63a0e58db9ddf0c558ce6f8b54c1f"
+    },
+    {
+      "name": "leaves_opaque",
+      "rect": [
+        80,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "f2cc54647e6e85dbbbb3958a45d2dca961af178fbad3126066446bdb5b88ec3a"
+    },
+    {
+      "name": "leaves_spruce",
+      "rect": [
+        64,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "12755975912171190c61c81d7c008b1dd4f5ce5c07c552100ae32a8263682285"
+    },
+    {
+      "name": "leaves_spruce_opaque",
+      "rect": [
+        80,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "d62583035ceceffd9f2c674d13ef43e0dc163ae0ef9a4962c39a10d757ebe1db"
+    },
+    {
+      "name": "lever",
+      "rect": [
+        0,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "dcf30d8031740a91560ef62c642089d2798fb145d0da244ef166dd4248a07447"
+    },
+    {
+      "name": "log_birch",
+      "rect": [
+        80,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "b7d7a8d498b96bbb4a1e4d03475b6b2cd1cc133ffefce4924831167ea4a1c4f1"
+    },
+    {
+      "name": "log_birch_top",
+      "rect": [
+        240,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "e58ec7aac6ac199a9ba9cb77044cd0572a8296f46af216243726c2d19786e882"
+    },
+    {
+      "name": "log_jungle",
+      "rect": [
+        144,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "76b1a1b27e39b084e559627d3b4be37f0135247d96cfa9da425aa2fc3583f2f2"
+    },
+    {
+      "name": "log_jungle_top",
+      "rect": [
+        224,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "66bebeece78438e8a1aa86313d8611f749fd6661736e67e9bcc73655aa53949e"
+    },
+    {
+      "name": "log_oak",
+      "rect": [
+        64,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "ed03fa8db6398fb69ce7f49b035a26ed15a77097fd948952ce6bcbc254ac7995"
+    },
+    {
+      "name": "log_oak_top",
+      "rect": [
+        80,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "f17ca31f99d048fd197f51d96cd7dcbd441d594a696a1a93e61d10223a966e9b"
+    },
+    {
+      "name": "log_spruce",
+      "rect": [
+        64,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "4b7268adb343d9e32f54a65b876fe5d5a005d05160a6527f39cead3e61ecad8d"
+    },
+    {
+      "name": "log_spruce_top",
+      "rect": [
+        208,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "d4fc59d227ebc6f9d50f00ebb321636881ab85a62bcf0675106749d17954ef6e"
+    },
+    {
+      "name": "mob_spawner",
+      "rect": [
+        16,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "8994e39ef44a957fc9b2d2093f816c3bc0acdd0e754e6453f1c04b85dddd3338"
+    },
+    {
+      "name": "mushroom_block_inside",
+      "rect": [
+        224,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "f4a79f3a79be8fe0da4cb030ab503f485be3999bb2181da5be077e797b2882b8"
+    },
+    {
+      "name": "mushroom_block_skin_brown",
+      "rect": [
+        224,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "29d789e3cdbe85546e7de63f121339efbd592f79e85e9be6d315d486d228347f"
+    },
+    {
+      "name": "mushroom_block_skin_red",
+      "rect": [
+        208,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "630a2fd89ebf92d426503302853f359b4bad640ce97cdde03d670053b2c98367"
+    },
+    {
+      "name": "mushroom_block_skin_stem",
+      "rect": [
+        208,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "731da43b560a75dc818b30d789d45dffc081df5823d715b0e2c101b9ebe4a53a"
+    },
+    {
+      "name": "mushroom_brown",
+      "rect": [
+        208,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "bfea61fed499d55b9b4238968410739043c739ee1ae6ece25a290d737196f2df"
+    },
+    {
+      "name": "mushroom_red",
+      "rect": [
+        192,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "db6f3dc7e19ec130fb2472e11f079c4fe0b5810838739ddc44f6188f1971fe72"
+    },
+    {
+      "name": "mycel_side",
+      "rect": [
+        208,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "e439ff183584efed142eb4c554029b8b8cba0ade580aad2668f1c4f60a9e4eea"
+    },
+    {
+      "name": "mycel_top",
+      "rect": [
+        224,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "ec06346f4fa3e4f862e652339bd366c781b19f767eb6c25097c5f382b677d713"
+    },
+    {
+      "name": "nether_brick",
+      "rect": [
+        0,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "89f5d0b850ed0cbf5210eef5dc452d344663cf8852df5b6495175ac7cd8e8f58"
+    },
+    {
+      "name": "nether_wart_stage_0",
+      "rect": [
+        32,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "7ced692a7811f7618bb4dbd1a60cfe33430eb2c6493f6d217d6699e0337dc039"
+    },
+    {
+      "name": "nether_wart_stage_1",
+      "rect": [
+        48,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "bae7ff0e4fba37e616cd032c38ddf3d289512d0be9b1eba07727eafc7215e230"
+    },
+    {
+      "name": "nether_wart_stage_2",
+      "rect": [
+        64,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "57a29e7aae3bab71730f5a9e8bb5b3cecc5c64480928f25dd6df22b0e831f20b"
+    },
+    {
+      "name": "netherrack",
+      "rect": [
+        112,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "c27a9831c0361d447f66b960aa3ff4bd0e17c8d7833657b7ca249d5ae8994519"
+    },
+    {
+      "name": "obsidian",
+      "rect": [
+        80,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "e20270bfdf7f1230211d04fe5b0ca744917c57c3e62b6c501e6cdfca6a53e7ca"
+    },
+    {
+      "name": "piston_bottom",
+      "rect": [
+        208,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "24841966afa156b58cafca0e21514399482c7cc90633901a563097ad1a542fc4"
+    },
+    {
+      "name": "piston_side",
+      "rect": [
+        192,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "1e483702057f99f933c90ce9a07fe0d72c9b8fed9469da65478d20ea0488bfdc"
+    },
+    {
+      "name": "piston_top_sticky",
+      "rect": [
+        160,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "3accd71edf3a64c282e9e97cb55a76f79f9f825fea28341efee63f86635b07f3"
+    },
+    {
+      "name": "planks_birch",
+      "rect": [
+        96,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "05fd3d4e19a6c0c9feb104b63faf7a0b44ad30880aa0a0ef3e4a3d1f53141d65"
+    },
+    {
+      "name": "planks_jungle",
+      "rect": [
+        112,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "9b64c34c7f1308452c12a15805eddf8c09cbfa9e37511c64223b6bb5f511a91d"
+    },
+    {
+      "name": "planks_oak",
+      "rect": [
+        64,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "c72d2b16a492105e1d045c17b59dd0e411bd11f03b7f05e9e67c4e03b9635a4c"
+    },
+    {
+      "name": "planks_spruce",
+      "rect": [
+        96,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "9f6d869ac95898fcf315f414009cdf38005893dd8818dff9f80041c9e0dab76f"
+    },
+    {
+      "name": "potatoes_stage_0",
+      "rect": [
+        144,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "729621febc1cb8affae7bf45a31c4fa5c3cab998860e661b64daa40f4b4ebbd1"
+    },
+    {
+      "name": "potatoes_stage_1",
+      "rect": [
+        160,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "c1da1c01fcac1813743b267798b84bce2f912e6e5635ed83b2e50bfbdc4369ce"
+    },
+    {
+      "name": "potatoes_stage_2",
+      "rect": [
+        176,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "da63fb713813c4d7aeb55b4799da89279bc209d5d69fb19bf47f1df690bee0e6"
+    },
+    {
+      "name": "potatoes_stage_3",
+      "rect": [
+        192,
+        256,
+        16,
+        16
+      ],
+      "rgba_sha256": "d812e85db7983fd49e406a93c62c70892605029be3095fc05622ed319501b036"
+    },
+    {
+      "name": "pumpkin_face_off",
+      "rect": [
+        112,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "e4d31ed098780e9deb6cc2c915b3a327445a68662e4abb5729ba56c44d31f716"
+    },
+    {
+      "name": "pumpkin_side",
+      "rect": [
+        96,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "00633579b9bb3af718fccdff2674d404e12fcb5d65805d23abf42c9dd9c381ce"
+    },
+    {
+      "name": "pumpkin_top",
+      "rect": [
+        96,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "17e961eac5438d9c02b0d2399f869ef814f68e0d035d0acf5cd9ed2f95d47ff5"
+    },
+    {
+      "name": "quartz_block_bottom",
+      "rect": [
+        176,
+        240,
+        16,
+        16
+      ],
+      "rgba_sha256": "12824c49c4bb17ff543acd9a29072c62d7b7fe0018081ccb1cba8508f97abea4"
+    },
+    {
+      "name": "quartz_block_chiseled",
+      "rect": [
+        144,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "58087620e071f9902844a2f2a0ee72b14a2c19baf7ef6d36a6b690c0bde534fe"
+    },
+    {
+      "name": "quartz_block_chiseled_top",
+      "rect": [
+        144,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "14cb1617ef988a9964e6d282023b737ca212f229eb639c8350465b26fe364dea"
+    },
+    {
+      "name": "quartz_block_lines",
+      "rect": [
+        160,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "31e3f3ee4869567f468ef1857012fc3899460f9a1462c4ad1a1ea25088d1e046"
+    },
+    {
+      "name": "quartz_block_lines_top",
+      "rect": [
+        160,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "7f3825df051de71af21a2a80368c3db2e19c99c04f4d0b78dfa56fa675bec464"
+    },
+    {
+      "name": "quartz_block_side",
+      "rect": [
+        176,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "9afe7f9236123827b4fd7d287dc609be7d9b5d1cebe433849739446ed2007289"
+    },
+    {
+      "name": "quartz_block_top",
+      "rect": [
+        176,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "9afe7f9236123827b4fd7d287dc609be7d9b5d1cebe433849739446ed2007289"
+    },
+    {
+      "name": "quartz_ore",
+      "rect": [
+        240,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "e2b2bf2f2ae87677dc81e8149ede4475101df0f2b425866ed9d816663ecf0b0f"
+    },
+    {
+      "name": "rail_normal",
+      "rect": [
+        0,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "6bb646aa90c210f0a839bd2b53593cc43f436324c9e138e5bfd473b5637a615d"
+    },
+    {
+      "name": "redstoneLight",
+      "rect": [
+        48,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "4736a255ce95b1f7feb68741474595d028e86ae80415e263837dc1b2d3bfd5ed"
+    },
+    {
+      "name": "redstoneLight_lit",
+      "rect": [
+        64,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "2d1a1b94d15b206248d9eaa68e0e46d69566804e27928637162eab07baa0685d"
+    },
+    {
+      "name": "redstone_block",
+      "rect": [
+        160,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "92d2787b1c2ae758670f95be10cf0f2e185b2a404d4218ff6f38eb46404adef2"
+    },
+    {
+      "name": "redstone_dust_cross",
+      "rect": [
+        64,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "3f3e4a2d0325756cc6f5f24d8cb896339e8d15a7d4e30b1825d02a32eb4bd0e8"
+    },
+    {
+      "name": "redstone_ore",
+      "rect": [
+        48,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "28b4dc70ed7ba0f3389bb83b8cb090bf295a127874ac1f179bf53b1368356b18"
+    },
+    {
+      "name": "redstone_torch_off",
+      "rect": [
+        48,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "3416eee35ac1ef996a9aef372ed642ff8f871dba6adeee72a97b0a166a6b4b3d"
+    },
+    {
+      "name": "redstone_torch_on",
+      "rect": [
+        48,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "b9a7d745922f68ba163af567c36104b41517035e13cd9fd2f253d5d15a012f6d"
+    },
+    {
+      "name": "reeds",
+      "rect": [
+        144,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "a09c972c2d687e8980ad9e7e121703f4d699658767fd87b030a959f8aa24e2cd"
+    },
+    {
+      "name": "repeater_off",
+      "rect": [
+        48,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "c54fae3b213547e1dc6ae54ed28d57265b7c0db827285c3a54236cf049673f43"
+    },
+    {
+      "name": "repeater_on",
+      "rect": [
+        48,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "7cf2700d3be7f4d64105bdd75e934d976ed03c7dc5298986c83fbcc605fc25f7"
+    },
+    {
+      "name": "sand",
+      "rect": [
+        32,
+        16,
+        16,
+        16
+      ],
+      "rgba_sha256": "ad060e393b907bc9b061a92ea3477acd085c56611002add82babc666c04b93f5"
+    },
+    {
+      "name": "sandstone_bottom",
+      "rect": [
+        0,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "50e116c0b89183cbdf44b784a5ddef1e9d230d2f4293bea3d9740c9adf6a089b"
+    },
+    {
+      "name": "sandstone_carved",
+      "rect": [
+        80,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "a06d836e5b6de838d663db78172fd3783ba34051ef2b748e3dc7c97b21610b01"
+    },
+    {
+      "name": "sandstone_side",
+      "rect": [
+        0,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "e976ccf936c5584503ef9cdb07c2bd0051085c69928ba474e664824b0fa55aee"
+    },
+    {
+      "name": "sandstone_smooth",
+      "rect": [
+        96,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "c31bb19ab908b77f87efac09fa4f20ec16a78139c4b0fe09e50a276268906992"
+    },
+    {
+      "name": "sandstone_top",
+      "rect": [
+        0,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "033fa7418fa99c8b384c00319eb8c13cec133ef5ab984fa71fedbb3ca2d55bb6"
+    },
+    {
+      "name": "snow",
+      "rect": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "ba669c8503fc695716b21ad291aef104e20bc1dc222b73183ff612197c89930f"
+    },
+    {
+      "name": "snow_side",
+      "rect": [
+        64,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "255ccbf77fa99fd858b6c6d9d6b59c2e7439ab38c96819d4d29c498e4f7a96ae"
+    },
+    {
+      "name": "soul_sand",
+      "rect": [
+        128,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "9caffa3475454e925c1a4b9ea43fff1cc4a6dde29b7ea2318789a760350393cd"
+    },
+    {
+      "name": "sponge",
+      "rect": [
+        0,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "ea980a9a68bcea95883203ce70ce6040824576812d0deedd9e54cf65704fe73f"
+    },
+    {
+      "name": "stone",
+      "rect": [
+        16,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "0810ce3b5d5dac6a5a28afc2336921d76e28d9e72660da69e1b57deecf68d28d"
+    },
+    {
+      "name": "stonebrick",
+      "rect": [
+        96,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "813613240fec47d062f106cb5226cb68b5c1662c08012820c289a0dec17b2f48"
+    },
+    {
+      "name": "stonebrick_carved",
+      "rect": [
+        80,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "0a0c33cb6bed3f5a2cdad62ce4666287ba2f9794d01744124d72ea00ac1fc90b"
+    },
+    {
+      "name": "stonebrick_cracked",
+      "rect": [
+        80,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "30a98b07a7173d28fe61461601c746f5eba4c48605d002cd49ea8ce1f758e34c"
+    },
+    {
+      "name": "stonebrick_mossy",
+      "rect": [
+        64,
+        96,
+        16,
+        16
+      ],
+      "rgba_sha256": "61d1233fa6b7959f19f5874bed3e1d0cf158a28f123ec55d8c4915b78df7a678"
+    },
+    {
+      "name": "stoneslab_side",
+      "rect": [
+        80,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "77527cdbf7b39d7f25dafebd2f23f64e812f0668c9b68f985c7b61d88728ba8d"
+    },
+    {
+      "name": "stoneslab_top",
+      "rect": [
+        96,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "cb65938ab9d511130daf47eef65fcf9fe4d014c75e123a32c5a003338e780ca4"
+    },
+    {
+      "name": "tallgrass",
+      "rect": [
+        112,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "317243ea45a4b9b2077f02fe2d968992dd80cce5ac1f021ec7a7d600051a37bd"
+    },
+    {
+      "name": "tnt_bottom",
+      "rect": [
+        160,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "75950c01aef280d0e174dbc1762bba9d54d7854226e4c9f9a082dec8ae1c24bc"
+    },
+    {
+      "name": "tnt_side",
+      "rect": [
+        128,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "d88fae9e6187c0b59bab49515e0d12d32b41e722e90c98cdc8c183cd960d1dd3"
+    },
+    {
+      "name": "tnt_top",
+      "rect": [
+        144,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "20cdbbe5c832d82cc9781514c576ea8b976fa6c0c6244c9188db870a9e557c32"
+    },
+    {
+      "name": "torch_on",
+      "rect": [
+        0,
+        80,
+        16,
+        16
+      ],
+      "rgba_sha256": "127b6ef24a7921b2eb546907301a65dd962a5b0bcf15e9070feb715707aa13b3"
+    },
+    {
+      "name": "trip_wire",
+      "rect": [
+        208,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "3bb4a4bc1f38f773bb1a8bf82637083ef89ce3d0967452393ba061e0f5e8b6ad"
+    },
+    {
+      "name": "trip_wire_source",
+      "rect": [
+        192,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "897648ee830a1a822bcc99e8e5aa46b02e241b647589ee5fec3bcc2d351db579"
+    },
+    {
+      "name": "vine",
+      "rect": [
+        240,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "f5a0edee23a59adac523086ec6d523c610abe703bd0e322a5991e48a71450943"
+    },
+    {
+      "name": "water",
+      "rect": [
+        208,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "65f3a19a527c01726b7fbe85fb9d765c4b2b5dc557f83db722b777da918b72de"
+    },
+    {
+      "name": "waterlily",
+      "rect": [
+        192,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "5a7f2d588ef2f545dfd8eef638ba25a08d9fb7c9a920767f7f9fc570220a15af"
+    },
+    {
+      "name": "web",
+      "rect": [
+        176,
+        0,
+        16,
+        16
+      ],
+      "rgba_sha256": "6987d163d6b387e626ad82af1d4c50a968179b03e3da5c048e398c9067b836f2"
+    },
+    {
+      "name": "wool_colored_black",
+      "rect": [
+        16,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "3088b03fc2baca2e6f3fd987b1fe4640fa7c3b49a19a8b1ed394a0a7d5c7a450"
+    },
+    {
+      "name": "wool_colored_blue",
+      "rect": [
+        16,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "e93c4786e64ac779b0cd66c256c88d31d8d9c4b7bf2c963c723ea619b7155afb"
+    },
+    {
+      "name": "wool_colored_brown",
+      "rect": [
+        16,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "0ce06bd5432019c732c2b3aba9814c1b02be9c59aca1b5a4bdc67551db236e30"
+    },
+    {
+      "name": "wool_colored_cyan",
+      "rect": [
+        16,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "405056a31d28cfcae352f2a897ad940fe9795c846872adcaa2e8a7e3cebb3e91"
+    },
+    {
+      "name": "wool_colored_gray",
+      "rect": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "rgba_sha256": "6f2f2fc308002828947bcbcefc6c690027026a1b377e838693f837072b03971e"
+    },
+    {
+      "name": "wool_colored_green",
+      "rect": [
+        16,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "292fa60c01989ec65722cf141a14ce0043380cf5478c70f9b2e62dcc8086333e"
+    },
+    {
+      "name": "wool_colored_light_blue",
+      "rect": [
+        32,
+        176,
+        16,
+        16
+      ],
+      "rgba_sha256": "12a665291525c379bdb62ec01273ec1c614741a45417f7d387f9114208b5ef82"
+    },
+    {
+      "name": "wool_colored_lime",
+      "rect": [
+        32,
+        144,
+        16,
+        16
+      ],
+      "rgba_sha256": "bc2a92960bae63fa2463c75224ec6cc51d5cbc755159710aecea326e9a0c6256"
+    },
+    {
+      "name": "wool_colored_magenta",
+      "rect": [
+        32,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "0eabb2bd86e9e12b9d836ae324c0a2286d7f9b9eae6043d3d9956755dad0efee"
+    },
+    {
+      "name": "wool_colored_orange",
+      "rect": [
+        32,
+        208,
+        16,
+        16
+      ],
+      "rgba_sha256": "0c95946403237e51b6403e694d21dca31505fef2b65a1e5ddcd3abf506e021ee"
+    },
+    {
+      "name": "wool_colored_pink",
+      "rect": [
+        32,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "0735f9826951fa12ef13b94ffba4369b6b73dd8eef04393b8c11308cb0fa7313"
+    },
+    {
+      "name": "wool_colored_purple",
+      "rect": [
+        16,
+        192,
+        16,
+        16
+      ],
+      "rgba_sha256": "5461c566774c0aa82cb2cbc72811c8a7c4074a5abf708970680a99487da136d3"
+    },
+    {
+      "name": "wool_colored_red",
+      "rect": [
+        16,
+        128,
+        16,
+        16
+      ],
+      "rgba_sha256": "418e4fa61707ba01b13a896cd4e172e0c460d0908530454b2bab4bdef5c4ab96"
+    },
+    {
+      "name": "wool_colored_silver",
+      "rect": [
+        16,
+        224,
+        16,
+        16
+      ],
+      "rgba_sha256": "16cc9f1ad0d81ad45c2d7e664c78555860533589168837dea17b2ac35e9862a3"
+    },
+    {
+      "name": "wool_colored_white",
+      "rect": [
+        0,
+        64,
+        16,
+        16
+      ],
+      "rgba_sha256": "097f4bff764b9850a0ba9699903243672130972e4b54e96bfdcb5fe7e2ebc135"
+    },
+    {
+      "name": "wool_colored_yellow",
+      "rect": [
+        32,
+        160,
+        16,
+        16
+      ],
+      "rgba_sha256": "06dea24561d3c7ff1a7960724bd952faccf2ebef5814f9e16c717911f237e7bc"
+    },
+    {
+      "name": "workbench_front",
+      "rect": [
+        192,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "8f5dddccc6876bd943283d0286b339bf0d24c68032931a04470b5640ae5e9df8"
+    },
+    {
+      "name": "workbench_side",
+      "rect": [
+        176,
+        48,
+        16,
+        16
+      ],
+      "rgba_sha256": "7d2614c5cb7781005abb2be7e0b4da8d95628ab673ebd8fa0b181e9d6b6c602a"
+    },
+    {
+      "name": "workbench_top",
+      "rect": [
+        176,
+        32,
+        16,
+        16
+      ],
+      "rgba_sha256": "e6e7a92118f6721e1de840eca4c6acb4d4c6e8c10561e336e06395c63383abf3"
+    }
+  ]
+}

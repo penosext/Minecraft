@@ -1,0 +1,135 @@
+{
+  "upstream_repository": "https://github.com/gstaaij/minecraft-console",
+  "upstream_reference_commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "copy_method": "Byte-for-byte copy from local reference Common/res/mob; no resize, re-encode, network fetch or remote re-verification.",
+  "assets": {
+    "pig": {
+      "asset": "pig.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/pig.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/pig.png",
+      "source_sha256": "0ad7e2885302a58e28512451af7fb433ce17ee9ad47a051b326ef88520cc69c9",
+      "decoded_rgba_sha256": "de6b020f5c85230b75e4e47e5dab38f452006f564c07df4c8da160afce7e2c4e",
+      "source_git_blob_sha1": "5c1efc2d00e08b34b2bb7a317215d4ae68762116",
+      "file_bytes": 3791,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 800,
+        "255": 1248
+      }
+    },
+    "cow": {
+      "asset": "cow.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/cow.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/cow.png",
+      "source_sha256": "5b901e770c7d567ac2e46382d2ec3e83bfcbcaaae024f7610b50299ae836773e",
+      "decoded_rgba_sha256": "22ef3219d711efa36aafa5d37f68b120b498672ab4bfd932cf349000c1b6221e",
+      "source_git_blob_sha1": "2080ebcb6f9ffc253d46a9337d6a6a4b8d672ee8",
+      "file_bytes": 1338,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 390,
+        "255": 1658
+      }
+    },
+    "sheep": {
+      "asset": "sheep.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/sheep.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/sheep.png",
+      "source_sha256": "a4c953073c2975e6d8035ba59af7bff84016ba7edfd5fcc5df24907066d1ed6a",
+      "decoded_rgba_sha256": "81a3ae4ba18e0d03d80d33aa0f987214c5d565fe51328118b57d160703c5ecb4",
+      "source_git_blob_sha1": "98cfa9ac57ba0d9f896454d38108afa571c2bfff",
+      "file_bytes": 2434,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 1004,
+        "255": 1044
+      }
+    },
+    "sheep_fur": {
+      "asset": "sheep_fur.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/sheep_fur.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/sheep_fur.png",
+      "source_sha256": "9f4ef6ad8906027ad6e5ebb9259f4107c449cfbfe703f641d02b0a785417964d",
+      "decoded_rgba_sha256": "e54c26a6826c2fe5a5a5198dd592057d5e1d4d71e5b108a7d09d85e880bb6ba6",
+      "source_git_blob_sha1": "f1291a5fa1e4303d3f4c8ea8222ba76e280d71ab",
+      "file_bytes": 1661,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 1052,
+        "255": 996
+      }
+    },
+    "chicken": {
+      "asset": "chicken.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/chicken.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/chicken.png",
+      "source_sha256": "f274296053d7993975270300388cd184635010a7082cf56c537e903274b12216",
+      "decoded_rgba_sha256": "c3fe1f1ee126b934e6b9aff41327898e052bb8d2ede4d36de652e4beaf25eca2",
+      "source_git_blob_sha1": "d4812939e7e002f1ffede50a96ad4bb6c1eca8fc",
+      "file_bytes": 492,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 1544,
+        "255": 504
+      }
+    },
+    "creeper": {
+      "asset": "creeper.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/creeper.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/creeper.png",
+      "source_sha256": "c27e7c20555f1bf5ef1cd848a4291f90465000708185e6743e72b8adffed2a4b",
+      "decoded_rgba_sha256": "b92f0ff9d25042dbe92d7d7a332d56e11367183ba7142990187f4e046af50d38",
+      "source_git_blob_sha1": "e0a5e0a1eb9e96e95533cdbfad4950cfa5416bba",
+      "file_bytes": 3000,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 1183,
+        "8": 1,
+        "255": 864
+      }
+    },
+    "zombie": {
+      "asset": "zombie.png",
+      "source_file": "/root/1234/ref/mcpartial/minecraft-console-main/Minecraft.Client/Common/res/mob/zombie.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/mob/zombie.png",
+      "source_sha256": "6bd21f2f5f873d5b2d70ea84451ee616a3e888cdfb0d90b1fb59681a65a156a1",
+      "decoded_rgba_sha256": "d1857c20ab8bdd086bf691f0f0b660692111caad74086c8629735689898e1c0c",
+      "source_git_blob_sha1": "0ab708952747b92818895347c7b6e903dbfce9ce",
+      "file_bytes": 1343,
+      "dimensions": [
+        64,
+        32
+      ],
+      "mode": "RGBA",
+      "alpha_counts": {
+        "0": 864,
+        "255": 1184
+      }
+    }
+  },
+  "model_scope": "New independent platform renderer approximation; original CowModel.cpp and ChickenModel.cpp cuboids/UVs transcribed. QuadrupedModel, PigModel, SheepModel, HumanoidModel and original animation/render pipeline unavailable locally at implementation time. Pig/sheep/zombie use classic cuboid reconstruction, not compiled original functions. Cube.cpp face UV rectangles transcribed. Creeper skin is provenance-verified and embedded, reserved (not a scene MobKind)."
+}

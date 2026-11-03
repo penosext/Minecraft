@@ -1,0 +1,33 @@
+{
+  "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "world_root_source_files_verified": 1830,
+  "architecture": "aarch64 native",
+  "compiler": "GCC 13.3",
+  "integrated_release_tests_passed": 19,
+  "integrated_release_tests_total": 19,
+  "compiled_original_logic": [
+    "Random",
+    "ImprovedNoise",
+    "PerlinNoise",
+    "Layer pipeline and biome metadata",
+    "base density and surface functions",
+    "village and scattered structure source templates with recorded scheduling adapters",
+    "tree and plant Feature subset with recorded scheduling adapters"
+  ],
+  "app_integrated": true,
+  "device_version": "1.0.8 original-feature subset, source-derived presentation and block inventory",
+  "complete_original_port": false,
+  "remaining": [
+    "full original postProcess and caves/canyons/ores",
+    "original Level/Chunk runtime and complete light engine",
+    "original Entity/Mob/Player physics and networking",
+    "original console storage",
+    "full tools/items/crafting/armor and original console UI",
+    "original GPU/4J backend and Iggy ARM64 runtime",
+    "external original-console frame and world equivalence validation"
+  ],
+  "dependency_evidence": "original-iggy-tree.json",
+  "notes": "Iggy directory supplies Windows .lib/.dll and GDraw bridge sources, not Iggy core source or Linux ARM64 runtime. Source-byte and self-consistency tests are not an external original-console equivalence test.",
+  "presentation_report": "../docs/ORIGINAL_PARITY.md",
+  "validation_report": "../dist/original-presentation-validation-1.0.8.json"
+}

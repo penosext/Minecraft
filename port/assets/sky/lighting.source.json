@@ -1,0 +1,1440 @@
+{
+  "textures": {
+    "sun": {
+      "sourcefn": "terrain/sun.png",
+      "sourcePngSha256": "59bb3d5c4c5e2bc5cddb10e2e0f2c3dba979b64574a40c1cdc843c2ae9139e9e",
+      "copiedPngSha256": "59bb3d5c4c5e2bc5cddb10e2e0f2c3dba979b64574a40c1cdc843c2ae9139e9e",
+      "rgbaSha256": "854ae0f412cf6e441b0d9e742b5fca358fb99edb4ccab6e7af8ea4776b4567c1",
+      "size": [
+        32,
+        32
+      ],
+      "sourceMode": "RGBA",
+      "byteIdentical": true
+    },
+    "moon_phases": {
+      "sourcefn": "1_2_2/terrain/moon_phases.png",
+      "sourcePngSha256": "6317ed4c6ad8c2ed41276ec6057efd78d3acd27cf6d19ffe0d11751d8eaf83f3",
+      "copiedPngSha256": "6317ed4c6ad8c2ed41276ec6057efd78d3acd27cf6d19ffe0d11751d8eaf83f3",
+      "rgbaSha256": "bda31044936525a46afcb0242db04149e4116e7bb24fe21151688997a0bec9fa",
+      "size": [
+        128,
+        64
+      ],
+      "sourceMode": "RGB",
+      "byteIdentical": true
+    }
+  },
+  "sources": {
+    "Minecraft.World/Tile.cpp": {
+      "sha256": "e17608be2973d4a4144f808c500f2cf3bb817622bfbaac0a3e293f6afa36482e",
+      "bytes": 90191
+    },
+    "Minecraft.World/Tile.h": {
+      "sha256": "b7afa5c8740ebc0b834b6b6c355edc1162600c2b9557508d44dadaffedc9420a",
+      "bytes": 25411
+    },
+    "Minecraft.Client/LevelRenderer.cpp": {
+      "sha256": "ee9883b93eacf5e580c0c7f21ba875082dcc97689123105683d3c0eebf6263db",
+      "bytes": 132420
+    },
+    "Minecraft.Client/GameRenderer.cpp": {
+      "sha256": "37592ac0ca47417b0228094a77e7bb97226a68f11975ab14d52e9b5b7d8a9302",
+      "bytes": 68674
+    },
+    "Minecraft.Client/TileRenderer.cpp": {
+      "sha256": "44c920420ed763c18b00f8841a361cc13ae9e759405070aebaa968eb4d89da81",
+      "bytes": 271397
+    },
+    "Minecraft.World/Dimension.cpp": {
+      "sha256": "2ab8358f69657284a12dbe7d1d4f5ae17d2941fd592df704a6603f412225c9f3",
+      "bytes": 6348
+    },
+    "Minecraft.World/Level.cpp": {
+      "sha256": "1f0b5d54179e6dcd7defa4a61b39c16449203c2be5ed5d508e5506f6bf367543",
+      "bytes": 126182
+    },
+    "Minecraft.World/LevelChunk.cpp": {
+      "sha256": "c9195b01dbe4fe7c50359947c46b2f6a233498c03966d44d935fa7910bb90e10",
+      "bytes": 82701
+    },
+    "Minecraft.World/LightLayer.h": {
+      "sha256": "d287df80cab7f71d78dbf513f55415e41adb67a95201bee824b2fcf2e10e344d",
+      "bytes": 286
+    },
+    "Minecraft.World/Material.cpp": {
+      "sha256": "656f96a06266e6bebf17c0f07f2139cd78a14a8b9c0793aca15efedf08e2e6cb",
+      "bytes": 6072
+    },
+    "Minecraft.World/StoneTile.cpp": {
+      "sha256": "b82c4497e3b742be17dec1ad8f080dd7623692ed77c33b93ab523fb656c89f4f",
+      "bytes": 214
+    },
+    "Minecraft.World/GrassTile.cpp": {
+      "sha256": "49d056ae3d48b977bc10677c08132c55b6f764b12e27eaf61614af0a45f618d0",
+      "bytes": 4105
+    },
+    "Minecraft.World/DirtTile.cpp": {
+      "sha256": "cf93f6a26a2fd0d8ea195ead0e4e8d917cf3d478b103a7fbe29b476895d581ac",
+      "bytes": 100
+    },
+    "Minecraft.World/WoodTile.cpp": {
+      "sha256": "fa3f522887a34151c0fed8a964d2fb70dd24af59c4301eb92db3723545e030e6",
+      "bytes": 1265
+    },
+    "Minecraft.World/LiquidTileDynamic.cpp": {
+      "sha256": "2a1bd654b0fe4c9572c2a64f546ff87ac67f16de6093d38c404cb2f220de3710",
+      "bytes": 8382
+    },
+    "Minecraft.World/LiquidTileStatic.cpp": {
+      "sha256": "f92a0d9e46c990f4e3aefd6d66f36da6b6e95b8bce7f1e5e800fabcf70d893eb",
+      "bytes": 2006
+    },
+    "Minecraft.World/HeavyTile.cpp": {
+      "sha256": "8cbfc628bdadd8cb103ea332d840332c01924a6367ce411b6ce0c6b39134b826",
+      "bytes": 2157
+    },
+    "Minecraft.World/GravelTile.cpp": {
+      "sha256": "8693e105150f42916fb58552eafcd93cf8d4390a2e7ce7282c54e0ade9a89489",
+      "bytes": 357
+    },
+    "Minecraft.World/OreTile.cpp": {
+      "sha256": "e962ab9ec0dcdf65fe750bcde0468ac858b477b312996b84837958e197470db5",
+      "bytes": 2019
+    },
+    "Minecraft.World/TreeTile.cpp": {
+      "sha256": "c28f65a2cb7a37dc4fb574b51966ce99ba746a4434c22af9c1474e7d906709fd",
+      "bytes": 2433
+    },
+    "Minecraft.World/LeafTile.cpp": {
+      "sha256": "9e739803ba4e78fda0f0a0df17f822d6da85bf5d1cdd21f8d452c2c4d0704c29",
+      "bytes": 9591
+    },
+    "Minecraft.World/Sponge.cpp": {
+      "sha256": "c63d4b8fe81db3731d5df5ef54a2fbeac9dea775252e054aeab90ffd1ae435bb",
+      "bytes": 159
+    },
+    "Minecraft.World/GlassTile.cpp": {
+      "sha256": "03658db71f083fe1aef29f8393b20bffa380210a17ba8ebe82523ace66a9ff31",
+      "bytes": 437
+    },
+    "Minecraft.World/DispenserTile.cpp": {
+      "sha256": "eca81b5ec468fe34e57cccbf355670db3f3fd9fd8b867eb7c41df47df01cfbee",
+      "bytes": 7249
+    },
+    "Minecraft.World/SandStoneTile.cpp": {
+      "sha256": "2b9e5683d273cbf262880fb5e94407cff4511d6f2f87c857024e66d26ccbb5d6",
+      "bytes": 1419
+    },
+    "Minecraft.World/PistonBaseTile.cpp": {
+      "sha256": "7f270bbb5349813d8a32ee63d371489288cd602e6cf8ca088028a853a6824d70",
+      "bytes": 19633
+    },
+    "Minecraft.World/WebTile.cpp": {
+      "sha256": "b4666c68e50ba620e0abd936a55a608398813d8d8dc8204a37766222e5b67f4a",
+      "bytes": 835
+    },
+    "Minecraft.World/TallGrass.cpp": {
+      "sha256": "423389757b47034b6b4adb4fdcfeb0b453bed967db4fdc6566654afaff66437c",
+      "bytes": 3054
+    },
+    "Minecraft.World/DeadBushTile.cpp": {
+      "sha256": "61fca082687cdc49b610f00aef1c3d1e58d973e941128547dd4459d0dd5799a0",
+      "bytes": 1175
+    },
+    "Minecraft.World/ColoredTile.cpp": {
+      "sha256": "4e5e3f34d55cd269785434c97a38200be5aa2e6460b8bc6d3d8e8238114da745",
+      "bytes": 762
+    },
+    "Minecraft.World/Bush.cpp": {
+      "sha256": "e822a5e93080bed3e4cb627f83138b24cb4e6f09e90356f0f2a89790f818df48",
+      "bytes": 1717
+    },
+    "Minecraft.World/Mushroom.cpp": {
+      "sha256": "b40e9a6b11722023ce9000fa1d8074204ba838fc248bb079e04a030b64b7d4ff",
+      "bytes": 2379
+    },
+    "Minecraft.World/MetalTile.cpp": {
+      "sha256": "236a5dcf82e5856a24e6a9d491cc88a22963f5563f64800c6d178ba17160b384",
+      "bytes": 104
+    },
+    "Minecraft.World/StoneSlabTile.cpp": {
+      "sha256": "35f1c5d3938e3b9435a732393828b600f6962158c606204295626edbfbdb803a",
+      "bytes": 2299
+    },
+    "Minecraft.World/TntTile.cpp": {
+      "sha256": "2f58f9f9591c8f3269cbd8d0b7e371e40279245898c7bb962155337486c98467",
+      "bytes": 3884
+    },
+    "Minecraft.World/BookshelfTile.cpp": {
+      "sha256": "0c4831f603fbb63574fae105e7a64d546b8f32a8d2badb8742af8367da2d41c5",
+      "bytes": 535
+    },
+    "Minecraft.World/ObsidianTile.cpp": {
+      "sha256": "11e95049abc8856f7f6887aa39ea8d6949fda1c76adb60cf61046c9f9dd0c911",
+      "bytes": 278
+    },
+    "Minecraft.World/TorchTile.cpp": {
+      "sha256": "7925b8601383c2e7a929307f15d61feb13213d6df09e7fdba94ada8d4d758405",
+      "bytes": 6235
+    },
+    "Minecraft.World/FireTile.cpp": {
+      "sha256": "c1a902c50de2d8a2a76d7d9f7b3ba673abbd2e4105883fdef54103a4d8617a9c",
+      "bytes": 11378
+    },
+    "Minecraft.World/MobSpawnerTile.cpp": {
+      "sha256": "a21e6883859d5aaceadeba419ac9cb8eaf34248ef7a85c868020fced243f19cd",
+      "bytes": 1108
+    },
+    "Minecraft.World/StairTile.cpp": {
+      "sha256": "e71804b8d3ab0b0246471f0692f0784ebf4824f74affbbbf4fdfcd143c5608e3",
+      "bytes": 12464
+    },
+    "Minecraft.World/ChestTile.cpp": {
+      "sha256": "5da17ece1df71f6d52273abb484beb57520618b0ebba5c80ee768fa48a3fe424",
+      "bytes": 11927
+    },
+    "Minecraft.World/RedStoneDustTile.cpp": {
+      "sha256": "3e409683101dbfa560bc9945fd8636118cda3760cae6d215885711310ccf405b",
+      "bytes": 13206
+    },
+    "Minecraft.World/WorkbenchTile.cpp": {
+      "sha256": "59bddd3ab7ea51d4c52a0b405cb4cd4b74e32a2bc2ac670520103d3bb1056c63",
+      "bytes": 1250
+    },
+    "Minecraft.World/CropTile.cpp": {
+      "sha256": "4882d99d399d42d0c00e662bc3990894f940cf0499f6ee0c79b42f86b37b10c3",
+      "bytes": 3605
+    },
+    "Minecraft.World/FarmTile.cpp": {
+      "sha256": "5c6f851c40658192e45f67085f38f91c0bf5fc8d4b1ca1415c90c91852ed5c3e",
+      "bytes": 3494
+    },
+    "Minecraft.World/FurnaceTile.cpp": {
+      "sha256": "f8e021c25363702541ef1e164d0b9d743ef1691316a66c39f2a6d10c01088c3c",
+      "bytes": 6980
+    },
+    "Minecraft.World/DoorTile.cpp": {
+      "sha256": "5e592b6b6bb0d7b791073d82578adb3a3d30adfa1749fdb61804dab54ca4e7cb",
+      "bytes": 8830
+    },
+    "Minecraft.World/LadderTile.cpp": {
+      "sha256": "7a4179305c31a56107b395b02fbed31f83fd3ce242995fae4485a3d4964f9500",
+      "bytes": 2661
+    },
+    "Minecraft.World/RailTile.cpp": {
+      "sha256": "800a4b3d3f53aaece38ebe4c3863cd2b79d57145e3bf85b092580df73eb0b6e1",
+      "bytes": 688
+    },
+    "Minecraft.World/LeverTile.cpp": {
+      "sha256": "bc5631104be24a8eaaa75b0b753055e1e9aff1c7544b198a70464cd31b0a15bd",
+      "bytes": 8586
+    },
+    "Minecraft.World/PressurePlateTile.cpp": {
+      "sha256": "2b951681e18bee085eaea88ec093a156db43724c220a51af1ec206d8e696fbde",
+      "bytes": 1509
+    },
+    "Minecraft.World/RedStoneOreTile.cpp": {
+      "sha256": "b567e5a30528930e9f431eb4d9d23aa3862894f73c23132cddd1f9c6e550c0ae",
+      "bytes": 3583
+    },
+    "Minecraft.World/NotGateTile.cpp": {
+      "sha256": "b15f30900f5d5a57cda95c087660c102a3da121d0722f619bf2deab3788ea3bb",
+      "bytes": 6691
+    },
+    "Minecraft.World/StoneButtonTile.cpp": {
+      "sha256": "11c9314901ac4713b66351fe6d5790d882112ed6cae3372bcedf3d0fd19982f1",
+      "bytes": 249
+    },
+    "Minecraft.World/TopSnowTile.cpp": {
+      "sha256": "19d591839f271da1f136467b04795ceb710b63fc9b2eae8cbec4fa140eb90f1c",
+      "bytes": 4534
+    },
+    "Minecraft.World/IceTile.cpp": {
+      "sha256": "1cf9436e84783d3df4ccdc3817c1921e0a260ec2aea90c98a2227a111ed68eeb",
+      "bytes": 2106
+    },
+    "Minecraft.World/SnowTile.cpp": {
+      "sha256": "7b5b847c813213df825ae6921f1ee147b7f5a20d5bca38ef0fe6c7835bb18c7d",
+      "bytes": 739
+    },
+    "Minecraft.World/CactusTile.cpp": {
+      "sha256": "08066c1f87bb4bc244c7d6e94e8e7c1b228a7b30d8229d331b20921a98229bb7",
+      "bytes": 2865
+    },
+    "Minecraft.World/ClayTile.cpp": {
+      "sha256": "8149e80a2e7ce7935d76f098d8bd610961ed80eac9c7b708c2bca70dbb908b4a",
+      "bytes": 305
+    },
+    "Minecraft.World/ReedTile.cpp": {
+      "sha256": "80a06db3302e38dd2170cd1fa49305d07c5e9dc4409b9d85472ef2ea7caaf77f",
+      "bytes": 2596
+    },
+    "Minecraft.World/FenceTile.cpp": {
+      "sha256": "6ad663d2f4bb30abb77e47ddb83197a71dc1f1e5cfa686d5876282230096d98d",
+      "bytes": 3115
+    },
+    "Minecraft.World/PumpkinTile.cpp": {
+      "sha256": "8280946f1dd5c8874d97cda29d1da4c66a45b877267e06632fd0dca816020913",
+      "bytes": 6669
+    },
+    "Minecraft.World/NetherrackTile.cpp": {
+      "sha256": "c0ba24f97ab16d9ccb972f526c0002cef48d95d8da4181adbdcac9144846c75c",
+      "bytes": 119
+    },
+    "Minecraft.World/SoulSandTile.cpp": {
+      "sha256": "f62dba498ac3d0c7353db36c6319d51bc494f37eb0a98eeea4b95ea294472ce7",
+      "bytes": 485
+    },
+    "Minecraft.World/GlowstoneTile.cpp": {
+      "sha256": "c84b71f14374a65460a33edb9dae5098476b55a665af54e5410dc39bb98d1089",
+      "bytes": 541
+    },
+    "Minecraft.World/RepeaterTile.cpp": {
+      "sha256": "37c279aa3da4733f002f31e7e667f3f5b5149f2882d34d65a0a7fe9a7398907b",
+      "bytes": 2994
+    },
+    "Minecraft.World/StainedGlassBlock.cpp": {
+      "sha256": "a43434066d9e9d7675e178adc13db5db8408c2ba62a0fbb8a679249a4bd4717f",
+      "bytes": 1069
+    },
+    "Minecraft.World/StoneMonsterTile.cpp": {
+      "sha256": "70c6b3181cdd1abf17ce43b410256b01fd1cf02c7c8e9fe0ad4607ccde22f39f",
+      "bytes": 2839
+    },
+    "Minecraft.World/SmoothStoneBrickTile.cpp": {
+      "sha256": "61366a882b4d044152a1e85e113e5d2447cdfeb9c628e5c8afb4f97c5d7c888c",
+      "bytes": 1319
+    },
+    "Minecraft.World/HugeMushroomTile.cpp": {
+      "sha256": "8b6e9639281524693b34af26101284243bf036c04f041a6446a8714aafd7c0c7",
+      "bytes": 1908
+    },
+    "Minecraft.World/ThinFenceTile.cpp": {
+      "sha256": "5b66ec58c1f84376be21442ad17f98219d206e2073bf4983ddd3212a114b8792",
+      "bytes": 3928
+    },
+    "Minecraft.World/VineTile.cpp": {
+      "sha256": "b907b39ed5ce1c5e8ab465d2924df0ad19ccaabf5cf79667ef7824cd267c1724",
+      "bytes": 10628
+    },
+    "Minecraft.World/MycelTile.cpp": {
+      "sha256": "92d5158eb0373c4856f34a99e195a4109789938c8915810212ba90a37cc16f61",
+      "bytes": 2207
+    },
+    "Minecraft.World/WaterLilyTile.cpp": {
+      "sha256": "d907d0a32e015d1d6535362f13f7c3f60e28eb4247b44f3cda8d2c7eed2efd78",
+      "bytes": 2156
+    },
+    "Minecraft.World/NetherWartTile.cpp": {
+      "sha256": "ae04f7f4df2d74f338ee98d21f527c6c23e102a079a8df4f23966e65999a75ad",
+      "bytes": 2370
+    },
+    "Minecraft.World/EnchantmentTableTile.cpp": {
+      "sha256": "620997739058238e0ef74ab6855678c6a5b5b094e581b21a72fe5a1bf4abbec5",
+      "bytes": 3032
+    },
+    "Minecraft.World/CauldronTile.cpp": {
+      "sha256": "35bbbeae0aa31308d5bafb4fe315420e842fa5a2878c89a4c0be2303e7a39e0e",
+      "bytes": 5017
+    },
+    "Minecraft.World/TheEndPortalFrameTile.cpp": {
+      "sha256": "4dec52bddee5fa812d461c3ac8058bb96b9af1513b280148b9d3585622e2c1a1",
+      "bytes": 2381
+    },
+    "Minecraft.World/EggTile.cpp": {
+      "sha256": "5036c6e6e8ddb5698fa2e65973b4f4a232384cefb7394b333b94d4e807c12ff9",
+      "bytes": 5092
+    },
+    "Minecraft.World/RedlightTile.cpp": {
+      "sha256": "2a037f2dc111f0390d4b1dfd46b2ce6b1ffc3bda9d8b81fd2fe01568ca26cd66",
+      "bytes": 1713
+    },
+    "Minecraft.World/CocoaTile.cpp": {
+      "sha256": "c771aad2de63cc1d15f4bef42fd26b02b31112ab57223bfd339614b5d4176da9",
+      "bytes": 4619
+    },
+    "Minecraft.World/TripWireSourceTile.cpp": {
+      "sha256": "e983392f5ae4421c4d3316cc76ed47d85d99f0454085cc0481f3a6d650cc81c3",
+      "bytes": 10098
+    },
+    "Minecraft.World/TripWireTile.cpp": {
+      "sha256": "7cc669395e364cfc36910010446261b2f7d6e8a663ee5d17b289ef095132337e",
+      "bytes": 5468
+    },
+    "Minecraft.World/WallTile.cpp": {
+      "sha256": "ab8304d4ab51e33be069f55531fc40fcca45953f3514561baba02000b9b6bf20",
+      "bytes": 3962
+    },
+    "Minecraft.World/FlowerPotTile.cpp": {
+      "sha256": "39594c5a02ec2f5b0b9719e232f781064135266484bb14834f933f28ee617791",
+      "bytes": 4704
+    },
+    "Minecraft.World/CarrotTile.cpp": {
+      "sha256": "d46fae522f903ea21164442b5e261c3e9066cb4204901317edebfb067243ca9f",
+      "bytes": 652
+    },
+    "Minecraft.World/PotatoTile.cpp": {
+      "sha256": "6e6a546f44f57079b4ddb8f11e7d8f1b0ae8897e9251e352dfa2137b88aa8cb9",
+      "bytes": 1068
+    },
+    "Minecraft.World/WoodButtonTile.cpp": {
+      "sha256": "58d6f58b84274485c89a4e90328e536c75699007c7df3d76b11931a3de290ca1",
+      "bytes": 243
+    },
+    "Minecraft.World/AnvilTile.cpp": {
+      "sha256": "1715dbed31e4443f6ddd91e4ed590757c8745ef61bbb4afbde069185726a0900",
+      "bytes": 3020
+    },
+    "Minecraft.World/PoweredMetalTile.cpp": {
+      "sha256": "5bc6f96835fbaeb75a11908949be0271a482ad073c239ec9e96df085385679c1",
+      "bytes": 337
+    },
+    "Minecraft.World/QuartzBlockTile.cpp": {
+      "sha256": "ca0cdfe04f91300078c7c41143cad64cc155ef8eff621ed2e594dd4b1613599b",
+      "bytes": 3193
+    },
+    "Minecraft.World/StainedGlassPaneBlock.cpp": {
+      "sha256": "d42d614d67a4b9dc1b69aeceb97f9efdd73cea21b24bd2131a504c5f4f723df6",
+      "bytes": 1378
+    },
+    "Minecraft.World/HayBlockTile.cpp": {
+      "sha256": "c7417caf1dbe2e54d46e6f7792e75fdee2a0592a1a4947bf627b6f9c876bd4d2",
+      "bytes": 475
+    },
+    "Minecraft.World/WoolCarpetTile.cpp": {
+      "sha256": "a99dd44f0b2ecbdcb70a8c8a881dbb9dd81f36890aa2cdd5179374631ca68cb1",
+      "bytes": 2592
+    },
+    "Minecraft.World/HalfSlabTile.cpp": {
+      "sha256": "51b5af087238ba5a049474aa6479027125638a59922905a1e8c1e59d634bb305",
+      "bytes": 3422
+    },
+    "Minecraft.World/HalfTransparentTile.cpp": {
+      "sha256": "c4a14fff5a69e28d878824e6ca355f5a98bd93b082190c6e34c898882a805372",
+      "bytes": 826
+    },
+    "Minecraft.World/TransparentTile.cpp": {
+      "sha256": "710bece6afe89ef910fd6542f949627cea5361e39ea85db0b323c9f8aa164182",
+      "bytes": 628
+    },
+    "Minecraft.World/LiquidTile.cpp": {
+      "sha256": "735027ef63c90fae94e895665a6f422a5b654d17c2df4242ddf64cb5108f808f",
+      "bytes": 11439
+    },
+    "Minecraft.World/BaseRailTile.cpp": {
+      "sha256": "7c9e2fe1239c7c4fea185835c2a20c6b3c4baffbc1ce63c11bc68f1b6e2a92e4",
+      "bytes": 11022
+    },
+    "Minecraft.World/BasePressurePlateTile.cpp": {
+      "sha256": "c559f5f003a342bbe0906a5165011528d396de342af35f7c43395156b1a9a2eb",
+      "bytes": 4726
+    },
+    "Minecraft.World/DiodeTile.cpp": {
+      "sha256": "917ae02e0fc9cb1452b9d8680293480e1678870f2065de953e7a08b376644016",
+      "bytes": 8489
+    },
+    "Minecraft.World/ButtonTile.cpp": {
+      "sha256": "6147cf59aa1f8266ad0ee825c24bdf0c87fc02379f6b91161a7cc1ded44814ff",
+      "bytes": 8918
+    },
+    "Minecraft.World/RotatedPillarTile.cpp": {
+      "sha256": "7a02cb2ad52d2f9c4cd5a50f8294ee6c5545bd5e0f38cdcddba612c853913276",
+      "bytes": 1569
+    },
+    "Minecraft.World/BaseEntityTile.cpp": {
+      "sha256": "e778425b191a341ec03fd2223e6e65ca343681be4bfbea9aef44fd0a62947b6b",
+      "bytes": 898
+    }
+  },
+  "tileLighting": {
+    "1": {
+      "class": "StoneTile",
+      "sourcefn": "Tile::stone = (new StoneTile(1))\t\t\t\t\t\t\t\t\t\t->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"stone\")->setDescriptionId(IDS_TILE_STONE)->setUseDescriptionId(IDS_DESC_STONE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "2": {
+      "class": "GrassTile",
+      "sourcefn": "Tile::grass = static_cast<GrassTile *>((new GrassTile(2))->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"grass\")->setDescriptionId(IDS_TILE_GRASS)->setUseDescriptionId(IDS_DESC_GRASS));",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "3": {
+      "class": "DirtTile",
+      "sourcefn": "Tile::dirt = (new DirtTile(3))\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L\"dirt\")->setDescriptionId(IDS_TILE_DIRT)->setUseDescriptionId(IDS_DESC_DIRT);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "4": {
+      "class": "Tile",
+      "sourcefn": "Tile::cobblestone = (new Tile(4, Material::stone))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_stone)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"cobblestone\")->setDescriptionId(IDS_TILE_STONE_BRICK)->setUseDescriptionId(IDS_DESC_STONE_BRICK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "5": {
+      "class": "WoodTile",
+      "sourcefn": "Tile::wood = (new WoodTile(5))\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structwoodstuff,\tItem::eMaterial_wood)->setDestroyTime(2.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"planks\")->setDescriptionId(IDS_TILE_OAKWOOD_PLANKS)->sendTileData()->setUseDescriptionId(IDS_DESC_WOODENPLANKS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "7": {
+      "class": "Tile",
+      "sourcefn": "Tile::unbreakable = (new Tile(7, Material::stone))\t\t\t\t\t\t->setIndestructible()->setExplodeable(6000000)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"bedrock\")->setDescriptionId(IDS_TILE_BEDROCK)->setNotCollectStatistics()->setUseDescriptionId(IDS_DESC_BEDROCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "8": {
+      "class": "LiquidTileDynamic",
+      "sourcefn": "Tile::water = static_cast<LiquidTile *>((new LiquidTileDynamic(8, Material::water))->setDestroyTime(100.0f)->setLightBlock(3)->setIconName(L\"water_flow\")->setDescriptionId(IDS_TILE_WATER)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_WATER));",
+      "lightBlock": 3,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "9": {
+      "class": "LiquidTileStatic",
+      "sourcefn": "Tile::calmWater = (new LiquidTileStatic(9, Material::water))\t\t\t->setDestroyTime(100.0f)->setLightBlock(3)->setIconName(L\"water_still\")->setDescriptionId(IDS_TILE_WATER)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_WATER);",
+      "lightBlock": 3,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "10": {
+      "class": "LiquidTileDynamic",
+      "sourcefn": "Tile::lava = static_cast<LiquidTile *>((new LiquidTileDynamic(10, Material::lava))->setDestroyTime(00.0f)->setLightEmission(1.0f)->setLightBlock(255)->setIconName(L\"lava_flow\")->setDescriptionId(IDS_TILE_LAVA)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_LAVA));",
+      "lightBlock": 255,
+      "emission": 15,
+      "occludesAO_subset": false
+    },
+    "11": {
+      "class": "LiquidTileStatic",
+      "sourcefn": "Tile::calmLava = (new LiquidTileStatic(11, Material::lava))\t->setDestroyTime(100.0f)->setLightEmission(1.0f)->setLightBlock(255)->setIconName(L\"lava_still\")->setDescriptionId(IDS_TILE_LAVA)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_LAVA);",
+      "lightBlock": 255,
+      "emission": 15,
+      "occludesAO_subset": false
+    },
+    "12": {
+      "class": "HeavyTile",
+      "sourcefn": "Tile::sand = (new HeavyTile(12))\t\t\t\t\t\t\t->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L\"sand\")->setDescriptionId(IDS_TILE_SAND)->setUseDescriptionId(IDS_DESC_SAND);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "13": {
+      "class": "GravelTile",
+      "sourcefn": "Tile::gravel = (new GravelTile(13))\t\t\t\t\t\t\t->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L\"gravel\")->setDescriptionId(IDS_TILE_GRAVEL)->setUseDescriptionId(IDS_DESC_GRAVEL);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "14": {
+      "class": "OreTile",
+      "sourcefn": "Tile::goldOre = (new OreTile(14))\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"gold_ore\")->setDescriptionId(IDS_TILE_ORE_GOLD)->setUseDescriptionId(IDS_DESC_ORE_GOLD);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "15": {
+      "class": "OreTile",
+      "sourcefn": "Tile::ironOre = (new OreTile(15))\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"iron_ore\")->setDescriptionId(IDS_TILE_ORE_IRON)->setUseDescriptionId(IDS_DESC_ORE_IRON);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "16": {
+      "class": "OreTile",
+      "sourcefn": "Tile::coalOre = (new OreTile(16))\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"coal_ore\")->setDescriptionId(IDS_TILE_ORE_COAL)->setUseDescriptionId(IDS_DESC_ORE_COAL);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "17": {
+      "class": "TreeTile",
+      "sourcefn": "Tile::treeTrunk = (new TreeTile(17))->setDestroyTime(2.0f)\t->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"log\")->setDescriptionId(IDS_TILE_LOG)->sendTileData()->setUseDescriptionId(IDS_DESC_LOG);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "18": {
+      "class": "LeafTile",
+      "sourcefn": "Tile::leaves = static_cast<LeafTile *>((new LeafTile(18))->setDestroyTime(0.2f)->setLightBlock(1)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"leaves\")->setDescriptionId(IDS_TILE_LEAVES)->sendTileData(LeafTile::LEAF_TYPE_MASK)->setUseDescriptionId(IDS_DESC_LEAVES));",
+      "lightBlock": 1,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "19": {
+      "class": "Sponge",
+      "sourcefn": "Tile::sponge = (new Sponge(19))\t\t\t\t\t\t\t\t->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"sponge\")->setDescriptionId(IDS_TILE_SPONGE)->setUseDescriptionId(IDS_DESC_SPONGE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "20": {
+      "class": "GlassTile",
+      "sourcefn": "Tile::glass = (new GlassTile(20, Material::glass, false))\t->setDestroyTime(0.3f)->setSoundType(Tile::SOUND_GLASS)->setIconName(L\"glass\")->setDescriptionId(IDS_TILE_GLASS)->setUseDescriptionId(IDS_DESC_GLASS);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "21": {
+      "class": "OreTile",
+      "sourcefn": "Tile::lapisOre = (new OreTile(21))\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"lapis_ore\")->setDescriptionId(IDS_TILE_ORE_LAPIS)->setUseDescriptionId(IDS_DESC_ORE_LAPIS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "22": {
+      "class": "Tile",
+      "sourcefn": "Tile::lapisBlock = (new Tile(22, Material::stone))\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_lapis)->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"lapis_block\")->setDescriptionId(IDS_TILE_BLOCK_LAPIS)->setUseDescriptionId(IDS_DESC_BLOCK_LAPIS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "23": {
+      "class": "DispenserTile",
+      "sourcefn": "Tile::dispenser = (new DispenserTile(23))\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_redstoneContainer,\tItem::eMaterial_undefined)->setDestroyTime(3.5f)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"dispenser\")->setDescriptionId(IDS_TILE_DISPENSER)->sendTileData()->setUseDescriptionId(IDS_DESC_DISPENSER);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "24": {
+      "class": "SandStoneTile",
+      "sourcefn": "Tile::sandStone = (new SandStoneTile(24))\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_sand)->setSoundType(Tile::SOUND_STONE)->setDestroyTime(0.8f)->sendTileData()->setIconName(L\"sandstone\")->setDescriptionId(IDS_TILE_SANDSTONE)->setUseDescriptionId(IDS_DESC_SANDSTONE)->sendTileData();",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "29": {
+      "class": "PistonBaseTile",
+      "sourcefn": "Tile::pistonStickyBase = static_cast<PistonBaseTile *>((new PistonBaseTile(29, true))->setBaseItemTypeAndMaterial(Item::eBaseItemType_piston, Item::eMaterial_stickypiston)->setIconName(L\"pistonStickyBase\")->setDescriptionId(IDS_TILE_PISTON_STICK_BASE)->setUseDescriptionId(IDS_DESC_STICKY_PISTON)->sendTileData());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "30": {
+      "class": "WebTile",
+      "sourcefn": "Tile::web = (new WebTile(30))\t\t\t\t\t\t\t\t\t\t\t\t->setLightBlock(1)->setDestroyTime(4.0f)->setIconName(L\"web\")->setDescriptionId(IDS_TILE_WEB)->setUseDescriptionId(IDS_DESC_WEB);",
+      "lightBlock": 1,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "31": {
+      "class": "TallGrass",
+      "sourcefn": "Tile::tallgrass = static_cast<TallGrass *>((new TallGrass(31))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"tallgrass\")->setDescriptionId(IDS_TILE_TALL_GRASS)->setUseDescriptionId(IDS_DESC_TALL_GRASS)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "32": {
+      "class": "DeadBushTile",
+      "sourcefn": "Tile::deadBush = static_cast<DeadBushTile *>((new DeadBushTile(32))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"deadbush\")->setDescriptionId(IDS_TILE_DEAD_BUSH)->setUseDescriptionId(IDS_DESC_DEAD_BUSH)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "35": {
+      "class": "ColoredTile",
+      "sourcefn": "Tile::wool = (new ColoredTile(35, Material::cloth))\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_cloth,\tItem::eMaterial_cloth)->setDestroyTime(0.8f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L\"wool_colored\")->setDescriptionId(IDS_TILE_CLOTH)->sendTileData()->setUseDescriptionId(IDS_DESC_WOOL);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "37": {
+      "class": "Bush",
+      "sourcefn": "Tile::flower = static_cast<Bush *>((new Bush(37))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"flower_dandelion\")->setDescriptionId(IDS_TILE_FLOWER)->setUseDescriptionId(IDS_DESC_FLOWER)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "38": {
+      "class": "Bush",
+      "sourcefn": "Tile::rose = static_cast<Bush *>((new Bush(38))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"flower_rose\")->setDescriptionId(IDS_TILE_ROSE)->setUseDescriptionId(IDS_DESC_FLOWER)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "39": {
+      "class": "Mushroom",
+      "sourcefn": "Tile::mushroom_brown = static_cast<Bush *>((new Mushroom(39))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setLightEmission(2 / 16.0f)->setIconName(L\"mushroom_brown\")->setDescriptionId(IDS_TILE_MUSHROOM)->setUseDescriptionId(IDS_DESC_MUSHROOM)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 1,
+      "occludesAO_subset": false
+    },
+    "40": {
+      "class": "Mushroom",
+      "sourcefn": "Tile::mushroom_red = static_cast<Bush *>((new Mushroom(40))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"mushroom_red\")->setDescriptionId(IDS_TILE_MUSHROOM)->setUseDescriptionId(IDS_DESC_MUSHROOM)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "41": {
+      "class": "MetalTile",
+      "sourcefn": "Tile::goldBlock = (new MetalTile(41))\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_gold)->setDestroyTime(3.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"gold_block\")->setDescriptionId(IDS_TILE_BLOCK_GOLD)->setUseDescriptionId(IDS_DESC_BLOCK_GOLD);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "42": {
+      "class": "MetalTile",
+      "sourcefn": "Tile::ironBlock = (new MetalTile(42))\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_iron)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"iron_block\")->setDescriptionId(IDS_TILE_BLOCK_IRON)->setUseDescriptionId(IDS_DESC_BLOCK_IRON);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "43": {
+      "class": "StoneSlabTile",
+      "sourcefn": "Tile::stoneSlab = static_cast<HalfSlabTile *>((new StoneSlabTile(Tile::stoneSlab_Id, true))->setBaseItemTypeAndMaterial(Item::eBaseItemType_slab, Item::eMaterial_stone)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"stoneSlab\")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_SLAB));",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "44": {
+      "class": "StoneSlabTile",
+      "sourcefn": "Tile::stoneSlabHalf = static_cast<HalfSlabTile *>((new StoneSlabTile(Tile::stoneSlabHalf_Id, false))->setBaseItemTypeAndMaterial(Item::eBaseItemType_halfslab, Item::eMaterial_stone)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"stoneSlab\")->setDescriptionId(IDS_TILE_STONESLAB)->setUseDescriptionId(IDS_DESC_HALFSLAB));",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "45": {
+      "class": "Tile",
+      "sourcefn": "Tile::redBrick = (new Tile(45, Material::stone))\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_brick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"brick\")->setDescriptionId(IDS_TILE_BRICK)->setUseDescriptionId(IDS_DESC_BRICK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "46": {
+      "class": "TntTile",
+      "sourcefn": "Tile::tnt = (new TntTile(46))\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"tnt\")->setDescriptionId(IDS_TILE_TNT)->setUseDescriptionId(IDS_DESC_TNT);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "47": {
+      "class": "BookshelfTile",
+      "sourcefn": "Tile::bookshelf = (new BookshelfTile(47))\t\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_paper, Item::eMaterial_bookshelf)->setDestroyTime(1.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"bookshelf\")->setDescriptionId(IDS_TILE_BOOKSHELF)->setUseDescriptionId(IDS_DESC_BOOKSHELF);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "48": {
+      "class": "Tile",
+      "sourcefn": "Tile::mossyCobblestone = (new Tile(48, Material::stone))\t\t\t\t\t\t\t\t\t->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"cobblestone_mossy\")->setDescriptionId(IDS_TILE_STONE_MOSS)->setUseDescriptionId(IDS_DESC_MOSS_STONE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "49": {
+      "class": "ObsidianTile",
+      "sourcefn": "Tile::obsidian = (new ObsidianTile(49))\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(50.0f)->setExplodeable(2000)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"obsidian\")->setDescriptionId(IDS_TILE_OBSIDIAN)->setUseDescriptionId(IDS_DESC_OBSIDIAN);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "50": {
+      "class": "TorchTile",
+      "sourcefn": "Tile::torch = (new TorchTile(50))\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,\tItem::eMaterial_wood)->setDestroyTime(0.0f)->setLightEmission(15 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"torch_on\")->setDescriptionId(IDS_TILE_TORCH)->setUseDescriptionId(IDS_DESC_TORCH)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 14,
+      "occludesAO_subset": false
+    },
+    "51": {
+      "class": "FireTile",
+      "sourcefn": "Tile::fire = static_cast<FireTile *>(((new FireTile(51))->setDestroyTime(0.0f)->setLightEmission(1.0f)->setSoundType(Tile::SOUND_WOOD))->setIconName(L\"fire\")->setDescriptionId(IDS_TILE_FIRE)->setNotCollectStatistics()->setUseDescriptionId(-1));",
+      "lightBlock": 0,
+      "emission": 15,
+      "occludesAO_subset": false
+    },
+    "52": {
+      "class": "MobSpawnerTile",
+      "sourcefn": "Tile::mobSpawner = (new MobSpawnerTile(52))\t\t\t\t\t\t\t\t->setDestroyTime(5.0f)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"mob_spawner\")->setDescriptionId(IDS_TILE_MOB_SPAWNER)->setNotCollectStatistics()->setUseDescriptionId(IDS_DESC_MOB_SPAWNER);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "53": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_wood =\t (new StairTile(53, Tile::wood,0))\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_wood)\t\t->setIconName(L\"stairsWood\")->setDescriptionId(IDS_TILE_STAIRS_WOOD)\t\t\t\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "54": {
+      "class": "ChestTile",
+      "sourcefn": "Tile::chest = static_cast<ChestTile *>((new ChestTile(54, ChestTile::TYPE_BASIC))->setBaseItemTypeAndMaterial(Item::eBaseItemType_chest, Item::eMaterial_wood)->setDestroyTime(2.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"chest\")->setDescriptionId(IDS_TILE_CHEST)->sendTileData()->setUseDescriptionId(IDS_DESC_CHEST));",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "55": {
+      "class": "RedStoneDustTile",
+      "sourcefn": "Tile::redStoneDust = static_cast<RedStoneDustTile *>((new RedStoneDustTile(55))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_NORMAL)->setIconName(L\"redstone_dust\")->setDescriptionId(IDS_TILE_REDSTONE_DUST)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_REDSTONE_DUST));",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "56": {
+      "class": "OreTile",
+      "sourcefn": "Tile::diamondOre = (new OreTile(56))\t\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"diamond_ore\")->setDescriptionId(IDS_TILE_ORE_DIAMOND)->setUseDescriptionId(IDS_DESC_ORE_DIAMOND);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "57": {
+      "class": "MetalTile",
+      "sourcefn": "Tile::diamondBlock = (new MetalTile(57))\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_diamond)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"diamond_block\")->setDescriptionId(IDS_TILE_BLOCK_DIAMOND)->setUseDescriptionId(IDS_DESC_BLOCK_DIAMOND);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "58": {
+      "class": "WorkbenchTile",
+      "sourcefn": "Tile::workBench = (new WorkbenchTile(58))\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,\tItem::eMaterial_wood)->setDestroyTime(2.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"crafting_table\")->setDescriptionId(IDS_TILE_WORKBENCH)->setUseDescriptionId(IDS_DESC_CRAFTINGTABLE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "59": {
+      "class": "CropTile",
+      "sourcefn": "Tile::wheat = (new CropTile(59))\t\t\t\t\t\t\t\t\t\t->setIconName(L\"wheat\")->setDescriptionId(IDS_TILE_CROPS)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_CROPS)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "60": {
+      "class": "FarmTile",
+      "sourcefn": "Tile::farmland = (new FarmTile(60))\t\t\t\t\t\t\t\t\t\t->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L\"farmland\")->setDescriptionId(IDS_TILE_FARMLAND)->setUseDescriptionId(IDS_DESC_FARMLAND)->sendTileData();",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "61": {
+      "class": "FurnaceTile",
+      "sourcefn": "Tile::furnace = (new FurnaceTile(61, false))\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,\tItem::eMaterial_stone)->setDestroyTime(3.5f)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"furnace\")->setDescriptionId(IDS_TILE_FURNACE)->sendTileData()->setUseDescriptionId(IDS_DESC_FURNACE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "64": {
+      "class": "DoorTile",
+      "sourcefn": "Tile::door_wood = (new DoorTile(64, Material::wood))\t\t\t\t\t->setDestroyTime(3.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"door_wood\")->setDescriptionId(IDS_TILE_DOOR_WOOD)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_DOOR_WOOD);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "65": {
+      "class": "LadderTile",
+      "sourcefn": "Tile::ladder = (new LadderTile(65))\t\t\t\t\t\t\t\t\t\t->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_LADDER)->setIconName(L\"ladder\")->setDescriptionId(IDS_TILE_LADDER)->sendTileData()->setUseDescriptionId(IDS_DESC_LADDER)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "66": {
+      "class": "RailTile",
+      "sourcefn": "Tile::rail = (new RailTile(66))\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_rail,\tItem::eMaterial_iron)->setDestroyTime(0.7f)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"rail_normal\")->setDescriptionId(IDS_TILE_RAIL)->sendTileData()->setUseDescriptionId(IDS_DESC_RAIL)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "67": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_stone =(new StairTile(67, Tile::cobblestone,0))\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_stone)\t\t->setIconName(L\"stairsStone\")->setDescriptionId(IDS_TILE_STAIRS_STONE)\t\t\t\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "69": {
+      "class": "LeverTile",
+      "sourcefn": "Tile::lever = (new LeverTile(69))\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_lever,\tItem::eMaterial_wood)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"lever\")->setDescriptionId(IDS_TILE_LEVER)->sendTileData()->setUseDescriptionId(IDS_DESC_LEVER);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "70": {
+      "class": "PressurePlateTile",
+      "sourcefn": "Tile::pressurePlate_stone = (Tile *)(new PressurePlateTile(70, L\"stone\", Material::stone, PressurePlateTile::mobs))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_pressureplate,\tItem::eMaterial_stone)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_STONE)->setDescriptionId(IDS_TILE_PRESSURE_PLATE)->sendTileData()->setUseDescriptionId(IDS_DESC_PRESSUREPLATE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "71": {
+      "class": "DoorTile",
+      "sourcefn": "Tile::door_iron = (new DoorTile(71, Material::metal))\t\t->setDestroyTime(5.0f)->setSoundType(Tile::SOUND_METAL)->setIconName(L\"door_iron\")->setDescriptionId(IDS_TILE_DOOR_IRON)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_DOOR_IRON);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "72": {
+      "class": "PressurePlateTile",
+      "sourcefn": "Tile::pressurePlate_wood = (new PressurePlateTile(72, L\"planks_oak\", Material::wood, PressurePlateTile::everything))\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_pressureplate,\tItem::eMaterial_wood)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_PRESSURE_PLATE)->sendTileData()->setUseDescriptionId(IDS_DESC_PRESSUREPLATE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "73": {
+      "class": "RedStoneOreTile",
+      "sourcefn": "Tile::redStoneOre = (new RedStoneOreTile(73,false))\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"redstone_ore\")->setDescriptionId(IDS_TILE_ORE_REDSTONE)->sendTileData()->setUseDescriptionId(IDS_DESC_ORE_REDSTONE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "74": {
+      "class": "RedStoneOreTile",
+      "sourcefn": "Tile::redStoneOre_lit = (new RedStoneOreTile(74, true))\t\t->setLightEmission(10 / 16.0f)->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"redstone_ore\")->setDescriptionId(IDS_TILE_ORE_REDSTONE)->sendTileData()->setUseDescriptionId(IDS_DESC_ORE_REDSTONE);",
+      "lightBlock": 255,
+      "emission": 9,
+      "occludesAO_subset": true
+    },
+    "75": {
+      "class": "NotGateTile",
+      "sourcefn": "Tile::redstoneTorch_off = (new NotGateTile(75, false))\t\t->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"redstone_torch_off\")->setDescriptionId(IDS_TILE_NOT_GATE)->sendTileData()->setUseDescriptionId(IDS_DESC_REDSTONETORCH)->disableMipmap();",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "76": {
+      "class": "NotGateTile",
+      "sourcefn": "Tile::redstoneTorch_on = (new NotGateTile(76, true))\t\t->setDestroyTime(0.0f)->setLightEmission(8 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"redstone_torch_on\")->setDescriptionId(IDS_TILE_NOT_GATE)->sendTileData()->setUseDescriptionId(IDS_DESC_REDSTONETORCH)->disableMipmap();",
+      "lightBlock": 255,
+      "emission": 7,
+      "occludesAO_subset": true
+    },
+    "77": {
+      "class": "StoneButtonTile",
+      "sourcefn": "Tile::button = (new StoneButtonTile(77))\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_button,\tItem::eMaterial_stone)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"button\")->setDescriptionId(IDS_TILE_BUTTON)->sendTileData()->setUseDescriptionId(IDS_DESC_BUTTON);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "78": {
+      "class": "TopSnowTile",
+      "sourcefn": "Tile::topSnow = (new TopSnowTile(78))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_snow)->setDestroyTime(0.1f)->setSoundType(Tile::SOUND_SNOW)->setIconName(L\"snow\")->setDescriptionId(IDS_TILE_SNOW)->setUseDescriptionId(IDS_DESC_TOP_SNOW)->sendTileData()->setLightBlock(0);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "79": {
+      "class": "IceTile",
+      "sourcefn": "Tile::ice = (new IceTile(79))\t\t\t\t\t\t\t\t->setDestroyTime(0.5f)->setLightBlock(3)->setSoundType(Tile::SOUND_GLASS)->setIconName(L\"ice\")->setDescriptionId(IDS_TILE_ICE)->setUseDescriptionId(IDS_DESC_ICE);",
+      "lightBlock": 3,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "80": {
+      "class": "SnowTile",
+      "sourcefn": "Tile::snow = (new SnowTile(80))\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_snow)->setDestroyTime(0.2f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L\"snow\")->setDescriptionId(IDS_TILE_SNOW)->setUseDescriptionId(IDS_DESC_SNOW);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "81": {
+      "class": "CactusTile",
+      "sourcefn": "Tile::cactus = (new CactusTile(81))\t\t\t\t\t\t\t\t\t->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_CLOTH)->setIconName(L\"cactus\")->setDescriptionId(IDS_TILE_CACTUS)->setUseDescriptionId(IDS_DESC_CACTUS)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "82": {
+      "class": "ClayTile",
+      "sourcefn": "Tile::clay = (new ClayTile(82))\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_clay)->setDestroyTime(0.6f)->setSoundType(Tile::SOUND_GRAVEL)->setIconName(L\"clay\")->setDescriptionId(IDS_TILE_CLAY)->setUseDescriptionId(IDS_DESC_CLAY_TILE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "83": {
+      "class": "ReedTile",
+      "sourcefn": "Tile::reeds = (new ReedTile(83))\t\t\t\t\t\t\t\t\t->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_GRASS)->setIconName(L\"reeds\")->setDescriptionId(IDS_TILE_REEDS)->setNotCollectStatistics()->setUseDescriptionId(IDS_DESC_REEDS)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "85": {
+      "class": "FenceTile",
+      "sourcefn": "Tile::fence = (new FenceTile(85, L\"planks_oak\", Material::wood))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,\tItem::eMaterial_wood)->setDestroyTime(2.0f)->setExplodeable(5)->setSoundType(Tile::SOUND_WOOD)->setDescriptionId(IDS_TILE_FENCE)->setUseDescriptionId(IDS_DESC_FENCE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "86": {
+      "class": "PumpkinTile",
+      "sourcefn": "Tile::pumpkin = (new PumpkinTile(86, false))\t\t\t\t\t\t->setDestroyTime(1.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"pumpkin\")->setDescriptionId(IDS_TILE_PUMPKIN)->sendTileData()->setUseDescriptionId(IDS_DESC_PUMPKIN);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "87": {
+      "class": "NetherrackTile",
+      "sourcefn": "Tile::netherRack = (new NetherrackTile(87))\t\t\t\t\t\t\t->setDestroyTime(0.4f)->setSoundType(Tile::SOUND_STONE)->setIconName(L\"netherrack\")->setDescriptionId(IDS_TILE_HELL_ROCK)->setUseDescriptionId(IDS_DESC_HELL_ROCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "88": {
+      "class": "SoulSandTile",
+      "sourcefn": "Tile::soulsand = (new SoulSandTile(88))\t\t\t\t\t\t\t\t->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_SAND)->setIconName(L\"soul_sand\")->setDescriptionId(IDS_TILE_HELL_SAND)->setUseDescriptionId(IDS_DESC_HELL_SAND);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "89": {
+      "class": "Glowstonetile",
+      "sourcefn": "Tile::glowstone = (new Glowstonetile(89, Material::glass))\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_torch,\tItem::eMaterial_glowstone)->setDestroyTime(0.3f)->setSoundType(Tile::SOUND_GLASS)->setLightEmission(1.0f)->setIconName(L\"glowstone\")->setDescriptionId(IDS_TILE_LIGHT_GEM)->setUseDescriptionId(IDS_DESC_GLOWSTONE);",
+      "lightBlock": 255,
+      "emission": 15,
+      "occludesAO_subset": false
+    },
+    "93": {
+      "class": "RepeaterTile",
+      "sourcefn": "Tile::diode_off = static_cast<RepeaterTile *>((new RepeaterTile(93, false))->setDestroyTime(0.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"repeater_off\")->setDescriptionId(IDS_ITEM_DIODE)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "94": {
+      "class": "RepeaterTile",
+      "sourcefn": "Tile::diode_on = static_cast<RepeaterTile *>((new RepeaterTile(94, true))->setDestroyTime(0.0f)->setLightEmission(10 / 16.0f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"repeater_on\")->setDescriptionId(IDS_ITEM_DIODE)->setNotCollectStatistics()->sendTileData()->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER)->disableMipmap());",
+      "lightBlock": 0,
+      "emission": 9,
+      "occludesAO_subset": false
+    },
+    "95": {
+      "class": "StainedGlassBlock",
+      "sourcefn": "Tile::stained_glass = (new StainedGlassBlock(95, Material::glass))->setBaseItemTypeAndMaterial(Item::eBaseItemType_glass,\tItem::eMaterial_glass)->setDestroyTime(0.3f)->setSoundType(SOUND_GLASS)->setIconName(L\"glass\")->setDescriptionId(IDS_TILE_STAINED_GLASS)->setUseDescriptionId(IDS_DESC_STAINED_GLASS);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "97": {
+      "class": "StoneMonsterTile",
+      "sourcefn": "Tile::monsterStoneEgg = (new StoneMonsterTile(97))\t\t\t\t->setDestroyTime(0.75f)->setIconName(L\"monsterStoneEgg\")->setDescriptionId(IDS_TILE_STONE_SILVERFISH)->setUseDescriptionId(IDS_DESC_STONE_SILVERFISH);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "98": {
+      "class": "SmoothStoneBrickTile",
+      "sourcefn": "Tile::stoneBrick = (new SmoothStoneBrickTile(98))\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_stoneSmooth)->setDestroyTime(1.5f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setIconName(L\"stonebrick\")->setDescriptionId(IDS_TILE_STONE_BRICK_SMOOTH)->setUseDescriptionId(IDS_DESC_STONE_BRICK_SMOOTH);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "99": {
+      "class": "HugeMushroomTile",
+      "sourcefn": "Tile::hugeMushroom_brown = (new HugeMushroomTile(99, Material::wood, HugeMushroomTile::MUSHROOM_TYPE_BROWN))\t\t->setDestroyTime(0.2f)->setSoundType(SOUND_WOOD)->setIconName(L\"mushroom_block\")->setDescriptionId(IDS_TILE_HUGE_MUSHROOM_1)->setUseDescriptionId(IDS_DESC_MUSHROOM)->sendTileData();",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "100": {
+      "class": "HugeMushroomTile",
+      "sourcefn": "Tile::hugeMushroom_red = (new HugeMushroomTile(100, Material::wood, HugeMushroomTile::MUSHROOM_TYPE_RED))\t\t\t->setDestroyTime(0.2f)->setSoundType(SOUND_WOOD)->setIconName(L\"mushroom_block\")->setDescriptionId(IDS_TILE_HUGE_MUSHROOM_2)->setUseDescriptionId(IDS_DESC_MUSHROOM)->sendTileData();",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "101": {
+      "class": "ThinFenceTile",
+      "sourcefn": "Tile::ironFence = (new ThinFenceTile(101, L\"iron_bars\", L\"iron_bars\", Material::metal, true))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,\t\tItem::eMaterial_iron)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(SOUND_METAL)->setDescriptionId(IDS_TILE_IRON_FENCE)->setUseDescriptionId(IDS_DESC_IRON_FENCE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "102": {
+      "class": "ThinFenceTile",
+      "sourcefn": "Tile::thinGlass = (new ThinFenceTile(102, L\"glass\", L\"glass_pane_top\", Material::glass, false))",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "106": {
+      "class": "VineTile",
+      "sourcefn": "Tile::vine = (new VineTile(106))->setDestroyTime(0.2f)\t\t\t\t\t\t->setSoundType(SOUND_GRASS)->setIconName(L\"vine\")->setDescriptionId(IDS_TILE_VINE)->setUseDescriptionId(IDS_DESC_VINE)->sendTileData();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "108": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_bricks = (new StairTile(108, Tile::redBrick,0))\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_brick)\t\t->setIconName(L\"stairsBrick\")->setDescriptionId(IDS_TILE_STAIRS_BRICKS)\t\t\t\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "109": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_stoneBrickSmooth = (new StairTile(109, Tile::stoneBrick,0))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_stoneSmooth)->setIconName(L\"stairsStoneBrickSmooth\")->setDescriptionId(IDS_TILE_STAIRS_STONE_BRICKS_SMOOTH)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "110": {
+      "class": "MycelTile",
+      "sourcefn": "Tile::mycel = static_cast<MycelTile *>((new MycelTile(110))->setDestroyTime(0.6f)->setSoundType(SOUND_GRASS)->setIconName(L\"mycelium\")->setDescriptionId(IDS_TILE_MYCEL)->setUseDescriptionId(IDS_DESC_MYCEL));",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "111": {
+      "class": "WaterlilyTile",
+      "sourcefn": "Tile::waterLily = (new WaterlilyTile(111))\t\t\t\t\t\t\t\t\t->setDestroyTime(0.0f)->setSoundType(SOUND_GRASS)->setIconName(L\"waterlily\")->setDescriptionId(IDS_TILE_WATERLILY)->setUseDescriptionId(IDS_DESC_WATERLILY);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "112": {
+      "class": "Tile",
+      "sourcefn": "Tile::netherBrick = (new Tile(112, Material::stone))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setIconName(L\"nether_brick\")->setDescriptionId(IDS_TILE_NETHERBRICK)->setUseDescriptionId(IDS_DESC_NETHERBRICK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "113": {
+      "class": "FenceTile",
+      "sourcefn": "Tile::netherFence = (new FenceTile(113, L\"nether_brick\", Material::stone))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,\t\tItem::eMaterial_netherbrick)->setDestroyTime(2.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setDescriptionId(IDS_TILE_NETHERFENCE)->setUseDescriptionId(IDS_DESC_NETHERFENCE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "114": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_netherBricks = (new StairTile(114, Tile::netherBrick,0))\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_netherbrick)->setIconName(L\"stairsNetherBrick\")->setDescriptionId(IDS_TILE_STAIRS_NETHERBRICK)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "115": {
+      "class": "NetherWartTile",
+      "sourcefn": "Tile::netherStalk = (new NetherWartTile(115))\t\t\t\t\t\t\t\t->setIconName(L\"nether_wart\")->setDescriptionId(IDS_TILE_NETHERSTALK)->sendTileData()->setUseDescriptionId(IDS_DESC_NETHERSTALK);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "116": {
+      "class": "EnchantmentTableTile",
+      "sourcefn": "Tile::enchantTable = (new EnchantmentTableTile(116))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_device,\tItem::eMaterial_magic)->setDestroyTime(5.0f)->setExplodeable(2000)->setIconName(L\"enchanting_table\")->setDescriptionId(IDS_TILE_ENCHANTMENTTABLE)->setUseDescriptionId(IDS_DESC_ENCHANTMENTTABLE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "118": {
+      "class": "CauldronTile",
+      "sourcefn": "Tile::cauldron = static_cast<CauldronTile *>((new CauldronTile(118))->setDestroyTime(2.0f)->setIconName(L\"cauldron\")->setDescriptionId(IDS_TILE_CAULDRON)->sendTileData()->setUseDescriptionId(IDS_DESC_CAULDRON));",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "120": {
+      "class": "TheEndPortalFrameTile",
+      "sourcefn": "Tile::endPortalFrameTile = (new TheEndPortalFrameTile(120))\t\t\t\t\t->setSoundType(SOUND_GLASS)->setLightEmission(2 / 16.0f)->setDestroyTime(INDESTRUCTIBLE_DESTROY_TIME)->setIconName(L\"endframe\")->setDescriptionId(IDS_TILE_ENDPORTALFRAME)->sendTileData()->setExplodeable(6000000)->setUseDescriptionId(IDS_DESC_ENDPORTALFRAME);",
+      "lightBlock": 0,
+      "emission": 1,
+      "occludesAO_subset": false
+    },
+    "121": {
+      "class": "Tile",
+      "sourcefn": "Tile::endStone = (new Tile(121, Material::stone))\t\t\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setIconName(L\"end_stone\")->setDescriptionId(IDS_TILE_WHITESTONE)->setUseDescriptionId(IDS_DESC_WHITESTONE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "122": {
+      "class": "EggTile",
+      "sourcefn": "Tile::dragonEgg = (new EggTile(122))\t\t\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(15)->setSoundType(SOUND_STONE)->setLightEmission(2.0f / 16.0f)->setIconName(L\"dragon_egg\")->setDescriptionId(IDS_TILE_DRAGONEGG)->setUseDescriptionId(IDS_DESC_DRAGONEGG);",
+      "lightBlock": 255,
+      "emission": 1,
+      "occludesAO_subset": true
+    },
+    "123": {
+      "class": "RedlightTile",
+      "sourcefn": "Tile::redstoneLight = (new RedlightTile(123, false))\t\t\t\t\t\t\t\t\t->setDestroyTime(0.3f)->setSoundType(SOUND_GLASS)->setIconName(L\"redstone_lamp_off\")->setDescriptionId(IDS_TILE_REDSTONE_LIGHT)->setUseDescriptionId(IDS_DESC_REDSTONE_LIGHT);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "124": {
+      "class": "RedlightTile",
+      "sourcefn": "Tile::redstoneLight_lit = (new RedlightTile(124, true))\t\t\t\t\t\t\t\t\t->setDestroyTime(0.3f)->setSoundType(SOUND_GLASS)->setIconName(L\"redstone_lamp_on\")->setDescriptionId(IDS_TILE_REDSTONE_LIGHT)->setUseDescriptionId(IDS_DESC_REDSTONE_LIGHT);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "127": {
+      "class": "CocoaTile",
+      "sourcefn": "Tile::cocoa = (new CocoaTile(127))\t\t\t\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(0.2f)->setExplodeable(5)->setSoundType(SOUND_WOOD)->setIconName(L\"cocoa\")->sendTileData()->setDescriptionId(IDS_TILE_COCOA)->setUseDescriptionId(IDS_DESC_COCOA);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "128": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_sandstone = (new StairTile(128, Tile::sandStone,0))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_sand)\t->setIconName(L\"stairsSandstone\")->setDescriptionId(IDS_TILE_STAIRS_SANDSTONE)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "129": {
+      "class": "OreTile",
+      "sourcefn": "Tile::emeraldOre = (new OreTile(129))\t\t\t\t\t\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(SOUND_STONE)->setIconName(L\"emerald_ore\")->setDescriptionId(IDS_TILE_EMERALDORE)->setUseDescriptionId(IDS_DESC_EMERALDORE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "131": {
+      "class": "TripWireSourceTile",
+      "sourcefn": "Tile::tripWireSource =\tstatic_cast<TripWireSourceTile *>((new TripWireSourceTile(131))->setBaseItemTypeAndMaterial(Item::eBaseItemType_lever, Item::eMaterial_undefined)->setIconName(L\"trip_wire_source\")->sendTileData()->setDescriptionId(IDS_TILE_TRIPWIRE_SOURCE)->setUseDescriptionId(IDS_DESC_TRIPWIRE_SOURCE));",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "132": {
+      "class": "TripWireTile",
+      "sourcefn": "Tile::tripWire =\t\t(new TripWireTile(132))\t\t\t\t\t\t\t\t\t->setIconName(L\"trip_wire\")->sendTileData()->setDescriptionId(IDS_TILE_TRIPWIRE)->setUseDescriptionId(IDS_DESC_TRIPWIRE);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "133": {
+      "class": "MetalTile",
+      "sourcefn": "Tile::emeraldBlock =\t(new MetalTile(133))\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_emerald)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(SOUND_METAL)->setIconName(L\"emerald_block\")->setDescriptionId(IDS_TILE_EMERALDBLOCK)->setUseDescriptionId(IDS_DESC_EMERALDBLOCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "134": {
+      "class": "StairTile",
+      "sourcefn": "Tile::woodStairsDark =\t(new StairTile(134, Tile::wood, TreeTile::DARK_TRUNK))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_sprucewood)->setIconName(L\"stairsWoodSpruce\")->setDescriptionId(IDS_TILE_STAIRS_SPRUCEWOOD)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "135": {
+      "class": "StairTile",
+      "sourcefn": "Tile::woodStairsBirch =\t(new StairTile(135, Tile::wood, TreeTile::BIRCH_TRUNK))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_birchwood)->setIconName(L\"stairsWoodBirch\")->setDescriptionId(IDS_TILE_STAIRS_BIRCHWOOD)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "136": {
+      "class": "StairTile",
+      "sourcefn": "Tile::woodStairsJungle =(new StairTile(136, Tile::wood, TreeTile::JUNGLE_TRUNK))->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_junglewood)->setIconName(L\"stairsWoodJungle\")->setDescriptionId(IDS_TILE_STAIRS_JUNGLEWOOD)\t->sendTileData()->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "139": {
+      "class": "WallTile",
+      "sourcefn": "Tile::cobbleWall =\t\t(new WallTile(139, Tile::stoneBrick))\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_fence,\tItem::eMaterial_stone)->setIconName(L\"cobbleWall\")->setDescriptionId(IDS_TILE_COBBLESTONE_WALL)->setUseDescriptionId(IDS_DESC_COBBLESTONE_WALL);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "140": {
+      "class": "FlowerPotTile",
+      "sourcefn": "Tile::flowerPot =\t\t(new FlowerPotTile(140))\t\t\t\t\t\t\t\t->setDestroyTime(0.0f)->setSoundType(SOUND_NORMAL)->setIconName(L\"flower_pot\")->setDescriptionId(IDS_TILE_FLOWERPOT)->setUseDescriptionId(IDS_DESC_FLOWERPOT);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "141": {
+      "class": "CarrotTile",
+      "sourcefn": "Tile::carrots =\t\t\t(new CarrotTile(141))\t\t\t\t\t->setIconName(L\"carrots\")->setDescriptionId(IDS_TILE_CARROTS)->setUseDescriptionId(IDS_DESC_CARROTS)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "142": {
+      "class": "PotatoTile",
+      "sourcefn": "Tile::potatoes =\t\t(new PotatoTile(142))\t\t\t\t\t->setIconName(L\"potatoes\")->setDescriptionId(IDS_TILE_POTATOES)->setUseDescriptionId(IDS_DESC_POTATO)->disableMipmap();",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "143": {
+      "class": "WoodButtonTile",
+      "sourcefn": "Tile::button_wood =\t\t(new WoodButtonTile(143))\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_button,\tItem::eMaterial_wood)->setDestroyTime(0.5f)->setSoundType(Tile::SOUND_WOOD)->setIconName(L\"button\")->setDescriptionId(IDS_TILE_BUTTON)->sendTileData()->setUseDescriptionId(IDS_DESC_BUTTON);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "145": {
+      "class": "AnvilTile",
+      "sourcefn": "Tile::anvil =\t\t\t(new AnvilTile(145))\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_device, Item::eMaterial_iron)->setDestroyTime(5.0f)->setSoundType(SOUND_ANVIL)->setExplodeable(2000)->setIconName(L\"anvil\")->sendTileData()->setDescriptionId(IDS_TILE_ANVIL)->setUseDescriptionId(IDS_DESC_ANVIL);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "152": {
+      "class": "PoweredMetalTile",
+      "sourcefn": "Tile::redstoneBlock = (new PoweredMetalTile(152))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_redstone)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(SOUND_METAL)->setIconName(L\"redstone_block\")->setDescriptionId(IDS_TILE_REDSTONE_BLOCK)->setUseDescriptionId(IDS_DESC_REDSTONE_BLOCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "153": {
+      "class": "OreTile",
+      "sourcefn": "Tile::netherQuartz =\t(new OreTile(153))\t\t\t\t\t\t\t\t->setDestroyTime(3.0f)->setExplodeable(5)->setSoundType(SOUND_STONE)->setIconName(L\"quartz_ore\")->setDescriptionId(IDS_TILE_NETHER_QUARTZ)->setUseDescriptionId(IDS_DESC_NETHER_QUARTZ_ORE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "155": {
+      "class": "QuartzBlockTile",
+      "sourcefn": "Tile::quartzBlock =\t\t(new QuartzBlockTile(155))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_structblock,\tItem::eMaterial_quartz)->setSoundType(SOUND_STONE)->setDestroyTime(0.8f)->setIconName(L\"quartz_block\")->setDescriptionId(IDS_TILE_QUARTZ_BLOCK)->setUseDescriptionId(IDS_DESC_QUARTZ_BLOCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "156": {
+      "class": "StairTile",
+      "sourcefn": "Tile::stairs_quartz =\t(new StairTile(156, Tile::quartzBlock, QuartzBlockTile::TYPE_DEFAULT))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_stairs,\tItem::eMaterial_quartz)->setIconName(L\"stairsQuartz\")->setDescriptionId(IDS_TILE_STAIRS_QUARTZ)->setUseDescriptionId(IDS_DESC_STAIRS);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "159": {
+      "class": "ColoredTile",
+      "sourcefn": "Tile::clayHardened_colored = (new ColoredTile(159, Material::stone))\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_clay,\tItem::eMaterial_clay)->setDestroyTime(1.25f)->setExplodeable(7)->setSoundType(SOUND_STONE)->setIconName(L\"hardened_clay_stained\")->setDescriptionId(IDS_TILE_STAINED_CLAY)->setUseDescriptionId(IDS_DESC_STAINED_CLAY);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "160": {
+      "class": "StainedGlassPaneBlock",
+      "sourcefn": "Tile::stained_glass_pane = (new StainedGlassPaneBlock(160))\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_glass,\tItem::eMaterial_glass)->setDestroyTime(0.3f)->setSoundType(SOUND_GLASS)->setIconName(L\"glass\")->setDescriptionId(IDS_TILE_STAINED_GLASS_PANE)->setUseDescriptionId(IDS_DESC_STAINED_GLASS_PANE);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "170": {
+      "class": "HayBlockTile",
+      "sourcefn": "Tile::hayBlock = (new HayBlockTile(170))\t\t\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_wheat)->setDestroyTime(0.5f)->setSoundType(SOUND_GRASS)->setIconName(L\"hay_block\")->setDescriptionId(IDS_TILE_HAY)->setUseDescriptionId(IDS_DESC_HAY);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "171": {
+      "class": "WoolCarpetTile",
+      "sourcefn": "Tile::woolCarpet =\t\t(new WoolCarpetTile(171))\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_carpet,\tItem::eMaterial_cloth)->setDestroyTime(0.1f)->setSoundType(SOUND_CLOTH)->setIconName(L\"woolCarpet\")->setLightBlock(0)->setDescriptionId(IDS_TILE_CARPET)->setUseDescriptionId(IDS_DESC_CARPET);",
+      "lightBlock": 0,
+      "emission": 0,
+      "occludesAO_subset": false
+    },
+    "172": {
+      "class": "Tile",
+      "sourcefn": "Tile::clayHardened = (new Tile(172, Material::stone))\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_clay,\tItem::eMaterial_clay)->setDestroyTime(1.25f)->setExplodeable(7)->setSoundType(SOUND_STONE)->setIconName(L\"hardened_clay\")->setDescriptionId(IDS_TILE_HARDENED_CLAY)->setUseDescriptionId(IDS_DESC_HARDENED_CLAY);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    },
+    "173": {
+      "class": "Tile",
+      "sourcefn": "Tile::coalBlock = (new Tile(173, Material::stone))\t\t\t\t->setBaseItemTypeAndMaterial(Item::eBaseItemType_block,\tItem::eMaterial_coal)->setDestroyTime(5.0f)->setExplodeable(10)->setSoundType(SOUND_STONE)->setIconName(L\"coal_block\")->setDescriptionId(IDS_TILE_COAL)->setUseDescriptionId(IDS_DESC_COAL_BLOCK);",
+      "lightBlock": 255,
+      "emission": 0,
+      "occludesAO_subset": true
+    }
+  },
+  "sky": {
+    "sourcefn": "LevelRenderer::renderSky",
+    "rotation": "Ry(-90deg)*Rx(timeOfDay*360deg)",
+    "sun": {
+      "y": 100,
+      "halfSize": 30
+    },
+    "moon": {
+      "y": -100,
+      "halfSize": 20,
+      "atlas": [
+        4,
+        2
+      ]
+    },
+    "blend": "SRC_ALPHA,ONE; original straight RGBA, black stays black",
+    "projection": "GameRenderer::setupCamera/gluPerspective: vertical base FOV 70deg; shared focalLength(height)",
+    "phase": "Scene timeOfDay already applies Dimension::getTimeOfDay; moonPhase supplied separately, default full moon"
+  },
+  "limitations": [
+    "Bounded resident render window (production 96x256x96), NOT the full original Level/LevelChunk engine.",
+    "Window top assumes open sky; lateral/bottom boundaries are closed to incoming light. No outside-window chunk lookup.",
+    "15-level vertical skylight columns plus six-neighbour destination-opacity attenuation; full rebuild only on cache miss.",
+    "Two independent byte vectors (2*volume bytes). Cache key: path, origin, dimensions, terrain revision and data pointer.",
+    "Scalar max(sky daylight ramp, block ramp), not original RGB lightmap, gamma, torch flicker or weather.",
+    "AO subset: bilinear four-corner average of face-centre and three neighbours, source 0.2/1 shade; full cubes only.",
+    "No directional shadow map: roof/cave darkening follows original diffuse voxel skylight rather than solar ray shadows.",
+    "Original textures use nearest sampling here; not the original GL filtering/mipmap pipeline.",
+    "Source sky stars, dawn fan, clouds, weather and non-natural dimension skies are not ported here.",
+    "Physical shapes and collision metadata are unchanged; stairs/slabs retain source whole-cell lightBlock=255; inset opaque special faces use above/four-side max brightness subset."
+  ],
+  "sourceFunctions": {
+    "void LevelRenderer::renderSky(float alpha)": {
+      "sourcefn": "Minecraft.Client/LevelRenderer.cpp",
+      "byteOffset": 30804,
+      "bytes": 99963,
+      "sha256": "6f82ef1d7fd3f1009375eb852185600092b7abf8a16f63a8f47d4cbaa1fec300"
+    },
+    "float GameRenderer::getFov(float a, bool applyEffects)": {
+      "sourcefn": "Minecraft.Client/GameRenderer.cpp",
+      "byteOffset": 11486,
+      "bytes": 428,
+      "sha256": "c3e92a224295480feaa9c63e7ffcfb8237e9e6b37dd5e2d04012307f1a418b37"
+    },
+    "void GameRenderer::setupCamera(float a, int eye)": {
+      "sourcefn": "Minecraft.Client/GameRenderer.cpp",
+      "byteOffset": 18642,
+      "bytes": 2085,
+      "sha256": "6fc896024c2a76c558fe2dc16ddb58e8043154038cc73894f90b403cbc6a173a"
+    },
+    "void GameRenderer::renderItemInHand(float a, int eye)": {
+      "sourcefn": "Minecraft.Client/GameRenderer.cpp",
+      "byteOffset": 20729,
+      "bytes": 2845,
+      "sha256": "0dac0b69fe84be9d681fe08b6105aec26361a56df6de8ae8a4603154863a047f"
+    },
+    "float Dimension::getTimeOfDay(int64_t time, float a) const": {
+      "sourcefn": "Minecraft.World/Dimension.cpp",
+      "byteOffset": 3191,
+      "bytes": 330,
+      "sha256": "5049aa50148422da65c30e702c1476fa1d9b088dcc589beb5ac9f099d101de2f"
+    },
+    "int Dimension::getMoonPhase(int64_t time) const": {
+      "sourcefn": "Minecraft.World/Dimension.cpp",
+      "byteOffset": 3523,
+      "bytes": 110,
+      "sha256": "6e5a2e41e76c12e57323b0571b06d6829ed85fa69548912e883a99075c9d9071"
+    },
+    "void Dimension::updateLightRamp()": {
+      "sourcefn": "Minecraft.World/Dimension.cpp",
+      "byteOffset": 862,
+      "bytes": 270,
+      "sha256": "feaae6b4a64c4882338f27582798b145f1a0a3e08ec693e6e2c43bf1d438a74b"
+    },
+    "int Level::getExpectedLight(": {
+      "sourcefn": "Minecraft.World/Level.cpp",
+      "byteOffset": 87703,
+      "bytes": 931,
+      "sha256": "f9dbd5d0b50470acd0287d6c3355fcb73063b0041e59b91e9510e6a06fb0b8b7"
+    },
+    "Tile *Tile::setLightEmission(float f)": {
+      "sourcefn": "Minecraft.World/Tile.cpp",
+      "byteOffset": 61258,
+      "bytes": 127,
+      "sha256": "d85e05784b131a6db06a5144e23f5b5480890fc014af122d7fdd97278a6eb85a"
+    },
+    "float Tile::getShadeBrightness(": {
+      "sourcefn": "Minecraft.World/Tile.cpp",
+      "byteOffset": 81038,
+      "bytes": 134,
+      "sha256": "b02a6e764b9b3787f5ca0f9c93333d226ae40e02c29d871362572424d0c0f5aa"
+    },
+    "bool TileRenderer::tesselateBlockInWorldWithAmbienceOcclusionTexLighting(": {
+      "sourcefn": "Minecraft.Client/TileRenderer.cpp",
+      "byteOffset": 170378,
+      "bytes": 14045,
+      "sha256": "d4d8ca09c0108069345ca06cef0f7351bb9d48ba8e3c51fb99a3677bc63978c4"
+    }
+  }
+}

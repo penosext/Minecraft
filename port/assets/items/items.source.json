@@ -1,0 +1,1799 @@
+{
+  "schema_version": 1,
+  "scope": "63 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces and 5 materials; no item engine or world-state icons.",
+  "repository": "https://github.com/gstaaij/minecraft-console",
+  "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "texture": {
+    "path": "Minecraft.Client/Common/res/TitleUpdate/res/items.png",
+    "sha256": "1562d583262f494526f9ae34047ecbe6af060a237d3e30c751940c239b371064",
+    "gitBlob": "5456083c02957afa9d7b136980e7513ad5520b2f",
+    "sizeBytes": 39203,
+    "width": 256,
+    "height": 256,
+    "mode": "RGBA",
+    "rgbaSha256": "31076214c9426183e99cceaedec141f27cdb2f4086731a5503ff728159864da6"
+  },
+  "githubVerification": {
+    "method": "GET",
+    "url": "https://api.github.com/repos/gstaaij/minecraft-console/contents/Minecraft.Client/Common/res/TitleUpdate/res/items.png?ref=09df8928eeb15328bca499d225e48ea95af6d119",
+    "httpStatus": 200,
+    "responsePath": "Minecraft.Client/Common/res/TitleUpdate/res/items.png",
+    "responseBlob": "5456083c02957afa9d7b136980e7513ad5520b2f",
+    "responseSize": 39203,
+    "decodedContentSha256": "1562d583262f494526f9ae34047ecbe6af060a237d3e30c751940c239b371064",
+    "contentEqualsLocalPng": true,
+    "note": "Read-only unauthenticated API verified during initial audit. Offline generation does not repeat this network verification; no commit-signature verification is claimed."
+  },
+  "pixelContract": "16x16 original RGBA crops, straight AARRGGBB integers; preserve RGB even at alpha 0; nearest-neighbor UI blit, no tint/mesh/world metadata.",
+  "sharedSources": [
+    {
+      "path": "Minecraft.World/Item.cpp",
+      "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+      "line": 567,
+      "anchor": "Item::Item(int id) : id( 256 + id )"
+    },
+    {
+      "path": "Minecraft.World/Item.cpp",
+      "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+      "line": 978,
+      "anchor": "icon = iconRegister->registerIcon(m_textureName);"
+    },
+    {
+      "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+      "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+      "line": 310,
+      "anchor": "#define ADD_ICON(row, column, name) (texturesByName[name] =\tnew SimpleIcon(name,name,horizRatio*column,vertRatio*row,horizRatio*(column+1),vertRatio*(row+1)));"
+    },
+    {
+      "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+      "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+      "line": 330,
+      "anchor": "if(iconType != Icon::TYPE_TERRAIN)"
+    },
+    {
+      "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+      "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+      "line": 330,
+      "anchor": "if(iconType != Icon::TYPE_TERRAIN)\n\t{\n\t\tfloat horizRatio = 1.0f/16.0f;\n\t\tfloat vertRatio = 1.0f/16.0f;"
+    }
+  ],
+  "items": [
+    {
+      "key": "item:324:0",
+      "itemId": 324,
+      "aux": 0,
+      "icon": "doorWood",
+      "crop": [
+        176,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "9a2ce5cc5968285308fae7a60d9d345ce7a9ee2660cde67aadf99baf9336ac4a",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 287,
+          "anchor": "Item::door_wood\t\t\t= ( new DoorItem(68, Material::wood) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_door,\teMaterial_wood)->setIconName(L\"doorWood\")->setDescriptionId(IDS_ITEM_DOOR_WOOD)->setUseDescriptionId(IDS_DESC_DOOR_WOOD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 380,
+          "anchor": "\t\tADD_ICON(2,\t\t11,\tL\"doorWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:330:0",
+      "itemId": 330,
+      "aux": 0,
+      "icon": "doorIron",
+      "crop": [
+        192,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "fb385c07ae3d1b94f0754bc827b2886b26dd8290594908a4ce52e018a2261bd4",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 288,
+          "anchor": "Item::door_iron\t\t\t= ( new DoorItem(74, Material::metal) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_door,\teMaterial_iron)->setIconName(L\"doorIron\")->setDescriptionId(IDS_ITEM_DOOR_IRON)->setUseDescriptionId(IDS_DESC_DOOR_IRON);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 381,
+          "anchor": "\t\tADD_ICON(2,\t\t12,\tL\"doorIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:295:0",
+      "itemId": 295,
+      "aux": 0,
+      "icon": "seeds",
+      "crop": [
+        144,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "ccea60c63100eb890f66fb24cd00012040dac55272528302bd4793ace68e7b81",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 346,
+          "anchor": "Item::seeds_wheat = ( new SeedItem(39, Tile::wheat_Id, Tile::farmland_Id) )\t\t\t->setIconName(L\"seeds\")->setDescriptionId(IDS_ITEM_WHEAT_SEEDS)->setUseDescriptionId(IDS_DESC_WHEAT_SEEDS);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 344,
+          "anchor": "\t\tADD_ICON(0,\t\t9,\tL\"seeds\")"
+        }
+      ]
+    },
+    {
+      "key": "item:287:0",
+      "itemId": 287,
+      "aux": 0,
+      "icon": "string",
+      "crop": [
+        128,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "eaaca62129949e00ceb3bcd34e4a21c3ccfc369eeeb4940e58e3ed845e18dbf8",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 341,
+          "anchor": "Item::string = ( new TilePlanterItem(31, Tile::tripWire) )\t\t\t\t\t\t->setIconName(L\"string\")->setDescriptionId(IDS_ITEM_STRING)->setUseDescriptionId(IDS_DESC_STRING);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 343,
+          "anchor": "\t\tADD_ICON(0,\t\t8,\tL\"string\")"
+        }
+      ]
+    },
+    {
+      "key": "item:331:0",
+      "itemId": 331,
+      "aux": 0,
+      "icon": "redstone",
+      "crop": [
+        128,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "30176d8a938e193e549f8d053ce616132f003ef2e0a756f64b1e104e030f7542",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 365,
+          "anchor": "Item::redStone = ( new RedStoneItem(75) )\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_redstone)->setIconName(L\"redstone\")->setDescriptionId(IDS_ITEM_REDSTONE)->setUseDescriptionId(IDS_DESC_REDSTONE_DUST)->setPotionBrewingFormula(PotionBrewing::MOD_REDSTONE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 394,
+          "anchor": "\t\tADD_ICON(3,\t\t8,\tL\"redstone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:338:0",
+      "itemId": 338,
+      "aux": 0,
+      "icon": "reeds",
+      "crop": [
+        176,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "70629d7eb8d4248fb762e6b227b02b36420deedc1d65fa515acc6828170be761",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 373,
+          "anchor": "Item::reeds = ( new TilePlanterItem(82, Tile::reeds) )\t\t\t\t->setIconName(L\"reeds\")->setDescriptionId(IDS_ITEM_REEDS)->setUseDescriptionId(IDS_DESC_REEDS);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 363,
+          "anchor": "\t\tADD_ICON(1,\t\t11,\tL\"reeds\")"
+        }
+      ]
+    },
+    {
+      "key": "item:351:3",
+      "itemId": 351,
+      "aux": 3,
+      "icon": "dyePowder_brown",
+      "crop": [
+        224,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "72ebc824ff855cc359056883d46c4fa7ad8d03a2308994def0f6d6dbf12701e9",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 385,
+          "anchor": "Item::dye_powder = ( new DyePowderItem(95) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_dyepowder,\teMaterial_dye)->setIconName(L\"dyePowder\")->setDescriptionId(IDS_ITEM_DYE_POWDER)->setUseDescriptionId(-1);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 91,
+          "anchor": "const int DyePowderItem::BROWN = 3;"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 65,
+          "anchor": "{ L\"black\", L\"red\", L\"green\", L\"brown\","
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 346,
+          "anchor": "icons[i] = iconRegister->registerIcon(getIconName() + L\"_\" + COLOR_TEXTURES[i]);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 107,
+          "anchor": "int colorValue = Mth::clamp(itemAuxValue, 0, 15);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 108,
+          "anchor": "return icons[colorValue];"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 468,
+          "anchor": "\t\tADD_ICON(7,\t\t14,\tL\"dyePowder_brown\")"
+        }
+      ]
+    },
+    {
+      "key": "item:356:0",
+      "itemId": 356,
+      "aux": 0,
+      "icon": "diode",
+      "crop": [
+        96,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "e8a1e7e571176ba98fe936b3c5e29c656536d60eb8126ffc8c243cd434a30ebb",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 395,
+          "anchor": "Item::repeater = ( new TilePlanterItem(100, static_cast<Tile *>(Tile::diode_off)) )\t\t\t->setIconName(L\"diode\")->setDescriptionId(IDS_ITEM_DIODE)->setUseDescriptionId(IDS_DESC_REDSTONEREPEATER);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 426,
+          "anchor": "\t\tADD_ICON(5,\t\t6,\tL\"diode\")"
+        }
+      ]
+    },
+    {
+      "key": "item:372:0",
+      "itemId": 372,
+      "aux": 0,
+      "icon": "netherStalkSeeds",
+      "crop": [
+        208,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "6ca1988bd63520d0cc0ed60c99ebd79b8706944f0e9eff6d493b3a559dca7d87",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 418,
+          "anchor": "Item::netherwart_seeds =\t(new SeedItem(116, Tile::netherStalk_Id, Tile::soulsand_Id) )\t\t->setIconName(L\"netherStalkSeeds\")->setDescriptionId(IDS_ITEM_NETHER_STALK_SEEDS)->setUseDescriptionId(IDS_DESC_NETHER_STALK_SEEDS)->setPotionBrewingFormula(PotionBrewing::MOD_NETHERWART);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 467,
+          "anchor": "\t\tADD_ICON(7,\t\t13,\tL\"netherStalkSeeds\")"
+        }
+      ]
+    },
+    {
+      "key": "item:380:0",
+      "itemId": 380,
+      "aux": 0,
+      "icon": "cauldron",
+      "crop": [
+        192,
+        144,
+        16,
+        16
+      ],
+      "rgbaSha256": "a746221ba9d5ebeb5ac5f0f57221cdda08368e38c96a283b38ce2bb6c2a905f0",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 430,
+          "anchor": "Item::cauldron =\t\t\t(new TilePlanterItem(124, Tile::cauldron) )\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_utensil,\teMaterial_iron)->setIconName(L\"cauldron\")->setDescriptionId(IDS_ITEM_CAULDRON)->setUseDescriptionId(IDS_DESC_CAULDRON);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 501,
+          "anchor": "\t\tADD_ICON(9,\t\t12,\tL\"cauldron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:390:0",
+      "itemId": 390,
+      "aux": 0,
+      "icon": "flowerPot",
+      "crop": [
+        208,
+        176,
+        16,
+        16
+      ],
+      "rgbaSha256": "2af568a7fcff71b55e5040667cf1814e31e6646994431ca05f8396c9e3460b9b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 469,
+          "anchor": "Item::flowerPot = (new TilePlanterItem(134, Tile::flowerPot))\t\t\t\t\t\t\t\t\t->setIconName(L\"flowerPot\")->setDescriptionId(IDS_FLOWERPOT)->setUseDescriptionId(IDS_DESC_FLOWERPOT);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 536,
+          "anchor": "\t\tADD_ICON(11,\t13,\tL\"flowerPot\")"
+        }
+      ]
+    },
+    {
+      "key": "item:391:0",
+      "itemId": 391,
+      "aux": 0,
+      "icon": "carrots",
+      "crop": [
+        128,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "c9faee5ed8abc7c8349105c7acd2a0fe294032e08ec2b2158ff1f8df6d9c339c",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 471,
+          "anchor": "Item::carrots = (new SeedFoodItem(135, 4, FoodConstants::FOOD_SATURATION_NORMAL, Tile::carrots_Id, Tile::farmland_Id))\t->setIconName(L\"carrots\")->setDescriptionId(IDS_CARROTS)->setUseDescriptionId(IDS_DESC_CARROTS);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 462,
+          "anchor": "\t\tADD_ICON(7,\t\t8,\tL\"carrots\")"
+        }
+      ]
+    },
+    {
+      "key": "item:392:0",
+      "itemId": 392,
+      "aux": 0,
+      "icon": "potato",
+      "crop": [
+        112,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "b3e1f9768f88acccc1bf8e6fca85b3302e84fcb54deded3cc7070665e53fde26",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 472,
+          "anchor": "Item::potato = (new SeedFoodItem(136, 1, FoodConstants::FOOD_SATURATION_LOW, Tile::potatoes_Id, Tile::farmland_Id))\t\t->setIconName(L\"potato\")->setDescriptionId(IDS_POTATO)->setUseDescriptionId(IDS_DESC_POTATO);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 461,
+          "anchor": "\t\tADD_ICON(7,\t\t7,\tL\"potato\")"
+        }
+      ]
+    },
+    {
+      "key": "item:268:0",
+      "itemId": 268,
+      "aux": 0,
+      "icon": "swordWood",
+      "crop": [
+        0,
+        64,
+        16,
+        16
+      ],
+      "rgbaSha256": "37df1e78cf88457502810fa450d945f9b30a32bdebf9d6617701a28021c258c2",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 257,
+          "anchor": "Item::sword_wood\t\t= ( new WeaponItem(12, _Tier::WOOD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_sword,\teMaterial_wood)\t\t->setIconName(L\"swordWood\")->setDescriptionId(IDS_ITEM_SWORD_WOOD)->setUseDescriptionId(IDS_DESC_SWORD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 403,
+          "anchor": "\t\tADD_ICON(4,\t\t0,\tL\"swordWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:272:0",
+      "itemId": 272,
+      "aux": 0,
+      "icon": "swordStone",
+      "crop": [
+        16,
+        64,
+        16,
+        16
+      ],
+      "rgbaSha256": "df485c385c833b5d954d51f81ca964d612d5e82d6b0b6f031f51c0b60cd7cfe0",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 258,
+          "anchor": "Item::sword_stone\t\t= ( new WeaponItem(16, _Tier::STONE) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_sword,\teMaterial_stone)\t->setIconName(L\"swordStone\")->setDescriptionId(IDS_ITEM_SWORD_STONE)->setUseDescriptionId(IDS_DESC_SWORD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 404,
+          "anchor": "\t\tADD_ICON(4,\t\t1,\tL\"swordStone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:267:0",
+      "itemId": 267,
+      "aux": 0,
+      "icon": "swordIron",
+      "crop": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "rgbaSha256": "473975a4da342d27566c668cc45d1ab61bbb2c6956e7a0645fe1503aa7f655b6",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 259,
+          "anchor": "Item::sword_iron\t\t= ( new WeaponItem(11, _Tier::IRON) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_sword,\teMaterial_iron)\t\t->setIconName(L\"swordIron\")->setDescriptionId(IDS_ITEM_SWORD_IRON)->setUseDescriptionId(IDS_DESC_SWORD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 405,
+          "anchor": "\t\tADD_ICON(4,\t\t2,\tL\"swordIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:276:0",
+      "itemId": 276,
+      "aux": 0,
+      "icon": "swordDiamond",
+      "crop": [
+        48,
+        64,
+        16,
+        16
+      ],
+      "rgbaSha256": "0bf5f387d76933787506fd7f33f018498be7637a224c4b838275b16438975baa",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 260,
+          "anchor": "Item::sword_diamond\t\t= ( new WeaponItem(20, _Tier::DIAMOND) )\t->setBaseItemTypeAndMaterial(eBaseItemType_sword,\teMaterial_diamond)\t->setIconName(L\"swordDiamond\")->setDescriptionId(IDS_ITEM_SWORD_DIAMOND)->setUseDescriptionId(IDS_DESC_SWORD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 406,
+          "anchor": "\t\tADD_ICON(4,\t\t3,\tL\"swordDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:283:0",
+      "itemId": 283,
+      "aux": 0,
+      "icon": "swordGold",
+      "crop": [
+        64,
+        64,
+        16,
+        16
+      ],
+      "rgbaSha256": "54a0ebede4b7fa357f5978a94915d85bb0d3790cf0aa0f245da33f01623965ae",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 261,
+          "anchor": "Item::sword_gold\t\t= ( new WeaponItem(27, _Tier::GOLD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_sword,\teMaterial_gold)\t\t->setIconName(L\"swordGold\")->setDescriptionId(IDS_ITEM_SWORD_GOLD)->setUseDescriptionId(IDS_DESC_SWORD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 407,
+          "anchor": "\t\tADD_ICON(4,\t\t4,\tL\"swordGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:269:0",
+      "itemId": 269,
+      "aux": 0,
+      "icon": "shovelWood",
+      "crop": [
+        0,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "4f571694f918064d71c311f72c52dc269a6172edd050b919da1ba7056a127fd6",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 263,
+          "anchor": "Item::shovel_wood\t\t= ( new ShovelItem(13, _Tier::WOOD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_shovel,\teMaterial_wood)\t\t->setIconName(L\"shovelWood\")->setDescriptionId(IDS_ITEM_SHOVEL_WOOD)->setUseDescriptionId(IDS_DESC_SHOVEL);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 420,
+          "anchor": "\t\tADD_ICON(5,\t\t0,\tL\"shovelWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:273:0",
+      "itemId": 273,
+      "aux": 0,
+      "icon": "shovelStone",
+      "crop": [
+        16,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "cc8f899c5f74ec69e03b9d193ab0f6c975de519111aeff1eb5b6af3c1fa7c66c",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 264,
+          "anchor": "Item::shovel_stone\t\t= ( new ShovelItem(17, _Tier::STONE) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_shovel,\teMaterial_stone)\t->setIconName(L\"shovelStone\")->setDescriptionId(IDS_ITEM_SHOVEL_STONE)->setUseDescriptionId(IDS_DESC_SHOVEL);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 421,
+          "anchor": "\t\tADD_ICON(5,\t\t1,\tL\"shovelStone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:256:0",
+      "itemId": 256,
+      "aux": 0,
+      "icon": "shovelIron",
+      "crop": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "ef57576ca8d582ef5414809adeff0c4e9cf2a3c9719e3dfca85cc0bcafad3fea",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 265,
+          "anchor": "Item::shovel_iron\t\t= ( new ShovelItem(0, _Tier::IRON) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_shovel,\teMaterial_iron)\t\t->setIconName(L\"shovelIron\")->setDescriptionId(IDS_ITEM_SHOVEL_IRON)->setUseDescriptionId(IDS_DESC_SHOVEL);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 422,
+          "anchor": "\t\tADD_ICON(5,\t\t2,\tL\"shovelIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:277:0",
+      "itemId": 277,
+      "aux": 0,
+      "icon": "shovelDiamond",
+      "crop": [
+        48,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "0a5e5e0e98774b7a3b4baf3ac8d2bb625db777eadf6aca3684cbfce2e56fffa0",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 266,
+          "anchor": "Item::shovel_diamond\t= ( new ShovelItem(21, _Tier::DIAMOND) )\t->setBaseItemTypeAndMaterial(eBaseItemType_shovel,\teMaterial_diamond)\t->setIconName(L\"shovelDiamond\")->setDescriptionId(IDS_ITEM_SHOVEL_DIAMOND)->setUseDescriptionId(IDS_DESC_SHOVEL);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 423,
+          "anchor": "\t\tADD_ICON(5,\t\t3,\tL\"shovelDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:284:0",
+      "itemId": 284,
+      "aux": 0,
+      "icon": "shovelGold",
+      "crop": [
+        64,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "f8ea5943d77f7fb10d6b0fd54592f2893244253a0fccd7b3526aba66464055c2",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 267,
+          "anchor": "Item::shovel_gold\t\t= ( new ShovelItem(28, _Tier::GOLD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_shovel,\teMaterial_gold)\t\t->setIconName(L\"shovelGold\")->setDescriptionId(IDS_ITEM_SHOVEL_GOLD)->setUseDescriptionId(IDS_DESC_SHOVEL);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 424,
+          "anchor": "\t\tADD_ICON(5,\t\t4,\tL\"shovelGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:270:0",
+      "itemId": 270,
+      "aux": 0,
+      "icon": "pickaxeWood",
+      "crop": [
+        0,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "32aca3ed0cf42cdbe8b0c4df7f4f64afc5f80c4e6a8111372fc61576e05051b8",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 269,
+          "anchor": "Item::pickAxe_wood\t\t= ( new PickaxeItem(14, _Tier::WOOD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,\teMaterial_wood)\t\t->setIconName(L\"pickaxeWood\")->setDescriptionId(IDS_ITEM_PICKAXE_WOOD)->setUseDescriptionId(IDS_DESC_PICKAXE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 437,
+          "anchor": "\t\tADD_ICON(6,\t\t0,\tL\"pickaxeWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:274:0",
+      "itemId": 274,
+      "aux": 0,
+      "icon": "pickaxeStone",
+      "crop": [
+        16,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "760b95eea693a13f6137a3e5b16ebe2923ac5db7338ffeecd17f8b56e7c54c8b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 270,
+          "anchor": "Item::pickAxe_stone\t\t= ( new PickaxeItem(18, _Tier::STONE) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,\teMaterial_stone)\t->setIconName(L\"pickaxeStone\")->setDescriptionId(IDS_ITEM_PICKAXE_STONE)->setUseDescriptionId(IDS_DESC_PICKAXE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 438,
+          "anchor": "\t\tADD_ICON(6,\t\t1,\tL\"pickaxeStone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:257:0",
+      "itemId": 257,
+      "aux": 0,
+      "icon": "pickaxeIron",
+      "crop": [
+        32,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "fe50aceb54711e73a7bb5b090429296569812b5a2dc6b54015bfe61196cf08a8",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 271,
+          "anchor": "Item::pickAxe_iron\t\t= ( new PickaxeItem(1, _Tier::IRON) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,\teMaterial_iron)\t\t->setIconName(L\"pickaxeIron\")->setDescriptionId(IDS_ITEM_PICKAXE_IRON)->setUseDescriptionId(IDS_DESC_PICKAXE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 439,
+          "anchor": "\t\tADD_ICON(6,\t\t2,\tL\"pickaxeIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:278:0",
+      "itemId": 278,
+      "aux": 0,
+      "icon": "pickaxeDiamond",
+      "crop": [
+        48,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "76698058f18fd34118a748db0757c74b9aa69d3f6e92d892baeac2e3bf21e8a4",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 272,
+          "anchor": "Item::pickAxe_diamond\t= ( new PickaxeItem(22, _Tier::DIAMOND) )\t->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,\teMaterial_diamond)\t->setIconName(L\"pickaxeDiamond\")->setDescriptionId(IDS_ITEM_PICKAXE_DIAMOND)->setUseDescriptionId(IDS_DESC_PICKAXE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 440,
+          "anchor": "\t\tADD_ICON(6,\t\t3,\tL\"pickaxeDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:285:0",
+      "itemId": 285,
+      "aux": 0,
+      "icon": "pickaxeGold",
+      "crop": [
+        64,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "8e8dacd4d8a7ffa3c97a45401d5571654dcd5217f98ffe8e83138a2c3a47af50",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 273,
+          "anchor": "Item::pickAxe_gold\t\t= ( new PickaxeItem(29, _Tier::GOLD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_pickaxe,\teMaterial_gold)\t\t->setIconName(L\"pickaxeGold\")->setDescriptionId(IDS_ITEM_PICKAXE_GOLD)->setUseDescriptionId(IDS_DESC_PICKAXE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 441,
+          "anchor": "\t\tADD_ICON(6,\t\t4,\tL\"pickaxeGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:271:0",
+      "itemId": 271,
+      "aux": 0,
+      "icon": "hatchetWood",
+      "crop": [
+        0,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "2c2c93ed1a729c9918bd9d159a05d128d609775ca4fd2c8dae80825f1f3aa5db",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 275,
+          "anchor": "Item::hatchet_wood\t\t= ( new HatchetItem(15, _Tier::WOOD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,\teMaterial_wood)\t\t->setIconName(L\"hatchetWood\")->setDescriptionId(IDS_ITEM_HATCHET_WOOD)->setUseDescriptionId(IDS_DESC_HATCHET);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 454,
+          "anchor": "\t\tADD_ICON(7,\t\t0,\tL\"hatchetWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:275:0",
+      "itemId": 275,
+      "aux": 0,
+      "icon": "hatchetStone",
+      "crop": [
+        16,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "ae17209e2eaf0d698954e67f70d7e72217691c02832cfcb86635a56b0396444e",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 276,
+          "anchor": "Item::hatchet_stone\t\t= ( new HatchetItem(19, _Tier::STONE) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,\teMaterial_stone)\t->setIconName(L\"hatchetStone\")->setDescriptionId(IDS_ITEM_HATCHET_STONE)->setUseDescriptionId(IDS_DESC_HATCHET);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 455,
+          "anchor": "\t\tADD_ICON(7,\t\t1,\tL\"hatchetStone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:258:0",
+      "itemId": 258,
+      "aux": 0,
+      "icon": "hatchetIron",
+      "crop": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "2ecc3ae9b8c095b4337e9a17e00ba9f285599e248f5dbdbfdd0666dfd326100c",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 277,
+          "anchor": "Item::hatchet_iron\t\t= ( new HatchetItem(2, _Tier::IRON) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,\teMaterial_iron)\t\t->setIconName(L\"hatchetIron\")->setDescriptionId(IDS_ITEM_HATCHET_IRON)->setUseDescriptionId(IDS_DESC_HATCHET);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 456,
+          "anchor": "\t\tADD_ICON(7,\t\t2,\tL\"hatchetIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:279:0",
+      "itemId": 279,
+      "aux": 0,
+      "icon": "hatchetDiamond",
+      "crop": [
+        48,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "7d9f9e2e3b35e06cbcc515e68cf671907197d6425a8ba8a4aa04ee51fe0546f2",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 278,
+          "anchor": "Item::hatchet_diamond\t= ( new HatchetItem(23, _Tier::DIAMOND) )\t->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,\teMaterial_diamond)\t->setIconName(L\"hatchetDiamond\")->setDescriptionId(IDS_ITEM_HATCHET_DIAMOND)->setUseDescriptionId(IDS_DESC_HATCHET);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 457,
+          "anchor": "\t\tADD_ICON(7,\t\t3,\tL\"hatchetDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:286:0",
+      "itemId": 286,
+      "aux": 0,
+      "icon": "hatchetGold",
+      "crop": [
+        64,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "8d0f6d574fd387389ce484dfaaab8b6cb1be9ce052458d993e1b188f6c671a2d",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 279,
+          "anchor": "Item::hatchet_gold\t\t= ( new HatchetItem(30, _Tier::GOLD) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hatchet,\teMaterial_gold)\t\t->setIconName(L\"hatchetGold\")->setDescriptionId(IDS_ITEM_HATCHET_GOLD)->setUseDescriptionId(IDS_DESC_HATCHET);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 458,
+          "anchor": "\t\tADD_ICON(7,\t\t4,\tL\"hatchetGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:290:0",
+      "itemId": 290,
+      "aux": 0,
+      "icon": "hoeWood",
+      "crop": [
+        0,
+        128,
+        16,
+        16
+      ],
+      "rgbaSha256": "9122f02fe1568048146157c2482cc95900201dd15d58afe373e3aa1bbf9471ea",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 281,
+          "anchor": "Item::hoe_wood\t\t\t= ( new HoeItem(34, _Tier::WOOD) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hoe,\teMaterial_wood)\t\t->setIconName(L\"hoeWood\")->setDescriptionId(IDS_ITEM_HOE_WOOD)->setUseDescriptionId(IDS_DESC_HOE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 471,
+          "anchor": "\t\tADD_ICON(8,\t\t0,\tL\"hoeWood\")"
+        }
+      ]
+    },
+    {
+      "key": "item:291:0",
+      "itemId": 291,
+      "aux": 0,
+      "icon": "hoeStone",
+      "crop": [
+        16,
+        128,
+        16,
+        16
+      ],
+      "rgbaSha256": "b56e2e686e98655f2255f2cc10ac7dfaa6c182a0cea43ed4b41fdc7ad967d17b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 282,
+          "anchor": "Item::hoe_stone\t\t\t= ( new HoeItem(35, _Tier::STONE) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hoe,\teMaterial_stone)\t->setIconName(L\"hoeStone\")->setDescriptionId(IDS_ITEM_HOE_STONE)->setUseDescriptionId(IDS_DESC_HOE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 472,
+          "anchor": "\t\tADD_ICON(8,\t\t1,\tL\"hoeStone\")"
+        }
+      ]
+    },
+    {
+      "key": "item:292:0",
+      "itemId": 292,
+      "aux": 0,
+      "icon": "hoeIron",
+      "crop": [
+        32,
+        128,
+        16,
+        16
+      ],
+      "rgbaSha256": "234c4b2a9ababc561ea93b07e7556902ee0ef0e7d6332ee85aca75e936be0b87",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 283,
+          "anchor": "Item::hoe_iron\t\t\t= ( new HoeItem(36, _Tier::IRON) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hoe,\teMaterial_iron)\t\t->setIconName(L\"hoeIron\")->setDescriptionId(IDS_ITEM_HOE_IRON)->setUseDescriptionId(IDS_DESC_HOE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 473,
+          "anchor": "\t\tADD_ICON(8,\t\t2,\tL\"hoeIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:293:0",
+      "itemId": 293,
+      "aux": 0,
+      "icon": "hoeDiamond",
+      "crop": [
+        48,
+        128,
+        16,
+        16
+      ],
+      "rgbaSha256": "2a03adc8103d43e35d461d22bdceef205ca9d8e54650957a2679dc9ca78b0263",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 284,
+          "anchor": "Item::hoe_diamond\t\t= ( new HoeItem(37, _Tier::DIAMOND) )\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hoe,\teMaterial_diamond)\t->setIconName(L\"hoeDiamond\")->setDescriptionId(IDS_ITEM_HOE_DIAMOND)->setUseDescriptionId(IDS_DESC_HOE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 474,
+          "anchor": "\t\tADD_ICON(8,\t\t3,\tL\"hoeDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:294:0",
+      "itemId": 294,
+      "aux": 0,
+      "icon": "hoeGold",
+      "crop": [
+        64,
+        128,
+        16,
+        16
+      ],
+      "rgbaSha256": "3a50fddc6e4240fd196489e065dd24e230d29dfc9e5761fcfaa7a791e1435365",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 285,
+          "anchor": "Item::hoe_gold\t\t\t= ( new HoeItem(38, _Tier::GOLD) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_hoe,\teMaterial_gold)\t\t->setIconName(L\"hoeGold\")->setDescriptionId(IDS_ITEM_HOE_GOLD)->setUseDescriptionId(IDS_DESC_HOE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 475,
+          "anchor": "\t\tADD_ICON(8,\t\t4,\tL\"hoeGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:298:0",
+      "itemId": 298,
+      "aux": 0,
+      "icon": "helmetCloth",
+      "crop": [
+        0,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "849e5410a00e8f21f233b1ed61458bed5470e2e3e973b6e2c141562720201c40",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 290,
+          "anchor": "Item::helmet_leather\t\t= static_cast<ArmorItem *>((new ArmorItem(42, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_HEAD))->setBaseItemTypeAndMaterial(eBaseItemType_helmet, eMaterial_cloth)->setIconName(L\"helmetCloth\")->setDescriptionId(IDS_ITEM_HELMET_CLOTH)->setUseDescriptionId(IDS_DESC_HELMET_LEATHER));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 335,
+          "anchor": "\t\tADD_ICON(0,\t\t0,\tL\"helmetCloth\")"
+        }
+      ]
+    },
+    {
+      "key": "item:302:0",
+      "itemId": 302,
+      "aux": 0,
+      "icon": "helmetChain",
+      "crop": [
+        16,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "bd7465789985ea62069766f1f79fedf67d1547181eff6a5feba080195a01698b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 305,
+          "anchor": "Item::helmet_chain\t\t= static_cast<ArmorItem *>((new ArmorItem(46, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_HEAD))->setBaseItemTypeAndMaterial(eBaseItemType_helmet, eMaterial_chain)->setIconName(L\"helmetChain\")->setDescriptionId(IDS_ITEM_HELMET_CHAIN)->setUseDescriptionId(IDS_DESC_HELMET_CHAIN));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 336,
+          "anchor": "\t\tADD_ICON(0,\t\t1,\tL\"helmetChain\")"
+        }
+      ]
+    },
+    {
+      "key": "item:306:0",
+      "itemId": 306,
+      "aux": 0,
+      "icon": "helmetIron",
+      "crop": [
+        32,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "07f2a4dd9f623652642dedb7d89ba62316f8f476ef3df96145e9351bce1d95f0",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 291,
+          "anchor": "Item::helmet_iron\t\t= static_cast<ArmorItem *>((new ArmorItem(50, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_HEAD))->setBaseItemTypeAndMaterial(eBaseItemType_helmet, eMaterial_iron)->setIconName(L\"helmetIron\")->setDescriptionId(IDS_ITEM_HELMET_IRON)->setUseDescriptionId(IDS_DESC_HELMET_IRON));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 337,
+          "anchor": "\t\tADD_ICON(0,\t\t2,\tL\"helmetIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:310:0",
+      "itemId": 310,
+      "aux": 0,
+      "icon": "helmetDiamond",
+      "crop": [
+        48,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "2c6006480c8107a6b1e17444418ca84aae7d1c3b866a0456729549a6b5181d53",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 292,
+          "anchor": "Item::helmet_diamond\t= static_cast<ArmorItem *>((new ArmorItem(54, ArmorItem::ArmorMaterial::DIAMOND, 3, ArmorItem::SLOT_HEAD))->setBaseItemTypeAndMaterial(eBaseItemType_helmet, eMaterial_diamond)->setIconName(L\"helmetDiamond\")->setDescriptionId(IDS_ITEM_HELMET_DIAMOND)->setUseDescriptionId(IDS_DESC_HELMET_DIAMOND));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 338,
+          "anchor": "\t\tADD_ICON(0,\t\t3,\tL\"helmetDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:314:0",
+      "itemId": 314,
+      "aux": 0,
+      "icon": "helmetGold",
+      "crop": [
+        64,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "f6bb13d0f4eb6dc592c4aa9235188837fab68010b2086621b63828ec209be0c9",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 293,
+          "anchor": "Item::helmet_gold\t\t= static_cast<ArmorItem *>((new ArmorItem(58, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_HEAD))->setBaseItemTypeAndMaterial(eBaseItemType_helmet, eMaterial_gold)->setIconName(L\"helmetGold\")->setDescriptionId(IDS_ITEM_HELMET_GOLD)->setUseDescriptionId(IDS_DESC_HELMET_GOLD));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 339,
+          "anchor": "\t\tADD_ICON(0,\t\t4,\tL\"helmetGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:299:0",
+      "itemId": 299,
+      "aux": 0,
+      "icon": "chestplateCloth",
+      "crop": [
+        0,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "a7b7a9cf6ec6fd2c758d703b43e8f24ffcc39f1acb13059aa3b7de8eb5bf4501",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 295,
+          "anchor": "Item::chestplate_leather\t= static_cast<ArmorItem *>((new ArmorItem(43, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_TORSO))->setBaseItemTypeAndMaterial(eBaseItemType_chestplate, eMaterial_cloth)->setIconName(L\"chestplateCloth\")->setDescriptionId(IDS_ITEM_CHESTPLATE_CLOTH)->setUseDescriptionId(IDS_DESC_CHESTPLATE_LEATHER));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 352,
+          "anchor": "\t\tADD_ICON(1,\t\t0,\tL\"chestplateCloth\")"
+        }
+      ]
+    },
+    {
+      "key": "item:303:0",
+      "itemId": 303,
+      "aux": 0,
+      "icon": "chestplateChain",
+      "crop": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "7051835ecaec00b52acb4fc1793b081c0f4f7669a238c18bee8094af67fd6855",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 306,
+          "anchor": "Item::chestplate_chain\t= static_cast<ArmorItem *>((new ArmorItem(47, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_TORSO))->setBaseItemTypeAndMaterial(eBaseItemType_chestplate, eMaterial_chain)->setIconName(L\"chestplateChain\")->setDescriptionId(IDS_ITEM_CHESTPLATE_CHAIN)->setUseDescriptionId(IDS_DESC_CHESTPLATE_CHAIN));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 353,
+          "anchor": "\t\tADD_ICON(1,\t\t1,\tL\"chestplateChain\")"
+        }
+      ]
+    },
+    {
+      "key": "item:307:0",
+      "itemId": 307,
+      "aux": 0,
+      "icon": "chestplateIron",
+      "crop": [
+        32,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "ed0cbddd15a4ade4483e3b55eff8d7993d1d83e9b86ed5e313eb1435f65d331e",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 296,
+          "anchor": "Item::chestplate_iron\t\t= static_cast<ArmorItem *>((new ArmorItem(51, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_TORSO))->setBaseItemTypeAndMaterial(eBaseItemType_chestplate, eMaterial_iron)->setIconName(L\"chestplateIron\")->setDescriptionId(IDS_ITEM_CHESTPLATE_IRON)->setUseDescriptionId(IDS_DESC_CHESTPLATE_IRON));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 354,
+          "anchor": "\t\tADD_ICON(1,\t\t2,\tL\"chestplateIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:311:0",
+      "itemId": 311,
+      "aux": 0,
+      "icon": "chestplateDiamond",
+      "crop": [
+        48,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "d3b4a5788c30953044451801e6dcff649587e91a3651c3700a420f4d6206211d",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 297,
+          "anchor": "Item::chestplate_diamond\t= static_cast<ArmorItem *>((new ArmorItem(55, ArmorItem::ArmorMaterial::DIAMOND, 3, ArmorItem::SLOT_TORSO))->setBaseItemTypeAndMaterial(eBaseItemType_chestplate, eMaterial_diamond)->setIconName(L\"chestplateDiamond\")->setDescriptionId(IDS_ITEM_CHESTPLATE_DIAMOND)->setUseDescriptionId(IDS_DESC_CHESTPLATE_DIAMOND));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 355,
+          "anchor": "\t\tADD_ICON(1,\t\t3,\tL\"chestplateDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:315:0",
+      "itemId": 315,
+      "aux": 0,
+      "icon": "chestplateGold",
+      "crop": [
+        64,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "f19826d4e0753a813692c3335eb3f70af085884089b351f95882a2799984ca46",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 298,
+          "anchor": "Item::chestplate_gold\t\t= static_cast<ArmorItem *>((new ArmorItem(59, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_TORSO))->setBaseItemTypeAndMaterial(eBaseItemType_chestplate, eMaterial_gold)->setIconName(L\"chestplateGold\")->setDescriptionId(IDS_ITEM_CHESTPLATE_GOLD)->setUseDescriptionId(IDS_DESC_CHESTPLATE_GOLD));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 356,
+          "anchor": "\t\tADD_ICON(1,\t\t4,\tL\"chestplateGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:300:0",
+      "itemId": 300,
+      "aux": 0,
+      "icon": "leggingsCloth",
+      "crop": [
+        0,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "d16456af6ec6eabfb113a810b76e6863452ac4f54ad9f3268057ba90892cd958",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 300,
+          "anchor": "Item::leggings_leather\t= static_cast<ArmorItem *>((new ArmorItem(44, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_LEGS))->setBaseItemTypeAndMaterial(eBaseItemType_leggings, eMaterial_cloth)->setIconName(L\"leggingsCloth\")->setDescriptionId(IDS_ITEM_LEGGINGS_CLOTH)->setUseDescriptionId(IDS_DESC_LEGGINGS_LEATHER));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 369,
+          "anchor": "\t\tADD_ICON(2,\t\t0,\tL\"leggingsCloth\")"
+        }
+      ]
+    },
+    {
+      "key": "item:304:0",
+      "itemId": 304,
+      "aux": 0,
+      "icon": "leggingsChain",
+      "crop": [
+        16,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "0a1d62baa7c4d43689d93ab4859c025f5a93a11d52cf499144e86ef8fac08d90",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 307,
+          "anchor": "Item::leggings_chain\t= static_cast<ArmorItem *>((new ArmorItem(48, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_LEGS))->setBaseItemTypeAndMaterial(eBaseItemType_leggings, eMaterial_chain)->setIconName(L\"leggingsChain\")->setDescriptionId(IDS_ITEM_LEGGINGS_CHAIN)->setUseDescriptionId(IDS_DESC_LEGGINGS_CHAIN));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 370,
+          "anchor": "\t\tADD_ICON(2,\t\t1,\tL\"leggingsChain\")"
+        }
+      ]
+    },
+    {
+      "key": "item:308:0",
+      "itemId": 308,
+      "aux": 0,
+      "icon": "leggingsIron",
+      "crop": [
+        32,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "140054d73a5c262e90bf51becc662334fc6822032ead04050854b094d9de7362",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 301,
+          "anchor": "Item::leggings_iron\t\t= static_cast<ArmorItem *>((new ArmorItem(52, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_LEGS))->setBaseItemTypeAndMaterial(eBaseItemType_leggings, eMaterial_iron)->setIconName(L\"leggingsIron\")->setDescriptionId(IDS_ITEM_LEGGINGS_IRON)->setUseDescriptionId(IDS_DESC_LEGGINGS_IRON));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 371,
+          "anchor": "\t\tADD_ICON(2,\t\t2,\tL\"leggingsIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:312:0",
+      "itemId": 312,
+      "aux": 0,
+      "icon": "leggingsDiamond",
+      "crop": [
+        48,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "4d1c4e8b33620fe3c9e86f6575af1bf6d1a2af19bd7f6ecb592afc9720a12b6f",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 302,
+          "anchor": "Item::leggings_diamond\t= static_cast<ArmorItem *>((new ArmorItem(56, ArmorItem::ArmorMaterial::DIAMOND, 3, ArmorItem::SLOT_LEGS))->setBaseItemTypeAndMaterial(eBaseItemType_leggings, eMaterial_diamond)->setIconName(L\"leggingsDiamond\")->setDescriptionId(IDS_ITEM_LEGGINGS_DIAMOND)->setUseDescriptionId(IDS_DESC_LEGGINGS_DIAMOND));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 372,
+          "anchor": "\t\tADD_ICON(2,\t\t3,\tL\"leggingsDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:316:0",
+      "itemId": 316,
+      "aux": 0,
+      "icon": "leggingsGold",
+      "crop": [
+        64,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "a4a4afa577fe3ccf8af66a224c29abe5aeaa56fd1c8e948429085af9d6ebcb66",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 303,
+          "anchor": "Item::leggings_gold\t\t= static_cast<ArmorItem *>((new ArmorItem(60, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_LEGS))->setBaseItemTypeAndMaterial(eBaseItemType_leggings, eMaterial_gold)->setIconName(L\"leggingsGold\")->setDescriptionId(IDS_ITEM_LEGGINGS_GOLD)->setUseDescriptionId(IDS_DESC_LEGGINGS_GOLD));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 373,
+          "anchor": "\t\tADD_ICON(2,\t\t4,\tL\"leggingsGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:301:0",
+      "itemId": 301,
+      "aux": 0,
+      "icon": "bootsCloth",
+      "crop": [
+        0,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "b66f553c0057aab1f402707e11c667a0d5c5770ac59036c5758a947e1853559f",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 310,
+          "anchor": "Item::boots_leather\t\t= static_cast<ArmorItem *>((new ArmorItem(45, ArmorItem::ArmorMaterial::CLOTH, 0, ArmorItem::SLOT_FEET))->setBaseItemTypeAndMaterial(eBaseItemType_boots, eMaterial_cloth)->setIconName(L\"bootsCloth\")->setDescriptionId(IDS_ITEM_BOOTS_CLOTH)->setUseDescriptionId(IDS_DESC_BOOTS_LEATHER));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 386,
+          "anchor": "\t\tADD_ICON(3,\t\t0,\tL\"bootsCloth\")"
+        }
+      ]
+    },
+    {
+      "key": "item:305:0",
+      "itemId": 305,
+      "aux": 0,
+      "icon": "bootsChain",
+      "crop": [
+        16,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "ad99634f7b469ec14609a07cc593be441a6f4dcfcebb3d79998d51902e654fec",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 308,
+          "anchor": "Item::boots_chain\t\t= static_cast<ArmorItem *>((new ArmorItem(49, ArmorItem::ArmorMaterial::CHAIN, 1, ArmorItem::SLOT_FEET))->setBaseItemTypeAndMaterial(eBaseItemType_boots, eMaterial_chain)->setIconName(L\"bootsChain\")->setDescriptionId(IDS_ITEM_BOOTS_CHAIN)->setUseDescriptionId(IDS_DESC_BOOTS_CHAIN));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 387,
+          "anchor": "\t\tADD_ICON(3,\t\t1,\tL\"bootsChain\")"
+        }
+      ]
+    },
+    {
+      "key": "item:309:0",
+      "itemId": 309,
+      "aux": 0,
+      "icon": "bootsIron",
+      "crop": [
+        32,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "0bb9da84565cfc9036d3ea62d99807c263593bb0385e2a73dbff461760da285d",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 311,
+          "anchor": "Item::boots_iron\t\t= static_cast<ArmorItem *>((new ArmorItem(53, ArmorItem::ArmorMaterial::IRON, 2, ArmorItem::SLOT_FEET))->setBaseItemTypeAndMaterial(eBaseItemType_boots, eMaterial_iron)->setIconName(L\"bootsIron\")->setDescriptionId(IDS_ITEM_BOOTS_IRON)->setUseDescriptionId(IDS_DESC_BOOTS_IRON));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 388,
+          "anchor": "\t\tADD_ICON(3,\t\t2,\tL\"bootsIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:313:0",
+      "itemId": 313,
+      "aux": 0,
+      "icon": "bootsDiamond",
+      "crop": [
+        48,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "892f406d6f6d90ae693f409708a514c0f695aa24bdef3a30cff1f972eae0b192",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 312,
+          "anchor": "Item::boots_diamond\t\t= static_cast<ArmorItem *>((new ArmorItem(57, ArmorItem::ArmorMaterial::DIAMOND, 3, ArmorItem::SLOT_FEET))->setBaseItemTypeAndMaterial(eBaseItemType_boots, eMaterial_diamond)->setIconName(L\"bootsDiamond\")->setDescriptionId(IDS_ITEM_BOOTS_DIAMOND)->setUseDescriptionId(IDS_DESC_BOOTS_DIAMOND));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 389,
+          "anchor": "\t\tADD_ICON(3,\t\t3,\tL\"bootsDiamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:317:0",
+      "itemId": 317,
+      "aux": 0,
+      "icon": "bootsGold",
+      "crop": [
+        64,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "0da51e7236b9a7bf63dd02a4a39fcf2e2636091453b233ca0dccf2c2cee2f529",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 313,
+          "anchor": "Item::boots_gold\t\t= static_cast<ArmorItem *>((new ArmorItem(61, ArmorItem::ArmorMaterial::GOLD, 4, ArmorItem::SLOT_FEET))->setBaseItemTypeAndMaterial(eBaseItemType_boots, eMaterial_gold)->setIconName(L\"bootsGold\")->setDescriptionId(IDS_ITEM_BOOTS_GOLD)->setUseDescriptionId(IDS_DESC_BOOTS_GOLD));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 390,
+          "anchor": "\t\tADD_ICON(3,\t\t4,\tL\"bootsGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:280:0",
+      "itemId": 280,
+      "aux": 0,
+      "icon": "stick",
+      "crop": [
+        80,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "96eab70c812e1d4d822e8f27e4e8d69bcfbccc30049c5088aa7225cb5a9c57b2",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 338,
+          "anchor": "Item::stick = ( new Item(24) )\t\t\t\t\t\t\t\t\t\t\t\t\t->setIconName(L\"stick\")->handEquipped()->setDescriptionId(IDS_ITEM_STICK)->setUseDescriptionId(IDS_DESC_STICK);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 391,
+          "anchor": "\t\tADD_ICON(3,\t\t5,\tL\"stick\")"
+        }
+      ]
+    },
+    {
+      "key": "item:265:0",
+      "itemId": 265,
+      "aux": 0,
+      "icon": "ingotIron",
+      "crop": [
+        112,
+        16,
+        16,
+        16
+      ],
+      "rgbaSha256": "e3eefaf73595ec23ebce498c33b971f3783251a28637c3abe1ebc5f2f32f4993",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 315,
+          "anchor": "Item::ironIngot = ( new Item(9) )->setIconName(L\"ingotIron\")\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_iron)->setDescriptionId(IDS_ITEM_INGOT_IRON)->setUseDescriptionId(IDS_DESC_INGOT);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 359,
+          "anchor": "\t\tADD_ICON(1,\t\t7,\tL\"ingotIron\")"
+        }
+      ]
+    },
+    {
+      "key": "item:266:0",
+      "itemId": 266,
+      "aux": 0,
+      "icon": "ingotGold",
+      "crop": [
+        112,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "88067a3aa67491ada7fa42096f6d364dd4f114a9d0b70df47984c551ae38d2ed",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 316,
+          "anchor": "Item::goldIngot = ( new Item(10) )->setIconName(L\"ingotGold\")\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_gold)->setDescriptionId(IDS_ITEM_INGOT_GOLD)->setUseDescriptionId(IDS_DESC_INGOT);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 376,
+          "anchor": "\t\tADD_ICON(2,\t\t7,\tL\"ingotGold\")"
+        }
+      ]
+    },
+    {
+      "key": "item:264:0",
+      "itemId": 264,
+      "aux": 0,
+      "icon": "diamond",
+      "crop": [
+        112,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "4bdc059c96990a7fbedacc749c1b986e4643a67ed77608f85315a0e92b0184af",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 337,
+          "anchor": "Item::diamond = ( new Item(8) )\t\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_diamond)->setIconName(L\"diamond\")->setDescriptionId(IDS_ITEM_DIAMOND)->setUseDescriptionId(IDS_DESC_DIAMONDS);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 393,
+          "anchor": "\t\tADD_ICON(3,\t\t7,\tL\"diamond\")"
+        }
+      ]
+    },
+    {
+      "key": "item:334:0",
+      "itemId": 334,
+      "aux": 0,
+      "icon": "leather",
+      "crop": [
+        112,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "76381afceb409c63c905ec87294c8863ab55823a69e4a85e0ee639926f0bedee",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 370,
+          "anchor": "Item::leather = ( new Item(78) )\t\t\t\t\t\t\t\t\t->setIconName(L\"leather\")->setDescriptionId(IDS_ITEM_LEATHER)->setUseDescriptionId(IDS_DESC_LEATHER);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 444,
+          "anchor": "\t\tADD_ICON(6,\t\t7,\tL\"leather\")"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Only these 63 keys have sprites; other canonical items retain representative mesh thumbnails.",
+    "Inventory/hotbar sprites only; first-person held items are not rendered.",
+    "Not a full upstream ItemRenderer, item/tool engine or world renderer.",
+    "Pinned local C++ sources are required for offline anchor verification."
+  ]
+}

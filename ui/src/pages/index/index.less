@@ -1,0 +1,1032 @@
+.container {
+    position: relative;
+    background-color: #9bcfe8;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.game-surface {
+    width: 960px;
+    height: 266px;
+}
+
+.hud {
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    height: 22px;
+    padding: 0 10px;
+    justify-content: center;
+    background-color: rgba(20, 35, 30, 0.78);
+    border-radius: 5px;
+}
+
+.hud-text {
+    font-size: 12px;
+    line-height: 18px;
+    color: #ffffff;
+}
+
+.render-status {
+    position: absolute;
+    top: 31px;
+    left: 12px;
+    right: 12px;
+    padding: 3px 8px;
+    background-color: rgba(100, 30, 20, 0.88);
+    border-radius: 4px;
+}
+
+.status-text {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.toolbar {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 6px;
+    height: 38px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.toolbar-button {
+    width: 82px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(32, 67, 35, 0.92);
+    border-radius: 5px;
+}
+
+.button-text {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.current-block {
+    flex: 1;
+    height: 38px;
+    margin-left: 6px;
+    margin-right: 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(20, 35, 30, 0.88);
+    border-radius: 5px;
+}
+
+.current-name {
+    font-size: 14px;
+    line-height: 18px;
+    color: #ffffff;
+}
+
+.current-index {
+    font-size: 10px;
+    line-height: 13px;
+    color: #c7ddc9;
+}
+
+.reset-button {
+    width: 70px;
+    margin-left: 6px;
+}
+
+.block-picker {
+    position: absolute;
+    top: 31px;
+    bottom: 50px;
+    left: 12px;
+    right: 12px;
+    background-color: rgba(15, 28, 24, 0.97);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.picker-header {
+    height: 28px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    background-color: #284531;
+}
+
+.picker-title {
+    font-size: 12px;
+    color: #e5f1e6;
+}
+
+.picker-close {
+    width: 62px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    background-color: #436747;
+}
+
+.block-scroller {
+    position: absolute;
+    top: 28px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.block-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 4px;
+}
+
+.block-option {
+    width: 25%;
+    height: 46px;
+    padding-left: 8px;
+    padding-right: 4px;
+    justify-content: center;
+    background-color: #243a30;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #405346;
+}
+
+.block-option-selected {
+    background-color: #456b35;
+    border-color: #c2df91;
+}
+
+.block-name {
+    font-size: 12px;
+    line-height: 18px;
+    color: #ffffff;
+}
+
+.block-detail {
+    font-size: 10px;
+    line-height: 14px;
+    color: #c0cfc3;
+}
+
+.create-button {
+    width: 116px;
+    margin-left: 6px;
+    background-color: #386d45;
+}
+
+.continue-button {
+    width: 132px;
+    margin-left: 6px;
+    background-color: #355c72;
+}
+
+.world-hud {
+    top: 6px;
+    width: 430px;
+    height: 56px;
+}
+
+.world-hud-text {
+    height: 12px;
+    font-size: 11px;
+    line-height: 12px;
+}
+
+.world-status {
+    top: 68px;
+    height: 30px;
+    justify-content: center;
+}
+
+// The 1.25× panel right edge is x=590, so both side columns start clear of it.
+.inventory-status {
+    top: 68px;
+    left: 598px;
+    right: 12px;
+}
+
+.bag-button {
+    position: absolute;
+    top: 6px;
+    left: 640px;
+    width: 80px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(86, 66, 40, 0.94);
+    border-radius: 5px;
+}
+
+// Must stay equal to the (740,6) 80x40 ignore box in nativeTouchRole, and clear
+// of the 1.25x inventory panel's right edge at x=590.
+.chat-button {
+    position: absolute;
+    top: 6px;
+    left: 740px;
+    width: 80px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(40, 70, 90, 0.94);
+    border-radius: 5px;
+}
+
+// Read-only overlay above the movement pad and left of the mouse buttons
+// (x=600), so it covers no control. Deliberately not in nativeTouchRole's
+// ignore list: a look drag across it must still rotate the camera.
+.chat-log {
+    position: absolute;
+    left: 200px;
+    top: 104px;
+    width: 392px;
+    height: 100px;
+    justify-content: flex-end;
+    background-color: transparent;
+}
+
+// Not red: red is reserved for the error status bar.
+.chat-line {
+    height: 18px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 11px;
+    line-height: 18px;
+    color: #ffffff;
+    background-color: rgba(20, 35, 30, 0.72);
+}
+
+.chat-line-reply {
+    color: #c2df91;
+}
+
+.chat-line-notice {
+    color: #ffe2a3;
+}
+
+// Transparent tap target around the seed field, so the whole row opens the
+// system keypad even where the input element itself does not take the click.
+.seed-input-hit {
+    flex: 1;
+    height: 26px;
+    background-color: transparent;
+}
+
+// All inventory coordinates are the native 960×266 GUI at scale 1.25×, i.e.
+// mcinventory::inventoryLayout(960,266): hotbar (366,238) 228×28 with 25×28 slot
+// cells starting at x=367, panel (370,29) 220×208. These layer boxes must stay
+// equal to the values index.ts derives; every per-slot offset and size comes from
+// that layout at runtime. Vue stays transparent and never draws items or counts.
+.hotbar-hit-layer {
+    position: absolute;
+    left: 367px;
+    top: 238px;
+    width: 225px;
+    height: 28px;
+    background-color: transparent;
+}
+
+.hotbar-hit {
+    position: absolute;
+    background-color: transparent;
+}
+
+.inventory-overlay,
+.inventory-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 960px;
+    height: 266px;
+    background-color: transparent;
+}
+
+.inventory-panel-hit {
+    position: absolute;
+    left: 370px;
+    top: 29px;
+    width: 220px;
+    height: 208px;
+    background-color: transparent;
+}
+
+.inventory-slot-hit {
+    position: absolute;
+    background-color: transparent;
+}
+
+.inventory-tools {
+    position: absolute;
+    left: 598px;
+    top: 102px;
+    width: 350px;
+    height: 158px;
+}
+
+.inventory-hint {
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #ffffff;
+}
+
+.inventory-migration-warning {
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #ffe2a3;
+}
+
+.inventory-tool-button {
+    width: 100px;
+    height: 32px;
+    margin-top: 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(32, 67, 35, 0.94);
+    border-radius: 4px;
+}
+
+.inventory-close {
+    background-color: rgba(100, 48, 35, 0.94);
+}
+
+// Save/exit moved out of the world HUD and into the settings panel, so the
+// former top-right (844,6) 104×40 reservation no longer exists anywhere.
+
+.movement-pad {
+    position: absolute;
+    left: 12px;
+    bottom: 8px;
+    width: 180px;
+    height: 84px;
+}
+
+.move-button {
+    position: absolute;
+    width: 56px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(20, 35, 30, 0.86);
+    border-width: 1px;
+    border-style: solid;
+    border-color: #789b7d;
+    border-radius: 5px;
+}
+
+.move-forward {
+    top: 0;
+    left: 62px;
+}
+
+.move-left {
+    bottom: 0;
+    left: 0;
+}
+
+.move-backward {
+    bottom: 0;
+    left: 62px;
+}
+
+.move-right {
+    bottom: 0;
+    left: 124px;
+}
+
+// Geometry must stay identical to CONTROL_BOUNDS in index.ts:
+// primary (600,218) 120×40, secondary (730,218) 120×40, jump (872,218) 76×40.
+.primary-button,
+.secondary-button,
+.jump-button {
+    position: absolute;
+    bottom: 8px;
+    width: 76px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    // Translucent: the first-person hand is drawn natively right under the
+    // 左键/右键 strip (idle arm x 577-670, y 187-265) and must stay visible.
+    background-color: rgba(32, 67, 35, 0.35);
+    border-width: 1px;
+    border-style: solid;
+    border-color: #789b7d;
+    border-radius: 5px;
+}
+
+.primary-button {
+    left: 600px;
+    width: 120px;
+    background-color: rgba(120, 48, 40, 0.35);
+}
+
+.secondary-button {
+    left: 730px;
+    width: 120px;
+    background-color: rgba(40, 80, 95, 0.35);
+}
+
+.jump-button {
+    right: 12px;
+}
+
+.control-held {
+    background-color: #648d3d;
+    border-color: #d7edaa;
+}
+
+.create-panel {
+    position: absolute;
+    top: 12px;
+    height: 242px;
+    left: 210px;
+    right: 210px;
+    background-color: rgba(15, 28, 24, 0.98);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.create-header {
+    height: 28px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 12px;
+    background-color: #284531;
+}
+
+.create-hint,
+.generator-hint,
+.scene-hint,
+.size-hint {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #dfd7aa;
+}
+
+.create-hint {
+    top: 32px;
+}
+
+.generator-hint {
+    top: 50px;
+}
+
+.scene-hint {
+    top: 68px;
+    color: #c7ddc9;
+}
+
+.world-size-row {
+    position: absolute;
+    top: 112px;
+    left: 12px;
+    right: 12px;
+    height: 28px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.size-label {
+    width: 68px;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.world-size-option {
+    width: 102px;
+    height: 28px;
+    margin-left: 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: #243a30;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #789b7d;
+    border-radius: 4px;
+}
+
+.world-size-selected {
+    background-color: #456b35;
+    border-color: #d7edaa;
+}
+
+.size-option-text {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+.size-hint {
+    top: 140px;
+    color: #c7ddc9;
+}
+
+.seed-row {
+    position: absolute;
+    top: 156px;
+    left: 12px;
+    right: 12px;
+    height: 26px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.seed-label {
+    width: 92px;
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.seed-input {
+    width: 100%;
+    height: 26px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 13px;
+    color: #17291e;
+    background-color: #e7eee7;
+    border-radius: 4px;
+}
+
+.create-error {
+    position: absolute;
+    top: 182px;
+    left: 12px;
+    right: 12px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #ffb3a3;
+}
+
+.create-actions {
+    position: absolute;
+    top: 200px;
+    left: 12px;
+    right: 12px;
+    height: 40px;
+    flex-direction: row;
+}
+
+.panel-create-button {
+    width: 152px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: #386d45;
+    border-radius: 5px;
+}
+
+.panel-continue-button {
+    width: 152px;
+    height: 40px;
+    margin-left: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: #355c72;
+    border-radius: 5px;
+}
+
+.settings-button {
+    position: absolute;
+    left: 540px;
+    top: 6px;
+    width: 80px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(45, 65, 60, 0.94);
+    border-radius: 5px;
+}
+
+.create-radius-row {
+    position: absolute;
+    top: 84px;
+    left: 12px;
+    right: 12px;
+    height: 26px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.radius-option {
+    width: 138px;
+    height: 26px;
+    margin-left: 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: #243a30;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #789b7d;
+    border-radius: 4px;
+}
+
+// Declared after radius-option so selected options retain the highlight.
+.radius-selected {
+    background-color: #456b35;
+    border-color: #d7edaa;
+}
+
+.world-modal-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 960px;
+    height: 266px;
+    background-color: transparent;
+}
+
+// Full-screen settings and chat (960x266). Body content is positioned
+// relative to .settings-body, which starts below the 40px header.
+.settings-screen,
+.chat-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 960px;
+    height: 266px;
+    background-color: rgba(12, 22, 19, 0.98);
+}
+
+.screen-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 960px;
+    height: 40px;
+    background-color: rgba(30, 50, 42, 1);
+}
+
+.screen-title {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    height: 20px;
+    font-size: 15px;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.settings-tab {
+    position: absolute;
+    top: 5px;
+    width: 104px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c4636;
+    border-radius: 4px;
+}
+
+// Declared after .settings-tab so the selected tab keeps its highlight.
+.settings-tab-selected {
+    background-color: #5d8a3e;
+}
+
+.settings-save-exit {
+    position: absolute;
+    top: 5px;
+    left: 700px;
+    width: 140px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(100, 48, 35, 0.94);
+    border-radius: 4px;
+}
+
+.screen-close {
+    position: absolute;
+    top: 5px;
+    left: 852px;
+    width: 96px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: #436747;
+    border-radius: 4px;
+}
+
+.settings-body {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    width: 960px;
+    height: 222px;
+}
+
+.settings-range-row {
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    width: 936px;
+    height: 56px;
+}
+
+.settings-range-preload {
+    top: 62px;
+}
+
+.settings-range-label,
+.settings-section-label {
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #e5f1e6;
+}
+
+.chunk-chip-row {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 936px;
+    height: 34px;
+    flex-direction: row;
+}
+
+.chunk-chip {
+    width: 66px;
+    height: 34px;
+    margin-right: 6px;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c4636;
+    border-radius: 4px;
+}
+
+.chunk-chip-disabled {
+    background-color: #1c2b24;
+}
+
+// Declared after the other chip states so the selected chip always wins.
+.chunk-chip-selected {
+    background-color: #89b957;
+}
+
+.chunk-chip-text {
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.settings-stream,
+.settings-hint,
+.settings-error,
+.settings-keep-note,
+.settings-game-error {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #c7ddc9;
+}
+
+.settings-stream {
+    top: 124px;
+}
+
+.settings-hint {
+    top: 142px;
+}
+
+.settings-error,
+.settings-game-error {
+    top: 160px;
+    color: #ffb3a3;
+}
+
+.settings-apply {
+    position: absolute;
+    top: 182px;
+    left: 12px;
+    width: 160px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    background-color: #386d45;
+    border-radius: 4px;
+}
+
+.settings-section-label {
+    position: absolute;
+    left: 12px;
+    top: 6px;
+}
+
+.settings-keep-label {
+    top: 80px;
+}
+
+.settings-choice {
+    position: absolute;
+    width: 140px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c4636;
+    border-radius: 4px;
+}
+
+.settings-mode-creative { top: 28px; left: 12px; }
+.settings-mode-survival { top: 28px; left: 164px; }
+.settings-keep-toggle { top: 102px; left: 12px; }
+.hud-all-on { top: 176px; left: 12px; height: 34px; }
+.hud-all-off { top: 176px; left: 164px; height: 34px; }
+
+// After .settings-choice so the current choice keeps its highlight.
+.settings-choice-selected {
+    background-color: #5d8a3e;
+}
+
+.settings-keep-note {
+    top: 112px;
+    left: 168px;
+}
+
+.hud-option-grid {
+    position: absolute;
+    top: 28px;
+    left: 12px;
+    width: 936px;
+    height: 126px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.hud-option {
+    width: 222px;
+    height: 36px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    padding-left: 10px;
+    flex-direction: row;
+    align-items: center;
+    background-color: #2c4636;
+    border-radius: 4px;
+}
+
+.hud-check {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #d7edaa;
+    border-radius: 3px;
+    background-color: transparent;
+}
+
+.hud-check-on {
+    background-color: #89b957;
+}
+
+.hud-option-text {
+    font-size: 13px;
+    color: #ffffff;
+}
+
+.chat-history {
+    position: absolute;
+    top: 46px;
+    left: 12px;
+    width: 936px;
+    height: 166px;
+    padding: 2px;
+    justify-content: flex-end;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 4px;
+}
+
+.chat-history-line,
+.chat-history-empty {
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    color: #ffffff;
+}
+
+.chat-history-empty {
+    color: #878a99;
+}
+
+// After .chat-history-line so these colours win (same as the fading overlay).
+.chat-history-reply {
+    color: #c2df91;
+}
+
+.chat-history-notice {
+    color: #ffe2a3;
+}
+
+.chat-input {
+    position: absolute;
+    top: 222px;
+    left: 12px;
+    width: 470px;
+    height: 36px;
+    padding-left: 10px;
+    justify-content: center;
+    background-color: #24382f;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #789b7d;
+    border-radius: 4px;
+}
+
+.chat-input-text {
+    font-size: 13px;
+    color: #c7ddc9;
+}
+
+.chat-quick,
+.chat-page {
+    position: absolute;
+    top: 222px;
+    width: 86px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background-color: #2c4636;
+    border-radius: 4px;
+}
+
+.chat-page-up { left: 776px; width: 84px; }
+.chat-page-down { left: 868px; width: 80px; }
+
+// Last in the template: transparent full-screen hit mask, never a native render loop.
+.world-job-panel {
+    position: absolute;
+    left: 230px;
+    top: 50px;
+    width: 500px;
+    height: 150px;
+    align-items: center;
+    background-color: rgba(15, 28, 24, 0.98);
+    border-radius: 6px;
+}
+
+.job-title {
+    position: absolute;
+    top: 10px;
+    left: 16px;
+    right: 16px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #ffffff;
+}
+
+.job-detail,
+.job-message {
+    position: absolute;
+    top: 36px;
+    left: 16px;
+    right: 16px;
+    height: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #c7ddc9;
+}
+
+.job-progress-track {
+    position: absolute;
+    top: 60px;
+    left: 50px;
+    width: 400px;
+    height: 14px;
+    background-color: #243a30;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.job-progress-fill {
+    height: 14px;
+    background-color: #89b957;
+}
+
+.job-message {
+    top: 82px;
+    font-size: 11px;
+    color: #dfd7aa;
+}
+
+.job-cancel {
+    position: absolute;
+    top: 106px;
+    left: 190px;
+    width: 120px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    background-color: #734536;
+    border-radius: 4px;
+}
