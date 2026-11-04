@@ -57,15 +57,23 @@ bool GameActions::finishMining(mcworld::World& world, mcinventory::Inventory& in
                                const mcworld::BlockHit& hit, float yaw, float pitch) {
     const int tile = tileOf(hit.block);
     const int data = dataOf(hit.block);
+    if (hooks_.canBreak && !hooks_.canBreak(hit.x, hit.y, hit.z)) {
+        mining_.protectedBlock = true; // Contents would be lost: no item entities.
+        return false;
+    }
     if (mode_ == mcinventory::GameMode::Creative) {
-        return world.mine(yaw, pitch, blockReach(mode_));
+        if (!world.mine(yaw, pitch, blockReach(mode_))) return false;
+        if (hooks_.removed) hooks_.removed(hit.x, hit.y, hit.z);
+        return true;
     }
     if (!knownDropRule(tile)) {
         // No audited drop rule and no catalog fallback: still break the block
         // (the source lets you mine it, you just get nothing). Only refuse
         // the drop, not the break — otherwise survival deadlocks on variants.
         mining_.unsupportedLoot = true;
-        return world.mine(yaw, pitch, blockReach(mode_));
+        if (!world.mine(yaw, pitch, blockReach(mode_))) return false;
+        if (hooks_.removed) hooks_.removed(hit.x, hit.y, hit.z);
+        return true;
     }
     const auto gathered = drops(inventory.selectedItemId(), tile, data);
     // Stage the inventory mutation first, but treat an overflow as "break the
@@ -87,6 +95,7 @@ bool GameActions::finishMining(mcworld::World& world, mcinventory::Inventory& in
         if (!candidate.damageSelected(wear)) return false;
     }
     if (!world.mine(yaw, pitch, blockReach(mode_))) return false;
+    if (hooks_.removed) hooks_.removed(hit.x, hit.y, hit.z);
     if (overflow) {
         // Block is gone; the dropped items are discarded. This mirrors the
         // source when the player's inventory is full: the block still breaks
@@ -104,6 +113,7 @@ const MiningState& GameActions::tickMining(mcworld::World& world, mcinventory::I
     mining_.broken = false;
     mining_.inventoryFull = false;
     mining_.unsupportedLoot = false;
+    mining_.protectedBlock = false;
     if (inventory.opened() && inventory.gameMode() != mode_) {
         mode_ = inventory.gameMode();
         clearTarget();
@@ -184,7 +194,8 @@ std::string GameActions::miningInfoJson() const {
         << ",\"progress\":" << mining_.progress
         << ",\"x\":" << mining_.x << ",\"y\":" << mining_.y << ",\"z\":" << mining_.z
         << ",\"inventoryFull\":" << (mining_.inventoryFull ? "true" : "false")
-        << ",\"unsupportedLoot\":" << (mining_.unsupportedLoot ? "true" : "false") << '}';
+        << ",\"unsupportedLoot\":" << (mining_.unsupportedLoot ? "true" : "false")
+        << ",\"protectedBlock\":" << (mining_.protectedBlock ? "true" : "false") << '}';
     return out.str();
 }
 
@@ -193,6 +204,12 @@ bool GameActions::use(mcworld::World& world, mcinventory::Inventory& inventory, 
     mode_ = inventory.opened() ? inventory.gameMode() : mode_;
     const float reach = blockReach(mode_);
     // Source order: Tile::use first; a handled use consumes the click entirely.
+    // Container tiles (chest/workbench/furnace) are handled by the hook, then
+    // the World-level subset (doors). MultiPlayerGameMode::useItemOn.
+    if (hooks_.use) {
+        const auto hit = world.pick(yaw, pitch, reach);
+        if (hit.hit && !hit.unknown && hooks_.use(hit.x, hit.y, hit.z)) return true;
+    }
     if (world.useBlock(yaw, pitch, reach)) return true;
     if (!inventory.opened() || inventory.emptyHand()) return false;
     const int item = inventory.selectedItemId();

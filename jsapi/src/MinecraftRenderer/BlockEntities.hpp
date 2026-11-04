@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Inventory.hpp"
+#include "ContainerPanel.hpp"
+#include "Crafting.hpp"
 #include <array>
 #include <cstdint>
 #include <map>
@@ -13,29 +15,55 @@ namespace mccontainers {
 using mcworld::World;
 using mcinventory::Inventory;
 
-// Main-thread only. Single chests (54), persistent 3x3 workbenches (58),
-// furnaces (61/62). No double chests, hoppers, automation or offline ticking.
+// Main-thread only. Screens: the player 2x2 crafting grid (InventoryMenu),
+// workbenches (58, CraftingMenu), single chests (54, ContainerMenu 3 rows) and
+// furnaces (61, FurnaceTileEntity). No double chests, hoppers, lit-furnace
+// block swap (62 is absent from the render catalog) or offline ticking.
 class Containers {
 public:
+    enum class Screen { None = 0, Inventory, Workbench, Chest, Furnace };
+    enum class CraftResult { Ok = 0, NoPanel, NoRecipe, InventoryFull };
+
     // Transactional read; missing containers.bin stays absent until a mutation
     // is explicitly saved. Errors throw; invalid files never replace live state.
+    // Reads v1 and v2; always writes v2 (v1 + player 2x2 grid trailer).
     void open(const World&);
     void save(const World&);
+    // Tile::use for 54/58/61/62 (ChestTile.cpp:265, WorkbenchTile.cpp:35,
+    // FurnaceTile.cpp:111). Opens the panel; refuses while another is open.
     bool interact(World&, int x, int y, int z);
-    void close(); // Closes only the panel; never discards slots or stops furnaces.
-    bool opened() const; // Whether a panel is open, not whether a world is bound.
+    // Player inventory screen (InventoryMenu): opens the persistent 2x2 grid.
+    bool openInventory(const World&);
+    // Closes the panel. Crafting grids (2x2 and workbench) return their items
+    // to the inventory like CraftingMenu::removed / InventoryMenu::removed;
+    // whatever does not fit stays in the grid record (persisted) instead of
+    // the source's player->drop, because this port has no item entities.
+    // Chest/furnace slots are never touched. Returns items left behind.
+    int close(const World&, Inventory&);
+    bool opened() const { return screen_ != Screen::None; }
+    Screen screen() const { return screen_; }
     std::string infoJson(const Inventory&) const;
-    // Direction is inventory -> container iff toContainer. Output is extract-only.
-    // Moves/merges up to count; full-stack identity swaps preserve both stacks.
+    mcinventory::PanelView view() const;
+    // Direction is inventory -> container iff toContainer. Furnace output is
+    // extract-only (FurnaceResultSlot::mayPlace false). Moves/merges up to
+    // count; full-stack identity swaps preserve both stacks.
     bool transfer(World&, Inventory&, int inventorySlot, int containerSlot, int count, bool toContainer);
-    bool craft(World&, Inventory&); // One matched recipe; atomic inventory capacity check.
-    // 20 TPS; only loaded cells. Bounded round-robin (64 records, 200 ticks per
-    // record/call); excess elapsed time is dropped, not replayed after loading.
+    // Shift-click analogue (*Menu::quickMoveStack): moves as much of one
+    // container slot as fits into the inventory. Returns false if nothing moved.
+    bool quickMove(World&, Inventory&, int containerSlot);
+    // ResultSlot preview of the active crafting grid; matched=false otherwise.
+    crafting::Match preview() const;
+    // One ResultSlot::onTake: consumes one item from every occupied grid slot
+    // (ResultSlot.cpp:60-66) and adds the product to the inventory atomically.
+    CraftResult craft(World&, Inventory&);
+    // 20 TPS FurnaceTileEntity::tick on every furnace whose block is resident,
+    // whether or not its panel is open. dt is clamped to 0.1 s per call.
     void update(World&, float dt);
     // Main MUST check canBreak before mining, then call removed after success.
-    // Occupied grids/chests/furnaces and burning furnaces cannot be destroyed.
+    // Non-empty chests/furnaces/grids and burning furnaces refuse the break
+    // (source drops contents as item entities; this port has none).
     bool canBreak(int x, int y, int z) const;
-    void removed(int x, int y, int z); // Refuses nonempty/burning records.
+    void removed(int x, int y, int z);
     // Atomically stage main+armor into a persistent, dimension-bound death pile;
     // legacy protected data is untouched. Collection leaves any unaccepted stack.
     void dropOnDeath(const World&, Inventory&);
@@ -50,11 +78,14 @@ private:
         double fraction = 0;
     };
     void requireWorld(const World&) const;
-    Entity* active(World&);
-    bool bound_ = false, panel_ = false, dirty_ = false;
-    Position selected_ {}, cursor_ {};
-    bool cursorValid_ = false;
+    std::vector<mcinventory::Slot>* activeSlots();
+    const std::vector<mcinventory::Slot>* activeSlots() const;
+    const Entity* activeEntity() const;
+    bool bound_ = false, dirty_ = false;
+    Screen screen_ = Screen::None;
+    Position selected_ {};
     std::map<Position, Entity> entities_;
+    std::vector<mcinventory::Slot> playerGrid_ = std::vector<mcinventory::Slot>(4);
     std::string root_, path_;
     uint64_t rootDevice_ = 0, rootInode_ = 0, worldDevice_ = 0, worldInode_ = 0;
     uint32_t seed_ = 0, sourceHash_ = 0;

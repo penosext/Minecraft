@@ -1,5 +1,6 @@
 #include "InventoryRenderer.hpp"
 #include "InventoryAssets.hpp"
+#include "ContainerAssets.hpp"
 #include "LegacyBlock.hpp"
 #include "LegacyCatalog.hpp"
 #include "ItemCatalog.hpp"
@@ -265,5 +266,112 @@ void renderInventoryOverlay(uint32_t* pixels, int w, int h, const Inventory& inv
              assets::SelectionWidth, assets::SelectionHeight);
         for (int i = 0; i < 9; ++i) item(pixels, w, h, layout.hotbarIcons[i], inventory.slots()[i]);
     }
+}
+namespace {
+// Sub-rectangle (sx,sy,sw,sh) of a tw-wide texture into dest, nearest-neighbor.
+void blitPart(uint32_t* pixels, int w, int h, Rect dest, const uint32_t* texture, int tw,
+              int sx, int sy, int sw, int sh) {
+    if (dest.w <= 0 || dest.h <= 0 || sw <= 0 || sh <= 0) return;
+    const int left = std::max(0, dest.x), top = std::max(0, dest.y);
+    const int right = std::min(w, dest.x + dest.w), bottom = std::min(h, dest.y + dest.h);
+    for (int y = top; y < bottom; ++y) for (int x = left; x < right; ++x) {
+        const int tx = sx + int(int64_t(x - dest.x) * sw / dest.w), ty = sy + int(int64_t(y - dest.y) * sh / dest.h);
+        const size_t at = size_t(y) * w + x;
+        pixels[at] = blend(pixels[at], texture[ty * tw + tx]);
+    }
+}
+struct SlotPos { int x, y; };
+std::vector<SlotPos> panelSlots(PanelKind kind) {
+    std::vector<SlotPos> out;
+    switch (kind) {
+    case PanelKind::Inventory: for (int i = 0; i < 4; ++i) out.push_back({88 + (i % 2) * 18, 26 + (i / 2) * 18}); break;
+    case PanelKind::Workbench: for (int i = 0; i < 9; ++i) out.push_back({30 + (i % 3) * 18, 17 + (i / 3) * 18}); break;
+    case PanelKind::Chest: for (int i = 0; i < 27; ++i) out.push_back({8 + (i % 9) * 18, 18 + (i / 9) * 18}); break;
+    case PanelKind::Furnace: out = {{56, 17}, {56, 53}, {116, 35}}; break;
+    default: break;
+    }
+    return out;
+}
+} // namespace
+
+int ContainerLayout::hitTest(int x, int y) const {
+    if (kind == PanelKind::None) return -1;
+    for (int i = 0; i < 36; ++i) if (inventoryHits[i].contains(x, y)) return i;
+    for (size_t i = 0; i < slotHits.size(); ++i) if (slotHits[i].contains(x, y)) return kSlotBase + int(i);
+    if (hasResult && resultHit.contains(x, y)) return kResult;
+    return -1;
+}
+
+ContainerLayout containerLayout(int w, int h, PanelKind kind) {
+    ContainerLayout result;
+    if (kind == PanelKind::None || w <= 0 || h <= 0 || w > 32768 || h > 32768) return result;
+    const int panelH = kind == PanelKind::Chest ? 168 : 166;
+    // Same scale rule as inventoryLayout (184x168 minimum), so every screen
+    // shares one GUI scale; the 168-unit chest still fits 266 px at 1.25x.
+    const float fit = std::min({kMaxGuiScale, w / 184.0f, h / 168.0f});
+    result.scale = fit >= 1.0f ? std::floor(fit * 4.0f) / 4.0f : fit;
+    const float s = result.scale;
+    result.kind = kind;
+    result.panel = {(w - rounded(176 * s)) / 2, (h - rounded(panelH * s)) / 2, rounded(176 * s), rounded(panelH * s)};
+    const int ox = result.panel.x, oy = result.panel.y;
+    const int rows = kind == PanelKind::Chest ? 103 - 18 : 84, hotbar = kind == PanelKind::Chest ? 161 - 18 : 142;
+    for (int i = 0; i < 36; ++i) {
+        const int x = 8 + (i % 9) * 18, y = i < 9 ? hotbar : rows + ((i - 9) / 9) * 18;
+        result.inventoryIcons[i] = scaled(x, y, 16, 16, s, ox, oy);
+        result.inventoryHits[i] = scaled(x - 1, y - 1, 18, 18, s, ox, oy);
+    }
+    for (const auto& p : panelSlots(kind)) {
+        result.slotIcons.push_back(scaled(p.x, p.y, 16, 16, s, ox, oy));
+        result.slotHits.push_back(scaled(p.x - 1, p.y - 1, 18, 18, s, ox, oy));
+    }
+    if (kind == PanelKind::Inventory || kind == PanelKind::Workbench) {
+        const int rx = kind == PanelKind::Inventory ? 144 : 124, ry = kind == PanelKind::Inventory ? 36 : 35;
+        result.hasResult = true;
+        result.resultIcon = scaled(rx, ry, 16, 16, s, ox, oy);
+        // The source result frame is 26x26; 18x18 hits keep it disjoint from the grid.
+        result.resultHit = scaled(rx - 1, ry - 1, 18, 18, s, ox, oy);
+    }
+    if (kind == PanelKind::Furnace) {
+        result.flame = scaled(56, 36, 14, 14, s, ox, oy); // FurnaceScreen.cpp:33
+        result.arrow = scaled(79, 34, 24, 16, s, ox, oy); // FurnaceScreen.cpp:37
+    }
+    return result;
+}
+
+void renderContainerOverlay(uint32_t* pixels, int w, int h, const Inventory& inventory, const PanelView& view) {
+    if (!pixels || w <= 0 || h <= 0 || w > 32768 || h > 32768 || view.kind == PanelKind::None) return;
+    const ContainerLayout layout = containerLayout(w, h, view.kind);
+    if (layout.scale <= 0) return;
+    const float s = layout.scale;
+    namespace ca = containerassets;
+    if (view.kind == PanelKind::Inventory) {
+        renderInventoryOverlay(pixels, w, h, inventory, true);
+    } else {
+        for (size_t i = 0; i < size_t(w) * h; ++i) pixels[i] = blend(pixels[i], 0x90000000u);
+        if (view.kind == PanelKind::Chest) {
+            // ContainerScreen.cpp:37-38: top 3*18+17 rows, then the 96-row player part.
+            const Rect top {layout.panel.x, layout.panel.y, layout.panel.w, rounded(71 * s)};
+            const Rect bottom {layout.panel.x, layout.panel.y + top.h, layout.panel.w, layout.panel.h - top.h};
+            blit(pixels, w, h, top, ca::ChestTopPixels, ca::ChestTopWidth, ca::ChestTopHeight);
+            blit(pixels, w, h, bottom, ca::ChestBottomPixels, ca::ChestBottomWidth, ca::ChestBottomHeight);
+        } else if (view.kind == PanelKind::Workbench) {
+            blit(pixels, w, h, layout.panel, ca::CraftingPixels, ca::CraftingWidth, ca::CraftingHeight);
+        } else {
+            blit(pixels, w, h, layout.panel, ca::FurnacePixels, ca::FurnaceWidth, ca::FurnaceHeight);
+            // FurnaceScreen.cpp:31-37: flame grows bottom-up (p of 12), arrow left-right (p of 24).
+            if (view.lit) {
+                const int p = std::clamp(view.litProgress, 0, 12);
+                blitPart(pixels, w, h, scaled(56, 36 + 12 - p, 14, p + 2, s, layout.panel.x, layout.panel.y),
+                         ca::FurnaceFlamePixels, ca::FurnaceFlameWidth, 0, 12 - p, 14, p + 2);
+            }
+            const int p = std::clamp(view.burnProgress, 0, 24);
+            blitPart(pixels, w, h, scaled(79, 34, p + 1, 16, s, layout.panel.x, layout.panel.y),
+                     ca::FurnaceArrowPixels, ca::FurnaceArrowWidth, 0, 0, p + 1, 16);
+        }
+        for (int i = 0; i < 36; ++i) item(pixels, w, h, layout.inventoryIcons[i], inventory.slots()[i]);
+    }
+    for (size_t i = 0; i < layout.slotIcons.size() && i < view.slots.size(); ++i)
+        item(pixels, w, h, layout.slotIcons[i], view.slots[i]);
+    if (layout.hasResult) item(pixels, w, h, layout.resultIcon, view.result);
 }
 } // namespace mcinventory

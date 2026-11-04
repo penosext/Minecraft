@@ -8,12 +8,12 @@
       <text class="hud-text">FPS {{ fpsText }} (提交) · 渲染 {{ renderMsText }} ms · 角度 {{ hudYaw }}° / {{ hudPitch }}°</text>
     </div>
     <!-- Debug overlay: which lines/items appear is chosen in 设置 → 调试信息. -->
-    <div v-if="!inventoryPanelOpen && worldMode && hudLines.length" class="hud world-hud"
+    <div v-if="!inventoryPanelOpen && !containerPanelOpen && worldMode && hudLines.length" class="hud world-hud"
       :style="{ height: hudHeight + 'px' }" @touchstart="onControlTouch" @touchmove="onControlTouch">
       <text v-for="(line, index) in hudLines" :key="index" class="hud-text world-hud-text">{{ line }}</text>
     </div>
     <div v-if="!worldJobVisible && (actionMessage || nativeResult || (worldMode && (worldInfoError || inventoryError)))" class="render-status"
-      :class="{ 'world-status': worldMode, 'inventory-status': inventoryPanelOpen }" @touchstart="onControlTouch" @touchmove="onControlTouch">
+      :class="{ 'world-status': worldMode, 'inventory-status': inventoryPanelOpen || containerPanelOpen }" @touchstart="onControlTouch" @touchmove="onControlTouch">
       <text class="status-text">{{ actionMessage || nativeResult || worldInfoError || inventoryError }}</text>
     </div>
 
@@ -41,14 +41,14 @@
 
     <!-- The 1.25× native panel reaches x=590, so both top-right buttons are hidden
          while it is open; world input is blocked then, so no dead zone remains. -->
-    <div v-if="worldMode && !inventoryPanelOpen" class="settings-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openWorldSettings">
+    <div v-if="worldMode && !inventoryPanelOpen && !containerPanelOpen" class="settings-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openWorldSettings">
       <text class="button-text">设置</text>
     </div>
-    <div v-if="worldMode && !inventoryPanelOpen" class="bag-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openInventory">
+    <div v-if="worldMode && !inventoryPanelOpen && !containerPanelOpen" class="bag-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openInventory">
       <text class="button-text">背包</text>
     </div>
     <!-- Opens the full-screen chat; its input row uses the system input method (EnUSPreferred). -->
-    <div v-if="worldMode && !inventoryPanelOpen" class="chat-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openChatPanel">
+    <div v-if="worldMode && !inventoryPanelOpen && !containerPanelOpen" class="chat-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openChatPanel">
       <text class="button-text">聊天</text>
     </div>
     <!-- Read-only, self-fading local log. No touch handlers at all, so it can
@@ -109,15 +109,40 @@
         <div v-for="hit in inventoryHits" :key="hit.slot" class="inventory-slot-hit"
           :style="{ left: hit.left + 'px', top: hit.top + 'px', width: hit.width + 'px', height: hit.height + 'px' }"
           @click="clickInventorySlot(hit.slot)"></div>
+        <div v-for="hit in inventoryGridHits" :key="hit.side + hit.slot" class="inventory-grid-hit"
+          :style="{ left: hit.left + 'px', top: hit.top + 'px', width: hit.width + 'px', height: hit.height + 'px' }"
+          @click="clickPanelSlot(hit)"></div>
       </div>
       <div class="inventory-tools">
         <text class="inventory-hint">持物：{{ heldItemName }}</text>
         <text v-if="inventoryMigrationWarning" class="inventory-migration-warning">{{ inventoryMigrationWarning }}</text>
+        <text v-if="craftRecipeName" class="inventory-hint">合成：{{ craftRecipeName }}</text>
         <div class="inventory-tool-button" @click="toggleBlockPicker">
           <text class="button-text">创造物品</text>
         </div>
         <div class="inventory-tool-button inventory-close" @click="closeInventory">
           <text class="button-text">关闭背包</text>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chest / workbench / furnace: native draws the screen; Vue only places hit cells. -->
+    <div v-if="worldMode && containerPanelOpen" class="container-overlay"
+      @touchstart="onControlTouch" @touchmove="onControlTouch">
+      <div class="container-backdrop" @click="closeContainerPanel"></div>
+      <div class="container-panel-hit" :style="containerPanelStyle">
+        <div v-for="hit in containerHits" :key="hit.side + hit.slot" class="container-slot-hit"
+          :style="{ left: hit.left + 'px', top: hit.top + 'px', width: hit.width + 'px', height: hit.height + 'px' }"
+          @click="clickPanelSlot(hit)"></div>
+      </div>
+      <div class="container-tools">
+        <text class="inventory-hint">{{ containerTitle }}</text>
+        <text v-if="craftRecipeName" class="inventory-hint">合成：{{ craftRecipeName }}</text>
+        <div v-if="panelKind === 'workbench'" class="inventory-tool-button container-grid-mode" @click="toggleContainerOnePerTap">
+          <text class="button-text">{{ containerOnePerTap ? '每次放1个' : '整组放入' }}</text>
+        </div>
+        <div class="inventory-tool-button inventory-close container-close" @click="closeContainerPanel">
+          <text class="button-text">关闭</text>
         </div>
       </div>
     </div>

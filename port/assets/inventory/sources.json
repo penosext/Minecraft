@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "generator": "tools/extract-containers.py",
+  "upstream_repository": "https://github.com/gstaaij/minecraft-console",
+  "upstream_reference_commit": "09df8928eeb15328bca499d225e48ea95af6d119",
+  "copy_method": "Byte-for-byte copy from the local upstream checkout Common/res/gui; no resize or re-encode.",
+  "generated_header": "ContainerAssets.hpp",
+  "generated_sha256": "3a33fc9aa91c38cf3a85b6cd08dd060f63714d5ea99e627866de93fde75eb135",
+  "assets": [
+    {
+      "asset": "crafting.png",
+      "local_file": "port/assets/inventory/crafting.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/gui/crafting.png",
+      "sha256": "d6cf2562367d3bea1bb69410d5bfdc5501ee624ce2a5302718091e503684868f",
+      "git_blob_sha1": "da831189b8d327c7ed29c1a7b3922d435b872c35",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "asset": "furnace.png",
+      "local_file": "port/assets/inventory/furnace.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/gui/furnace.png",
+      "sha256": "0b067a1e068e90c1e6f3805cfcb8f8bf0fb75fd3d16e4c5cb0f1b3dfab0ba4bc",
+      "git_blob_sha1": "a5834e19516d760d1dc1b87db3e8abee756d9884",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA"
+    },
+    {
+      "asset": "container.png",
+      "local_file": "port/assets/inventory/container.png",
+      "upstream_asset_path": "Minecraft.Client/Common/res/gui/container.png",
+      "sha256": "8840838eec59d15bf96a7b26f77e07dc865ca4b392a68c391e7c95ed45cb060a",
+      "git_blob_sha1": "bd1d383cef037c2084b1b8b9c41200537eca8a53",
+      "size": [
+        256,
+        256
+      ],
+      "mode": "RGBA"
+    }
+  ],
+  "crops": [
+    {
+      "symbol": "Crafting",
+      "asset": "crafting.png",
+      "box": [
+        0,
+        0,
+        176,
+        166
+      ]
+    },
+    {
+      "symbol": "Furnace",
+      "asset": "furnace.png",
+      "box": [
+        0,
+        0,
+        176,
+        166
+      ]
+    },
+    {
+      "symbol": "FurnaceFlame",
+      "asset": "furnace.png",
+      "box": [
+        176,
+        0,
+        14,
+        14
+      ]
+    },
+    {
+      "symbol": "FurnaceArrow",
+      "asset": "furnace.png",
+      "box": [
+        176,
+        14,
+        24,
+        17
+      ]
+    },
+    {
+      "symbol": "ChestTop",
+      "asset": "container.png",
+      "box": [
+        0,
+        0,
+        176,
+        71
+      ]
+    },
+    {
+      "symbol": "ChestBottom",
+      "asset": "container.png",
+      "box": [
+        0,
+        126,
+        176,
+        96
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "source": "Minecraft.Client/CraftingScreen.cpp",
+      "line": 32,
+      "text": "this->blit(xo, yo, 0, 0, imageWidth, imageHeight);",
+      "git_blob_sha1": "76aa8db754abde0801a4a98c20b3c61cde4a06f8"
+    },
+    {
+      "source": "Minecraft.Client/FurnaceScreen.cpp",
+      "line": 33,
+      "text": "this->blit(xo + 56, yo + 36 + 12 - p, 176, 12 - p, 14, p + 2);",
+      "git_blob_sha1": "915a8dbc6f9c598a5a97b53ee44a405650a7aedf"
+    },
+    {
+      "source": "Minecraft.Client/FurnaceScreen.cpp",
+      "line": 37,
+      "text": "this->blit(xo + 79, yo + 34, 176, 14, p + 1, 16);",
+      "git_blob_sha1": "915a8dbc6f9c598a5a97b53ee44a405650a7aedf"
+    },
+    {
+      "source": "Minecraft.Client/ContainerScreen.cpp",
+      "line": 13,
+      "text": "int noRowHeight = defaultHeight - 6 * 18;",
+      "git_blob_sha1": "4ec572aca6c2fb1f294b5644f11ff9c02a3ac84e"
+    },
+    {
+      "source": "Minecraft.Client/ContainerScreen.cpp",
+      "line": 37,
+      "text": "this->blit(xo, yo, 0, 0, imageWidth, containerRows * 18 + 17);",
+      "git_blob_sha1": "4ec572aca6c2fb1f294b5644f11ff9c02a3ac84e"
+    },
+    {
+      "source": "Minecraft.Client/ContainerScreen.cpp",
+      "line": 38,
+      "text": "this->blit(xo, yo + containerRows * 18 + 17, 0, 222 - 96, imageWidth, 96);",
+      "git_blob_sha1": "4ec572aca6c2fb1f294b5644f11ff9c02a3ac84e"
+    },
+    {
+      "source": "Minecraft.World/CraftingMenu.cpp",
+      "line": 29,
+      "text": "addSlot(new ResultSlot( inventory->player, craftSlots, resultSlots, 0, 120 + 4, 31 + 4));",
+      "git_blob_sha1": "6f24d31081def0349a0911dceda5c9c0d4625e00"
+    },
+    {
+      "source": "Minecraft.World/CraftingMenu.cpp",
+      "line": 35,
+      "text": "addSlot(new Slot(craftSlots, x + y * 3, 30 + x * 18, 17 + y * 18));",
+      "git_blob_sha1": "6f24d31081def0349a0911dceda5c9c0d4625e00"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "line": 35,
+      "text": "addSlot(new ResultSlot( inventory->player, craftSlots, resultSlots, 0, 144, 36));",
+      "git_blob_sha1": "9c6c661f0e4c53de5e1e6824e164fa3f5de0ab69"
+    },
+    {
+      "source": "Minecraft.World/InventoryMenu.cpp",
+      "line": 41,
+      "text": "addSlot(new Slot(craftSlots, x + y * 2, 88 + x * 18, 26 + y * 18));",
+      "git_blob_sha1": "9c6c661f0e4c53de5e1e6824e164fa3f5de0ab69"
+    },
+    {
+      "source": "Minecraft.World/FurnaceMenu.cpp",
+      "line": 19,
+      "text": "addSlot(new Slot(furnace, 0, 52 + 4, 13 + 4));",
+      "git_blob_sha1": "2bc2d2bd3e3c0197a433f2e26bea8d1d1d9e866a"
+    },
+    {
+      "source": "Minecraft.World/FurnaceMenu.cpp",
+      "line": 20,
+      "text": "addSlot(new Slot(furnace, 1, 52 + 4, 49 + 4));",
+      "git_blob_sha1": "2bc2d2bd3e3c0197a433f2e26bea8d1d1d9e866a"
+    },
+    {
+      "source": "Minecraft.World/FurnaceMenu.cpp",
+      "line": 21,
+      "text": "112 + 4, 31 + 4));",
+      "git_blob_sha1": "2bc2d2bd3e3c0197a433f2e26bea8d1d1d9e866a"
+    },
+    {
+      "source": "Minecraft.World/ContainerMenu.cpp",
+      "line": 23,
+      "text": "addSlot(new Slot(container, x + y * 9, 8 + x * 18, 18 + y * 18));",
+      "git_blob_sha1": "463ad5d1df35cfe597361377f0b7a06dbdc2cf98"
+    },
+    {
+      "source": "Minecraft.World/ContainerMenu.cpp",
+      "line": 31,
+      "text": "addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 103 + y * 18 + yo));",
+      "git_blob_sha1": "463ad5d1df35cfe597361377f0b7a06dbdc2cf98"
+    },
+    {
+      "source": "Minecraft.World/ContainerMenu.cpp",
+      "line": 36,
+      "text": "addSlot(new Slot(inventory, x, 8 + x * 18, 161 + yo));",
+      "git_blob_sha1": "463ad5d1df35cfe597361377f0b7a06dbdc2cf98"
+    }
+  ],
+  "boundaries": [
+    "AbstractContainerScreen::render is #if 0 upstream; this reproduces the legacy texture/slot layout, not console XUI.",
+    "Titles (font->draw labels) are not drawn: the port has no original font renderer.",
+    "Chest is the single 3-row ContainerScreen; large (double) chests are not supported."
+  ]
+}

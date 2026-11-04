@@ -33,6 +33,12 @@ export declare class MinecraftRenderer {
     static setCreativeItem(slot: number, itemIndex: number): string;
     static inventoryTransfer(from: number, to: number, count?: number): string;
     static inventoryOpen(open: boolean): boolean;
+    // Container panels (chest/workbench/furnace and the 2x2 inventory grid).
+    static containerInfo(): string;
+    static closeContainer(): boolean;
+    // inventorySlot -1 = quick move containerSlot into the inventory. Returns {ok, ...containerInfo}.
+    static containerTransfer(inventorySlot: number, containerSlot: number, count?: number, toContainer?: boolean): string;
+    static craftContainer(): string;
     static placeWorld(yaw: number, pitch: number): boolean;
     static useWorld(yaw: number, pitch: number): boolean;
     static beginTouch(): boolean;

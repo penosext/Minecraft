@@ -3,6 +3,8 @@
 #include <array>
 #include <cstdint>
 #include "Inventory.hpp"
+#include "ContainerPanel.hpp"
+#include <vector>
 
 namespace mcinventory {
 struct Rect {
@@ -58,4 +60,31 @@ void renderPanelPlayer(uint32_t* argb, int w, int h, const InventoryLayout& layo
 // representative terrain-state thumbnail, not the complete original ItemRenderer.
 void renderInventoryOverlay(uint32_t* argb, int w, int h,
                             const Inventory& inventory, bool fullInventory);
+// Container screens, source slot coordinates (1x GUI units, slot icon origin):
+//   Inventory  InventoryMenu.cpp:35,41  grid 88+x*18,26+y*18 (2x2), result 144,36
+//   Workbench  CraftingMenu.cpp:29,35   grid 30+x*18,17+y*18 (3x3), result 124,35
+//   Furnace    FurnaceMenu.cpp:19-21    input 56,17  fuel 56,53  output 116,35
+//   Chest      ContainerMenu.cpp:23     27 slots 8+x*18,18+y*18; player rows
+//              shifted by yo=(3-4)*18 (ContainerMenu.cpp:17,31,36); panel height
+//              222-6*18+3*18=168 (ContainerScreen.cpp:12-16).
+// Player rows otherwise follow InventoryMenu (84+y*18, hotbar 142). Same scale
+// and centering rule as inventoryLayout; hit cells are the 18x18 slot frames.
+struct ContainerLayout {
+    float scale = 0;
+    PanelKind kind = PanelKind::None;
+    Rect panel;
+    std::array<Rect, 36> inventoryIcons {}, inventoryHits {}; // by inventory id
+    std::vector<Rect> slotIcons, slotHits;                     // by container slot
+    bool hasResult = false;
+    Rect resultIcon {}, resultHit {};
+    Rect flame {}, arrow {}; // Furnace progress boxes (full extent), else empty.
+    // Hit-test ids: 0..35 inventory, kSlotBase+i container slot, kResult, -1 none.
+    static constexpr int kSlotBase = 100, kResult = 200;
+    int hitTest(int x, int y) const;
+};
+ContainerLayout containerLayout(int w, int h, PanelKind kind);
+// Draws one container screen (background, player rows, panel slots, result
+// preview, furnace flame/arrow). Inventory kind is the full inventory overlay
+// plus its 2x2 grid and result. No-op for PanelKind::None.
+void renderContainerOverlay(uint32_t* argb, int w, int h, const Inventory& inventory, const PanelView& view);
 } // namespace mcinventory

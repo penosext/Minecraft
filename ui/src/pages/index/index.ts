@@ -2,6 +2,7 @@ import { defineComponent } from 'vue';
 import { MinecraftRenderer } from 'Minecraft';
 import { terrainBlocks } from './terrain-blocks';
 import { creativeItems } from './creative-items';
+import { containerLayout, planTap, CONTAINER_SLOT_COUNT, ContainerKind, PanelHit, PanelPick } from './container-panel';
 import { TextEditSession, isKeyboardAvailable } from '../../utils/keyboard';
 
 export type indexOptions = {};
@@ -48,11 +49,10 @@ type SurvivalInfo = {
   air: number; maxAir: number; dead: boolean; difficulty: number;
 };
 type ContainerInfo = {
-  open: boolean; type?: 'chest' | 'furnace' | 'workbench'; x?: number; y?: number; z?: number;
+  open: boolean; type?: ContainerKind; x?: number; y?: number; z?: number;
   slots: InventorySlot[]; burnRemaining?: number; burnTotal?: number; cookTicks?: number; cookTotal?: number;
   recipe?: { key: string; count: number; name?: string } | null;
 };
-type ContainerSelection = { side: 'inventory' | 'container'; slot: number };
 type WorldInfo = {
   survival?: SurvivalInfo;
   stream?: WorldStream;
@@ -91,7 +91,8 @@ type WorldRenderer = {
   setDifficulty?(difficulty: number): string;
   containerInfo?(): string;
   closeContainer?(): boolean;
-  transferContainer?(inventorySlot: number, containerSlot: number, count: number, toContainer: boolean): string;
+  // inventorySlot -1 = quick move containerSlot into the inventory. Returns {ok, ...containerInfo}.
+  containerTransfer?(inventorySlot: number, containerSlot: number, count: number, toContainer: boolean): string;
   craftContainer?(): string;
   beginTouch?(): boolean;
   pollTouch?(): string;
@@ -638,9 +639,9 @@ function readContainer(json: string): ContainerInfo {
   const info = JSON.parse(json);
   if (!info || typeof info.open !== 'boolean') throw new Error('容器信息无效');
   if (!info.open) return { open: false, slots: [] };
-  const length = info.type === 'chest' ? 27 : info.type === 'furnace' ? 3 : info.type === 'workbench' ? 9 : 0;
+  const length = CONTAINER_SLOT_COUNT[info.type as ContainerKind] || 0;
   if (!length || !Array.isArray(info.slots) || info.slots.length !== length ||
-    !['x', 'y', 'z'].every(key => Number.isInteger(info[key])) ||
+    (info.type !== 'inventory' && !['x', 'y', 'z'].every(key => Number.isInteger(info[key]))) ||
     !['burnRemaining', 'burnTotal', 'cookTicks', 'cookTotal'].every(key => info[key] === undefined ||
       (typeof info[key] === 'number' && isFinite(info[key]) && info[key] >= 0))) throw new Error('容器槽位无效');
   if (info.recipe != null && (typeof info.recipe.key !== 'string' ||
@@ -696,7 +697,8 @@ const index = defineComponent({
       survival: null as SurvivalInfo | null,
       containerPanelOpen: false,
       containerState: null as ContainerInfo | null,
-      containerSelection: null as ContainerSelection | null,
+      containerSelection: null as PanelPick | null,
+      containerOnePerTap: true, // Crafting grids take one item per tap.
       containerError: '',
       difficultyLabels: ['和平', '简单', '普通', '困难'],
       lookSensitivity: 0.35,
@@ -836,6 +838,32 @@ const index = defineComponent({
     containerTitle(): string {
       const type = this.containerState && this.containerState.type;
       return type === 'chest' ? '箱子' : type === 'furnace' ? '熔炉' : '工作台';
+    },
+    // Native screen whose slots the open panel shows; null when none is open.
+    panelKind(): ContainerKind | null {
+      if (this.containerPanelOpen && this.containerState && this.containerState.type) return this.containerState.type;
+      return this.inventoryPanelOpen ? 'inventory' : null;
+    },
+    panelLayout() {
+      const kind = (this as any).panelKind as ContainerKind | null;
+      return kind ? containerLayout(960, 266, kind) : null;
+    },
+    // Grid + result cells of the inventory screen (its 36 inventory cells are inventoryHits).
+    inventoryGridHits(): PanelHit[] {
+      return containerLayout(960, 266, 'inventory').hits.filter(hit => hit.side !== 'inventory');
+    },
+    containerHits(): PanelHit[] {
+      const layout = (this as any).panelLayout;
+      return this.containerPanelOpen && layout ? layout.hits : [];
+    },
+    containerPanelStyle(): Record<string, string> {
+      const layout = (this as any).panelLayout;
+      const p = layout ? layout.panel : { x: 0, y: 0, width: 0, height: 0 };
+      return { left: p.x + 'px', top: p.y + 'px', width: p.width + 'px', height: p.height + 'px' };
+    },
+    craftRecipeName(): string {
+      const recipe = this.containerState && this.containerState.recipe;
+      return recipe ? (recipe.name || recipe.key) + ' ×' + recipe.count : '';
     },
     hudHeight(): number {
       return this.hudLines.length ? HUD_PADDING + this.hudLines.length * HUD_LINE_HEIGHT : 0;
@@ -1202,8 +1230,10 @@ const index = defineComponent({
         if (worldRenderer.inventoryOpen(true) !== true) throw new Error('native 返回失败');
         this.inventoryPanelOpen = true;
         this.inventoryFrom = -1;
+        this.containerSelection = null;
         this.actionMessage = '';
         this.refreshInventory();
+        this.refreshContainer();
       } catch (e: any) {
         this.actionMessage = '打开背包失败: ' + errorMessage(e);
       }
@@ -1218,6 +1248,9 @@ const index = defineComponent({
         if (worldRenderer.inventoryOpen(false) !== true) throw new Error('native 返回失败');
         this.inventoryPanelOpen = false;
         this.inventoryFrom = -1;
+        this.containerSelection = null;
+        this.containerState = null;
+        this.refreshInventory();
         this.pickerOpen = false;
         this.actionMessage = '';
         return true;
@@ -1230,6 +1263,8 @@ const index = defineComponent({
     clickInventorySlot(slot: number) {
       if (!this.worldMode || this.chunkLoading || this.worldBusy || !this.inventoryPanelOpen || this.pickerOpen ||
         !Number.isInteger(slot) || slot < 0 || slot > 35) return;
+      // A grid slot is selected: the inventory tap completes a grid move.
+      if (this.containerSelection) { this.clickPanelSlot({ side: 'inventory', slot } as PanelHit); return; }
       if (this.inventoryFrom < 0) { this.inventoryFrom = slot; return; }
       if (this.inventoryFrom === slot) { this.inventoryFrom = -1; return; }
       try {
@@ -1241,6 +1276,100 @@ const index = defineComponent({
         this.actionMessage = '';
       } catch (e: any) {
         this.actionMessage = '背包转移失败: ' + errorMessage(e);
+      }
+    },
+
+    // --- Container panels (chest / workbench / furnace / 2x2 grid) -----------
+    applyContainer(json: string): { ok: boolean; status: string } {
+      const raw = JSON.parse(json);
+      this.containerState = readContainer(json);
+      if (raw && raw.inventory && Array.isArray(raw.inventory.slots)) this.applyInventory(JSON.stringify(raw.inventory));
+      return { ok: raw && raw.ok !== false, status: raw && typeof raw.status === 'string' ? raw.status : '' };
+    },
+    refreshContainer(): boolean {
+      if (!this.worldMode || this.worldBusy || !worldRenderer.containerInfo) return false;
+      try {
+        this.applyContainer(worldRenderer.containerInfo());
+        this.containerError = '';
+        return true;
+      } catch (e: any) {
+        this.containerError = '容器状态更新失败: ' + errorMessage(e);
+        return false;
+      }
+    },
+    // After a right click: open the panel if native Tile::use opened one.
+    syncContainerPanel(): boolean {
+      if (!this.refreshContainer() || !this.containerState || !this.containerState.open ||
+        this.containerState.type === 'inventory') return false;
+      this.setSecondary(false);
+      this.quiesceWorldInput();
+      this.containerPanelOpen = true;
+      this.containerSelection = null;
+      this.actionMessage = '';
+      return true;
+    },
+    closeContainerPanel(): boolean {
+      if (!this.containerPanelOpen) return true;
+      this.quiesceWorldInput();
+      try {
+        if (!worldRenderer.closeContainer) throw new Error('native closeContainer 未接入');
+        if (worldRenderer.closeContainer() !== true) throw new Error('native 返回失败');
+      } catch (e: any) {
+        this.actionMessage = '关闭容器失败: ' + errorMessage(e);
+        return false;
+      }
+      this.containerPanelOpen = false;
+      this.containerState = null;
+      this.containerSelection = null;
+      this.refreshInventory();
+      this.worldDirty = true;
+      return true;
+    },
+    toggleContainerOnePerTap() {
+      this.containerOnePerTap = !this.containerOnePerTap;
+    },
+    // Every container/grid/result cell, plus inventory cells of a container panel.
+    clickPanelSlot(hit: PanelHit) {
+      const kind = this.panelKind;
+      if (!kind || !this.worldMode || this.chunkLoading || this.worldBusy || this.pickerOpen) return;
+      // In the plain inventory screen an inventory-side first selection lives in inventoryFrom.
+      const selected: PanelPick | null = this.containerSelection ||
+        (kind === 'inventory' && this.inventoryFrom >= 0 ? { side: 'inventory', slot: this.inventoryFrom } : null);
+      const tap = planTap(kind, selected, hit, this.containerOnePerTap);
+      const setSelection = (pick: PanelPick | null) => {
+        if (kind === 'inventory' && pick && pick.side === 'inventory') {
+          this.inventoryFrom = pick.slot; this.containerSelection = null;
+        } else { this.containerSelection = pick; this.inventoryFrom = -1; }
+      };
+      try {
+        if (tap.kind === 'select') { setSelection(tap.pick); return; }
+        if (tap.kind === 'inventoryMove') {
+          if (!worldRenderer.inventoryTransfer) throw new Error('native inventoryTransfer 未接入');
+          this.applyInventory(worldRenderer.inventoryTransfer(tap.from, tap.to));
+          setSelection(null);
+        } else if (tap.kind === 'craft') {
+          if (!worldRenderer.craftContainer) throw new Error('native craftContainer 未接入');
+          const result = this.applyContainer(worldRenderer.craftContainer());
+          if (!result.ok) {
+            this.actionMessage = result.status === 'inventory-full' ? '背包已满，无法合成' : '没有匹配的配方';
+            return;
+          }
+        } else {
+          if (!worldRenderer.containerTransfer) throw new Error('native containerTransfer 未接入');
+          const json = tap.kind === 'quickMove'
+            ? worldRenderer.containerTransfer(-1, tap.containerSlot, 64, false)
+            : worldRenderer.containerTransfer(tap.inventorySlot, tap.containerSlot, tap.count, tap.toContainer);
+          const result = this.applyContainer(json);
+          // A grid "paint" keeps its source selected while that stack lasts.
+          const keep = tap.kind === 'containerMove' && tap.keep && result.ok && this.inventoryState &&
+            this.inventoryState.slots[tap.inventorySlot] && this.inventoryState.slots[tap.inventorySlot].count > 0;
+          setSelection(keep && tap.kind === 'containerMove' ? { side: 'inventory', slot: tap.inventorySlot } : null);
+          if (!result.ok) { this.actionMessage = '无法放到这里'; return; }
+        }
+        this.worldDirty = true;
+        this.actionMessage = '';
+      } catch (e: any) {
+        this.actionMessage = '容器操作失败: ' + errorMessage(e);
       }
     },
 
@@ -2029,6 +2158,9 @@ const index = defineComponent({
       this.inventoryState = null;
       this.inventoryError = '';
       this.inventoryFrom = -1;
+      this.containerPanelOpen = false;
+      this.containerState = null;
+      this.containerSelection = null;
       this.emptyHandNotified = false;
       this.settingsPanelOpen = false;
       this.chunkLoading = false;
@@ -2054,6 +2186,7 @@ const index = defineComponent({
     saveAndExit() {
       if (!this.worldMode || this.worldBusy) return;
       this.quiesceWorldInput();
+      this.closeContainerPanel();
       this.refreshChunkLoadStatus();
       if (this.chunkLoading) {
         this.saveExitPending = true;
@@ -2245,6 +2378,8 @@ const index = defineComponent({
         // the correct original behaviour.
         const acted = worldRenderer.placeWorld(this.yaw, this.pitch);
         if (typeof acted !== 'boolean') throw new Error('native 交互信息无效');
+        // Tile::use on a chest/workbench/furnace opened a native panel.
+        if (acted && this.syncContainerPanel()) return;
         const refreshed = this.refreshInventory();
         if (acted) {
           this.worldDirty = true;

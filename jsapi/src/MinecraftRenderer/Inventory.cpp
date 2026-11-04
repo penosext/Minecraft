@@ -626,7 +626,7 @@ std::string Inventory::infoJson() const {
         << ",\"selectedDamage\":" << selectedDamage() << ",\"selectedMaxDamage\":" << selectedMaxDamage()
         << ",\"gameMode\":\"" << (mode_ == GameMode::Survival ? "survival" : "creative") << '"'
         << ",\"emptyHand\":" << (emptyHand() ? "true" : "false")
-        << ",\"catalogKind\":\"source-items\",\"maxStack\":64,\"craftingImplemented\":false,\"armorStatsImplemented\":false,\"slots\":[";
+        << ",\"catalogKind\":\"source-items\",\"maxStack\":64,\"craftingImplemented\":true,\"armorStatsImplemented\":false,\"slots\":[";
     auto append = [&](const Slot& slot) {
         const int index = itemIndex(slot.key);
         const auto* spec = itemSpec(index);

@@ -21,7 +21,14 @@ namespace
     typedef void (*PostFrameFn)(void*, void*, int, int, int, int);
 }
 
-JSMinecraftRenderer::JSMinecraftRenderer() = default;
+JSMinecraftRenderer::JSMinecraftRenderer()
+{
+    // Container tiles: Tile::use opens a panel; non-empty ones refuse breaking.
+    gameActions_.setTileHooks({
+        [this](int x, int y, int z) { return containers_.canBreak(x, y, z); },
+        [this](int x, int y, int z) { containers_.removed(x, y, z); },
+        [this](int x, int y, int z) { return containers_.interact(world_, x, y, z); }});
+}
 JSMinecraftRenderer::~JSMinecraftRenderer() = default;
 
 void* JSMinecraftRenderer::resolvePostFrame()
@@ -449,7 +456,10 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
                            heldItem ? -1 : inventory_.selectedBlockIndex());
         if (heldItem)
             renderHeldItemOverlay(buffer.data(), width, height, inventory_.selectedItemId(), inventory_.selectedAux(), swing_);
-        mcinventory::renderInventoryOverlay(buffer.data(), width, height, inventory_, inventoryOpen_);
+        if (containers_.opened())
+            mcinventory::renderContainerOverlay(buffer.data(), width, height, inventory_, containers_.view());
+        else
+            mcinventory::renderInventoryOverlay(buffer.data(), width, height, inventory_, inventoryOpen_);
         ((PostFrameFn)fn)((void*)(uintptr_t)surface, buffer.data(), 0, width * 4, width, height);
         frameBufferIndex_ = (frameBufferIndex_ + 1) % frameBuffers_.size();
         sceneSaveElapsed_ += elapsed;
@@ -583,15 +593,45 @@ void JSMinecraftRenderer::containerInfo(JQFunctionInfo& info)
 }
 void JSMinecraftRenderer::closeContainer(JQFunctionInfo& info)
 {
-    containers_.close(); info.GetReturnValue().Set(JS_NewBool(info.GetContext(), true));
+    try {
+        requireWorldIdle();
+        // Crafting grids return their items to the inventory (CraftingMenu::removed).
+        if (world_.loaded()) { containers_.close(world_, inventory_); inventory_.save(world_); containers_.save(world_); }
+        info.GetReturnValue().Set(JS_NewBool(info.GetContext(), true));
+    } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
 }
+// containerTransfer(inventorySlot, containerSlot, count, toContainer); an
+// inventorySlot of -1 is the shift-click quick move of containerSlot into the
+// inventory. Returns {"ok":bool, ...containerInfo}.
 void JSMinecraftRenderer::containerTransfer(JQFunctionInfo& info)
 {
-    info.GetReturnValue().Set(JS_NewBool(info.GetContext(), false));
+    try {
+        requireWorldIdle();
+        int32_t inventorySlot = -1, containerSlot = -1, count = 64;
+        if (info.Length() < 2 || !world_.loaded()) throw std::runtime_error("Container slots are required");
+        if (JS_ToInt32(info.GetContext(), &inventorySlot, info[0]) < 0 || JS_ToInt32(info.GetContext(), &containerSlot, info[1]) < 0 ||
+            (info.Length() >= 3 && JS_ToInt32(info.GetContext(), &count, info[2]) < 0)) { info.GetReturnValue().Set(JS_EXCEPTION); return; }
+        const int toContainer = info.Length() >= 4 ? JS_ToBool(info.GetContext(), info[3]) : 1;
+        if (toContainer < 0) { info.GetReturnValue().Set(JS_EXCEPTION); return; }
+        const bool ok = inventorySlot == -1 ? containers_.quickMove(world_, inventory_, containerSlot)
+                                            : containers_.transfer(world_, inventory_, inventorySlot, containerSlot, count, toContainer != 0);
+        if (ok) { inventory_.save(world_); containers_.save(world_); }
+        const auto json = std::string("{\"ok\":") + (ok ? "true," : "false,") + containers_.infoJson(inventory_).substr(1);
+        info.GetReturnValue().Set(JS_NewString(info.GetContext(), json.c_str()));
+    } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
 }
 void JSMinecraftRenderer::craftContainer(JQFunctionInfo& info)
 {
-    info.GetReturnValue().Set(JS_NewBool(info.GetContext(), false));
+    try {
+        requireWorldIdle();
+        if (!world_.loaded()) throw std::runtime_error("No world is loaded");
+        static const char* names[] = {"ok", "no-panel", "no-recipe", "inventory-full"};
+        const auto result = containers_.craft(world_, inventory_);
+        if (result == mccontainers::Containers::CraftResult::Ok) { inventory_.save(world_); containers_.save(world_); }
+        const auto json = std::string("{\"ok\":") + (result == mccontainers::Containers::CraftResult::Ok ? "true" : "false") +
+                          ",\"status\":\"" + names[int(result)] + "\"," + containers_.infoJson(inventory_).substr(1);
+        info.GetReturnValue().Set(JS_NewString(info.GetContext(), json.c_str()));
+    } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
 }
 
 void JSMinecraftRenderer::setSceneTime(JQFunctionInfo& info)
@@ -798,7 +838,11 @@ void JSMinecraftRenderer::inventoryOpen(JQFunctionInfo& info)
         const int open = JS_ToBool(info.GetContext(), info[0]);
         if (open < 0) { info.GetReturnValue().Set(JS_EXCEPTION); return; }
         inventoryOpen_ = open != 0;
-        if (inventoryOpen_) { miningHeld_ = false; gameActions_.resetMining(); }
+        if (inventoryOpen_) { miningHeld_ = false; gameActions_.resetMining(); containers_.openInventory(world_); }
+        else if (containers_.screen() == mccontainers::Containers::Screen::Inventory) {
+            // InventoryMenu::removed: the 2x2 grid goes back to the inventory.
+            containers_.close(world_, inventory_); inventory_.save(world_); containers_.save(world_);
+        }
         info.GetReturnValue().Set(JS_NewBool(info.GetContext(), true));
     } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
 }

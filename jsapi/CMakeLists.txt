@@ -78,7 +78,7 @@ execute_process(
 if(NOT SCENE_RESULT EQUAL 0)
     message(FATAL_ERROR "Original day-night extraction failed")
 endif()
-foreach(EXTRACTOR IN ITEMS extract-firstperson.py extract-lighting.py extract-inventory.py)
+foreach(EXTRACTOR IN ITEMS extract-firstperson.py extract-lighting.py extract-inventory.py extract-containers.py)
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/../tools/${EXTRACTOR}"
         RESULT_VARIABLE EXTRACT_RESULT

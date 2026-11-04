@@ -4,6 +4,7 @@
 #include "ItemCatalog.hpp"
 #include "ToolRules.hpp"
 #include "Crafting.hpp"
+#include "Smelting.hpp"
 
 #include <algorithm>
 #include <atomic>
@@ -27,7 +28,7 @@ using mcinventory::Slot;
 // protocol, without modifying or sharing its existing serialization format.
 using Bytes = std::vector<unsigned char>;
 constexpr unsigned char Magic[8] = {'M','C','C','O','N','T','N',0};
-constexpr uint32_t Version = 1;
+constexpr uint32_t Version = 2; // v2 = v1 + player 2x2 grid trailer; v1 still read.
 constexpr size_t MaxEntities = 4096;
 constexpr size_t MaxFile = 4 * 1024 * 1024, MaxMetadata = 1024 * 1024;
 std::atomic<uint64_t> counter {0};
@@ -327,10 +328,11 @@ constexpr int TileChest = 54;
 constexpr int TileWorkbench = 58;
 constexpr int TileFurnace = 61;
 constexpr int TileLitFurnace = 62;
-constexpr int FurnaceInput = 0;
-constexpr int FurnaceFuel = 1;
-constexpr int FurnaceOutput = 2;
-constexpr int FurnaceCookTicks = 200;
+constexpr int FurnaceInput = 0;  // FurnaceTileEntity SLOT_INPUT
+constexpr int FurnaceFuel = 1;   // SLOT_FUEL
+constexpr int FurnaceOutput = 2; // SLOT_RESULT
+constexpr int FurnaceCookTicks = smelting::kBurnInterval;
+constexpr int MaxBurn = smelting::kBurnInterval * 100; // Longest source fuel (lava bucket).
 
 int tileAt(const World& world, int x, int y, int z) {
     if (x < 0 || x >= world.width() || y < 0 || y >= world.height() || z < 0 || z >= world.depth()) return 0;
@@ -388,45 +390,78 @@ bool nonEmpty(const std::vector<Slot>& slots) {
 }
 
 std::string jsonSlot(const Slot& slot) {
-    std::ostringstream out;
+    const auto* spec = itemSpec(itemIndex(slot.key));
+    std::ostringstream out; out.imbue(std::locale::classic());
     out << "{\"key\":" << quote(slot.key) << ",\"count\":" << slot.count
-        << ",\"damage\":" << slot.damage << '}';
+        << ",\"damage\":" << slot.damage << ",\"itemId\":" << (spec ? spec->itemId : -1)
+        << ",\"aux\":" << (spec ? spec->aux : -1) << ",\"maxStack\":" << (spec ? spec->maxStack : 0)
+        << ",\"name\":" << quote(spec ? spec->name : "") << '}';
     return out.str();
 }
 
-struct SmeltResult { int inputId, inputAux, outputId, outputAux, count; };
+const sourceitems::ItemSpec* slotSpec(const Slot& slot) {
+    return slot.count ? itemSpec(itemIndex(slot.key)) : nullptr;
+}
 
-bool smeltRecipe(const Slot& slot, SmeltResult& result) {
-    if (!slot.count) return false;
-    const int index = itemIndex(slot.key);
-    const auto* spec = itemSpec(index);
-    if (!spec) return false;
-    // TU19 FurnaceRecipes: the common ore, stone, sand and food paths that are
-    // represented by this port's source-item catalogue. Unsupported recipes are
-    // rejected instead of being silently converted to a guessed output.
-    switch (spec->itemId) {
-    case 4: result = {spec->itemId, spec->aux, 1, 0, 1}; return true; // cobblestone -> stone
-    case 12: result = {spec->itemId, spec->aux, 20, 0, 1}; return true; // sand -> glass
-    case 14: result = {spec->itemId, spec->aux, 266, 0, 1}; return true; // gold ore
-    case 15: result = {spec->itemId, spec->aux, 265, 0, 1}; return true; // iron ore
-    case 16: result = {spec->itemId, spec->aux, 263, 0, 1}; return true; // coal ore
-    default: return false;
-    }
+// FurnaceRecipes::getResult restricted to items this port's catalog has.
+const sourceitems::ItemSpec* smeltOutput(const Slot& input) {
+    const auto* spec = slotSpec(input);
+    if (!spec) return nullptr;
+    const auto result = smelting::smeltResult(spec->itemId);
+    return result.ok ? itemSpec(sourceitems::itemIndexForIdAux(result.itemId, result.aux)) : nullptr;
 }
 
 int fuelTicks(const Slot& slot) {
-    if (!slot.count) return 0;
-    const auto* spec = itemSpec(itemIndex(slot.key));
-    if (!spec) return 0;
-    switch (spec->itemId) {
-    case 263: return 1600; // coal
-    case 5: return 300;    // any wooden plank
-    case 17: return 300;   // any wooden log
-    case 6: return 100;    // sapling
-    default: return 0;
+    const auto* spec = slotSpec(slot);
+    return spec ? smelting::burnDuration(spec->itemId, spec->aux) : 0;
+}
+
+// FurnaceTileEntity::canBurn (FurnaceTileEntity.cpp:250-261): result slot empty,
+// or the same item with room under both the container and item stack limits.
+bool canBurn(const std::vector<Slot>& slots) {
+    const auto* output = smeltOutput(slots[FurnaceInput]);
+    if (!output) return false;
+    const Slot& result = slots[FurnaceOutput];
+    if (!result.count) return true;
+    if (result.key != output->key) return false;
+    return result.count < std::min(Inventory::MaxStack, stackLimit(*output));
+}
+
+// FurnaceTileEntity::burn (:263-273).
+void burnOne(std::vector<Slot>& slots) {
+    const auto* output = smeltOutput(slots[FurnaceInput]);
+    if (!output || !canBurn(slots)) return;
+    Slot& result = slots[FurnaceOutput];
+    if (!result.count) result = {output->key, 1, 0};
+    else ++result.count;
+    if (!--slots[FurnaceInput].count) slots[FurnaceInput] = {};
+}
+
+// Grid -> crafting::Grid (3x3). The 2x2 inventory grid occupies the top-left
+// 2x2 of the matcher's 3x3, so any recipe wider/taller than 2 needs a cell
+// that is always empty and therefore never matches (InventoryMenu craftSlots
+// is a 2x2 CraftingContainer).
+crafting::Grid craftGrid(const std::vector<Slot>& slots) {
+    crafting::Grid grid(crafting::kGridSize);
+    if (slots.size() == 9) {
+        for (int i = 0; i < 9; ++i) grid[size_t(i)] = slots[size_t(i)].count ? slots[size_t(i)].key : std::string();
+    } else if (slots.size() == 4) {
+        for (int i = 0; i < 4; ++i)
+            grid[size_t((i % 2) + (i / 2) * 3)] = slots[size_t(i)].count ? slots[size_t(i)].key : std::string();
     }
+    return grid;
 }
+
+// Largest prefix of `slot` that the inventory accepts, as moveItemStackTo does
+// for a partial move. Returns 0 when nothing fits.
+int acceptable(const Inventory& inventory, const Slot& slot) {
+    const auto* spec = slotSpec(slot);
+    if (!spec) return 0;
+    for (int count = slot.count; count > 0; --count)
+        if (inventory.canAddItem(spec->itemId, spec->aux, count, slot.damage)) return count;
+    return 0;
 }
+} // namespace
 
 void Containers::requireWorld(const World& world) const {
     if (!bound_ || !world.loaded() || world.path() != path_ || world.seed() != seed_ ||
@@ -443,8 +478,6 @@ void Containers::open(const World& world) {
     const size_t slash = candidate.path_.rfind('/');
     if (slash == std::string::npos || slash == 0) fail("world must be inside a save root");
     candidate.root_ = candidate.path_.substr(0, slash);
-    candidate.rootDevice_ = dir.info.st_dev;
-    candidate.rootInode_ = dir.info.st_ino;
     Directory parent = directory(candidate.root_);
     candidate.rootDevice_ = parent.info.st_dev;
     candidate.rootInode_ = parent.info.st_ino;
@@ -460,7 +493,8 @@ void Containers::open(const World& world) {
         const Bytes& bytes = candidate.persisted_;
         if (bytes.size() < 8 + 10 * 4 + 4 || std::memcmp(bytes.data(), Magic, 8)) fail("invalid containers magic/size");
         Reader reader {bytes, 8};
-        if (reader.u32() != Version || reader.u32() != candidate.seed_ || reader.u32() != uint32_t(candidate.width_) ||
+        const uint32_t version = reader.u32();
+        if ((version != 1 && version != Version) || reader.u32() != candidate.seed_ || reader.u32() != uint32_t(candidate.width_) ||
             reader.u32() != uint32_t(candidate.height_) || reader.u32() != uint32_t(candidate.depth_) ||
             reader.u32() != candidate.sourceHash_ || reader.u32() != uint32_t(candidate.dimension_))
             fail("container version/world identity mismatch");
@@ -478,16 +512,22 @@ void Containers::open(const World& world) {
             Entity entity; entity.tile = tile == TileLitFurnace ? TileFurnace : tile; entity.slots.resize(size_t(storedSlots));
             entity.burn = int(reader.u32()); entity.burnTotal = int(reader.u32()); entity.cook = int(reader.u32());
             entity.fraction = bitsFloat(reader.u32());
-            if (entity.burn < 0 || entity.burn > 20000 || entity.burnTotal < 0 || entity.burnTotal > 20000 ||
+            if (entity.burn < 0 || entity.burn > MaxBurn || entity.burnTotal < 0 || entity.burnTotal > MaxBurn ||
                 entity.cook < 0 || entity.cook > FurnaceCookTicks || !std::isfinite(entity.fraction) ||
                 entity.fraction < 0 || entity.fraction >= 1) fail("invalid furnace state");
             for (auto& slot : entity.slots) slot = readSlot(bytes, reader);
             if (entity.tile == TileFurnace && entity.burn && !entity.burnTotal) fail("invalid burning furnace state");
-            // A container is bound to a real block. Refuse stale records rather
-            // than silently detaching inventory from a mined or replaced block.
-            const int actual = tileAt(world, position[0], position[1], position[2]);
-            if (actual != tile && !(tile == TileFurnace && actual == TileLitFurnace)) fail("container block mismatch");
+            // A record whose resident cell now holds another block is kept, not
+            // rejected: blocks can disappear through paths that never call
+            // removed() (old builds did not guard mining at all), and failing
+            // here would make the whole world unopenable. Its items stay safe and
+            // reappear if the same container block is placed there again.
             candidate.entities_.emplace(position, std::move(entity));
+        }
+        if (version >= 2) {
+            // v2 trailer: the persistent player 2x2 crafting grid.
+            if (reader.u32() != 4) fail("invalid player grid size");
+            for (auto& slot : candidate.playerGrid_) slot = readSlot(bytes, reader);
         }
         if (reader.at + 4 != bytes.size() || reader.u32() != hash(bytes.data(), bytes.size() - 4)) fail("containers checksum mismatch");
     }
@@ -515,9 +555,11 @@ void Containers::save(const World& world) {
         if (!supportedTile(entity.tile) || entity.slots.size() != size_t(slotsForTile(entity.tile))) fail("invalid live container");
         put32(bytes, uint32_t(pos[0])); put32(bytes, uint32_t(pos[1])); put32(bytes, uint32_t(pos[2])); put32(bytes, uint32_t(entity.tile));
         put32(bytes, uint32_t(entity.slots.size())); put32(bytes, uint32_t(entity.burn)); put32(bytes, uint32_t(entity.burnTotal));
-        put32(bytes, uint32_t(entity.cook)); put32(bytes, floatBits(float(entity.fraction)));
+        put32(bytes, uint32_t(entity.cook)); put32(bytes, floatBits(std::min(float(entity.fraction), 0.99999994f)));
         for (const auto& slot : entity.slots) appendSlot(bytes, slot);
     }
+    put32(bytes, uint32_t(playerGrid_.size()));
+    for (const auto& slot : playerGrid_) appendSlot(bytes, slot);
     put32(bytes, hash(bytes));
     if (bytes.size() > MaxFile) fail("containers exceed bounded file size");
     auto revalidate = [&]() {
@@ -530,87 +572,191 @@ void Containers::save(const World& world) {
     dirty_ = false;
 }
 
-Containers::Entity* Containers::active(World& world) {
-    requireWorld(world);
-    if (!panel_) return nullptr;
+std::vector<Slot>* Containers::activeSlots() {
+    if (screen_ == Screen::None) return nullptr;
+    if (screen_ == Screen::Inventory) return &playerGrid_;
+    const auto found = entities_.find(selected_);
+    return found == entities_.end() ? nullptr : &found->second.slots;
+}
+const std::vector<Slot>* Containers::activeSlots() const {
+    return const_cast<Containers*>(this)->activeSlots();
+}
+const Containers::Entity* Containers::activeEntity() const {
+    if (screen_ == Screen::None || screen_ == Screen::Inventory) return nullptr;
     const auto found = entities_.find(selected_);
     return found == entities_.end() ? nullptr : &found->second;
 }
 
 bool Containers::interact(World& world, int x, int y, int z) {
     requireWorld(world);
+    if (screen_ != Screen::None) return false;
     if (x < 0 || x >= world.width() || y < 0 || y >= world.height() || z < 0 || z >= world.depth()) return false;
+    if (!world.chunkLoaded(x, z)) return false;
     const int actual = tileAt(world, x, y, z);
     if (!supportedTile(actual)) return false;
-    const float dx = world.playerX() - (float(x) + .5f), dy = world.playerY() + 1.62f - (float(y) + .5f), dz = world.playerZ() - (float(z) + .5f);
-    if (dx * dx + dy * dy + dz * dz > 5.25f * 5.25f) return false;
-    selected_ = {x, y, z};
-    cursor_ = selected_; cursorValid_ = true; panel_ = true;
-    auto found = entities_.find(selected_);
+    // AbstractContainerMenu stillValid: distanceToSqr(x+.5, y+.5, z+.5) <= 8*8.
+    const float dx = world.playerX() - (float(x) + .5f), dy = world.playerY() - (float(y) + .5f), dz = world.playerZ() - (float(z) + .5f);
+    if (dx * dx + dy * dy + dz * dz > 8.0f * 8.0f) return false;
+    const int tile = actual == TileLitFurnace ? TileFurnace : actual;
+    const Position position {x, y, z};
+    auto found = entities_.find(position);
+    if (found != entities_.end() && found->second.tile != tile) {
+        // A leftover record from a different container type at this cell (see
+        // open()). Never mix inventories: keep refusing until it is emptied.
+        if (nonEmpty(found->second.slots) || found->second.burn > 0) return false;
+        entities_.erase(found); found = entities_.end();
+    }
     if (found == entities_.end()) {
-        Entity entity; entity.tile = actual == TileLitFurnace ? TileFurnace : actual; entity.slots.resize(size_t(slotsForTile(entity.tile)));
-        entities_.emplace(selected_, std::move(entity)); dirty_ = true;
-    } else if (actual == TileLitFurnace) found->second.tile = TileFurnace;
+        Entity entity; entity.tile = tile; entity.slots.resize(size_t(slotsForTile(tile)));
+        entities_.emplace(position, std::move(entity)); dirty_ = true;
+    }
+    selected_ = position;
+    screen_ = tile == TileChest ? Screen::Chest : tile == TileWorkbench ? Screen::Workbench : Screen::Furnace;
     return true;
 }
 
-void Containers::close() { panel_ = false; cursorValid_ = false; }
-bool Containers::opened() const { return panel_; }
+bool Containers::openInventory(const World& world) {
+    requireWorld(world);
+    if (screen_ != Screen::None) return screen_ == Screen::Inventory;
+    screen_ = Screen::Inventory;
+    return true;
+}
+
+int Containers::close(const World& world, Inventory& inventory) {
+    requireWorld(world);
+    if (screen_ == Screen::None) return 0;
+    int left = 0;
+    if (screen_ == Screen::Inventory || screen_ == Screen::Workbench) {
+        auto* slots = activeSlots();
+        if (slots && inventory.opened() && inventory.belongsTo(world)) {
+            // CraftingMenu::removed / InventoryMenu::removed: every grid stack
+            // goes back to the player. Partial fits move what they can.
+            for (auto& slot : *slots) {
+                if (!slot.count) continue;
+                const auto* spec = slotSpec(slot);
+                const int moved = acceptable(inventory, slot);
+                if (moved && spec && inventory.addItem(spec->itemId, spec->aux, moved, slot.damage)) {
+                    slot.count -= moved; if (!slot.count) slot = {};
+                    dirty_ = true;
+                }
+                left += slot.count;
+            }
+        } else if (slots) {
+            for (const auto& slot : *slots) left += slot.count;
+        }
+        if (screen_ == Screen::Workbench) {
+            // Workbenches have no tile entity upstream; drop the empty record so
+            // containers.bin only keeps benches that really hold leftovers.
+            const auto found = entities_.find(selected_);
+            if (found != entities_.end() && !nonEmpty(found->second.slots)) { entities_.erase(found); dirty_ = true; }
+        }
+    }
+    screen_ = Screen::None;
+    return left;
+}
 
 std::string Containers::infoJson(const Inventory& inventory) const {
     std::ostringstream out; out.imbue(std::locale::classic());
-    out << "{\"open\":" << (panel_ ? "true" : "false");
-    if (!panel_) return out.str() + '}';
-    const auto found = entities_.find(selected_);
-    if (found == entities_.end()) return out.str() + ",\"error\":\"missing-container\"}";
-    const Entity& entity = found->second;
-    const char* type = entity.tile == TileChest ? "chest" : entity.tile == TileWorkbench ? "workbench" : "furnace";
-    out << ",\"type\":\"" << type << "\",\"x\":" << selected_[0] << ",\"y\":" << selected_[1] << ",\"z\":" << selected_[2]
-        << ",\"burn\":" << entity.burn << ",\"burnTotal\":" << entity.burnTotal << ",\"cook\":" << entity.cook
-        << ",\"inventory\":" << (inventory.opened() ? inventory.infoJson() : "{}");
+    out << "{\"open\":" << (opened() ? "true" : "false");
+    if (!opened()) return out.str() + '}';
+    const auto* slots = activeSlots();
+    if (!slots) return out.str() + ",\"error\":\"missing-container\"}";
+    const char* type = screen_ == Screen::Inventory ? "inventory" : screen_ == Screen::Chest ? "chest" :
+                       screen_ == Screen::Workbench ? "workbench" : "furnace";
+    out << ",\"type\":\"" << type << '"';
+    if (screen_ != Screen::Inventory)
+        out << ",\"x\":" << selected_[0] << ",\"y\":" << selected_[1] << ",\"z\":" << selected_[2];
+    if (const auto* entity = activeEntity(); entity && entity->tile == TileFurnace)
+        out << ",\"burnRemaining\":" << entity->burn << ",\"burnTotal\":" << entity->burnTotal
+            << ",\"cookTicks\":" << entity->cook << ",\"cookTotal\":" << FurnaceCookTicks;
+    if (screen_ == Screen::Inventory || screen_ == Screen::Workbench) {
+        const auto match = preview();
+        if (match.matched) out << ",\"recipe\":{\"key\":" << quote(match.productKey) << ",\"count\":" << match.count
+                               << ",\"name\":" << quote(match.productName) << '}';
+        else out << ",\"recipe\":null";
+    }
+    out << ",\"inventory\":" << (inventory.opened() ? inventory.infoJson() : "{}");
     out << ",\"slots\":[";
-    for (size_t i = 0; i < entity.slots.size(); ++i) { if (i) out << ','; out << jsonSlot(entity.slots[i]); }
+    for (size_t i = 0; i < slots->size(); ++i) { if (i) out << ','; out << jsonSlot((*slots)[i]); }
     out << "]}";
     return out.str();
 }
 
+mcinventory::PanelView Containers::view() const {
+    mcinventory::PanelView result;
+    const auto* slots = activeSlots();
+    if (!slots) return result;
+    result.kind = screen_ == Screen::Inventory ? mcinventory::PanelKind::Inventory :
+                  screen_ == Screen::Workbench ? mcinventory::PanelKind::Workbench :
+                  screen_ == Screen::Chest ? mcinventory::PanelKind::Chest : mcinventory::PanelKind::Furnace;
+    result.slots = *slots;
+    if (screen_ == Screen::Inventory || screen_ == Screen::Workbench) {
+        const auto match = preview();
+        if (match.matched) result.result = {match.productKey, match.count, 0};
+    }
+    if (const auto* entity = activeEntity(); entity && entity->tile == TileFurnace) {
+        // FurnaceTileEntity::getLitProgress / getBurnProgress (:174-185).
+        const int duration = entity->burnTotal ? entity->burnTotal : FurnaceCookTicks;
+        result.lit = entity->burn > 0;
+        result.litProgress = std::clamp(entity->burn * 12 / duration, 0, 12);
+        result.burnProgress = std::clamp(entity->cook * 24 / FurnaceCookTicks, 0, 24);
+    }
+    return result;
+}
+
 bool Containers::transfer(World& world, Inventory& inventory, int inventorySlot, int containerSlot, int count, bool toContainer) {
-    Entity* entity = active(world);
-    if (!entity || inventorySlot < 0 || inventorySlot >= Inventory::MainSlots || containerSlot < 0 ||
-        containerSlot >= int(entity->slots.size()) || count <= 0 || count > Inventory::MaxStack) return false;
+    requireWorld(world);
+    auto* slots = activeSlots();
+    if (!slots || inventorySlot < 0 || inventorySlot >= Inventory::MainSlots || containerSlot < 0 ||
+        containerSlot >= int(slots->size()) || count <= 0 || count > Inventory::MaxStack) return false;
     if (!inventory.belongsTo(world)) return false;
-    if (!inventory.exchangeSlot(inventorySlot, entity->slots[size_t(containerSlot)], count, toContainer)) return false;
+    // FurnaceResultSlot::mayPlace is false (FurnaceResultSlot.cpp:18).
+    if (toContainer && screen_ == Screen::Furnace && containerSlot == FurnaceOutput) return false;
+    if (!inventory.exchangeSlot(inventorySlot, (*slots)[size_t(containerSlot)], count, toContainer)) return false;
     dirty_ = true;
     return true;
 }
 
-bool Containers::craft(World& world, Inventory& inventory) {
-    Entity* entity = active(world);
-    if (!entity || entity->tile != TileWorkbench || entity->slots.size() != 9 || !inventory.belongsTo(world)) return false;
-    std::vector<std::string> grid; grid.reserve(9);
-    for (const auto& slot : entity->slots) grid.push_back(slot.count ? slot.key : std::string());
-    const auto match = crafting::match(grid);
-    if (!match.matched || match.count <= 0 || !inventory.canAddItem(match.productItemId, match.productAux, match.count)) return false;
-    auto nextEntity = *entity;
-    auto nextInventory = inventory;
-    const auto recipe = crafting::describe(match.recipeIndex);
-    for (int i = 0; i < 9; ++i) {
-        if (recipe.width == 0 || recipe.height == 0) return false;
-        const int rx = i % 3, ry = i / 3;
-        const int offX = (3 - recipe.width) / 2, offY = (3 - recipe.height) / 2;
-        const int relX = rx - offX, relY = ry - offY;
-        bool required = false;
-        if (relX >= 0 && relY >= 0 && relX < recipe.width && relY < recipe.height) {
-            const auto& cell = recipe.cells[size_t(relX + relY * recipe.width)]; required = !cell.empty;
-        }
-        if (required) {
-            if (!nextEntity.slots[size_t(i)].count) return false;
-            --nextEntity.slots[size_t(i)].count;
-            if (!nextEntity.slots[size_t(i)].count) nextEntity.slots[size_t(i)] = {};
-        }
-    }
-    if (!nextInventory.addItem(match.productItemId, match.productAux, match.count)) return false;
-    *entity = std::move(nextEntity); inventory = std::move(nextInventory); dirty_ = true; return true;
+bool Containers::quickMove(World& world, Inventory& inventory, int containerSlot) {
+    requireWorld(world);
+    auto* slots = activeSlots();
+    if (!slots || containerSlot < 0 || containerSlot >= int(slots->size()) || !inventory.belongsTo(world)) return false;
+    Slot& slot = (*slots)[size_t(containerSlot)];
+    const auto* spec = slotSpec(slot);
+    const int moved = acceptable(inventory, slot);
+    if (!spec || !moved || !inventory.addItem(spec->itemId, spec->aux, moved, slot.damage)) return false;
+    slot.count -= moved; if (!slot.count) slot = {};
+    dirty_ = true;
+    return true;
+}
+
+crafting::Match Containers::preview() const {
+    if (screen_ != Screen::Inventory && screen_ != Screen::Workbench) return {};
+    const auto* slots = activeSlots();
+    if (!slots) return {};
+    return crafting::match(craftGrid(*slots));
+}
+
+Containers::CraftResult Containers::craft(World& world, Inventory& inventory) {
+    requireWorld(world);
+    auto* slots = activeSlots();
+    if (!slots || (screen_ != Screen::Inventory && screen_ != Screen::Workbench) || !inventory.belongsTo(world))
+        return CraftResult::NoPanel;
+    const auto match = crafting::match(craftGrid(*slots));
+    if (!match.matched || match.count <= 0) return CraftResult::NoRecipe;
+    // The touch UI has no cursor stack, so the product goes straight into the
+    // inventory, as the shift-click path does (CraftingMenu.cpp:88-95). If it
+    // does not fit, nothing is consumed (no player->drop).
+    if (!inventory.canAddItem(match.productItemId, match.productAux, match.count)) return CraftResult::InventoryFull;
+    // ResultSlot::onTake (ResultSlot.cpp:60-66): one item from EVERY occupied
+    // grid slot. A shaped match leaves no surplus slot, so this is exactly the
+    // recipe's ingredients wherever the offset/mirror placed them. No catalog
+    // item has a crafting-remaining item (bucket/bottle), so :67-90 is moot.
+    auto next = *slots;
+    for (auto& slot : next) if (slot.count && !--slot.count) slot = {};
+    if (!inventory.addItem(match.productItemId, match.productAux, match.count)) return CraftResult::InventoryFull;
+    *slots = std::move(next); dirty_ = true;
+    return CraftResult::Ok;
 }
 
 void Containers::update(World& world, float dt) {
@@ -619,37 +765,37 @@ void Containers::update(World& world, float dt) {
     dt = std::min(dt, .1f);
     for (auto& record : entities_) {
         auto& entity = record.second;
-        if (entity.tile != TileFurnace || (tileAt(world, record.first[0], record.first[1], record.first[2]) != TileFurnace &&
-            tileAt(world, record.first[0], record.first[1], record.first[2]) != TileLitFurnace)) continue;
+        if (entity.tile != TileFurnace) continue;
+        const auto& pos = record.first;
+        // Only furnaces whose chunk is resident tick (no offline catch-up).
+        if (!world.chunkLoaded(pos[0], pos[2])) continue;
+        const int actual = tileAt(world, pos[0], pos[1], pos[2]);
+        if (actual != TileFurnace && actual != TileLitFurnace) continue;
         entity.fraction += double(dt) / .05;
-        int ticks = std::min(200, int(std::floor(entity.fraction)));
+        const int ticks = int(std::floor(entity.fraction));
         entity.fraction -= ticks;
+        if (entity.fraction >= 1 || entity.fraction < 0) entity.fraction = 0;
+        auto& slots = entity.slots;
         for (int i = 0; i < ticks; ++i) {
-            SmeltResult recipe {};
-            const bool canCook = smeltRecipe(entity.slots[FurnaceInput], recipe);
-            const auto* output = canCook ? itemSpec(itemIndex("item:" + std::to_string(recipe.outputId) + ":" + std::to_string(recipe.outputAux))) : nullptr;
-            const bool outputRoom = canCook && output &&
-                (!entity.slots[FurnaceOutput].count || (entity.slots[FurnaceOutput].key == output->key &&
-                    entity.slots[FurnaceOutput].count + recipe.count <= output->maxStack));
-            if (entity.burn <= 0 && canCook && outputRoom) {
-                const int fuel = fuelTicks(entity.slots[FurnaceFuel]);
-                if (fuel > 0) { --entity.slots[FurnaceFuel].count; if (!entity.slots[FurnaceFuel].count) entity.slots[FurnaceFuel] = {}; entity.burn = fuel; entity.burnTotal = fuel; }
+            // FurnaceTileEntity::tick (FurnaceTileEntity.cpp:188-247).
+            if (!entity.burn && !entity.cook && !canBurn(slots)) break; // Idle: nothing can change.
+            const int before[3] = {entity.burn, entity.burnTotal, entity.cook};
+            if (entity.burn > 0) --entity.burn;
+            if (entity.burn == 0 && canBurn(slots)) {
+                entity.burnTotal = entity.burn = fuelTicks(slots[FurnaceFuel]);
+                if (entity.burn > 0 && !--slots[FurnaceFuel].count) slots[FurnaceFuel] = {};
             }
-            if (entity.burn > 0) {
-                --entity.burn;
-                if (canCook && outputRoom && ++entity.cook >= FurnaceCookTicks) {
-                    --entity.slots[FurnaceInput].count; if (!entity.slots[FurnaceInput].count) entity.slots[FurnaceInput] = {};
-                    if (!entity.slots[FurnaceOutput].count) entity.slots[FurnaceOutput] = {output->key, recipe.count, 0};
-                    else entity.slots[FurnaceOutput].count += recipe.count;
-                    entity.cook = 0;
-                }
+            if (entity.burn > 0 && canBurn(slots)) {
+                if (++entity.cook == FurnaceCookTicks) { entity.cook = 0; burnOne(slots); }
             } else entity.cook = 0;
+            if (before[0] != entity.burn || before[1] != entity.burnTotal || before[2] != entity.cook) dirty_ = true;
         }
     }
-    dirty_ = dirty_ || !entities_.empty();
 }
 
 bool Containers::canBreak(int x, int y, int z) const {
+    if (screen_ == Screen::Workbench || screen_ == Screen::Chest || screen_ == Screen::Furnace)
+        if (selected_ == Position {x, y, z}) return false; // Never break the open panel's block.
     const auto found = entities_.find({x, y, z});
     if (found == entities_.end()) return true;
     return !nonEmpty(found->second.slots) && found->second.burn <= 0;
@@ -658,7 +804,6 @@ bool Containers::canBreak(int x, int y, int z) const {
 void Containers::removed(int x, int y, int z) {
     const auto found = entities_.find({x, y, z});
     if (found == entities_.end() || !canBreak(x, y, z)) return;
-    if (panel_ && selected_ == found->first) close();
     entities_.erase(found); dirty_ = true;
 }
 

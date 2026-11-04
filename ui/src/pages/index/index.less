@@ -1030,3 +1030,35 @@
     background-color: #734536;
     border-radius: 4px;
 }
+
+// Container screens. The panel box comes from the mirrored native layout at
+// runtime (chest is 168 source units tall, the others 166), so only the
+// side column is fixed here; it starts right of the 1.25x panel edge (x=590).
+.container-overlay,
+.container-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 960px;
+    height: 266px;
+    background-color: transparent;
+}
+
+.container-panel-hit {
+    position: absolute;
+    background-color: transparent;
+}
+
+.inventory-grid-hit,
+.container-slot-hit {
+    position: absolute;
+    background-color: transparent;
+}
+
+.container-tools {
+    position: absolute;
+    left: 598px;
+    top: 102px;
+    width: 350px;
+    height: 158px;
+}
