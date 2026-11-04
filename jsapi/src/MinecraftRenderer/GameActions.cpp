@@ -122,6 +122,10 @@ const MiningState& GameActions::tickMining(mcworld::World& world, mcinventory::I
     }
     const auto hit = world.pick(yaw, pitch, blockReach(mode_));
     if (!hit.hit) { clearTarget(); return mining_; }
+    // An unloaded column is "unknown", not air and not a new target: never
+    // start mining (or show a crack) on it, and keep any real target's
+    // progress so a ray briefly crossing a streaming edge does not cancel.
+    if (hit.unknown) return mining_;
     const int slot = inventory.opened() ? inventory.selectedSlot() : -1;
     const int item = inventory.opened() ? inventory.selectedItemId() : -1;
     const int aux = inventory.opened() ? inventory.selectedAux() : -1;

@@ -189,7 +189,7 @@ void creativeSelection(mcinventory::Inventory& inv) {
 mcworld::PlacementContext context(int face, float yaw, float click) {
     mcworld::PlacementContext c;
     const uint16_t stone = uint16_t(stateIndex(1, 0) + 1);
-    c.hit = {true, 10, 100, 12, face, stone, 2};
+    c.hit = {true, false, 10, 100, 12, face, stone, 2}; // hit, unknown, x,y,z, face, block, distance
     c.yaw = yaw; c.clickHeight = click;
     c.playerX = 10.5f; c.playerY = 99; c.playerZ = 8.5f;
     c.blockAt = [stone](int x, int y, int z) { return x == 10 && y == 100 && z == 12 ? stone : uint16_t(0); };

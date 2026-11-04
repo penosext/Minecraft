@@ -37,7 +37,7 @@ struct Grid {
         blocks[{x,y,z}]=uint16_t(render+1);
     }
     PlacementContext context(int face=2,float yaw=0,float click=.25f) {
-        PlacementContext c; c.hit={true,10,100,12,face,get(10,100,12),2};
+        PlacementContext c; c.hit={true,false,10,100,12,face,get(10,100,12),2}; // hit, unknown, x,y,z, face, block, distance
         c.yaw=yaw; c.clickHeight=click; c.playerX=10.5f; c.playerY=99; c.playerZ=8.5f;
         c.blockAt=[this](int x,int y,int z) { return get(x,y,z); };
         c.available=[](int x,int y,int z) { return x>=0&&x<32&&y>0&&y<256&&z>=0&&z<32; };

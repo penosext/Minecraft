@@ -6,6 +6,8 @@
 #include "OriginalWorld.hpp"
 #include "Scene.hpp"
 #include "ChunkPump.hpp"
+#include "GameActions.hpp"
+#include "Inventory.hpp"
 #include <chrono>
 #include <thread>
 
@@ -165,7 +167,28 @@ void physicsUnknownBoundary() {
     for (int i = 0; i < 40; ++i) w.update(.05f, 1, 0, false, 90);
     assert(w.playerX() <= boundary - .249f && w.playerX() >= boundary - .251f);
     near(w.playerY(), 180);
-    assert(!w.pick(90, 0).hit && !w.mine(90, 0) && !w.place(90, 0, blockId("stone") - 1));
+    // World.hpp BlockHit: an unloaded column is reported as hit+unknown, never
+    // as a real block; mine/place must refuse it.
+    const auto edge = w.pick(90, 0);
+    assert(edge.hit && edge.unknown && !edge.block && !w.chunkLoaded(edge.x, edge.z));
+    assert(!w.mine(90, 0) && !w.place(90, 0, blockId("stone") - 1));
+    {
+        // Survival mining never starts on the unknown cell, and a real target
+        // keeps its progress while the ray briefly crosses the unloaded edge.
+        mcinventory::Inventory inv; inv.open(w); assert(inv.setGameMode(mcinventory::GameMode::Survival));
+        mcgame::GameActions actions;
+        auto m = actions.tickMining(w, inv, 90, 0, true, .05f);
+        assert(!m.active && !m.broken && m.progress == 0);
+        for (int i = 0; i < 4; ++i) m = actions.tickMining(w, inv, 0, -90, true, .05f);
+        const int tx = m.x, ty = m.y, tz = m.z; const float progress = m.progress;
+        assert(m.active && !m.broken && progress > 0 && ty == 179);
+        m = actions.tickMining(w, inv, 90, 0, true, .05f);
+        assert(m.active && !m.broken && m.progress == progress && m.x == tx && m.y == ty && m.z == tz);
+        m = actions.tickMining(w, inv, 0, -90, true, .05f);
+        assert(m.active && m.progress > progress && m.x == tx && m.y == ty && m.z == tz);
+        actions.tickMining(w, inv, 0, -90, false, .05f);
+        assert(w.blockAt(tx, ty, tz) == blockId("stone"));
+    }
     assert(w.streamingInfo().totalGenerated == before && !w.chunkLoaded(int(boundary), int(w.playerZ())));
     // Once queued work becomes ready, the invisible wall is released.
     while (!w.chunkLoaded(int(boundary), int(w.playerZ()))) assert(w.processChunkLoads(1) == 1);

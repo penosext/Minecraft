@@ -65,7 +65,6 @@ constexpr Drop kDrops[] = {
     {15, 15, 0, 1, true},
     {16, 263, 0, 1, true}, // coal ore -> coal
     {17, 17, -1, 1, false},
-    {20, 20, 0, 1, false},
     {21, 351, 4, 1, true}, // lapis ore -> lapis dye
     {22, 22, 0, 1, true},
     {24, 24, -1, 1, false},
@@ -116,7 +115,7 @@ constexpr Drop kDrops[] = {
     // Known empty drops: no resource in source.
     {7, 0, 0, 0, false},   // bedrock
     {8, 0, 0, 0, false}, {9, 0, 0, 0, false}, {10, 0, 0, 0, false}, {11, 0, 0, 0, false},
-    {20, 0, 0, 0, false},  // glass (listed above is overridden by the first match)
+    {20, 0, 0, 0, false},  // glass: GlassTile drops nothing without silk touch
     {79, 0, 0, 0, false},  // ice
     {102, 0, 0, 0, false}, // glass pane
 };
@@ -183,13 +182,10 @@ float attackDamage(int itemId) {
 float blockHardness(int tileId) {
     for (const auto& entry : kHardness)
         if (entry.tileId == tileId) return entry.hardness;
-    // The hand-written table above is a partial audit. The catalog already
-    // carries per-state hardness for every spec, including the orientation /
-    // variant states the streaming world emits (grass_snowy, leaves_opaque,
-    // glass_*, hardened_clay_stained_*, quartz_block_*, anvil_*, ...).
-    // Fall back to the first catalog spec with this tileId instead of
-    // refusing outright: a known catalog block must remain breakable.
-    return -1.0f; // Truly unknown tile: callers must still refuse.
+    // The table above is a partial audit and the generated catalog carries no
+    // hardness, so an unlisted tile is unknown: survival refuses to break it
+    // (README 1.0.14) rather than guessing a mining time.
+    return -1.0f;
 }
 
 bool canHarvest(int itemId, int tileId, int) {
@@ -261,6 +257,32 @@ bool knownDropRule(int tileId) {
     for (int i = 0; i < legacy::kBlockCount; ++i)
         if (legacy::kBlockSpecs[i].tileId == tileId) return true;
     return false;
+}
+
+int itemForTile(int tileId, int data);
+
+std::vector<BlockDrop> drops(int heldItemId, int tileId, int data) {
+    for (const auto& drop : kDrops) {
+        if (drop.tileId != tileId) continue;
+        // First match wins. Known empty drops (count 0) and tool-gated ores
+        // mined without a sufficient pickaxe yield nothing, as in source.
+        if (!drop.count || (drop.needsTool && !canHarvest(heldItemId, tileId, data))) return {};
+        int aux = drop.aux;
+        if (aux < 0) {
+            // -1 = keep the material variant (planks, wool, logs ...): use the
+            // aux of the item that represents this exact block state.
+            const int index = itemForTile(tileId, data);
+            if (index < 0 || index >= sourceitems::kItemCount) return {};
+            aux = sourceitems::kItems[index].aux;
+        }
+        return {{drop.itemId, aux, drop.count}};
+    }
+    // Unlisted catalog tile: source Tile::getResource default, the block itself.
+    if (!canHarvest(heldItemId, tileId, data)) return {};
+    const int index = itemForTile(tileId, data);
+    if (index < 0 || index >= sourceitems::kItemCount) return {};
+    const auto& item = sourceitems::kItems[index];
+    return {{item.itemId, item.aux, 1}};
 }
 
 int itemForTile(int tileId, int data) {

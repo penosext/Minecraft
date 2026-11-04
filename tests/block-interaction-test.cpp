@@ -32,7 +32,7 @@ struct Grid {
     }
     InteractionContext context(int x,int y,int z,bool sneaking=false,bool holding=false) {
         InteractionContext c;
-        c.hit={true,x,y,z,2,get(x,y,z),2};
+        c.hit={true,false,x,y,z,2,get(x,y,z),2}; // hit, unknown, x,y,z, face, block, distance
         c.sneaking=sneaking; c.holdingItem=holding;
         c.blockAt=[this](int bx,int by,int bz){ return get(bx,by,bz); };
         c.available=[](int bx,int by,int bz){ return bx>=0&&bx<32&&by>0&&by<256&&bz>=0&&bz<32; };

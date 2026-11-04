@@ -105,6 +105,12 @@ private:
     bool jobCancelled_ = false;
     void requireWorldIdle();
     void refreshStreamStatus();
+    // Persist every store bound to world_: world, scene, inventory, survival, containers.
+    void saveAll();
+    // Bind a freshly created/opened world and reset per-session state. Every
+    // entry point that replaces world_ must go through here so the survival and
+    // container stores are reopened for the new world.
+    void adoptWorld(mcworld::World&& world, mcscene::Scene&& scene, mcinventory::Inventory&& inventory);
     void* resolvePostFrame();
 };
 

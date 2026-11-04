@@ -15,6 +15,7 @@ export declare class MinecraftRenderer {
     static worldInfo(): string;
     static renderWorld(surfacePtr: number, width: number, height: number,
                        yaw: number, pitch: number, forward: number, strafe: number,
+                       // pixelStep: ray tile side, clamped to 1..4 (1 = full resolution, 2 = original, 3 = default).
                        jump: boolean, dt: number, viewMode?: number, pixelStep?: number): boolean;
     static mineWorld(yaw: number, pitch: number): boolean;
     static setMiningInput(held: boolean, yaw: number, pitch: number): boolean;

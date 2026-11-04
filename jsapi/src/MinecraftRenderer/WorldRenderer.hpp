@@ -29,6 +29,10 @@ struct BiomeTint { float grassR, grassG, grassB, leafR, leafG, leafB; };
 // compositors must use focalLength; the hand has its own source projection.
 float verticalFov();
 float focalLength(int width, int height);
+// Upper bound for LightingSettings::maxDistance. Streaming reports
+// radius*16-8, so 12 chunks => 184. The old hard cap of 40 meant ranges of 4+
+// loaded more terrain without letting the player see any further.
+constexpr float MaxViewDistance = 184.0f;
 struct LightingSettings {
     bool enabled = true;
     bool ambientOcclusion = true;

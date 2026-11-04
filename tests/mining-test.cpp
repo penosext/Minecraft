@@ -9,6 +9,7 @@
 #include "world-test.cpp"
 #undef main
 #include <array>
+#include "ToolRules.hpp"
 
 uint32_t get32(const Bytes& bytes, size_t offset) {
     assert(offset + 4 <= bytes.size());
@@ -212,8 +213,25 @@ void corruptionAndFiles() {
     w.save(); assert(f.load().blockAt(32, 11, 34) == 0);
 }
 
+// mcgame::drops() was declared and called by GameActions::finishMining but never
+// defined, so any binary linking GameActions failed (undefined reference).
+void survivalDrops() {
+    using mcgame::drops;
+    auto one = [](const std::vector<mcgame::BlockDrop>& d, int id, int aux, int count) {
+        return d.size() == 1 && d[0].itemId == id && d[0].aux == aux && d[0].count == count;
+    };
+    assert(one(drops(270, 1, 0), 4, 0, 1));      // stone + wooden pickaxe -> cobblestone
+    assert(drops(-1, 1, 0).empty());              // stone by hand: tool-gated, nothing
+    assert(one(drops(-1, 2, 0), 3, 0, 1));        // grass -> dirt, no tool needed
+    assert(drops(278, 56, 0).size() == 1 && drops(278, 56, 0)[0].itemId == 264); // diamond ore
+    assert(drops(270, 56, 0).empty());            // diamond ore needs iron+
+    assert(drops(-1, 20, 0).empty());             // glass drops nothing
+    assert(drops(-1, 7, 0).empty());              // bedrock: known empty
+    assert(one(drops(-1, 47, 0), 340, 0, 3));     // bookshelf -> 3 books
+}
+
 int main() {
     assert(worldRegressionMain() == 0);
-    rays(); persistence(); corruptionAndFiles();
+    rays(); persistence(); corruptionAndFiles(); survivalDrops();
     std::cout << "mining-test: DDA, reach, bedrock/liquids, cache interfaces, immutable terrain, overlay replay/palette remap, corruption, confinement, autosave and atomic-write failures passed\n";
 }

@@ -921,14 +921,27 @@ bool OriginalWorld::setBlocks(const std::vector<BlockChange>& changes) {
         it->second.formatVersion = 2; it->second.dirty = true;
     }
     if (!changed) return false;
+    // Compact chunks have their upper air trimmed. A block placed above the
+    // stored height used to be written past the end of the vector. Grow the
+    // resident vectors here, after every p.chunk() call (no further eviction)
+    // and before the swap, so an allocation failure leaves state untouched.
+    for (const auto& change : changes) {
+        if (!change.value) continue;
+        const auto resident = p.cache.find((change.z / 16) * p.chunks + change.x / 16);
+        const size_t at = cell(change.x % 16, change.y, change.z % 16);
+        if (resident != p.cache.end() && resident->second.blocks.size() <= at)
+            resident->second.blocks.resize(at + 1, 0);
+    }
     // swap/find and writes to existing vectors cannot allocate or throw. Do not
     // keep Chunk references across preparation: LRU may evict an earlier chunk.
     p.modified.swap(next);
     for (const auto& change : changes) {
         const int key = (change.z / 16) * p.chunks + change.x / 16;
         const auto resident = p.cache.find(key);
-        if (resident != p.cache.end())
-            resident->second.blocks[cell(change.x % 16, change.y, change.z % 16)] = change.value;
+        const size_t at = cell(change.x % 16, change.y, change.z % 16);
+        // Air past the trimmed end is already implied; only stored cells are written.
+        if (resident != p.cache.end() && at < resident->second.blocks.size())
+            resident->second.blocks[at] = change.value;
         const int wx = change.x - p.volume.originX, wz = change.z - p.volume.originZ;
         if (!p.window.empty() && wx >= 0 && wx < p.volume.width && wz >= 0 && wz < p.volume.depth) {
             auto& previous = p.window[(size_t(change.y) * p.volume.depth + wz) * p.volume.width + wx];
@@ -973,9 +986,18 @@ const RenderVolume& OriginalWorld::renderVolume(float playerX, float playerZ, fl
         const int z0 = std::max(oz, zc * 16), z1 = std::min(oz + size, zc * 16 + 16);
         for (int z = z0; z < z1; ++z)
             std::fill_n(loaded.begin() + std::ptrdiff_t(size_t(z - oz) * size + x0 - ox), x1 - x0, uint8_t(1));
+        // With preload > 3 (compact()), resident chunks have their upper air
+        // trimmed, so blocks.size() can be far below ChunkCells. Copying a full
+        // 256-high column read past the vector into heap memory, which showed
+        // up as floating "ghost" terrain once the range was raised. Cells past
+        // the stored size are air: `next` is already zero-filled.
+        const size_t stored = chunk.blocks.size();
         for (int y = 0; y < Height; ++y) for (int z = z0; z < z1; ++z) {
-            const auto begin = chunk.blocks.begin() + std::ptrdiff_t(cell(x0 - xc * 16, y, z - zc * 16));
-            const auto end = begin + (x1 - x0);
+            const size_t from = cell(x0 - xc * 16, y, z - zc * 16);
+            if (from >= stored) continue;
+            const size_t count = std::min(size_t(x1 - x0), stored - from);
+            const auto begin = chunk.blocks.begin() + std::ptrdiff_t(from);
+            const auto end = begin + std::ptrdiff_t(count);
             std::copy(begin, end, next.begin() + std::ptrdiff_t((size_t(y) * size + z - oz) * size + x0 - ox));
             nonair += int(std::count_if(begin, end, [](uint16_t v) { return v != 0; }));
         }

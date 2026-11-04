@@ -120,6 +120,39 @@ void JSMinecraftRenderer::refreshStreamStatus()
     streamStatus_ = world_.loaded() ? world_.streamingInfoJson() : std::string("{}");
 }
 
+void JSMinecraftRenderer::saveAll()
+{
+    world_.save();
+    scene_.save(world_);
+    inventory_.save(world_);
+    survival_.save(world_);
+    containers_.save(world_);
+    sceneSaveElapsed_ = 0;
+}
+
+void JSMinecraftRenderer::adoptWorld(mcworld::World&& world, mcscene::Scene&& scene,
+                                     mcinventory::Inventory&& inventory)
+{
+    // Open the per-world stores against the candidate first: if either throws,
+    // the currently loaded world stays intact.
+    mcplayer::Survival survival;
+    survival.open(world);
+    mccontainers::Containers containers;
+    containers.open(world);
+    touch_.stop();
+    world_ = std::move(world);
+    scene_ = std::move(scene);
+    inventory_ = std::move(inventory);
+    survival_ = std::move(survival);
+    containers_ = std::move(containers);
+    inventoryOpen_ = false;
+    miningHeld_ = false; gameActions_.resetMining();
+    sceneSaveElapsed_ = 0;
+    swinging_ = false; swing_ = 0;
+    chunkLoadCooldown_ = 0;
+    refreshStreamStatus();
+}
+
 void JSMinecraftRenderer::beginCreateWorld(JQFunctionInfo& info)
 {
     try {
@@ -134,7 +167,7 @@ void JSMinecraftRenderer::beginCreateWorld(JQFunctionInfo& info)
             info.GetReturnValue().Set(JS_EXCEPTION); return;
         }
         if (radius < 1 || radius > 12) throw std::runtime_error("Render radius must be between 1 and 12");
-        if (world_.loaded()) { world_.save(); scene_.save(world_); inventory_.save(world_); survival_.save(world_); containers_.save(world_); }
+        if (world_.loaded()) saveAll();
         touch_.stop();
         worldJob_ = std::make_unique<mcworld::WorldJob>();
         jobCancelled_ = false;
@@ -157,7 +190,7 @@ void JSMinecraftRenderer::beginOpenWorld(JQFunctionInfo& info)
             info.GetReturnValue().Set(JS_EXCEPTION); return;
         }
         if (radius < 1 || radius > 12) throw std::runtime_error("Render radius must be between 1 and 12");
-        if (world_.loaded()) { world_.save(); scene_.save(world_); inventory_.save(world_); survival_.save(world_); containers_.save(world_); }
+        if (world_.loaded()) saveAll();
         touch_.stop();
         worldJob_ = std::make_unique<mcworld::WorldJob>();
         jobCancelled_ = false;
@@ -183,17 +216,8 @@ void JSMinecraftRenderer::finishWorldJob(JQFunctionInfo& info)
         if (!worldJob_ || jobCancelled_ || !worldJob_->ready()) throw std::runtime_error("World job is not ready");
         auto result = worldJob_->takeResult();
         if (!result) throw std::runtime_error("World job has no result");
-        world_ = std::move(result->world);
-        scene_ = std::move(result->scene);
-        inventory_ = std::move(result->inventory);
-        survival_.open(world_);
-        containers_.open(world_);
+        adoptWorld(std::move(result->world), std::move(result->scene), std::move(result->inventory));
         worldJob_.reset();
-        inventoryOpen_ = false;
-        miningHeld_ = false; gameActions_.resetMining();
-        sceneSaveElapsed_ = 0;
-        swinging_ = false; swing_ = 0;
-        refreshStreamStatus();
         const auto status = world_.statusJson();
         info.GetReturnValue().Set(JS_NewString(info.GetContext(), status.c_str()));
     } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
@@ -280,19 +304,14 @@ void JSMinecraftRenderer::createWorld(JQFunctionInfo& info)
         }
         if (worldSize != 864 && worldSize != 1024 && worldSize != 3072 && worldSize != 5120)
             throw std::runtime_error("Unsupported original world size");
-        if (world_.loaded()) { world_.save(); scene_.save(world_); inventory_.save(world_); survival_.save(world_); containers_.save(world_); }
+        if (world_.loaded()) saveAll();
         mcworld::World nextWorld;
         nextWorld.create(seed, "/tmp/mc", true, worldSize);
         mcscene::Scene nextScene;
         nextScene.open(nextWorld);
         mcinventory::Inventory nextInventory;
         nextInventory.open(nextWorld);
-        world_ = std::move(nextWorld);
-        scene_ = std::move(nextScene);
-        inventory_ = std::move(nextInventory);
-        inventoryOpen_ = false;
-        miningHeld_ = false; gameActions_.resetMining();
-        sceneSaveElapsed_ = 0;
+        adoptWorld(std::move(nextWorld), std::move(nextScene), std::move(nextInventory));
         const auto status = world_.statusJson();
         info.GetReturnValue().Set(JS_NewString(info.GetContext(), status.c_str()));
     } catch (const std::exception& e) {
@@ -313,19 +332,14 @@ void JSMinecraftRenderer::openWorld(JQFunctionInfo& info)
         }
         const std::string path(value);
         JS_FreeCString(info.GetContext(), value);
-        if (world_.loaded()) { world_.save(); scene_.save(world_); inventory_.save(world_); survival_.save(world_); containers_.save(world_); }
+        if (world_.loaded()) saveAll();
         mcworld::World nextWorld;
         nextWorld.open(path);
         mcscene::Scene nextScene;
         nextScene.open(nextWorld);
         mcinventory::Inventory nextInventory;
         nextInventory.open(nextWorld);
-        world_ = std::move(nextWorld);
-        scene_ = std::move(nextScene);
-        inventory_ = std::move(nextInventory);
-        inventoryOpen_ = false;
-        miningHeld_ = false; gameActions_.resetMining();
-        sceneSaveElapsed_ = 0;
+        adoptWorld(std::move(nextWorld), std::move(nextScene), std::move(nextInventory));
         const auto status = world_.statusJson();
         info.GetReturnValue().Set(JS_NewString(info.GetContext(), status.c_str()));
     } catch (const std::exception& e) {
@@ -338,12 +352,7 @@ void JSMinecraftRenderer::saveWorld(JQFunctionInfo& info)
     try {
         requireWorldIdle();
         if (!world_.loaded()) throw std::runtime_error("No world is loaded");
-        world_.save();
-        scene_.save(world_);
-        inventory_.save(world_);
-        survival_.save(world_);
-        containers_.save(world_);
-        sceneSaveElapsed_ = 0;
+        saveAll();
         info.GetReturnValue().Set(JS_NewBool(info.GetContext(), true));
     } catch (const std::exception& e) {
         info.GetReturnValue().ThrowInternalError(e.what());
@@ -415,7 +424,7 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
         worldrender::LightingSettings lighting;
         lighting.moonPhase = int((scene_.ticks() / 24000) % 8);
         renderWorldFrame(buffer.data(), width, height, world_, float(std::remainder(yaw, 360.0)),
-                         float(std::clamp(pitch, -80.0, 80.0)), std::clamp(pixelStep, 2, 4),
+                         float(std::clamp(pitch, -80.0, 80.0)), std::clamp(pixelStep, 1, 4),
                          scene_.daylight(), scene_.timeOfDay(), lighting);
         miningEffects_.render(buffer.data(), width, height, world_,
                               float(std::remainder(yaw, 360.0)),
@@ -441,12 +450,9 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
         ((PostFrameFn)fn)((void*)(uintptr_t)surface, buffer.data(), 0, width * 4, width, height);
         frameBufferIndex_ = (frameBufferIndex_ + 1) % frameBuffers_.size();
         sceneSaveElapsed_ += elapsed;
-        if (sceneSaveElapsed_ >= 10.0f) {
-            world_.save();
-            scene_.save(world_);
-            inventory_.save(world_);
-            sceneSaveElapsed_ = 0;
-        }
+        // Autosave every store, including survival (health/hunger) and containers,
+        // so a killed app does not restore them older than the terrain.
+        if (sceneSaveElapsed_ >= 10.0f) saveAll();
         refreshStreamStatus();
         // Pace dispatches independently of whether a worker completes in one frame.
         chunkLoadCooldown_ = std::max(0.0f, chunkLoadCooldown_ - elapsed);

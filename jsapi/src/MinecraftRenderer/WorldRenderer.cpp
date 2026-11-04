@@ -38,15 +38,18 @@ thread_local LightingBuffer renderLighting;
 }
 const LightingBuffer& lightingBuffer() { return renderLighting; }
 
-// [FIX 1] sample(): out-of-window and unloaded columns are "unknown", not
-// "dark air". Returning {0,0} made the AO neighbourhood inconsistent with
-// occlusion(), producing the bright/dark flicker at the resident border.
-// Return the outdoor assumption {15,0} so sampling and AO agree.
+// Unknown cells (outside the window laterally, below it, or in a non-resident
+// column, including above its top) carry no sky or block light. Only open sky
+// above a resident column is lit. Visible surfaces cannot sample an unknown
+// cell: trace() stops at non-resident columns before shading, full-cube faces
+// sample the cell the ray came through, and inset merges take a max(). So the
+// {0,0} answer here cannot darken the resident border; AO stays consistent via
+// occlusion() treating unknown columns as open.
 LightSample LightingBuffer::sample(int x, int y, int z) const
 {
     if (unsigned(x-originX)>=unsigned(width) || unsigned(z-originZ)>=unsigned(depth) || y<originY)
-        return {15,0};
-    if (loadedColumns && !loadedColumns[size_t(z-originZ)*width+x-originX]) return {15,0};
+        return {0,0};
+    if (loadedColumns && !loadedColumns[size_t(z-originZ)*width+x-originX]) return {0,0};
     if (y>=originY+height) return {15,0};
     const size_t i=(size_t(y-originY)*depth+z-originZ)*width+x-originX;
     return {sky[i],block[i]};
@@ -818,8 +821,9 @@ uint32_t trace(const View& view, const Row& row, float directionX, float directi
     const float maxDistance = view.viewDistance / rayLength;
     float tx = ax.first, ty = row.y.first, tz = az.first;
     float red = 0, green = 0, blue = 0, transmission = 1;
-    // [FIX 3a] Track whether the ray left the resident window or hit an
-    // unloaded column. Those pixels are "unknown", not "sky".
+    // [FIX 3a] Track whether the ray hit a non-resident (streaming) column.
+    // Those pixels are "unknown", not "sky". Leaving the window itself is a
+    // normal sky miss, as in the frozen reference renderer.
     bool hitBoundary = false;
     // The original fullcube traversal starts at the first crossed boundary.
     // Only a special shape in the eye cell needs an initial local intersection.
@@ -827,7 +831,12 @@ uint32_t trace(const View& view, const Row& row, float directionX, float directi
         unsigned(y-view.originY)<unsigned(view.height)&&unsigned(z-view.originZ)<unsigned(view.depth);
     const uint16_t initial=inBounds?view.voxels[cell]:0;
     const bool initialSpecial=initial&&initial<=legacy::kBlockCount&&!view.geometry[initial-1].shape.fullCube;
-    for (int step = 0; step < 180; ++step) {
+    // A DDA crosses at most one cell per axis per unit of distance, so a ray of
+    // length d visits <= 3*ceil(d)+3 cells. The fixed 180 used to cut off long
+    // diagonal rays once the view distance exceeded 40 and draw them as sky.
+    // Keep 180 as the floor so short-range output is unchanged.
+    const int maxSteps = std::max(180, 3 * int(std::ceil(view.viewDistance)) + 3);
+    for (int step = 0; step < maxSteps; ++step) {
         int face=0;
         float distance=0;
         if(step==0&&initialSpecial) {
@@ -840,14 +849,11 @@ uint32_t trace(const View& view, const Row& row, float directionX, float directi
         }
         // Check coordinates before indexing; a linear index alone can wrap
         // across x/z world faces and still look in bounds.
-        // [FIX 3b] Far-distance miss is still a normal sky fallthrough.
+        // [FIX 3b] Far-distance miss and window exit are normal sky misses.
         if (distance > maxDistance) break;
-        // [FIX 3c] Leaving the resident window is "unknown", not air.
         if (unsigned(x - view.originX) >= unsigned(view.width) ||
             unsigned(z - view.originZ) >= unsigned(view.depth) ||
-            unsigned(y - view.originY) >= unsigned(view.height)) {
-            hitBoundary = true; break;
-        }
+            unsigned(y - view.originY) >= unsigned(view.height)) break;
         // [FIX 3d] A non-resident column is padding, not air. If a zero
         // voxel lands in an unloaded column, treat the hit as boundary.
         if (view.lighting && view.lighting->loadedColumns &&
@@ -943,10 +949,10 @@ uint32_t trace(const View& view, const Row& row, float directionX, float directi
         } while(special&&nextHit<=cellEnd);
         if (transmission < 0.02f) break;
     }
-    // [FIX 3e] Boundary fade: the ray reached the resident border or an
-    // unloaded column. That pixel is "unknown", not "sky". Fade to fog and
-    // suppress the celestial layer so no sun/moon is drawn behind missing
-    // terrain. This is what eliminates the border "ghost block" holes.
+    // [FIX 3e] Boundary fade: the ray reached an unloaded column. That pixel
+    // is "unknown", not "sky". Fade to fog and suppress the celestial layer so
+    // no sun/moon is drawn behind missing terrain. This is what eliminates the
+    // border "ghost block" holes.
     if (hitBoundary) {
         const float fog = 0.9f;
         red   = red   * (1 - fog) + row.skyR * fog;
@@ -1008,26 +1014,10 @@ void worldrender::renderVolumeFrame(uint32_t* pixels, int width, int height,
                     int(std::floor(eye.x)), int(std::floor(eye.y)), int(std::floor(eye.z)),
                     volume.originX, volume.originY, volume.originZ,
                     volume.width, volume.height, volume.depth, daylight,
-                    std::clamp(lighting.maxDistance, 1.0f, 40.0f),
+                    std::clamp(lighting.maxDistance, 1.0f, worldrender::MaxViewDistance),
                     std::sin(phaseAngle),std::cos(phaseAngle),timeOfDay>=0,lighting.moonPhase,tints,
                     lighting.enabled?&renderLighting:nullptr,worldrender::catalogLighting().data(),
                     lighting.ambientOcclusion,{},{}};
-    // [FIX 4] Pull the effective view distance in to the nearest window face.
-    // Rays then expire a little before the border and take the fog from
-    // trace() instead of reaching for the sky past unloaded columns. If the
-    // eye is closer than 2 blocks to a face, leave the distance alone and
-    // rely on trace()'s boundary fade.
-    {
-        const float edge = std::min({
-            eye.x - float(volume.originX),
-            float(volume.originX) + float(volume.width)  - eye.x,
-            eye.y - float(volume.originY),
-            float(volume.originY) + float(volume.height) - eye.y,
-            eye.z - float(volume.originZ),
-            float(volume.originZ) + float(volume.depth)  - eye.z
-        });
-        if (edge > 2.0f) view.viewDistance = std::min(view.viewDistance, edge - 1.0f);
-    }
     // Source Dimension brightness ramp, scalar display approximation. Daylight
     // affects only skylight: torches keep their intensity at night.
     for(int level=0;level<16;++level) {
