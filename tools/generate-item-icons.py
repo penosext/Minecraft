@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Embed 63 audited canonical inventory sprites, not a general item engine.
+"""Embed 77 audited canonical inventory sprites, not a general item engine.
 
 No arguments regenerates items.png (byte copy if missing), items.source.json and
 ItemIcons.hpp. --check validates pinned catalog/sources/PNG/anchors and exact
@@ -22,10 +22,11 @@ PNG_PATH = 'Minecraft.Client/Common/res/TitleUpdate/res/items.png'
 PNG_SHA = '1562d583262f494526f9ae34047ecbe6af060a237d3e30c751940c239b371064'
 PNG_BLOB = '5456083c02957afa9d7b136980e7513ad5520b2f'
 RGBA_SHA = '31076214c9426183e99cceaedec141f27cdb2f4086731a5503ff728159864da6'
-CATALOG_SHA = '179af06030844929f0f885d255473b663f19eee48ffaca633635ba36bfe5b7f6'
+CATALOG_SHA = '03979af52af038871909e4f7265507f65295a4d8386095379f7ce1878f8a0b48'
 PINS = {
     'Minecraft.World/Item.cpp': '263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d',
     'Minecraft.World/DyePowderItem.cpp': 'ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3',
+    'Minecraft.World/CoalItem.cpp': '68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f',
     'Minecraft.Client/PreStitchedTextureMap.cpp': '0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7',
 }
 # itemId, aux, source registration symbol, exact icon name, x, y (16x16).
@@ -98,9 +99,36 @@ NEW_ITEMS = [
     (266, 'goldIngot', 'ingotGold', 2, 7),
     (264, 'diamond', 'diamond', 3, 7),
     (334, 'leather', 'leather', 6, 7),
+    # Plain FoodItems exported by generate-items.py (kind "food"), source order.
+    (260, 'apple', 'apple', 0, 10),
+    (297, 'bread', 'bread', 2, 9),
+    (319, 'porkChop_raw', 'porkchopRaw', 5, 7),
+    (320, 'porkChop_cooked', 'porkchopCooked', 5, 8),
+    (349, 'fish_raw', 'fishRaw', 5, 9),
+    (350, 'fish_cooked', 'fishCooked', 5, 10),
+    (357, 'cookie', 'cookie', 5, 12),
+    (360, 'melon', 'melon', 6, 13),
+    (363, 'beef_raw', 'beefRaw', 6, 9),
+    (364, 'beef_cooked', 'beefCooked', 6, 10),
+    (366, 'chicken_cooked', 'chickenCooked', 7, 10),
+    (393, 'potatoBaked', 'potatoBaked', 7, 6),
+    (396, 'carrotGolden', 'carrotGolden', 9, 6),
+    (400, 'pumpkinPie', 'pumpkinPie', 9, 8),
+    # Smelting/drop materials exported by generate-items.py MATERIAL_ITEMS.
+    (337, 'clay', 'clay', 3, 9),
+    (365, 'chicken_raw', 'chickenRaw', 7, 9),
+]
+# Aux-variant sprites: (itemId, aux, symbol, icon name, row, column).
+AUX_ITEMS = [
+    (263, 0, 'coal', 'coal', 0, 7),
+    (263, 1, 'coal', 'charcoal', 10, 8),
+    (351, 2, 'dye_powder', 'dyePowder_green', 6, 14),
 ]
 MAPPING += [(iid, 0, symbol, name, col * 16, row * 16)
             for iid, symbol, name, row, col in NEW_ITEMS]
+MAPPING += [(iid, aux, symbol, name, col * 16, row * 16)
+            for iid, aux, symbol, name, row, col in AUX_ITEMS]
+ICON_COUNT = len(MAPPING)
 
 
 def require(condition, message):
@@ -120,8 +148,8 @@ def build(png):
     require(sha(catalog_bytes) == CATALOG_SHA, 'Creative item catalog pin mismatch')
     catalog = json.loads(catalog_bytes)['items']
     creative = {entry['key'] for entry in catalog if entry['creative'] and entry['renderIndex'] == -1}
-    new_keys = {f'item:{iid}:0' for iid, *_ in NEW_ITEMS}
-    require(len(NEW_ITEMS) == len(new_keys) == 50, 'Expected 50 distinct new item keys')
+    new_keys = {f'item:{iid}:0' for iid, *_ in NEW_ITEMS} | {f'item:{iid}:{aux}' for iid, aux, *_ in AUX_ITEMS}
+    require(len(NEW_ITEMS) + len(AUX_ITEMS) == len(new_keys) == 69, 'Expected 69 distinct new item keys')
     require(new_keys == creative, 'New sprites must exactly cover creative items without a block thumbnail')
     require(all(not entry['placeable'] for entry in catalog if entry['key'] in new_keys),
             'New item sprite must not be a placeable block')
@@ -152,18 +180,23 @@ def build(png):
         require(image.size == (256, 256) and image.mode == 'RGBA', 'Expected 256x256 RGBA items.png')
         require(sha(image.tobytes()) == RGBA_SHA, 'Decoded items RGBA pin mismatch')
         rows, crops = [], []
-        require(len(MAPPING) == 63 and len({r[:2] for r in MAPPING}) == 63, 'Expected 63 unique canonical keys')
+        require(len(MAPPING) == ICON_COUNT and len({r[:2] for r in MAPPING}) == ICON_COUNT, f'Expected {ICON_COUNT} unique canonical keys')
         for iid, aux, symbol, name, x, y in MAPPING:
             registrations = list(re.finditer(r'Item::' + re.escape(symbol) + r'\s*=\s*[^;]*?new\s+\w+\(\s*(\d+)[^;]*;', sources[item_path]))
             require(len(registrations) == 1, f'Ambiguous Item registration: {symbol}')
             registration = registrations[0]
-            base_name = 'dyePowder' if iid == 351 else name
+            base_name = 'dyePowder' if iid == 351 else 'coal' if iid == 263 else name
             require(int(registration[1]) + 256 == iid and f'setIconName(L"{base_name}")' in registration[0],
                     f'Item ID/icon registration mismatch: {symbol}')
             refs = [anchor(item_path, registration[0])]
-            if iid == 351:
-                require(aux == 3, 'Only brown dye is covered')
-                refs += [anchor(dye_path, 'const int DyePowderItem::BROWN = 3;'),
+            if iid == 263:
+                require(aux in (0, 1), 'Only coal/charcoal are covered')
+                coal_path = 'Minecraft.World/CoalItem.cpp'
+                refs += [anchor(coal_path, 'if (auxValue == CHAR_COAL)'),
+                         anchor(coal_path, 'charcoalIcon = iconRegister->registerIcon(L"charcoal");')]
+            elif iid == 351:
+                require(aux in (2, 3), 'Only brown/green dye are covered')
+                refs += [anchor(dye_path, 'const int DyePowderItem::BROWN = 3;' if aux == 3 else 'const int DyePowderItem::GREEN = 2;'),
                          anchor(dye_path, '{ L"black", L"red", L"green", L"brown",'),
                          anchor(dye_path, 'icons[i] = iconRegister->registerIcon(getIconName() + L"_" + COLOR_TEXTURES[i]);'),
                          anchor(dye_path, 'int colorValue = Mth::clamp(itemAuxValue, 0, 15);'),
@@ -182,7 +215,7 @@ def build(png):
                          'crop': [x, y, 16, 16], 'rgbaSha256': sha(crop), 'sources': refs})
             crops.append(crop)
     manifest = {
-        'schema_version': 1, 'scope': '63 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces and 5 materials; no item engine or world-state icons.',
+        'schema_version': 1, 'scope': f'{ICON_COUNT} canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green and raw chicken; no item engine or world-state icons.',
         'repository': REPO, 'commit': COMMIT,
         'texture': {'path': PNG_PATH, 'sha256': PNG_SHA, 'gitBlob': PNG_BLOB,
                     'sizeBytes': len(png), 'width': 256, 'height': 256, 'mode': 'RGBA', 'rgbaSha256': RGBA_SHA},
@@ -194,15 +227,15 @@ def build(png):
             'note': 'Read-only unauthenticated API verified during initial audit. Offline generation does not repeat this network verification; no commit-signature verification is claimed.'},
         'pixelContract': '16x16 original RGBA crops, straight AARRGGBB integers; preserve RGB even at alpha 0; nearest-neighbor UI blit, no tint/mesh/world metadata.',
         'sharedSources': shared, 'items': rows,
-        'limitations': ['Only these 63 keys have sprites; other canonical items retain representative mesh thumbnails.',
+        'limitations': [f'Only these {ICON_COUNT} keys have sprites; other canonical items retain representative mesh thumbnails.',
                         'Inventory/hotbar sprites only; first-person held items are not rendered.',
                         'Not a full upstream ItemRenderer, item/tool engine or world renderer.',
                         'Pinned local C++ sources are required for offline anchor verification.'],
     }
     lines = ['#pragma once', '// Generated by tools/generate-item-icons.py; do not edit.',
-             '// Provenance: port/assets/items/items.source.json. 63 canonical keys.',
+             f'// Provenance: port/assets/items/items.source.json. {ICON_COUNT} canonical keys.',
              '#include <cstdint>', '#include <cstring>', 'namespace itemicons {',
-             'constexpr int kIconSize = 16;', 'constexpr int kIconCount = 63;',
+             'constexpr int kIconSize = 16;', f'constexpr int kIconCount = {ICON_COUNT};',
              f'constexpr char kSourceSha256[] = "{PNG_SHA}";',
              'struct Icon { const char* key; const char* name; int itemId, aux, x, y; uint32_t pixels[256]; };',
              '// Straight AARRGGBB; never tinted or shaded as terrain.',
@@ -236,7 +269,7 @@ def main():
         elif not path.exists() or path.read_bytes() != content:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(content)
-    print('PASS: 63 canonical item sprites; catalog/source pins, PNG/blob/RGBA, mapping anchors and exact outputs' if args.check else 'Generated 63 canonical 16x16 item sprites and pinned provenance')
+    print(f'PASS: {ICON_COUNT} canonical item sprites; catalog/source pins, PNG/blob/RGBA, mapping anchors and exact outputs' if args.check else f'Generated {ICON_COUNT} canonical 16x16 item sprites and pinned provenance')
 
 
 if __name__ == '__main__':

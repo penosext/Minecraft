@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cerrno>
+#include <cmath>
 #include <cstring>
 #include <fcntl.h>
 #include <functional>
@@ -586,6 +587,37 @@ bool Inventory::damageSelected(int amount) {
     else slot.damage += amount;
     return true;
 }
+bool Inventory::equipSelectedArmor() {
+    requireOpened();
+    Slot& hand = main_[selected_];
+    const auto* spec = hand.count ? itemSpec(itemIndex(hand.key)) : nullptr;
+    const auto* armor = spec ? mcgame::toolProperties(spec->itemId) : nullptr;
+    if (!armor || armor->kind != mcgame::ToolKind::Armor || armor->armorSlot < 0 || armor->armorSlot > 3) return false;
+    std::swap(hand, armor_[3 - armor->armorSlot]);
+    return true;
+}
+void Inventory::hurtArmor(float damage) {
+    requireOpened();
+    if (mode_ == GameMode::Creative || !std::isfinite(damage) || damage <= 0) return;
+    // Inventory.cpp:641-659: dmg = dmg / 4; if (dmg < 1) dmg = 1; hurtAndBreak((int) dmg).
+    const int wear = int(std::max(1.0f, damage / 4));
+    for (Slot& slot : armor_) {
+        const auto* spec = slot.count ? itemSpec(itemIndex(slot.key)) : nullptr;
+        const auto* armor = spec ? mcgame::toolProperties(spec->itemId) : nullptr;
+        if (!armor || armor->kind != mcgame::ToolKind::Armor || armor->maxDamage <= 0) continue;
+        if (wear > armor->maxDamage - slot.damage) slot = {};
+        else slot.damage += wear;
+    }
+}
+int Inventory::armorValue() const {
+    int total = 0;
+    for (const Slot& slot : armor_) {
+        const auto* spec = slot.count ? itemSpec(itemIndex(slot.key)) : nullptr;
+        const auto* armor = spec ? mcgame::toolProperties(spec->itemId) : nullptr;
+        if (armor && armor->kind == mcgame::ToolKind::Armor) total += armor->defense;
+    }
+    return total;
+}
 int Inventory::selectedDamage() const { return main_[selected_].damage; }
 int Inventory::selectedMaxDamage() const { return maxDamage(itemSpec(selectedItemIndex())); }
 bool Inventory::selectHotbarItem(int slot, int index, int count) {
@@ -626,7 +658,7 @@ std::string Inventory::infoJson() const {
         << ",\"selectedDamage\":" << selectedDamage() << ",\"selectedMaxDamage\":" << selectedMaxDamage()
         << ",\"gameMode\":\"" << (mode_ == GameMode::Survival ? "survival" : "creative") << '"'
         << ",\"emptyHand\":" << (emptyHand() ? "true" : "false")
-        << ",\"catalogKind\":\"source-items\",\"maxStack\":64,\"craftingImplemented\":true,\"armorStatsImplemented\":false,\"slots\":[";
+        << ",\"catalogKind\":\"source-items\",\"maxStack\":64,\"craftingImplemented\":true,\"armorStatsImplemented\":true,\"slots\":[";
     auto append = [&](const Slot& slot) {
         const int index = itemIndex(slot.key);
         const auto* spec = itemSpec(index);

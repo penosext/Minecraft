@@ -4,6 +4,8 @@
 #include "ActorRenderer.hpp"
 #include "MobRenderer.hpp"
 #include "InventoryRenderer.hpp"
+#include "SurvivalFrame.hpp"
+#include "SurvivalHud.hpp"
 #include "LegacyCatalog.hpp"
 #include "ItemCatalog.hpp"
 #include <algorithm>
@@ -373,7 +375,7 @@ void JSMinecraftRenderer::worldInfo(JQFunctionInfo& info)
         auto status = world_.loaded() ? world_.statusJson() : std::string("{}");
         if (world_.loaded()) {
             status.pop_back();
-            status += ",\"scene\":" + scene_.summaryJson() + "}";
+            status += ",\"scene\":" + scene_.summaryJson() + ",\"survival\":" + survival_.infoJson() + "}";
         }
         info.GetReturnValue().Set(JS_NewString(info.GetContext(), status.c_str()));
     } catch (const std::exception& e) {
@@ -415,15 +417,19 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
         const float elapsed = float(std::clamp(dt, 0.0, 0.1));
         world_.setStreamingView(float(std::remainder(yaw, 360.0)),
                                 float(std::clamp(pitch, -80.0, 80.0)), float(width) / float(height));
-        world_.update(elapsed, float(std::clamp(forward, -1.0, 1.0)),
-                      float(std::clamp(strafe, -1.0, 1.0)), jump != 0,
+        // Survival: a dead player is frozen; eating slows input (LocalPlayer.cpp:227).
+        const float moveScale = survival_.dead() ? 0.0f : survival_.movementScale();
+        world_.update(elapsed, float(std::clamp(forward, -1.0, 1.0)) * moveScale,
+                      float(std::clamp(strafe, -1.0, 1.0)) * moveScale, jump != 0 && !survival_.dead(),
                       float(std::remainder(yaw, 360.0)));
         scene_.update(world_, elapsed);
-        survival_.update(world_, elapsed, inventory_.gameMode() == mcinventory::GameMode::Creative,
-                         scene_.rule(mcworld::WorldRule::NaturalRegeneration));
+        const auto survivalResult = mcplayer::survivalFrame(survival_, world_, scene_, inventory_, elapsed);
+        if (survivalResult.died) { miningHeld_ = false; gameActions_.resetMining(); }
         containers_.update(world_, elapsed);
         const auto& mining = gameActions_.tickMining(world_, inventory_, miningYaw_, miningPitch_,
-                                                    miningHeld_ && !inventoryOpen_ && !containers_.opened(), elapsed);
+                                                    miningHeld_ && !inventoryOpen_ && !containers_.opened() &&
+                                                    !survival_.dead(), elapsed);
+        if (mining.broken) survival_.exhaust(.025f); // Tile.cpp:1232 EXHAUSTION_MINE.
         miningEffects_.update(world_, elapsed, mining);
         if ((mining.active || mining.broken) && (!swinging_ || swing_ >= 0.5f)) { swing_ = 0; swinging_ = true; }
         auto& buffer = frameBuffers_[frameBufferIndex_];
@@ -460,6 +466,9 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
             mcinventory::renderContainerOverlay(buffer.data(), width, height, inventory_, containers_.view());
         else
             mcinventory::renderInventoryOverlay(buffer.data(), width, height, inventory_, inventoryOpen_);
+        mcplayer::renderSurvivalHud(buffer.data(), width, height, survival_,
+                                    inventory_.gameMode() == mcinventory::GameMode::Creative,
+                                    inventoryOpen_ || containers_.opened(), world_.underWater());
         ((PostFrameFn)fn)((void*)(uintptr_t)surface, buffer.data(), 0, width * 4, width, height);
         frameBufferIndex_ = (frameBufferIndex_ + 1) % frameBuffers_.size();
         sceneSaveElapsed_ += elapsed;
@@ -582,9 +591,16 @@ void JSMinecraftRenderer::setDifficulty(JQFunctionInfo& info)
 }
 void JSMinecraftRenderer::eatHeld(JQFunctionInfo& info)
 {
-    // Food metadata is not yet exported in the catalog; refuse rather than
-    // treating an arbitrary item as food.
-    info.GetReturnValue().Set(JS_NewBool(info.GetContext(), false));
+    // eatHeld(held, pressed): plain food eats while held (32 ticks), armor
+    // equips on the press edge; see mcplayer::useHeldItem. true = in use/acted.
+    try {
+        requireWorldIdle();
+        int held = 1, pressed = 1;
+        if (info.Length() >= 1 && (held = JS_ToBool(info.GetContext(), info[0])) < 0) { info.GetReturnValue().Set(JS_EXCEPTION); return; }
+        if (info.Length() >= 2 && (pressed = JS_ToBool(info.GetContext(), info[1])) < 0) { info.GetReturnValue().Set(JS_EXCEPTION); return; }
+        const bool acted = world_.loaded() && mcplayer::useHeldItem(survival_, inventory_, held != 0, pressed != 0);
+        info.GetReturnValue().Set(JS_NewBool(info.GetContext(), acted));
+    } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }
 }
 void JSMinecraftRenderer::containerInfo(JQFunctionInfo& info)
 {
@@ -699,9 +715,12 @@ void JSMinecraftRenderer::attackWorld(JQFunctionInfo& info)
             return;
         }
         if (!std::isfinite(yaw) || !std::isfinite(pitch)) throw std::runtime_error("Invalid attack angles");
+        if (survival_.dead()) throw std::runtime_error("Player is dead");
         if (!swinging_ || swing_ >= 0.5f) { swing_ = 0; swinging_ = true; }
         const auto result = gameActions_.attack(world_, scene_, inventory_, float(std::remainder(yaw, 360.0)),
                                                 float(std::clamp(pitch, -80.0, 80.0)));
+        // Player.cpp:1705 EXHAUSTION_ATTACK on any living hit.
+        if (result.find("\"hit\":true") != std::string::npos) survival_.exhaust(.3f);
         if (result.find("\"killed\":true") != std::string::npos) {
             world_.save();
             scene_.save(world_);
@@ -859,7 +878,7 @@ void JSMinecraftRenderer::placeWorld(JQFunctionInfo& info)
         if (!std::isfinite(yaw) || !std::isfinite(pitch)) throw std::runtime_error("Invalid placement angles");
         const float useYaw = float(std::remainder(yaw, 360.0));
         const float usePitch = float(std::clamp(pitch, -80.0, 80.0));
-        const bool acted = gameActions_.use(world_, inventory_, useYaw, usePitch);
+        const bool acted = !survival_.dead() && gameActions_.use(world_, inventory_, useYaw, usePitch);
         if (acted && (!swinging_ || swing_ >= 0.5f)) { swing_ = 0; swinging_ = true; }
         info.GetReturnValue().Set(JS_NewBool(info.GetContext(), acted));
     } catch (const std::exception& e) { info.GetReturnValue().ThrowInternalError(e.what()); }

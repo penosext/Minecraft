@@ -47,6 +47,7 @@ type WorldJobStatus = {
 type SurvivalInfo = {
   health: number; maxHealth: number; food: number; saturation: number;
   air: number; maxAir: number; dead: boolean; difficulty: number;
+  armor?: number; eating?: boolean;
 };
 type ContainerInfo = {
   open: boolean; type?: ContainerKind; x?: number; y?: number; z?: number;
@@ -86,8 +87,9 @@ type WorldRenderer = {
   saveWorld(): boolean;
   worldInfo(): string;
   survivalInfo?(): string;
-  respawnPlayer?(): string;
-  eatHeld?(): boolean;
+  respawnPlayer?(): boolean;
+  // Native survival use: plain food eats while held (32 ticks), armor equips on press.
+  eatHeld?(held: boolean, pressed?: boolean): boolean;
   setDifficulty?(difficulty: number): string;
   containerInfo?(): string;
   closeContainer?(): boolean;
@@ -564,6 +566,7 @@ function readWorldInfo(info: any): WorldInfo {
     throw new Error('群系信息无效');
   }
   if (info.stream !== undefined) info.stream = readWorldStream(info.stream);
+  if (info.survival !== undefined) info.survival = readSurvival(info.survival);
   return info;
 }
 
@@ -695,6 +698,8 @@ const index = defineComponent({
         {} as Record<HudItem, boolean>),
       chatPanelOpen: false,
       survival: null as SurvivalInfo | null,
+      secondaryUsePressed: false,
+      respawnError: '',
       containerPanelOpen: false,
       containerState: null as ContainerInfo | null,
       containerSelection: null as PanelPick | null,
@@ -806,7 +811,7 @@ const index = defineComponent({
       // textEditing is included so the system keyboard never lets a stale
       // contact keep walking the player or rotating the camera behind it.
       return this.inventoryPanelOpen || this.containerPanelOpen || this.pickerOpen || this.settingsPanelOpen || this.chatPanelOpen ||
-        this.worldBusy || this.chunkLoading || this.saveExitPending || this.textEditing;
+        this.worldBusy || this.chunkLoading || this.saveExitPending || this.textEditing || this.playerDead;
     },
     // Each line keeps only the items the player left switched on; empty lines vanish.
     hudLines(): string[] {
@@ -830,10 +835,9 @@ const index = defineComponent({
       const end = this.chatHistory.length - this.chatPageOffset;
       return this.chatHistory.slice(Math.max(0, end - CHAT_PAGE_LINES), Math.max(0, end));
     },
-    survivalHearts(): number[] {
-      const count = this.survival ? Math.ceil(this.survival.maxHealth / 2) : 10;
-      return Array.from({ length: count }, (_, index) => Math.max(0, Math.min(2,
-        (this.survival ? this.survival.health : 0) - index * 2)));
+    // Native draws hearts/hunger/armor/air; the UI only owns the death screen.
+    playerDead(): boolean {
+      return !!(this.worldMode && this.survival && this.survival.dead);
     },
     containerTitle(): string {
       const type = this.containerState && this.containerState.type;
@@ -877,7 +881,7 @@ const index = defineComponent({
     },
     keepInventoryNote(): string {
       if (!this.worldRules) return '规则状态未就绪';
-      return '已写入存档 · 本移植暂无玩家生命与死亡，规则在死亡实装后才会被用到';
+      return '已写入存档 · 关闭时死亡会清空背包与盔甲（本移植没有掉落物实体，物品不会留在地上）';
     },
     worldJobVisible(): boolean {
       return this.worldBusy && this.worldJobActive;
@@ -1434,6 +1438,7 @@ const index = defineComponent({
       this.worldRules = info.scene && info.scene.rules
         ? readWorldRules(info.scene.rules) : info.scene ? this.worldRules : null;
       this.worldBiome = info.biome ? { ...info.biome } : null;
+      this.survival = info.survival ? { ...info.survival } : null;
       this.worldStream = info.stream ? readWorldStream(info.stream) : null;
       this.lastStreamInfoAt = clockNow();
       if (info.stream) this.selectedRenderRadius = info.stream.radius;
@@ -1504,6 +1509,20 @@ const index = defineComponent({
       const outcome = this.commandGameMode([mode]);
       this.gameSettingsError = outcome.ok ? '' : outcome.text;
       if (outcome.ok) this.pushChat('reply', outcome.text);
+    },
+
+    respawn() {
+      if (!this.worldMode || this.worldBusy || this.chunkLoading) return;
+      try {
+        if (!worldRenderer.respawnPlayer) throw new Error('native respawnPlayer 未接入');
+        if (worldRenderer.respawnPlayer() !== true) throw new Error('当前未死亡');
+        this.respawnError = '';
+        this.resetMovement();
+        this.refreshWorldInfo();
+        this.refreshInventory();
+      } catch (e: any) {
+        this.respawnError = '重生失败: ' + errorMessage(e);
+      }
     },
 
     toggleKeepInventory() {
@@ -2360,6 +2379,11 @@ const index = defineComponent({
       if (held === this.secondaryHeld) return;
       this.secondaryHeld = held;
       this.nextSecondaryAt = 0;
+      if (!held) {
+        // Player::releaseUsingItem: letting go cancels an unfinished meal.
+        this.secondaryUsePressed = false;
+        try { if (worldRenderer.eatHeld) worldRenderer.eatHeld(false, false); } catch (_) { /* best effort */ }
+      }
       if (held && !this.nativeTouchAvailable) this.tickSecondary(clockNow());
     },
 
@@ -2376,10 +2400,14 @@ const index = defineComponent({
         // true means native acted (interaction or placement); false only means it
         // did not. "Failed to place" would be wrong, since not placing is often
         // the correct original behaviour.
-        const acted = worldRenderer.placeWorld(this.yaw, this.pitch);
+        let acted = worldRenderer.placeWorld(this.yaw, this.pitch);
         if (typeof acted !== 'boolean') throw new Error('native 交互信息无效');
         // Tile::use on a chest/workbench/furnace opened a native panel.
         if (acted && this.syncContainerPanel()) return;
+        // Source order: useOn (place/interact) first, then Item::use (eat / equip).
+        const pressed = !this.secondaryUsePressed;
+        this.secondaryUsePressed = true;
+        if (!acted && worldRenderer.eatHeld) acted = worldRenderer.eatHeld(true, pressed) === true;
         const refreshed = this.refreshInventory();
         if (acted) {
           this.worldDirty = true;

@@ -1062,3 +1062,41 @@
     width: 350px;
     height: 158px;
 }
+
+
+// Death screen (DeathScreen.cpp): transparent full-screen layer over the
+// native red gradient; centered title and one Respawn button.
+.death-screen {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 960px;
+  height: 266px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.death-title {
+  font-size: 32px;
+  color: #ffffff;
+}
+.death-note {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #ffdddd;
+}
+.death-respawn {
+  margin-top: 18px;
+  width: 200px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: #6f6f6f;
+  border-width: 2px;
+  border-color: #000000;
+}
+.death-error {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #ffd27f;
+}

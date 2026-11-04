@@ -84,6 +84,16 @@ public:
     bool applyRulesJson(const std::string& text);
     std::string rulesJson() const;
 
+    // --- Zombie melee on the player ---------------------------------------
+    // Off by default, so creative, dead or peaceful players and every existing
+    // deterministic scene test see unchanged wandering. The caller sets it each
+    // frame (survival, alive, difficulty > 0); it is not persisted.
+    void setPlayerTargetable(bool value) { playerTargetable_ = value; }
+    // Raw Monster::doHurtTarget damage (Zombie ATTACK_DAMAGE 3) accepted since
+    // the last call; the caller applies difficulty scaling, armor and invuln.
+    struct PlayerHit { int mobId; float damage; };
+    std::vector<PlayerHit> takePlayerHits() { std::vector<PlayerHit> out; out.swap(playerHits_); return out; }
+
 private:
     struct Brain {
         float velocityY = 0;
@@ -91,6 +101,9 @@ private:
         bool walking = false;
         uint32_t invulnerableTime = 0;
         float lastHurt = 0; // Last accepted pre-armor raw damage; persisted in v3.
+        // MeleeAttackGoal::attackTime. Transient (never in scene.bin): a reload
+        // resets it to 0, exactly like a freshly started goal.
+        uint32_t attackTime = 0;
     };
     void requireWorld(const mcworld::World& world) const;
     void tick(const mcworld::World& world);
@@ -120,5 +133,7 @@ private:
     mcworld::WorldRules rules_;
     // Last accepted rules.json bytes, empty for an old save with no file.
     std::string persistedRules_;
+    bool playerTargetable_ = false;
+    std::vector<PlayerHit> playerHits_;
 };
 } // namespace mcscene

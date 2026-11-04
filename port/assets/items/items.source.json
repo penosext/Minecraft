@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "scope": "63 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces and 5 materials; no item engine or world-state icons.",
+  "scope": "82 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green and raw chicken; no item engine or world-state icons.",
   "repository": "https://github.com/gstaaij/minecraft-console",
   "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
   "texture": {
@@ -1788,10 +1788,577 @@
           "anchor": "\t\tADD_ICON(6,\t\t7,\tL\"leather\")"
         }
       ]
+    },
+    {
+      "key": "item:260:0",
+      "itemId": 260,
+      "aux": 0,
+      "icon": "apple",
+      "crop": [
+        160,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "adf1ea3dbda4d81e92d945f80a6311bd94a7ab913c7f33e7bc99354a91e1e94b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 335,
+          "anchor": "Item::apple = ( new FoodItem(4, 4, FoodConstants::FOOD_SATURATION_LOW, false) )\t->setIconName(L\"apple\")->setDescriptionId(IDS_ITEM_APPLE)->setUseDescriptionId(IDS_DESC_APPLE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 345,
+          "anchor": "\t\tADD_ICON(0,\t\t10,\tL\"apple\")"
+        }
+      ]
+    },
+    {
+      "key": "item:297:0",
+      "itemId": 297,
+      "aux": 0,
+      "icon": "bread",
+      "crop": [
+        144,
+        32,
+        16,
+        16
+      ],
+      "rgbaSha256": "aa3a8ab039e2c3a77712f5e50a14d8bc954a160277b85ca2bbfb25e274d24b4b",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 348,
+          "anchor": "Item::bread = ( new FoodItem(41, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )\t->setIconName(L\"bread\")->setDescriptionId(IDS_ITEM_BREAD)->setUseDescriptionId(IDS_DESC_BREAD);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 378,
+          "anchor": "\t\tADD_ICON(2,\t\t9,\tL\"bread\")"
+        }
+      ]
+    },
+    {
+      "key": "item:319:0",
+      "itemId": 319,
+      "aux": 0,
+      "icon": "porkchopRaw",
+      "crop": [
+        112,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "43ebcf4d229f0778544ea1ed6e2af86498983e5f7e899f016efb604310b8cf32",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 352,
+          "anchor": "Item::porkChop_raw = ( new FoodItem(63, 3, FoodConstants::FOOD_SATURATION_LOW, true) )\t\t->setIconName(L\"porkchopRaw\")->setDescriptionId(IDS_ITEM_PORKCHOP_RAW)->setUseDescriptionId(IDS_DESC_PORKCHOP_RAW);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 427,
+          "anchor": "\t\tADD_ICON(5,\t\t7,\tL\"porkchopRaw\")"
+        }
+      ]
+    },
+    {
+      "key": "item:320:0",
+      "itemId": 320,
+      "aux": 0,
+      "icon": "porkchopCooked",
+      "crop": [
+        128,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "6655ea10469fd48639ae93e87ffb0d426423e2268f924e56e5cb7dba619da01a",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 353,
+          "anchor": "Item::porkChop_cooked = ( new FoodItem(64, 8, FoodConstants::FOOD_SATURATION_GOOD, true) )\t->setIconName(L\"porkchopCooked\")->setDescriptionId(IDS_ITEM_PORKCHOP_COOKED)->setUseDescriptionId(IDS_DESC_PORKCHOP_COOKED);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 428,
+          "anchor": "\t\tADD_ICON(5,\t\t8,\tL\"porkchopCooked\")"
+        }
+      ]
+    },
+    {
+      "key": "item:349:0",
+      "itemId": 349,
+      "aux": 0,
+      "icon": "fishRaw",
+      "crop": [
+        144,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "74d1c89f0ffcdf660a0658021ba8140ddce4672b961e956a12ddd167bf6a4bcc",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 382,
+          "anchor": "Item::fish_raw = ( new FoodItem(93, 2, FoodConstants::FOOD_SATURATION_LOW, false) )\t\t\t->setIconName(L\"fishRaw\")->setDescriptionId(IDS_ITEM_FISH_RAW)->setUseDescriptionId(IDS_DESC_FISH_RAW);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 429,
+          "anchor": "\t\tADD_ICON(5,\t\t9,\tL\"fishRaw\")"
+        }
+      ]
+    },
+    {
+      "key": "item:350:0",
+      "itemId": 350,
+      "aux": 0,
+      "icon": "fishCooked",
+      "crop": [
+        160,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "46c5aec721537b309dac37212d2374b2eb27cccd2889b4a28c70754a1998f511",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 383,
+          "anchor": "Item::fish_cooked = ( new FoodItem(94, 5, FoodConstants::FOOD_SATURATION_NORMAL, false) )\t->setIconName(L\"fishCooked\")->setDescriptionId(IDS_ITEM_FISH_COOKED)->setUseDescriptionId(IDS_DESC_FISH_COOKED);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 430,
+          "anchor": "\t\tADD_ICON(5,\t\t10,\tL\"fishCooked\")"
+        }
+      ]
+    },
+    {
+      "key": "item:357:0",
+      "itemId": 357,
+      "aux": 0,
+      "icon": "cookie",
+      "crop": [
+        192,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "582140e82a842c1efd7a8846b30c11cffd0664f9727b17448260b9b79babdffe",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 396,
+          "anchor": "Item::cookie = ( new FoodItem(101, 2, FoodConstants::FOOD_SATURATION_POOR, false) )\t->setIconName(L\"cookie\")->setDescriptionId(IDS_ITEM_COOKIE)->setUseDescriptionId(IDS_DESC_COOKIE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 432,
+          "anchor": "\t\tADD_ICON(5,\t\t12,\tL\"cookie\")"
+        }
+      ]
+    },
+    {
+      "key": "item:360:0",
+      "itemId": 360,
+      "aux": 0,
+      "icon": "melon",
+      "crop": [
+        208,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "0c96ca6c217c53972d9521c469601f743efcb7a3a2072310dcb5ef4c3b024538",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 401,
+          "anchor": "Item::melon = (new FoodItem(104, 2, FoodConstants::FOOD_SATURATION_LOW, false))\t\t->setIconName(L\"melon\")->setDescriptionId(IDS_ITEM_MELON_SLICE)->setUseDescriptionId(IDS_DESC_MELON_SLICE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 450,
+          "anchor": "\t\tADD_ICON(6,\t\t13,\tL\"melon\")"
+        }
+      ]
+    },
+    {
+      "key": "item:363:0",
+      "itemId": 363,
+      "aux": 0,
+      "icon": "beefRaw",
+      "crop": [
+        144,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "817674418e807f31a9f7ef96e554262770b42f38c19118b34caf9e2152c33717",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 406,
+          "anchor": "Item::beef_raw = (new FoodItem(107, 3, FoodConstants::FOOD_SATURATION_LOW, true))\t->setIconName(L\"beefRaw\")->setDescriptionId(IDS_ITEM_BEEF_RAW)->setUseDescriptionId(IDS_DESC_BEEF_RAW);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 446,
+          "anchor": "\t\tADD_ICON(6,\t\t9,\tL\"beefRaw\")"
+        }
+      ]
+    },
+    {
+      "key": "item:364:0",
+      "itemId": 364,
+      "aux": 0,
+      "icon": "beefCooked",
+      "crop": [
+        160,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "3de8ba40a8270660de842679f1700cd69e0e816f279521f348c523912e7d42fd",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 407,
+          "anchor": "Item::beef_cooked = (new FoodItem(108, 8, FoodConstants::FOOD_SATURATION_GOOD, true))->setIconName(L\"beefCooked\")->setDescriptionId(IDS_ITEM_BEEF_COOKED)->setUseDescriptionId(IDS_DESC_BEEF_COOKED);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 447,
+          "anchor": "\t\tADD_ICON(6,\t\t10,\tL\"beefCooked\")"
+        }
+      ]
+    },
+    {
+      "key": "item:366:0",
+      "itemId": 366,
+      "aux": 0,
+      "icon": "chickenCooked",
+      "crop": [
+        160,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "b16183b2f708f58587052a59cb7408d1096a0639dc5c153143acc2f51ee9a010",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 409,
+          "anchor": "Item::chicken_cooked = (new FoodItem(110, 6, FoodConstants::FOOD_SATURATION_NORMAL, true))->setIconName(L\"chickenCooked\")->setDescriptionId(IDS_ITEM_CHICKEN_COOKED)->setUseDescriptionId(IDS_DESC_CHICKEN_COOKED);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 464,
+          "anchor": "\t\tADD_ICON(7,\t\t10,\tL\"chickenCooked\")"
+        }
+      ]
+    },
+    {
+      "key": "item:393:0",
+      "itemId": 393,
+      "aux": 0,
+      "icon": "potatoBaked",
+      "crop": [
+        96,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "9a2286698936ad134bb9e8cc6987242943949ca883fbbcf0840fc2c8a3e1e5e1",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 473,
+          "anchor": "Item::potatoBaked = (new FoodItem(137, 6, FoodConstants::FOOD_SATURATION_NORMAL, false))\t\t\t\t\t\t\t\t->setIconName(L\"potatoBaked\")->setDescriptionId(IDS_ITEM_POTATO_BAKED)->setUseDescriptionId(IDS_DESC_POTATO_BAKED);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 460,
+          "anchor": "\t\tADD_ICON(7,\t\t6,\tL\"potatoBaked\")"
+        }
+      ]
+    },
+    {
+      "key": "item:396:0",
+      "itemId": 396,
+      "aux": 0,
+      "icon": "carrotGolden",
+      "crop": [
+        96,
+        144,
+        16,
+        16
+      ],
+      "rgbaSha256": "3bc7e33fcfdd6b15e9333a62e6a28ae5367d8bc5844dbdf651d779fd7a483935",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 478,
+          "anchor": "Item::carrotGolden = (new FoodItem(140, 6, FoodConstants::FOOD_SATURATION_SUPERNATURAL, false))\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_giltFruit,\teMaterial_carrot)->setIconName(L\"carrotGolden\")->setPotionBrewingFormula(PotionBrewing::MOD_GOLDENCARROT)->setDescriptionId(IDS_ITEM_CARROT_GOLDEN)->setUseDescriptionId(IDS_DESC_CARROT_GOLDEN);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 495,
+          "anchor": "\t\tADD_ICON(9,\t\t6,\tL\"carrotGolden\")"
+        }
+      ]
+    },
+    {
+      "key": "item:400:0",
+      "itemId": 400,
+      "aux": 0,
+      "icon": "pumpkinPie",
+      "crop": [
+        128,
+        144,
+        16,
+        16
+      ],
+      "rgbaSha256": "f668a08d4415aea00cae559e0847b2dc7592451ecc09faa61e5fab381628a3d0",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 482,
+          "anchor": "Item::pumpkinPie = (new FoodItem(144, 8, FoodConstants::FOOD_SATURATION_LOW, false))\t\t\t->setIconName(L\"pumpkinPie\")->setDescriptionId(IDS_ITEM_PUMPKIN_PIE)->setUseDescriptionId(IDS_DESC_PUMPKIN_PIE);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 497,
+          "anchor": "\t\tADD_ICON(9,\t\t8,\tL\"pumpkinPie\")"
+        }
+      ]
+    },
+    {
+      "key": "item:337:0",
+      "itemId": 337,
+      "aux": 0,
+      "icon": "clay",
+      "crop": [
+        144,
+        48,
+        16,
+        16
+      ],
+      "rgbaSha256": "6be219b29fe3f6dd685ceebbeca9fb32a34453b95f2554a34aaaa420ff7e1121",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 372,
+          "anchor": "Item::clay = ( new Item(81) )\t\t\t\t\t\t\t\t\t\t->setIconName(L\"clay\")->setDescriptionId(IDS_ITEM_CLAY)->setUseDescriptionId(IDS_DESC_CLAY);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 395,
+          "anchor": "\t\tADD_ICON(3,\t\t9,\tL\"clay\")"
+        }
+      ]
+    },
+    {
+      "key": "item:365:0",
+      "itemId": 365,
+      "aux": 0,
+      "icon": "chickenRaw",
+      "crop": [
+        144,
+        112,
+        16,
+        16
+      ],
+      "rgbaSha256": "d91cbe7d3b88f399a3324b6fd0e9f27f34d8e2dee1a31836765e6c1abfb62b98",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 408,
+          "anchor": "Item::chicken_raw = (new FoodItem(109, 2, FoodConstants::FOOD_SATURATION_LOW, true))->setEatEffect(MobEffect::hunger->id, 30, 0, .3f)->setIconName(L\"chickenRaw\")->setDescriptionId(IDS_ITEM_CHICKEN_RAW)->setUseDescriptionId(IDS_DESC_CHICKEN_RAW);"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 463,
+          "anchor": "\t\tADD_ICON(7,\t\t9,\tL\"chickenRaw\")"
+        }
+      ]
+    },
+    {
+      "key": "item:263:0",
+      "itemId": 263,
+      "aux": 0,
+      "icon": "coal",
+      "crop": [
+        112,
+        0,
+        16,
+        16
+      ],
+      "rgbaSha256": "793a0ad65f7a58cd3edd9b3d1ffc7e3ecb01af4a26383f56765fca075fec600c",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 336,
+          "anchor": "Item::coal = ( new CoalItem(7) )\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_coal)->setIconName(L\"coal\")->setDescriptionId(IDS_ITEM_COAL)->setUseDescriptionId(IDS_DESC_COAL);"
+        },
+        {
+          "path": "Minecraft.World/CoalItem.cpp",
+          "sha256": "68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f",
+          "line": 25,
+          "anchor": "if (auxValue == CHAR_COAL)"
+        },
+        {
+          "path": "Minecraft.World/CoalItem.cpp",
+          "sha256": "68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f",
+          "line": 36,
+          "anchor": "charcoalIcon = iconRegister->registerIcon(L\"charcoal\");"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 342,
+          "anchor": "\t\tADD_ICON(0,\t\t7,\tL\"coal\")"
+        }
+      ]
+    },
+    {
+      "key": "item:263:1",
+      "itemId": 263,
+      "aux": 1,
+      "icon": "charcoal",
+      "crop": [
+        128,
+        160,
+        16,
+        16
+      ],
+      "rgbaSha256": "88ae825009a8c8353a02c00b2e57d31aaa355dc59a65d91e32d3fd0438b313f2",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 336,
+          "anchor": "Item::coal = ( new CoalItem(7) )\t\t\t\t\t\t\t\t\t\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_treasure,\teMaterial_coal)->setIconName(L\"coal\")->setDescriptionId(IDS_ITEM_COAL)->setUseDescriptionId(IDS_DESC_COAL);"
+        },
+        {
+          "path": "Minecraft.World/CoalItem.cpp",
+          "sha256": "68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f",
+          "line": 25,
+          "anchor": "if (auxValue == CHAR_COAL)"
+        },
+        {
+          "path": "Minecraft.World/CoalItem.cpp",
+          "sha256": "68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f",
+          "line": 36,
+          "anchor": "charcoalIcon = iconRegister->registerIcon(L\"charcoal\");"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 514,
+          "anchor": "\t\tADD_ICON(10,\t8,\tL\"charcoal\")"
+        }
+      ]
+    },
+    {
+      "key": "item:351:2",
+      "itemId": 351,
+      "aux": 2,
+      "icon": "dyePowder_green",
+      "crop": [
+        224,
+        96,
+        16,
+        16
+      ],
+      "rgbaSha256": "e1fad5c87b1ebc4f930c6cd20c4d83be7c6058088a60c64eedac8ca2187c8617",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 385,
+          "anchor": "Item::dye_powder = ( new DyePowderItem(95) )\t\t\t->setBaseItemTypeAndMaterial(eBaseItemType_dyepowder,\teMaterial_dye)->setIconName(L\"dyePowder\")->setDescriptionId(IDS_ITEM_DYE_POWDER)->setUseDescriptionId(-1);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 90,
+          "anchor": "const int DyePowderItem::GREEN = 2;"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 65,
+          "anchor": "{ L\"black\", L\"red\", L\"green\", L\"brown\","
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 346,
+          "anchor": "icons[i] = iconRegister->registerIcon(getIconName() + L\"_\" + COLOR_TEXTURES[i]);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 107,
+          "anchor": "int colorValue = Mth::clamp(itemAuxValue, 0, 15);"
+        },
+        {
+          "path": "Minecraft.World/DyePowderItem.cpp",
+          "sha256": "ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3",
+          "line": 108,
+          "anchor": "return icons[colorValue];"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 451,
+          "anchor": "\t\tADD_ICON(6,\t\t14,\tL\"dyePowder_green\")"
+        }
+      ]
     }
   ],
   "limitations": [
-    "Only these 63 keys have sprites; other canonical items retain representative mesh thumbnails.",
+    "Only these 82 keys have sprites; other canonical items retain representative mesh thumbnails.",
     "Inventory/hotbar sprites only; first-person held items are not rendered.",
     "Not a full upstream ItemRenderer, item/tool engine or world renderer.",
     "Pinned local C++ sources are required for offline anchor verification."

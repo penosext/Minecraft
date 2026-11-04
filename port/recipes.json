@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "source-pinned-shaped-recipe-subset",
   "sourceCommit": "09df8928eeb15328bca499d225e48ea95af6d119",
-  "itemCatalogSha256": "179af06030844929f0f885d255473b663f19eee48ffaca633635ba36bfe5b7f6",
+  "itemCatalogSha256": "03979af52af038871909e4f7265507f65295a4d8386095379f7ce1878f8a0b48",
   "scope": "Shaped crafting recipes whose product and ingredients all exist in port/item-catalog.json. Not an item engine and not a crafting UI.",
   "contract": {
     "productKey": "item:<itemId>:<aux>, identical to port/item-catalog.json keys",
@@ -50,7 +50,7 @@
       "anchor": "pItemInstance= new ItemInstance(pTile,1,ANY_AUX_VALUE);"
     }
   },
-  "recipeCount": 80,
+  "recipeCount": 83,
   "recipes": [
     {
       "product": {
@@ -544,6 +544,76 @@
     },
     {
       "product": {
+        "itemId": 50,
+        "aux": 0,
+        "count": 4
+      },
+      "width": 1,
+      "height": 2,
+      "cells": [
+        {
+          "itemId": 263,
+          "aux": 1
+        },
+        {
+          "itemId": 280,
+          "aux": -1
+        }
+      ],
+      "group": "tool",
+      "origin": "Recipes.cpp:634",
+      "line": 634,
+      "source": {
+        "path": "port/upstream/Minecraft.World/Recipes.cpp",
+        "line": 634,
+        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
+        "anchor": "addShapedRecipy(new ItemInstance(Tile::torch, 4), //"
+      },
+      "productKey": "item:50:0",
+      "productName": "火把",
+      "cellKeys": [
+        "item:263:1",
+        "item:280:*"
+      ],
+      "index": 13
+    },
+    {
+      "product": {
+        "itemId": 50,
+        "aux": 0,
+        "count": 4
+      },
+      "width": 1,
+      "height": 2,
+      "cells": [
+        {
+          "itemId": 263,
+          "aux": 0
+        },
+        {
+          "itemId": 280,
+          "aux": -1
+        }
+      ],
+      "group": "tool",
+      "origin": "Recipes.cpp:643",
+      "line": 643,
+      "source": {
+        "path": "port/upstream/Minecraft.World/Recipes.cpp",
+        "line": 643,
+        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
+        "anchor": "addShapedRecipy(new ItemInstance(Tile::torch, 4), //"
+      },
+      "productKey": "item:50:0",
+      "productName": "火把",
+      "cellKeys": [
+        "item:263:0",
+        "item:280:*"
+      ],
+      "index": 14
+    },
+    {
+      "product": {
         "itemId": 53,
         "aux": 0,
         "count": 4
@@ -601,7 +671,7 @@
         "item:5:0",
         "item:5:0"
       ],
-      "index": 13
+      "index": 15
     },
     {
       "product": {
@@ -668,7 +738,7 @@
         "item:5:*",
         "item:5:*"
       ],
-      "index": 14
+      "index": 16
     },
     {
       "product": {
@@ -713,7 +783,7 @@
         "item:5:*",
         "item:5:*"
       ],
-      "index": 15
+      "index": 17
     },
     {
       "product": {
@@ -780,7 +850,7 @@
         "item:4:*",
         "item:4:*"
       ],
-      "index": 16
+      "index": 18
     },
     {
       "product": {
@@ -844,7 +914,7 @@
         null,
         "item:280:*"
       ],
-      "index": 17
+      "index": 19
     },
     {
       "product": {
@@ -908,7 +978,7 @@
         null,
         "item:265:*"
       ],
-      "index": 18
+      "index": 20
     },
     {
       "product": {
@@ -969,7 +1039,7 @@
         "item:4:*",
         "item:4:*"
       ],
-      "index": 19
+      "index": 21
     },
     {
       "product": {
@@ -1004,7 +1074,7 @@
         "item:280:*",
         "item:4:*"
       ],
-      "index": 20
+      "index": 22
     },
     {
       "product": {
@@ -1039,7 +1109,7 @@
         "item:1:*",
         "item:1:*"
       ],
-      "index": 21
+      "index": 23
     },
     {
       "product": {
@@ -1074,7 +1144,7 @@
         "item:5:*",
         "item:5:*"
       ],
-      "index": 22
+      "index": 24
     },
     {
       "product": {
@@ -1104,7 +1174,7 @@
       "cellKeys": [
         "item:1:*"
       ],
-      "index": 23
+      "index": 25
     },
     {
       "product": {
@@ -1144,7 +1214,52 @@
         "item:80:*",
         "item:80:*"
       ],
-      "index": 24
+      "index": 26
+    },
+    {
+      "product": {
+        "itemId": 82,
+        "aux": 0,
+        "count": 1
+      },
+      "width": 2,
+      "height": 2,
+      "cells": [
+        {
+          "itemId": 337,
+          "aux": -1
+        },
+        {
+          "itemId": 337,
+          "aux": -1
+        },
+        {
+          "itemId": 337,
+          "aux": -1
+        },
+        {
+          "itemId": 337,
+          "aux": -1
+        }
+      ],
+      "group": "structure",
+      "origin": "Recipes.cpp:318",
+      "line": 318,
+      "source": {
+        "path": "port/upstream/Minecraft.World/Recipes.cpp",
+        "line": 318,
+        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
+        "anchor": "addShapedRecipy(new ItemInstance(Tile::clay, 1), //"
+      },
+      "productKey": "item:82:0",
+      "productName": "黏土块",
+      "cellKeys": [
+        "item:337:*",
+        "item:337:*",
+        "item:337:*",
+        "item:337:*"
+      ],
+      "index": 27
     },
     {
       "product": {
@@ -1199,7 +1314,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 25
+      "index": 28
     },
     {
       "product": {
@@ -1244,7 +1359,7 @@
         "item:1:*",
         "item:1:*"
       ],
-      "index": 26
+      "index": 29
     },
     {
       "product": {
@@ -1299,7 +1414,7 @@
         "item:265:*",
         "item:265:*"
       ],
-      "index": 27
+      "index": 30
     },
     {
       "product": {
@@ -1354,7 +1469,7 @@
         "item:20:*",
         "item:20:*"
       ],
-      "index": 28
+      "index": 31
     },
     {
       "product": {
@@ -1415,7 +1530,7 @@
         "item:98:*",
         "item:98:*"
       ],
-      "index": 29
+      "index": 32
     },
     {
       "product": {
@@ -1470,7 +1585,7 @@
         "item:112:*",
         "item:112:*"
       ],
-      "index": 30
+      "index": 33
     },
     {
       "product": {
@@ -1531,7 +1646,7 @@
         "item:112:*",
         "item:112:*"
       ],
-      "index": 31
+      "index": 34
     },
     {
       "product": {
@@ -1592,7 +1707,7 @@
         "item:24:*",
         "item:24:*"
       ],
-      "index": 32
+      "index": 35
     },
     {
       "product": {
@@ -1632,7 +1747,7 @@
         "item:280:*",
         "item:5:*"
       ],
-      "index": 33
+      "index": 36
     },
     {
       "product": {
@@ -1693,7 +1808,7 @@
         "item:5:1",
         "item:5:1"
       ],
-      "index": 34
+      "index": 37
     },
     {
       "product": {
@@ -1778,7 +1893,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 35
+      "index": 38
     },
     {
       "product": {
@@ -1881,7 +1996,7 @@
         "item:280:*",
         null
       ],
-      "index": 36
+      "index": 39
     },
     {
       "product": {
@@ -1978,7 +2093,7 @@
         null,
         "item:280:*"
       ],
-      "index": 37
+      "index": 40
     },
     {
       "product": {
@@ -2063,7 +2178,7 @@
         "item:265:*",
         "item:280:*"
       ],
-      "index": 38
+      "index": 41
     },
     {
       "product": {
@@ -2148,7 +2263,7 @@
         "item:5:*",
         "item:280:*"
       ],
-      "index": 39
+      "index": 42
     },
     {
       "product": {
@@ -2233,7 +2348,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 40
+      "index": 43
     },
     {
       "product": {
@@ -2336,7 +2451,7 @@
         "item:280:*",
         null
       ],
-      "index": 41
+      "index": 44
     },
     {
       "product": {
@@ -2433,7 +2548,7 @@
         null,
         "item:280:*"
       ],
-      "index": 42
+      "index": 45
     },
     {
       "product": {
@@ -2518,7 +2633,7 @@
         "item:4:*",
         "item:280:*"
       ],
-      "index": 43
+      "index": 46
     },
     {
       "product": {
@@ -2603,7 +2718,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 44
+      "index": 47
     },
     {
       "product": {
@@ -2706,7 +2821,7 @@
         "item:280:*",
         null
       ],
-      "index": 45
+      "index": 48
     },
     {
       "product": {
@@ -2803,7 +2918,7 @@
         null,
         "item:280:*"
       ],
-      "index": 46
+      "index": 49
     },
     {
       "product": {
@@ -2888,7 +3003,7 @@
         "item:264:*",
         "item:280:*"
       ],
-      "index": 47
+      "index": 50
     },
     {
       "product": {
@@ -2973,7 +3088,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 48
+      "index": 51
     },
     {
       "product": {
@@ -3076,7 +3191,7 @@
         "item:280:*",
         null
       ],
-      "index": 49
+      "index": 52
     },
     {
       "product": {
@@ -3173,7 +3288,7 @@
         null,
         "item:280:*"
       ],
-      "index": 50
+      "index": 53
     },
     {
       "product": {
@@ -3208,7 +3323,7 @@
         "item:5:*",
         "item:5:*"
       ],
-      "index": 51
+      "index": 54
     },
     {
       "product": {
@@ -3293,7 +3408,7 @@
         "item:266:*",
         "item:280:*"
       ],
-      "index": 52
+      "index": 55
     },
     {
       "product": {
@@ -3378,7 +3493,7 @@
         "item:280:*",
         "item:280:*"
       ],
-      "index": 53
+      "index": 56
     },
     {
       "product": {
@@ -3481,7 +3596,7 @@
         "item:280:*",
         null
       ],
-      "index": 54
+      "index": 57
     },
     {
       "product": {
@@ -3578,7 +3693,7 @@
         null,
         "item:280:*"
       ],
-      "index": 55
+      "index": 58
     },
     {
       "product": {
@@ -3672,7 +3787,7 @@
         null,
         "item:280:*"
       ],
-      "index": 56
+      "index": 59
     },
     {
       "product": {
@@ -3766,7 +3881,7 @@
         null,
         "item:280:*"
       ],
-      "index": 57
+      "index": 60
     },
     {
       "product": {
@@ -3860,7 +3975,7 @@
         null,
         "item:280:*"
       ],
-      "index": 58
+      "index": 61
     },
     {
       "product": {
@@ -3954,7 +4069,7 @@
         null,
         "item:280:*"
       ],
-      "index": 59
+      "index": 62
     },
     {
       "product": {
@@ -4048,7 +4163,7 @@
         null,
         "item:280:*"
       ],
-      "index": 60
+      "index": 63
     },
     {
       "product": {
@@ -4139,7 +4254,7 @@
         null,
         "item:334:*"
       ],
-      "index": 61
+      "index": 64
     },
     {
       "product": {
@@ -4245,7 +4360,7 @@
         "item:334:*",
         "item:334:*"
       ],
-      "index": 62
+      "index": 65
     },
     {
       "product": {
@@ -4348,7 +4463,7 @@
         null,
         "item:334:*"
       ],
-      "index": 63
+      "index": 66
     },
     {
       "product": {
@@ -4436,7 +4551,7 @@
         null,
         "item:334:*"
       ],
-      "index": 64
+      "index": 67
     },
     {
       "product": {
@@ -4527,7 +4642,7 @@
         null,
         "item:265:*"
       ],
-      "index": 65
+      "index": 68
     },
     {
       "product": {
@@ -4633,7 +4748,7 @@
         "item:265:*",
         "item:265:*"
       ],
-      "index": 66
+      "index": 69
     },
     {
       "product": {
@@ -4736,7 +4851,7 @@
         null,
         "item:265:*"
       ],
-      "index": 67
+      "index": 70
     },
     {
       "product": {
@@ -4824,7 +4939,7 @@
         null,
         "item:265:*"
       ],
-      "index": 68
+      "index": 71
     },
     {
       "product": {
@@ -4915,7 +5030,7 @@
         null,
         "item:264:*"
       ],
-      "index": 69
+      "index": 72
     },
     {
       "product": {
@@ -5021,7 +5136,7 @@
         "item:264:*",
         "item:264:*"
       ],
-      "index": 70
+      "index": 73
     },
     {
       "product": {
@@ -5124,7 +5239,7 @@
         null,
         "item:264:*"
       ],
-      "index": 71
+      "index": 74
     },
     {
       "product": {
@@ -5212,7 +5327,7 @@
         null,
         "item:264:*"
       ],
-      "index": 72
+      "index": 75
     },
     {
       "product": {
@@ -5303,7 +5418,7 @@
         null,
         "item:266:*"
       ],
-      "index": 73
+      "index": 76
     },
     {
       "product": {
@@ -5409,7 +5524,7 @@
         "item:266:*",
         "item:266:*"
       ],
-      "index": 74
+      "index": 77
     },
     {
       "product": {
@@ -5512,7 +5627,7 @@
         null,
         "item:266:*"
       ],
-      "index": 75
+      "index": 78
     },
     {
       "product": {
@@ -5600,7 +5715,7 @@
         null,
         "item:266:*"
       ],
-      "index": 76
+      "index": 79
     },
     {
       "product": {
@@ -5655,7 +5770,7 @@
         "item:5:*",
         "item:5:*"
       ],
-      "index": 77
+      "index": 80
     },
     {
       "product": {
@@ -5710,7 +5825,7 @@
         "item:265:*",
         "item:265:*"
       ],
-      "index": 78
+      "index": 81
     },
     {
       "product": {
@@ -5774,7 +5889,7 @@
         "item:265:*",
         "item:265:*"
       ],
-      "index": 79
+      "index": 82
     }
   ],
   "tables": {
@@ -6144,7 +6259,7 @@
     {
       "origin": "OreRecipies.cpp:29",
       "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:263:0, product item:173:0",
+      "reason": "Not in port/item-catalog.json: product item:173:0",
       "source": {
         "path": "port/upstream/Minecraft.World/OreRecipies.cpp",
         "line": 29,
@@ -6155,7 +6270,7 @@
     {
       "origin": "OreRecipies.cpp:29",
       "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:173:*, product item:263:0",
+      "reason": "Not in port/item-catalog.json: ingredient item:173:*",
       "source": {
         "path": "port/upstream/Minecraft.World/OreRecipies.cpp",
         "line": 29,
@@ -6315,17 +6430,6 @@
         "line": 303,
         "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
         "anchor": "addShapedRecipy(new ItemInstance(Tile::snow, 1), //"
-      }
-    },
-    {
-      "origin": "Recipes.cpp:318",
-      "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:337:*",
-      "source": {
-        "path": "port/upstream/Minecraft.World/Recipes.cpp",
-        "line": 318,
-        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
-        "anchor": "addShapedRecipy(new ItemInstance(Tile::clay, 1), //"
       }
     },
     {
@@ -6573,7 +6677,7 @@
     {
       "origin": "Recipes.cpp:570",
       "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:296:*, product item:297:0",
+      "reason": "Not in port/item-catalog.json: ingredient item:296:*",
       "source": {
         "path": "port/upstream/Minecraft.World/Recipes.cpp",
         "line": 570,
@@ -6645,28 +6749,6 @@
         "line": 625,
         "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
         "anchor": "addShapedRecipy(new ItemInstance(Item::flowerPot, 1), //"
-      }
-    },
-    {
-      "origin": "Recipes.cpp:634",
-      "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:263:1",
-      "source": {
-        "path": "port/upstream/Minecraft.World/Recipes.cpp",
-        "line": 634,
-        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
-        "anchor": "addShapedRecipy(new ItemInstance(Tile::torch, 4), //"
-      }
-    },
-    {
-      "origin": "Recipes.cpp:643",
-      "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: ingredient item:263:0",
-      "source": {
-        "path": "port/upstream/Minecraft.World/Recipes.cpp",
-        "line": 643,
-        "sha256": "e7382deaea5ea58c1e25db2f78d8fb0f7cd5fe56f40255844d2ef54cd44109f5",
-        "anchor": "addShapedRecipy(new ItemInstance(Tile::torch, 4), //"
       }
     },
     {

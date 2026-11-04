@@ -23,8 +23,10 @@ namespace mcplayer {
 namespace {
 using Bytes = std::vector<unsigned char>;
 constexpr unsigned char Magic[8] = {'M','C','S','U','R','V','L',0};
-constexpr uint32_t Version = 1;
-constexpr size_t MaxFile = 112, MaxMetadata = 1024 * 1024;
+// v1: 112 bytes. v2 (current) appends u32 flags before the checksum: 116 bytes.
+// Like Inventory, an old file is read as-is and upgraded only by save().
+constexpr uint32_t Version = 2, LegacyVersion = 1;
+constexpr size_t V1File = 112, MaxFile = 116, MaxMetadata = 1024 * 1024;
 std::atomic<uint64_t> counter {0};
 [[noreturn]] void fail(const std::string& text) { throw std::runtime_error("Survival: " + text); }
 [[noreturn]] void systemFail(const std::string& text) { fail(text + ": " + std::strerror(errno)); }
@@ -337,9 +339,14 @@ void Survival::open(const mcworld::World& world) {
     if (!bytes.empty()) {
         // LE magic[8], version/seed/width/height/depth/levelHash, statistic
         // fields, IEEE double tick fraction, spawn xyz, and trailing FNV32.
-        if (bytes.size() != MaxFile || std::memcmp(bytes.data(), Magic, 8)) fail("bad survival magic/size");
+        if ((bytes.size() != V1File && bytes.size() != MaxFile) || std::memcmp(bytes.data(), Magic, 8))
+            fail("bad survival magic/size");
         Reader r {bytes, 8};
-        if (r.u32() != Version || r.u32() != candidate.seed_ || r.u32() != uint32_t(candidate.width_) ||
+        const uint32_t version = r.u32();
+        if ((version == LegacyVersion) != (bytes.size() == V1File) || (version != LegacyVersion && version != Version))
+            fail("survival version/size mismatch");
+        candidate.persistedVersion_ = version;
+        if (r.u32() != candidate.seed_ || r.u32() != uint32_t(candidate.width_) ||
             r.u32() != uint32_t(candidate.height_) || r.u32() != uint32_t(candidate.depth_) ||
             r.u32() != candidate.sourceHash_) fail("survival version/world identity mismatch");
         candidate.difficulty_ = readInt(r, 3);
@@ -365,6 +372,11 @@ void Survival::open(const mcworld::World& world) {
         candidate.spawnX_ = readFloat(r, 0, float(candidate.width_));
         candidate.spawnY_ = readFloat(r, 0, float(candidate.height_));
         candidate.spawnZ_ = readFloat(r, 0, float(candidate.depth_));
+        if (version == Version) {
+            candidate.flags_ = r.u32();
+            if (candidate.flags_ & ~DeathDropsPending) fail("unknown survival flags");
+        }
+        candidate.lastHealth_ = candidate.health_;
         if (r.at + 4 != bytes.size() || r.u32() != hash(bytes.data(), bytes.size() - 4)) fail("survival checksum mismatch");
     } else {
         candidate.spawnX_ = world.playerX();
@@ -400,27 +412,88 @@ void Survival::save(const mcworld::World& world) {
     uint64_t remainder; std::memcpy(&remainder, &tickRemainder_, 8);
     put32(bytes, uint32_t(remainder)); put32(bytes, uint32_t(remainder >> 32));
     put32(bytes, floatBits(spawnX_)); put32(bytes, floatBits(spawnY_)); put32(bytes, floatBits(spawnZ_));
+    put32(bytes, flags_);
     put32(bytes, hash(bytes));
     if (bytes.size() != MaxFile) fail("internal survival layout mismatch");
     atomicWrite(dir.fd.value, bytes, persisted_, revalidate);
+    persistedVersion_ = Version;
 }
 bool Survival::setDifficulty(int difficulty) {
     if (difficulty < 0 || difficulty > 3) return false;
     difficulty_ = difficulty;
     return true;
 }
+namespace {
+// DamageSource.cpp:10-22 bypassArmor() set; Fire/lava contact (inFire, lava)
+// and mob attacks are armor-reduced.
+bool bypassesArmor(DamageSource source) {
+    return source != DamageSource::InFire && source != DamageSource::Lava && source != DamageSource::MobAttack;
+}
+} // namespace
+void Survival::setArmorValue(int value) {
+    if (value < 0 || value > 25) fail("invalid armor value");
+    armor_ = value;
+}
 bool Survival::hurt(float damage, bool creative) {
+    if (creative) return false;
+    return hurt(DamageSource::Generic, damage);
+}
+bool Survival::hurt(DamageSource source, float damage) {
     if (!std::isfinite(damage) || damage < 0) fail("invalid damage");
-    if (dead() || creative || creative_ || damage == 0) return false;
-    // port/upstream/Minecraft.World/LivingEntity.cpp: invulnerableDuration=20.
-    float applied = damage;
+    // Player.cpp:1384-1407: abilities.invulnerable (creative) refuses all
+    // non-outOfWorld damage; dead players are not hurt again.
+    if (dead() || creative_) return false;
+    // EntityDamageSource::scalesWithDifficulty (non-player living attacker).
+    if (source == DamageSource::MobAttack) {
+        if (difficulty_ == 0) damage = 0;
+        else if (difficulty_ == 1) damage = damage / 2 + 1;
+        else if (difficulty_ == 3) damage = damage * 3 / 2;
+    }
+    if (damage == 0) return false;
+    // LivingEntity.cpp:785-798: invulnerableDuration 20; within the second half
+    // only the excess over lastHurt applies and the timers are not reset.
     if (hurtTicks_ > 10) {
         if (damage <= lastDamage_) return false;
-        applied -= lastDamage_;
-    } else hurtTicks_ = 20;
-    lastDamage_ = damage;
-    health_ = std::max(0.0f, health_ - applied);
+        actuallyHurt(source, damage - lastDamage_);
+        lastDamage_ = damage;
+    } else {
+        lastDamage_ = damage;
+        lastHealth_ = health_;
+        hurtTicks_ = 20;
+        actuallyHurt(source, damage);
+    }
     return true;
+}
+void Survival::actuallyHurt(DamageSource source, float damage) {
+    // Player.cpp:1465-1483 (no blocking/absorption/magic effects in this port).
+    if (!bypassesArmor(source)) {
+        // LivingEntity.cpp:1085-1094 getDamageAfterArmorAbsorb: hurtArmor gets
+        // the pre-reduction damage; then damage * (25 - armor) / 25.
+        armorWear_.push_back(damage);
+        damage = damage * float(25 - armor_) / 25;
+    }
+    if (damage <= 0) return;
+    // DamageSource ctor exhaustion EXHAUSTION_ATTACK (.3); bypassArmor() sets 0.
+    if (!bypassesArmor(source)) exhaust(.3f);
+    const bool wasAlive = !dead();
+    health_ = std::max(0.0f, health_ - damage);
+    if (wasAlive && dead()) { died_ = true; stopEating(); }
+}
+bool Survival::startEating(int itemId, int slot, int nutrition, float saturationModifier, int ticks) {
+    if (nutrition < 0 || !std::isfinite(saturationModifier) || saturationModifier < 0 || ticks <= 0 || ticks > 1000)
+        fail("invalid food");
+    // FoodItem::use -> Player::canEat: needsFood (food < 20), not invulnerable.
+    if (dead() || creative_ || food_ >= 20) return false;
+    if (eatTicks_ > 0 && eatItem_ == itemId && eatSlot_ == slot) return true;
+    eatItem_ = itemId; eatSlot_ = slot; eatNutrition_ = nutrition; eatSaturation_ = saturationModifier;
+    eatTicks_ = ticks; eatCompleted_ = false;
+    return true;
+}
+bool Survival::finishEating() {
+    // FoodItem::useTimeDepleted: count-- then FoodData::eat(nutrition, modifier).
+    const bool fed = eat(eatNutrition_, eatSaturation_);
+    eatItem_ = eatSlot_ = -1; eatTicks_ = 0; eatCompleted_ = false;
+    return fed;
 }
 bool Survival::eat(int nutrition, float saturationModifier, bool creative) {
     if (nutrition < 0 || !std::isfinite(saturationModifier) || saturationModifier < 0) fail("invalid food");
@@ -439,13 +512,19 @@ void Survival::respawn() {
     foodTicks_ = hurtTicks_ = fireTicks_ = peacefulTicks_ = 0;
     lastDamage_ = fallDistance_ = lastY_ = 0;
     tickRemainder_ = 0; positionKnown_ = false;
+    lastHealth_ = 20; armorWear_.clear(); stopEating(); eatItem_ = eatSlot_ = -1;
+    died_ = false; tickPositionKnown_ = false; wasGrounded_ = false;
 }
 void Survival::update(mcworld::World& world, float dt, bool creative, bool naturalRegeneration) {
     requireWorld(world);
     if (!std::isfinite(dt) || dt < 0) fail("invalid dt");
     creative_ = creative;
     if (dead()) return;
-    if (creative) { fallDistance_ = 0; fireTicks_ = 0; air_ = 300; }
+    if (creative) { fallDistance_ = 0; fireTicks_ = 0; air_ = 300; stopEating(); }
+    // Player::jumpFromGround: EXHAUSTION_JUMP .2 (no sprinting in this port).
+    // A jump is the grounded -> airborne edge while rising.
+    if (!creative && wasGrounded_ && !world.grounded() && positionKnown_ && world.playerY() > lastY_) exhaust(.2f);
+    wasGrounded_ = world.grounded();
     // Sample movement every frame, not once per tick: multiple physics frames
     // can occur before a tick, and a .1s update must not count a drop twice.
     const Environment env = environment(world);
@@ -455,7 +534,8 @@ void Survival::update(mcworld::World& world, float dt, bool creative, bool natur
     lastY_ = world.playerY(); positionKnown_ = true;
     if (env.water || env.ladder || creative) fallDistance_ = 0;
     if (world.grounded()) {
-        if (fallDistance_ > 3) hurt(std::ceil(fallDistance_ - 3), creative);
+        // LivingEntity::causeFallDamage: (int) ceil(distance - 3), DamageSource::fall.
+        if (fallDistance_ > 3 && !creative) hurt(DamageSource::Fall, std::ceil(fallDistance_ - 3));
         fallDistance_ = 0;
     }
     tickRemainder_ += std::min(double(dt), .1);
@@ -466,9 +546,31 @@ void Survival::update(mcworld::World& world, float dt, bool creative, bool natur
     }
 }
 void Survival::tick(mcworld::World& world, bool creative, bool naturalRegeneration) {
+    ++tickCount_;
     if (hurtTicks_ > 0) --hurtTicks_;
-    if (creative) return;
+    if (hurtTicks_ == 0) lastHealth_ = health_;
+    if (creative) { tickPositionKnown_ = false; return; }
     const Environment env = environment(world);
+    // Player::updateFrameTick (Player.cpp:238-262): --useItemDuration == 0
+    // completes the item; the caller consumes and then calls finishEating().
+    if (eatTicks_ > 0 && --eatTicks_ == 0) eatCompleted_ = true;
+    // Player::checkMovementStatistiscs (Player.cpp:2130-2196), per tick delta in
+    // whole centimetres: under water 3D swim, in water horizontal swim, ladder
+    // none, on ground walk. No sprinting or riding here.
+    if (tickPositionKnown_) {
+        const double dx = world.playerX() - tickX_, dy = world.playerY() - tickY_, dz = world.playerZ() - tickZ_;
+        if (world.underWater()) {
+            const int cm = int(std::lround(std::sqrt(dx * dx + dy * dy + dz * dz) * 100));
+            if (cm > 0) exhaust(.015f * cm * .01f);
+        } else if (env.water) {
+            const int cm = int(std::lround(std::sqrt(dx * dx + dz * dz) * 100));
+            if (cm > 0) exhaust(.015f * cm * .01f);
+        } else if (!env.ladder && world.grounded()) {
+            const int cm = int(std::lround(std::sqrt(dx * dx + dz * dz) * 100));
+            if (cm > 0) exhaust(.010f * cm * .01f);
+        }
+    }
+    tickX_ = world.playerX(); tickY_ = world.playerY(); tickZ_ = world.playerZ(); tickPositionKnown_ = true;
     // Entity::baseTick / Entity::move: water extinguishes, burning hits every
     // 20 ticks; lava hits for 4 and refreshes 15 seconds. Player flameTime=20.
     if (env.water) fireTicks_ = 0;
@@ -485,7 +587,7 @@ void Survival::tick(mcworld::World& world, bool creative, bool naturalRegenerati
     if (dead()) return;
     // LivingEntity::baseTick: head, not feet, controls oxygen.
     if (world.underWater()) {
-        if (--air_ == -20) { air_ = 0; hurt(2); }
+        if (--air_ == -20) { air_ = 0; hurt(DamageSource::Drown, 2); }
     } else air_ = 300;
     if (dead()) return;
     // Player::aiStep's source expression is literally tickCount % 20 * 12,
@@ -513,7 +615,9 @@ std::string Survival::infoJson() const {
     out << "{\"health\":" << health_ << ",\"maxHealth\":20,\"food\":" << food_ << ",\"saturation\":" << saturation_
         << ",\"air\":" << air_ << ",\"maxAir\":300,\"exhaustion\":" << exhaustion_
         << ",\"dead\":" << (dead() ? "true" : "false")
-        << ",\"difficulty\":" << difficulty_ << ",\"hurtTicks\":" << hurtTicks_ << ",\"fireTicks\":" << fireTicks_ << '}';
+        << ",\"difficulty\":" << difficulty_ << ",\"hurtTicks\":" << hurtTicks_ << ",\"fireTicks\":" << fireTicks_
+        << ",\"armor\":" << armor_ << ",\"eating\":" << (eating() ? "true" : "false")
+        << ",\"eatTicksLeft\":" << eatTicks_ << '}';
     return out.str();
 }
 } // namespace mcplayer

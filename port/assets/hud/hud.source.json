@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "generator": "tools/generate-hud.py",
+  "atlas": {
+    "source": "Minecraft.Client/Common/res/1_2_2/gui/icons.png",
+    "local_file": "port/assets/hud/icons.png",
+    "sha256": "e0e7fe67507435af02b931d26aaaff293a4971484e54d4eafa95a19365395d90",
+    "git_blob_sha1": "e5d56d73aaf91a851c41eac83a43e2fc8416a986",
+    "size": [
+      256,
+      256
+    ],
+    "crop": [
+      16,
+      0,
+      88,
+      36
+    ]
+  },
+  "cells": [
+    {
+      "name": "HeartContainer",
+      "u": 16,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "HeartContainerBlink",
+      "u": 25,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "HeartFull",
+      "u": 52,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "HeartHalf",
+      "u": 61,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "HeartBlinkFull",
+      "u": 70,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "HeartBlinkHalf",
+      "u": 79,
+      "v": 0,
+      "size": 9
+    },
+    {
+      "name": "ArmorEmpty",
+      "u": 16,
+      "v": 9,
+      "size": 9
+    },
+    {
+      "name": "ArmorHalf",
+      "u": 25,
+      "v": 9,
+      "size": 9
+    },
+    {
+      "name": "ArmorFull",
+      "u": 34,
+      "v": 9,
+      "size": 9
+    },
+    {
+      "name": "Bubble",
+      "u": 16,
+      "v": 18,
+      "size": 9
+    },
+    {
+      "name": "BubblePop",
+      "u": 25,
+      "v": 18,
+      "size": 9
+    },
+    {
+      "name": "FoodContainer",
+      "u": 16,
+      "v": 27,
+      "size": 9
+    },
+    {
+      "name": "FoodFull",
+      "u": 52,
+      "v": 27,
+      "size": 9
+    },
+    {
+      "name": "FoodHalf",
+      "u": 61,
+      "v": 27,
+      "size": 9
+    }
+  ],
+  "generated_header": "HudIcons.hpp",
+  "generated_sha256": "d35dc4d850c085231e817262a0c8ba44ed23364eccb366ede79cfe92df49f489",
+  "sources": [
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 35,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "#define RENDER_HUD 0"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 439,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "yLine1 = screenHeight - 18 - iSafezoneYHalf - iTooltipsYOffset;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 434,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "yLine2 = yLine1 - 10;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 466,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 < armor) blit(xo, yLine2, 16 + 2 * 9, 9, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 467,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 == armor) blit(xo, yLine2, 16 + 1 * 9, 9, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 468,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 > armor) blit(xo, yLine2, 16 + 0 * 9, 9, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 508,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "blit(xo, yo, 16 + bg * 9, 9 * y0, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 511,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 < oldHealth) blit(xo, yo, healthTexBaseX + 6 * 9, 9 * y0, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 512,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 == oldHealth) blit(xo, yo, healthTexBaseX + 7 * 9, 9 * y0, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 529,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 < currentHealth) blit(xo, yo, healthTexBaseX + 4 * 9, 9 * y0, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 530,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 == currentHealth) blit(xo, yo, healthTexBaseX + 5 * 9, 9 * y0, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 561,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "int xo = xRight - i * 8 - 9;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 562,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "blit(xo, yo, 16 + bg * 9, 9 * 3, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 568,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 < food) blit(xo, yo, texBaseX + 4 * 9, 9 * 3, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 569,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i * 2 + 1 == food) blit(xo, yo, texBaseX + 5 * 9, 9 * 3, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 619,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (i < count) blit(xRight - i * 8 - 9, yLine2, 16, 9 * 2, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 620,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "else blit(xRight - i * 8 - 9, yLine2, 16 + 9, 9 * 2, 9, 9);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 373,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "random->setSeed(tickCount * 312871);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 490,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if (currentHealth <= 4)"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 492,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "yo += random.nextInt(2);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 554,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "if ((tickCount % (food * 3 + 1)) == 0)"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Gui.cpp",
+      "line": 556,
+      "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664",
+      "anchor": "yo += random->nextInt(3) - 1;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_HUD.cpp",
+      "line": 196,
+      "sha256": "c52f9de3a1081de79a6d30222e3b25801688629d6c9fc6f6a764d881abc3499f",
+      "anchor": "bool blink = pMinecraft->localplayers[iPad]->invulnerableTime / 3 % 2 == 1;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_HUD.cpp",
+      "line": 197,
+      "sha256": "c52f9de3a1081de79a6d30222e3b25801688629d6c9fc6f6a764d881abc3499f",
+      "anchor": "if (pMinecraft->localplayers[iPad]->invulnerableTime < 10) blink = false;"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_HUD.cpp",
+      "line": 198,
+      "sha256": "c52f9de3a1081de79a6d30222e3b25801688629d6c9fc6f6a764d881abc3499f",
+      "anchor": "int currentHealth = static_cast<int>(ceil(pMinecraft->localplayers[iPad]->getHealth()));"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_HUD.cpp",
+      "line": 247,
+      "sha256": "c52f9de3a1081de79a6d30222e3b25801688629d6c9fc6f6a764d881abc3499f",
+      "anchor": "int count = static_cast<int>(ceil((pMinecraft->localplayers[iPad]->getAirSupply() - 2) * 10.0f / Player::TOTAL_AIR_SUPPLY));"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/Textures.cpp",
+      "line": 1434,
+      "sha256": "6b9ae22d75e6366bf675ff6c747cc3dfb9a37c235b11fc2d6025982592a32c11",
+      "anchor": "img = skins->getDefault()->getImageResource(L\"1_2_2/\" + name, false, isTu, drive);"
+    },
+    {
+      "path": "port/upstream/Minecraft.Client/DeathScreen.cpp",
+      "line": 45,
+      "sha256": "cd5729fce01394ce6074b4c9e0d372cb05f41b189a2bea0129829765fe0179dc",
+      "anchor": "fillGradient(0, 0, width, height, 0x60500000, 0xa0803030);"
+    }
+  ],
+  "boundaries": [
+    "Legacy Gui.cpp HUD is compiled out (RENDER_HUD 0); console uses an Iggy/Flash HUD. Layout and UVs are the legacy blits, values (ceil health, blink, air count) match IUIScene_HUD.cpp.",
+    "Runtime atlas is the 1_2_2 icons.png per Textures.cpp; the older gui/icons.png lacks the hunger row.",
+    "No poison/wither/hunger-effect, absorption, hardcore, regeneration bob or mount-health variants: this port has no mob effects or riding."
+  ]
+}

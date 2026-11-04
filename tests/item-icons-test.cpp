@@ -50,7 +50,7 @@ constexpr Expected expected[] = {
     {390,0,208,176,"flowerPot"}, {391,0,128,112,"carrots"},
     {392,0,112,112,"potato"},
 };
-// The original 13 expectations above stay unchanged; these 50 come from
+// The original 13 expectations above stay unchanged; these 69 come from
 // Item.cpp setIconName plus the ITEM branch of ADD_ICON(row, column, name).
 constexpr Expected added[] = {
     {268,0,0,64,"swordWood"}, {272,0,16,64,"swordStone"},
@@ -83,10 +83,20 @@ constexpr Expected added[] = {
     {280,0,80,48,"stick"}, {265,0,112,16,"ingotIron"},
     {266,0,112,32,"ingotGold"}, {264,0,112,48,"diamond"},
     {334,0,112,96,"leather"},
+    // Plain foods (generate-items.py FOODS): ADD_ICON(row, column) * 16.
+    {260,0,160,0,"apple"}, {297,0,144,32,"bread"},
+    {319,0,112,80,"porkchopRaw"}, {320,0,128,80,"porkchopCooked"},
+    {349,0,144,80,"fishRaw"}, {350,0,160,80,"fishCooked"},
+    {357,0,192,80,"cookie"}, {360,0,208,96,"melon"},
+    {363,0,144,96,"beefRaw"}, {364,0,160,96,"beefCooked"},
+    {366,0,160,112,"chickenCooked"}, {393,0,96,112,"potatoBaked"},
+    {396,0,96,144,"carrotGolden"}, {400,0,128,144,"pumpkinPie"},
+    {337,0,144,48,"clay"}, {365,0,144,112,"chickenRaw"},
+    {263,0,112,0,"coal"}, {263,1,128,160,"charcoal"}, {351,2,224,96,"dyePowder_green"},
 };
-static_assert(std::size(expected) == 13 && std::size(added) == 50);
+static_assert(std::size(expected) == 13 && std::size(added) == 69);
 constexpr auto allExpected = [] {
-    std::array<Expected, 63> result {};
+    std::array<Expected, 82> result {};
     for (size_t i = 0; i < std::size(expected); ++i) result[i] = expected[i];
     for (size_t i = 0; i < std::size(added); ++i) result[i + 13] = added[i];
     return result;
@@ -162,11 +172,11 @@ void addExpectedSprite(Image& image, int w, int h, mcinventory::Rect r,
         }
 }
 void checkPixels(Fixture& f, const std::vector<unsigned char>& png) {
-    check(itemicons::kIconCount == 63 && std::size(itemicons::kIcons) == 63 && itemicons::kIconSize == 16,
-          "Exact 63-item sprite scope");
+    check(itemicons::kIconCount == 82 && std::size(itemicons::kIcons) == 82 && itemicons::kIconSize == 16,
+          "Exact 82-item sprite scope");
     check(!itemicons::findIcon(nullptr) && !itemicons::findIcon("") && !itemicons::findIcon("item:351:0") &&
           !itemicons::findIcon("item:324:1") && !itemicons::findIcon("item:276:1") &&
-          !itemicons::findIcon("item:263:0") && !itemicons::findIcon("item:388:0") &&
+          !itemicons::findIcon("item:388:0") &&
           !itemicons::findIcon("item:1:0"), "No invented aux/non-catalog/block sprites");
     for (size_t n = 0; n < allExpected.size(); ++n) {
         const auto& e = allExpected[n];
@@ -184,7 +194,7 @@ void checkPixels(Fixture& f, const std::vector<unsigned char>& png) {
         check(visible && transparent, "Sprite silhouette/alpha: " + canonical);
         const int item = sourceitems::itemIndexForIdAux(e.id, e.aux);
         check(item >= 0 && sourceitems::items()[item].creative, "Original creative item: " + canonical);
-        if (std::any_of(std::begin(added), std::end(added), [&](const Expected& a) { return a.id == e.id; }))
+        if (std::any_of(std::begin(added), std::end(added), [&](const Expected& a) { return a.id == e.id && a.aux == e.aux; }))
             check(sourceitems::items()[item].renderIndex == -1 && !sourceitems::items()[item].placeable,
                   "New independent item must not become a block: " + canonical);
         for (const auto& dims : {std::pair<int,int>{320,240}, {100,80}, {1,1}}) {
@@ -253,7 +263,7 @@ int main(int argc, char** argv) {
         const fs::path png = argc > 1 ? fs::path(argv[1]) : fs::path(__FILE__).parent_path().parent_path() / "port/assets/items/items.png";
         const auto decoded = decodePng(png);
         Fixture f; checkPixels(f,decoded); checkCanonicalStates(f);
-        std::cout << "PASS 63 item sprites (13 original + 45 tools/armor + 5 materials): pinned actual PNG/blob, exact RGBA/alpha, creative Inventory, hotbar/panel/scaling/guards, counts and original canonical state invariance\n";
+        std::cout << "PASS 82 item sprites (13 original + 45 tools/armor + 5 materials + 14 foods + 5 smelting materials): pinned actual PNG/blob, exact RGBA/alpha, creative Inventory, hotbar/panel/scaling/guards, counts and original canonical state invariance\n";
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "FAIL item icons: " << error.what() << '\n'; return 1;

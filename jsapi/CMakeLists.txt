@@ -78,6 +78,13 @@ execute_process(
 if(NOT SCENE_RESULT EQUAL 0)
     message(FATAL_ERROR "Original day-night extraction failed")
 endif()
+execute_process(
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/../tools/generate-hud.py"
+    RESULT_VARIABLE HUD_RESULT
+)
+if(NOT HUD_RESULT EQUAL 0)
+    message(FATAL_ERROR "Survival HUD sprite generation failed")
+endif()
 foreach(EXTRACTOR IN ITEMS extract-firstperson.py extract-lighting.py extract-inventory.py extract-containers.py)
     execute_process(
         COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/../tools/${EXTRACTOR}"

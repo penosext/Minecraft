@@ -554,6 +554,23 @@ bool Scene::applyRulesJson(const std::string& text) {
 }
 std::string Scene::rulesJson() const { return rules_.toJson(); }
 
+// Mob eye (y + .85 * height, Mob::getHeadHeight default) to player eye (+1.62).
+// Same occlusion rule as rayTarget: any non-air, non-liquid cell blocks sight.
+static bool lineOfSight(const World& world, const Mob& mob) {
+    const double ox = mob.x, oy = mob.y + body(mob.kind).height * .85, oz = mob.z;
+    const double tx = world.playerX(), ty = world.playerY() + 1.62, tz = world.playerZ();
+    const double length = std::sqrt((tx - ox) * (tx - ox) + (ty - oy) * (ty - oy) + (tz - oz) * (tz - oz));
+    const int steps = std::max(1, int(std::ceil(length / .25)));
+    for (int s = 1; s < steps; ++s) {
+        const double t = double(s) / steps;
+        const int x = int(std::floor(ox + (tx - ox) * t)), y = int(std::floor(oy + (ty - oy) * t)), z = int(std::floor(oz + (tz - oz) * t));
+        if (x < 0 || y < 0 || z < 0 || x >= world.width() || y >= world.height() || z >= world.depth() || !world.chunkLoaded(x, z)) return false;
+        const auto* tile = spec(world, x, y, z);
+        if (tile && std::strcmp(tile->shape, "air") && std::strcmp(tile->shape, "liquid")) return false;
+    }
+    return true;
+}
+
 void Scene::save(const World& world) {
     requireWorld(world);
     Directory dir = pinnedDirectory(root_, name_, rootDevice_, rootInode_, worldDevice_, worldInode_);
@@ -733,6 +750,33 @@ void Scene::tick(const World& world) {
             brain.walking = random.nextInt(4) != 0;
             brain.turnTicks = uint32_t(30 + random.nextInt(90));
         } else --brain.turnTicks;
+        if (mob.kind == MobKind::Zombie) {
+            // MeleeAttackGoal.cpp:88-95: attackTime = max(attackTime-1, 0); hit
+            // when distanceToSqr(target.x, target.bb.y0, target.z) <= (mob.bbWidth*2)^2
+            // + target.bbWidth and attackTime == 0, then attackTime = 20.
+            // Zombie.cpp:62 ATTACK_DAMAGE 3, FOLLOW_RANGE 40 (line 59).
+            // Platform simplification: straight-line chase with an eye-to-eye
+            // voxel sight test instead of PathNavigation; no reinforcements.
+            if (brain.attackTime) --brain.attackTime;
+            if (playerTargetable_) {
+                const float dx = world.playerX() - mob.x, dz = world.playerZ() - mob.z;
+                const float dy = world.playerY() - mob.y;
+                const float horizontal = dx * dx + dz * dz;
+                if (horizontal <= 40.0f * 40.0f && lineOfSight(world, mob)) {
+                    mob.yaw = std::atan2(dx, dz) * 180 / Pi;
+                    if (mob.yaw < 0) mob.yaw += 360;
+                    constexpr float MobWidth = .6f, PlayerWidth = .6f; // Zombie / Player bbWidth.
+                    const float melee = (MobWidth * 2) * (MobWidth * 2) + PlayerWidth;
+                    const bool inReach = horizontal + dy * dy <= melee;
+                    brain.walking = !inReach;
+                    brain.turnTicks = std::max<uint32_t>(brain.turnTicks, 1);
+                    if (inReach && !brain.attackTime) {
+                        brain.attackTime = 20;
+                        playerHits_.push_back({mob.id, 3.0f});
+                    }
+                }
+            }
+        }
         const float beforeX = mob.x, beforeZ = mob.z;
         if (brain.walking) {
             const float speed = mob.kind == MobKind::Chicken ? .9f : mob.kind == MobKind::Zombie ? .8f : .65f;

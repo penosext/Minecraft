@@ -273,8 +273,33 @@ void invalidAndUnknownState() {
     // v1 remains parsed/validated, not silently accepted solely for migration.
     f.v1({mob(1, MobKind::Pig, 32.5f, 34.5f)}); bytes = read(f.file()); number(bytes, 60, nan); corrupt(bytes);
 }
+// Zombie melee on the player: off by default, MeleeAttackGoal 20-tick cooldown,
+// Zombie ATTACK_DAMAGE 3, sight blocked by a wall, chase within follow range.
+void zombieMelee() {
+    {
+        Fixture f; Scene scene; f.v1({mob(3, MobKind::Zombie, 32.5f, 33.5f)}); scene.open(f.world);
+        advance(scene, f.world, 60); assert(scene.takePlayerHits().empty()); // not targetable by default
+        scene.setPlayerTargetable(true);
+        advance(scene, f.world, 1);
+        auto hits = scene.takePlayerHits(); assert(hits.size() == 1 && hits[0].mobId == 3 && hits[0].damage == 3);
+        advance(scene, f.world, 19); assert(scene.takePlayerHits().empty());
+        advance(scene, f.world, 1); assert(scene.takePlayerHits().size() == 1);
+    }
+    {
+        Fixture f(true); Scene scene; f.v1({mob(3, MobKind::Zombie, 32.5f, 35.5f)}); scene.open(f.world); // wall at z=33
+        scene.setPlayerTargetable(true); advance(scene, f.world, 40); assert(scene.takePlayerHits().empty());
+    }
+    {
+        Fixture f; Scene scene; f.v1({mob(3, MobKind::Zombie, 32.5f, 38.5f)}); scene.open(f.world);
+        scene.setPlayerTargetable(true);
+        const float before = std::hypot(scene.mobs()[0].x - 32.5f, scene.mobs()[0].z - 32.5f);
+        size_t hits = 0;
+        for (int i = 0; i < 200 && !hits; ++i) { advance(scene, f.world, 1); hits = scene.takePlayerHits().size(); }
+        assert(hits == 1 && std::hypot(scene.mobs()[0].x - 32.5f, scene.mobs()[0].z - 32.5f) < before);
+    }
+}
 } // namespace
 int main() {
-    targeting(); speciesAndDeath(); timersAndPersistence(); survivorBrainAlignment(); invalidAndUnknownState();
+    targeting(); speciesAndDeath(); timersAndPersistence(); survivorBrainAlignment(); invalidAndUnknownState(); zombieMelee();
     std::cout << "combat tests passed: nearest ray/AABB, miss/wall/liquid/reach, five HP kinds, Zombie armor, cooldown, death/id, v1/v2 persistence, malformed health/NaN/unknown-state safety\n";
 }

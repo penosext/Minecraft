@@ -96,6 +96,12 @@ PINS = {
     'HoeItem.cpp': '825fc65ff37f46b6cc44eaf2a1cb45425255f4bad723bcc3356161020f00c2a4',
     'ArmorItem.h': '37b35931c15bb1237a77ee467c8b4429d05c380891eb59e8140c6f47e9ba90e4',
     'ArmorItem.cpp': '0080a83f77544cdfa01d8f1c892aa04daf0edfa5c1aa85b3fb32b315a86b5b9a',
+    # Food identity/nutrition sources (FoodItem ctor + FoodConstants saturation tiers).
+    'FoodItem.cpp': '1e7cea0d25ab49a7ba9d3d47e7d896810d4ed19060f46ff6a8bf798569b5f1be',
+    'FoodConstants.cpp': '02c42f5562510c1e7ebb37d1cfa3a0e2b45f82782901554dc32501ad0dbabfe2',
+    # Coal/charcoal aux constants (STONE_COAL / CHAR_COAL) and stacked-by-data class.
+    'CoalItem.h': '2f4312e368beaf46ea180b7ce3438ac8d728a0d5432f6b1262ba403a2c834f54',
+    'CoalItem.cpp': '68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f',
 }
 
 # Upstream tool classes mapped to this catalog's tool kind. Base attack damage is
@@ -114,6 +120,26 @@ INGREDIENTS = {'stick': '木棍', 'ironIngot': '铁锭', 'goldIngot': '金锭',
                'diamond': '钻石', 'leather': '皮革'}
 TOOL_NAMES = {'sword': '剑', 'shovel': '锹', 'pickaxe': '镐', 'hatchet': '斧', 'hoe': '锄'}
 ARMOR_NAMES = {'helmet': '头盔', 'chestplate': '胸甲', 'leggings': '护腿', 'boots': '靴子'}
+# Plain FoodItem registrations: eating only restores nutrition/saturation. Food
+# with an eat effect (raw chicken, rotten flesh, spider eye, poisonous potato),
+# setCanAlwaysEat (golden apple), a bowl return (BowlFoodItem mushroom stew) or
+# no registered FoodItem class (cake is a tile) is deliberately excluded: this
+# port has no mob effects or container-return engine, so eating them would be a
+# silent behavior change. carrots/potato are already SeedFoodItem block items;
+# they get food metadata without a new catalog row.
+FOODS = {'apple': '苹果', 'bread': '面包', 'porkChop_raw': '生猪排', 'porkChop_cooked': '熟猪排',
+         'fish_raw': '生鱼', 'fish_cooked': '熟鱼', 'cookie': '曲奇', 'melon': '西瓜片',
+         'beef_raw': '生牛肉', 'beef_cooked': '牛排', 'chicken_cooked': '熟鸡肉',
+         'potatoBaked': '烤马铃薯', 'carrotGolden': '金胡萝卜', 'pumpkinPie': '南瓜派'}
+SEED_FOODS = ('carrots', 'potato')
+# Smelting/drop materials (symbol, aux constant or None, name, kind, class).
+# Raw chicken is a FoodItem with a hunger eat effect: catalogued (a smelting
+# input) but deliberately NOT edible, so it gets no kFoods row.
+MATERIAL_ITEMS = [('coal', 'CoalItem::STONE_COAL', '煤炭', 'ingredient', 'CoalItem'),
+                  ('coal', 'CoalItem::CHAR_COAL', '木炭', 'ingredient', 'CoalItem'),
+                  ('clay', None, '黏土球', 'ingredient', 'Item'),
+                  ('dye_powder', 'DyePowderItem::GREEN', '仙人掌绿', 'ingredient', 'DyePowderItem'),
+                  ('chicken_raw', None, '生鸡肉', 'food', 'FoodItem')]
 MATERIAL_NAMES = {'wood': '木', 'stone': '石', 'iron': '铁', 'diamond': '钻石',
                   'gold': '金', 'leather': '皮革', 'chain': '锁链'}
 
@@ -361,6 +387,42 @@ def parse_tools_and_armor(s, c, registry):
     require(sum(r['kind'] == 'armor' for r in rows) == 20, 'Expected 20 armor pieces')
     require(sum(r['kind'] == 'ingredient' for r in rows) == len(INGREDIENTS), 'Ingredient count mismatch')
     require(len({r['key'] for r in rows}) == len(rows), 'Duplicate tool/armor/ingredient key')
+    return rows
+
+
+def parse_food(s, registry):
+    """Nutrition/saturation for plain FoodItem/SeedFoodItem registrations.
+
+    Saturation tiers are read from FoodConstants.cpp and the eat duration from
+    FoodItem.h; no number here is transcribed by hand.
+    """
+    tiers = {m[1]: float(m[2]) for m in re.finditer(
+        r'const float FoodConstants::FOOD_SATURATION_(\w+)\s*=\s*([0-9.]+)f;', s.code['FoodConstants.cpp'])}
+    require(set(tiers) == {'POOR', 'LOW', 'NORMAL', 'GOOD', 'MAX', 'SUPERNATURAL'}, f'Unexpected saturation tiers {sorted(tiers)}')
+    duration = re.search(r'static const int EAT_DURATION = static_cast<int>\(20 \* ([0-9.]+)\);', s.code['FoodItem.h'])
+    require(duration is not None, 'FoodItem::EAT_DURATION expression changed')
+    eat_ticks = int(20 * float(duration[1]))
+    require('return EAT_DURATION;' in s.code['FoodItem.cpp'], 'FoodItem::getUseDuration no longer returns EAT_DURATION')
+    refs = [s.ref('FoodItem.h', 'static const int EAT_DURATION'),
+            s.ref('FoodItem.cpp', 'player->getFoodData()->eat(this);'),
+            s.ref('FoodItem.cpp', 'instance->count--;')]
+    # Item.cpp registrations only: Tile::melon and Item::melon share a symbol.
+    by_symbol = {reg['symbol']: reg for reg in registry.values() if 'registration' in reg}
+    rows = {}
+    for symbol in [*FOODS, *SEED_FOODS]:
+        reg = by_symbol.get(symbol)
+        require(reg is not None, f'Missing food registration {symbol}')
+        expected = 'SeedFoodItem' if symbol in SEED_FOODS else 'FoodItem'
+        require(reg['class'] == expected, f'{symbol} is {reg["class"]}, expected {expected}')
+        m = re.search(r'new \w+\(\s*\d+,\s*(\d+),\s*FoodConstants::FOOD_SATURATION_(\w+)\s*,\s*(true|false|Tile::)',
+                      reg['registration'])
+        require(m is not None, f'Cannot parse food ctor for {symbol}')
+        require(not re.search(r'setEatEffect|setCanAlwaysEat', reg['registration']),
+                f'{symbol} has an eat effect / always-eat flag this port does not implement')
+        rows[reg['itemId']] = {'symbol': symbol, 'nutrition': int(m[1]), 'saturationTier': m[2],
+                               'saturationModifier': tiers[m[2]], 'meat': m[3] == 'true',
+                               'eatTicks': eat_ticks, 'sources': [reg['source'], s.ref('FoodConstants.cpp',
+                               f'FoodConstants::FOOD_SATURATION_{m[2]} ='), *refs]}
     return rows
 
 
@@ -630,6 +692,51 @@ def build(s):
                       'itemIndex': len(items), 'renderCatalogKey': '',
                       'stackSources': row['sources'], 'placementSources': [],
                       'creativeSources': creative.get(pair, [])})
+    # Food rows follow tools/armor so every earlier itemIndex stays stable.
+    foods = parse_food(s, registry)
+    stack_refs = [s.ref('Item.cpp', 'maxStackSize = Item::MAX_STACK_SIZE'), s.ref('Item.h', 'MAX_STACK_SIZE =')]
+    for iid, food in sorted(foods.items()):
+        meta = {k: food[k] for k in ('nutrition', 'saturationModifier', 'saturationTier', 'meat', 'eatTicks')}
+        existing = next((it for it in items if it['itemId'] == iid and it['aux'] == 0), None)
+        if existing is not None:
+            require(food['symbol'] in SEED_FOODS, f'Food collides with a non-seed item: {food["symbol"]}')
+            existing['food'] = {**meta, 'sources': food['sources']}
+            continue
+        require(food['symbol'] in FOODS, f'Unexpected food row {food["symbol"]}')
+        reg = registry[iid]
+        icon = re.search(r'setIconName\(L"([^"]+)"\)', reg['registration'])
+        require(icon is not None and not re.search(r'setMaxStackSize\(', reg['registration']),
+                f'{food["symbol"]} has no icon name or overrides its stack size')
+        pair = (iid, 0)
+        items.append({'key': f'item:{iid}:0', 'name': FOODS[food['symbol']], 'itemId': iid, 'aux': 0,
+                      'kind': 'food', 'iconName': icon[1], 'sourceClass': reg['class'], 'sourceSymbol': food['symbol'],
+                      'maxStack': c['Container::LARGE_MAX_STACK_SIZE'], 'sources': [reg['source'], *stack_refs],
+                      'food': {**meta, 'sources': food['sources']},
+                      'tileId': -1, 'defaultData': -1, 'renderIndex': -1,
+                      'creative': pair in creative, 'placeable': False,
+                      'itemIndex': len(items), 'renderCatalogKey': '',
+                      'stackSources': [reg['source'], *stack_refs], 'placementSources': [],
+                      'creativeSources': creative.get(pair, [])})
+    item_regs = {reg['symbol']: reg for reg in registry.values() if 'registration' in reg}
+    for symbol, aux_name, name, kind, cls in MATERIAL_ITEMS:
+        reg = item_regs.get(symbol)
+        require(reg is not None and reg['class'] == cls, f'Material {symbol} is not a registered {cls}')
+        aux = c[aux_name] if aux_name else 0
+        iid = reg['itemId']; pair = (iid, aux)
+        require(pair not in {(it['itemId'], it['aux']) for it in items}, f'Material collides: {symbol}:{aux}')
+        require(pair in creative, f'Material {symbol}:{aux} is not in the creative list')
+        require(not re.search(r'setMaxStackSize\(', reg['registration']), f'{symbol} overrides its stack size')
+        if cls in ('CoalItem', 'DyePowderItem'):
+            require('setStackedByData(true);' in s.raw[cls + '.cpp'], f'{cls} must stack by aux')
+        icon = re.search(r'setIconName\(L"([^"]+)"\)', reg['registration'])
+        refs = [reg['source'], *stack_refs] + ([s.ref(aux_name.split('::')[0] + ('.h' if cls == 'CoalItem' else '.cpp'),
+                                                        aux_name.split('::')[1])] if aux_name else [])
+        items.append({'key': f'item:{iid}:{aux}', 'name': name, 'itemId': iid, 'aux': aux, 'kind': kind,
+                      'iconName': icon[1] if icon else symbol, 'sourceClass': cls, 'sourceSymbol': symbol,
+                      'maxStack': c['Container::LARGE_MAX_STACK_SIZE'], 'sources': refs,
+                      'tileId': -1, 'defaultData': -1, 'renderIndex': -1, 'creative': True, 'placeable': False,
+                      'itemIndex': len(items), 'renderCatalogKey': '', 'stackSources': refs,
+                      'placementSources': [], 'creativeSources': creative.get(pair, [])})
     by_key = {it['key']: it['itemIndex'] for it in items}
     for row in state_rows:
         row['itemIndex'] = by_key.get(row['itemKey'], -1)
@@ -672,16 +779,17 @@ def build(s):
                        'Armor defense NUMBERS per slot, matching Inventory::getArmorValue summation semantics.',
                        'Attack damage NUMBERS (subclass base + tier bonus); the hoe has none upstream.',
                        'Inventory/hotbar carrying and crafting-table recipe matching.',
+                       'Armor damage reduction (LivingEntity::getDamageAfterArmorAbsorb) and armor wear '
+                       '(Inventory::hurtArmor) in PlayerSurvival; equip by right-click/swap (Inventory::equipSelectedArmor).',
+                       'Food nutrition/saturation (FoodItem ctor + FoodConstants tiers) for plain foods; see kFoods.',
                    ],
                    'notImplemented': [
                        'Durability CONSUMPTION. Slot has no damage field; persisting wear needs an inventory format upgrade.',
                        'Mining speed/time. World::mine is creative-instant, so tier speed changes nothing.',
                        'Harvest-level gating. canDestroySpecial is not consulted; any tool breaks any block.',
                        'Enchantments. enchantmentValue is recorded but no enchanting path exists.',
-                       'Armor damage reduction. There is no player health/damage path to reduce.',
                        'Sword combat bonuses. Scene applies no equipment bonus to attacks.',
                        'Hoe tilling and shears shearing. Both need useOn, which is not implemented.',
-                       'Armor equipping. Inventory exposes only a const armor getter and no equip API.',
                    ],
                    'survivalReachability':
                        'Iron and gold ingots are obtainable ONLY by smelting (FurnaceRecipes.cpp:20-21) and smelting is '
@@ -693,7 +801,8 @@ def build(s):
                        'ArmorRecipes.cpp:45-71 chain entries are commented out.',
                },
                'limitations': ['Tools and armor are identity/stat data plus recipes only; see toolArmorScope.notImplemented.',
-                               'No buckets, entities, consumable food, NBT, smelting, or general item engine.',
+                               'No buckets, entities, NBT, smelting, or general item engine. Only plain FoodItems '
+                               '(no eat effect, bowl return or always-eat flag) are edible; see FOODS in the generator.',
                                'Source useOn prerequisites/physics are not executed by this catalog.',
                                'Source-pinned rules fail closed on changed input, new states, IDs or item classes.',
                                'Canonical mappings are pick/source-item identity, not original random block drops.',
@@ -733,7 +842,7 @@ def validate(catalog, manifest, creative):
             # a render index, tile or placement data.
             require(it['renderIndex'] == -1 and it['tileId'] == -1 and it['defaultData'] == -1,
                     f'Nonplaceable item must not carry render/placement state: {it["key"]}')
-            require(it['maxStack'] == 1 or it['kind'] == 'ingredient',
+            require(it['maxStack'] == 1 or it['kind'] in ('ingredient', 'food'),
                     f'Tools and armor stack to exactly 1: {it["key"]}')
     for row in rows:
         require(row['reason'] and row['sources'] and row['classification'], 'Missing state provenance')
@@ -762,8 +871,8 @@ def cpp(catalog, manifest):
     # Tool/armor statistics live in their own table so ItemSpec stays unchanged.
     # These are READ-ONLY source numbers: nothing consumes durability, applies
     # armor reduction, gates harvest level or alters mining speed.
-    lines += ['// Source-pinned tool/armor numbers. Durability is NOT consumed, defense is NOT',
-              '// applied to damage, speed does NOT affect mining and level does NOT gate drops.',
+    lines += ['// Source-pinned tool/armor numbers. Consumers: ToolRules (durability, speed,',
+              '// harvest level) and PlayerSurvival (armor defense, via armorDefenseTotal).',
               '// kind: 1 = tool, 2 = armor. attackDamage/speed are -1 when upstream has none.',
               'struct ToolArmorSpec { const char* key; const char* iconName; const char* sourceClass;',
               '    int itemId, kind, maxStack, durability, attackDamage, tierLevel, tierSpeed, armorSlot, defense, enchantmentValue; };',
@@ -788,7 +897,7 @@ def cpp(catalog, manifest):
               '    return nullptr;', '}',
               'inline const ToolArmorSpec* findToolArmor(const std::string& key) { return findToolArmor(key.c_str()); }',
               '// Sum of equipped armor defense, mirroring upstream Inventory::getArmorValue.',
-              '// This is a READ-ONLY total; no damage path consumes it.',
+              '// PlayerSurvival applies it as LivingEntity::getDamageAfterArmorAbsorb.',
               'inline int armorDefenseTotal(const std::string* keys, int count) {',
               '    int total = 0;',
               '    for (int i = 0; i < count; ++i) {',
@@ -796,6 +905,18 @@ def cpp(catalog, manifest):
               '        if (spec && spec->kind == 2) total += spec->defense;',
               '    }',
               '    return total;', '}',
+              '// Plain-FoodItem nutrition (FoodItem ctor) and FoodConstants saturation tier.',
+              '// eatTicks is FoodItem::EAT_DURATION; there are no eat effects in this table.',
+              'struct FoodSpec { int itemId, nutrition; float saturationModifier; bool meat; int eatTicks; };',
+              'constexpr FoodSpec kFoods[] = {',
+              *['    {%d, %d, %sf, %s, %d},' % (it['itemId'], it['food']['nutrition'], repr(it['food']['saturationModifier']),
+                                            str(it['food']['meat']).lower(), it['food']['eatTicks'])
+                for it in catalog['items'] if 'food' in it],
+              '};',
+              'constexpr int kFoodCount = int(sizeof(kFoods) / sizeof(kFoods[0]));',
+              'inline const FoodSpec* findFood(int itemId) {',
+              '    for (const auto& food : kFoods) if (food.itemId == itemId) return &food;',
+              '    return nullptr;', '}',
               'inline int itemCount() { return kItemCount; }',
               'inline const ItemSpec* items() { return kItems; }',
               'inline int blockStateCount() { return kBlockStateCount; }',
@@ -823,8 +944,8 @@ def typescript(catalog, manifest):
         items.append(row)
     return ('// Generated by tools/generate-items.py; itemIndex is the original native kItems index.\n'
             '// Filtering creative entries MUST NOT renumber itemIndex. Render indices are zero-based.\n'
-            '// kind "tool"/"armor"/"ingredient" entries have renderIndex -1 and are not placeable.\n'
-            'export type SourceItemKind = \'block\' | \'tool\' | \'armor\' | \'ingredient\';\n'
+            '// kind "tool"/"armor"/"ingredient"/"food" entries have renderIndex -1 and are not placeable.\n'
+            'export type SourceItemKind = \'block\' | \'tool\' | \'armor\' | \'ingredient\' | \'food\';\n'
             'export interface SourceItem { key: string; name: string; itemId: number; aux: number; itemIndex: number; tileId: number; defaultData: number; renderIndex: number; renderCatalogKey: string; maxStack: number; creative: boolean; placeable: boolean; kind: SourceItemKind; }\n'
             'export const sourceItems: SourceItem[] = ' + json.dumps(items, ensure_ascii=False, indent=2) + ';\n'
             'export const creativeItems: SourceItem[] = sourceItems.filter(item => item.creative);\n'
@@ -918,8 +1039,28 @@ def tests(catalog, manifest, creative):
             {'pickaxeWood', 'pickaxeStone', 'pickaxeIron', 'pickaxeDiamond', 'pickaxeGold'},
             'Pickaxe icon names must be the registered strings, not the pickAxe_* symbols')
     ingredients = [it for it in catalog['items'] if it.get('kind') == 'ingredient']
-    require({it['itemId'] for it in ingredients} == {280, 265, 266, 264, 334}, 'Unexpected ingredient IDs')
+    require({it['itemId'] for it in ingredients} == {280, 265, 266, 264, 334, 263, 337, 351}, 'Unexpected ingredient IDs')
     require(all(it['maxStack'] == 64 for it in ingredients), 'Ingredients keep the default 64 stack')
+    # Food: FoodItem ctor nutrition + FoodConstants tier, EAT_DURATION 20*1.6.
+    expected_food = {260: (4, .3), 297: (5, .6), 319: (3, .3), 320: (8, .8), 349: (2, .3), 350: (5, .6),
+                     357: (2, .1), 360: (2, .3), 363: (3, .3), 364: (8, .8), 366: (6, .6), 391: (4, .6),
+                     392: (1, .3), 393: (6, .6), 396: (6, 1.2), 400: (8, .3)}
+    foods = {it['itemId']: it for it in catalog['items'] if 'food' in it}
+    require(set(foods) == set(expected_food), f'Unexpected food set {sorted(foods)}')
+    for iid, (nutrition, modifier) in expected_food.items():
+        food = foods[iid]['food']
+        require(food['nutrition'] == nutrition and abs(food['saturationModifier'] - modifier) < 1e-9 and
+                food['eatTicks'] == 32, f'Wrong food data for {iid}')
+    require(all(foods[i]['placeable'] for i in (391, 392)), 'Carrot/potato remain placeable SeedFoodItems')
+    require(all(foods[i]['kind'] == 'food' and foods[i]['maxStack'] == 64 and not foods[i]['placeable']
+                for i in expected_food if i not in (391, 392)), 'Plain food rows stack to 64, not placeable')
+    for key, kind in (('item:263:0', 'ingredient'), ('item:263:1', 'ingredient'), ('item:337:0', 'ingredient'),
+                      ('item:351:2', 'ingredient'), ('item:365:0', 'food')):
+        row = next((it for it in catalog['items'] if it['key'] == key), None)
+        require(row is not None and row['kind'] == kind and row['maxStack'] == 64 and 'food' not in row,
+                f'Material row missing/wrong: {key}')
+    for excluded in (322, 282, 365, 367, 375, 394):  # golden apple, stew, raw chicken, flesh, eye, poison potato
+        require(excluded not in foods, f'Food with unported behavior exported: {excluded}')
     broken = copy.deepcopy(catalog); broken['items'].append(copy.deepcopy(broken['items'][0]))
     try: validate(broken, manifest, creative)
     except ValueError: pass
@@ -953,6 +1094,12 @@ def main():
     # verification pin. When the local reference checkout is absent the catalog
     # cannot be rebuilt, so reuse the committed outputs instead of failing the
     # whole build. Nothing is fabricated: generation is skipped, not faked.
+    # The creative menu is also tracked in this repository's upstream checkout;
+    # use it when the external reference is absent so a source change (e.g. new
+    # food rows) is actually regenerated instead of silently reusing stale output.
+    if args.client_root == DEFAULT_CLIENT and not (args.client_root / CREATIVE_REL).exists() and \
+            (ROOT / 'port/upstream' / CREATIVE_REL).exists():
+        args.client_root = ROOT / 'port/upstream'
     if not (args.client_root / CREATIVE_REL).exists():
         missing = [p for p in outputs_paths() if not p.exists()]
         require(not missing, 'Reference checkout absent and generated outputs missing: '

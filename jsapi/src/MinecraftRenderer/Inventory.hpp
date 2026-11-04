@@ -62,6 +62,15 @@ public:
     bool damageSelected(int amount);
     int selectedDamage() const;
     int selectedMaxDamage() const;
+    // Swap the selected ArmorItem with its armor slot (ArmorSlot::mayPlace:
+    // item slot == ArmorItem::slot, stored at armor_[3 - slot]). The previous
+    // piece, if any, goes to the hand. Non-armor or empty hand fails unchanged.
+    bool equipSelectedArmor();
+    // Inventory::hurtArmor: max(1, dmg / 4) wear on every worn ArmorItem; a
+    // piece breaks only ABOVE its max damage. No-op in creative.
+    void hurtArmor(float damage);
+    // Inventory::getArmorValue: sum of worn ArmorItem defense.
+    int armorValue() const;
     // Explicit creative action. Rejects creative-excluded items and oversized
     // counts; replaces this hotbar stack without changing the selected slot.
     bool selectHotbarItem(int slot0to8, int itemIndex, int count = MaxStack);
@@ -79,7 +88,7 @@ public:
     bool opened() const { return opened_; }
     const std::array<Slot, MainSlots>& slots() const { return main_; }
     // State reserved/persisted in source Inventory order (boots..helmet).
-    // No equip API or armor effects yet; durability metadata is preserved.
+    // Equip via equipSelectedArmor; worn defense/wear via armorValue/hurtArmor.
     const std::array<Slot, ArmorSlots>& armor() const { return armor_; }
     const std::vector<LegacyUnresolvedSlot>& legacyUnresolved() const { return legacyUnresolved_; }
 

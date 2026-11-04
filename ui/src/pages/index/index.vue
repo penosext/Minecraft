@@ -93,6 +93,17 @@
       <text class="button-text">跳跃</text>
     </div>
 
+    <!-- DeathScreen.cpp: native paints the red gradient; Vue adds the title and the
+         Respawn button. "Title menu" is the existing save-and-exit in settings. -->
+    <div v-if="playerDead" class="death-screen" @touchstart="onControlTouch" @touchmove="onControlTouch">
+      <text class="death-title">你死了！</text>
+      <text class="death-note">{{ keepInventoryOn ? '背包已保留（KeepInventory）' : '背包与盔甲已清空' }}</text>
+      <div class="death-respawn" @click="respawn">
+        <text class="button-text">重生</text>
+      </div>
+      <text class="death-error">{{ respawnError }}</text>
+    </div>
+
     <!-- Native 1.25× GUI. Vue provides transparent hits only, never item/count rendering.
          Every offset and size comes from the mirrored native layout in index.ts. -->
     <div v-if="worldMode && !worldInputBlocked" class="hotbar-hit-layer"

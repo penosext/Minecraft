@@ -274,7 +274,7 @@ test('game tab switches creative/survival through native and shows the native re
 test('game tab toggles KeepInventory via setWorldRule and says death is not implemented', () => {
   const h = make(); const p = h.page; p.openWorldSettings(); p.selectSettingsTab('game');
   assert.equal(text(byClass(p, 'settings-keep-toggle')[0]), '已开启');
-  assert.match(text(byClass(p, 'settings-keep-note')[0]), /暂无玩家生命与死亡/);
+  assert.match(text(byClass(p, 'settings-keep-note')[0]), /死亡会清空背包与盔甲/);
   byClass(p, 'settings-keep-toggle')[0].data.on.click();
   assert.deepEqual(h.calls.filter(call => call[0] === 'rule'), [['rule', 'KeepInventory', false]]);
   assert.equal(text(byClass(p, 'settings-keep-toggle')[0]), '已关闭');
