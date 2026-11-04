@@ -42,73 +42,73 @@
   "sources": [
     {
       "source": "Minecraft.Client/Gui.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.Client/Gui.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/Gui.cpp",
       "git_blob_sha1": "7e056e15bfee780aa0bab847c57e40dfd92756fc",
       "sha256": "d4a51d3f6ca81affa4db15ebdca0be210b251a055285d159ab2df75a42580664"
     },
     {
       "source": "Minecraft.Client/GuiComponent.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.Client/GuiComponent.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/GuiComponent.cpp",
       "git_blob_sha1": "c6b5f518b6c3c5afe20c7efadeab2d75e6eacec2",
       "sha256": "01a64d4adc54e4c5cfc6d00e20ff4813ef1226ead3e53e4d3780036a69e8d280"
     },
     {
       "source": "Minecraft.Client/InventoryScreen.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.Client/InventoryScreen.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/InventoryScreen.cpp",
       "git_blob_sha1": "17df86c1462e8d8a2277d337e79592dc4449cf35",
       "sha256": "979c5cf5fa268483b260ca581548f4b507b76037865125da58f4df04aaa064a5"
     },
     {
       "source": "Minecraft.Client/AbstractContainerScreen.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.Client/AbstractContainerScreen.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/AbstractContainerScreen.cpp",
       "git_blob_sha1": "5c80aec6b1dd039af405ee65d3eba86c0721930a",
       "sha256": "970cf4fe954198a0fa0396c8239179a1aa6f82e929d6aaf285e7379431e01b33"
     },
     {
       "source": "Minecraft.Client/ItemRenderer.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.Client/ItemRenderer.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.Client/ItemRenderer.cpp",
       "git_blob_sha1": "ead8016f5ba4a4746948d0aa3866abfe479f550d",
       "sha256": "a6789e7b0119368db22a039cca9f4526fd2dff2f9d9edf3369efe8fd692dcc1e"
     },
     {
       "source": "Minecraft.World/Inventory.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/Inventory.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Inventory.cpp",
       "git_blob_sha1": "ad0fc3ec1275019a3f61897885eed4278ebb33af",
       "sha256": "f2c247bac53bd7f48ae054fa9f13d0507d58b89f46db0d9874d6b6f905f2f05e"
     },
     {
       "source": "Minecraft.World/InventoryMenu.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/InventoryMenu.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/InventoryMenu.cpp",
       "git_blob_sha1": "9c6c661f0e4c53de5e1e6824e164fa3f5de0ab69",
       "sha256": "b2b3a7eeca79835eb04fdec846cf81188006d29ab51177294d9af66990d413c3"
     },
     {
       "source": "Minecraft.World/ItemInstance.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/ItemInstance.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/ItemInstance.cpp",
       "git_blob_sha1": "e4af60c67169127622e97ad921137df05e6e5548",
       "sha256": "4fe4e58a108e0a3a51c6a74105b6e9e6c747c71512f3f60ddc0cab4f7af8bd61"
     },
     {
       "source": "Minecraft.World/Item.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/Item.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Item.cpp",
       "git_blob_sha1": "ffb310704ce6472cfc02936aa54876da25d33ae4",
       "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d"
     },
     {
       "source": "Minecraft.World/Item.h",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/Item.h",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Item.h",
       "git_blob_sha1": "22d0a9d158443f484d0f61ed9ba8e4d1b8891df1",
       "sha256": "59b07341605d60b76271b3e6776e1dc3f250525726ac30bd086edbed93fc99bc"
     },
     {
       "source": "Minecraft.World/TileItem.cpp",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/TileItem.cpp",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/TileItem.cpp",
       "git_blob_sha1": "4e2e5081d41fb59e8a46e454447663e9446891b3",
       "sha256": "19eaceb00fb8b44b29a2c961d6288c962bba4473f9b73c100e6d182b99784ade"
     },
     {
       "source": "Minecraft.World/Container.h",
-      "local_file": "/root/1234/mc-wt/integrate/port/upstream/Minecraft.World/Container.h",
+      "local_file": "/root/1234/Minecraft/port/upstream/Minecraft.World/Container.h",
       "git_blob_sha1": "bfd7a9b757a15ab5ac91636a2b13fec6809d311f",
       "sha256": "daa91c6fdbb833570321dc717cbcb97693d3f103c571478ceb7cd3f7d625c174"
     }
