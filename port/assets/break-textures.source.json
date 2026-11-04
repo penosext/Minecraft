@@ -4,7 +4,7 @@
   "mapping_source": "port/upstream/Minecraft.Client/PreStitchedTextureMap.cpp",
   "mapping_sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
   "catalog_names_source": "jsapi/build/generated/LegacyCatalog.hpp",
-  "catalog_sha256": "8af1a69cc64f187c544015fd74c7a53e2def9a91da3b1c5c13c7776b2a11efec",
+  "catalog_sha256": "7dd708416b8a1f6a35910e7d1fe67b23420e51b1b7d641168d4ccb123d7cd300",
   "stage_alias": "destroy_stage0..9 = upstream destroy_0..9 (LevelRenderer.cpp registerTextures)",
   "pixel_format": "RGBA SHA-256 before exact ARGB32 packing, nearest sampling",
   "crack_blend": "alpha <= 0.1 discarded; surviving texels use source GL_DST_COLOR/GL_SRC_COLOR (2*src*dst)",

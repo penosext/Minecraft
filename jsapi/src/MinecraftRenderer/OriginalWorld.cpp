@@ -193,7 +193,10 @@ uint16_t OriginalWorld::catalogForTile(uint8_t tile, uint8_t data) {
     case 118: return oriented("cauldron", data);
     case 127:
         if ((data >> 2) > 2) invalid("unsupported cocoa age metadata");
-        return keyId("cocoa_" + std::to_string(data >> 2)); // low two bits are facing
+        // Low two bits are the Direction toward the jungle log. Direction 0
+        // keeps the pinned per-age key; 1..3 are explicit facing states.
+        if (data & 3) return keyId("cocoa_data_" + std::to_string(data));
+        return keyId("cocoa_" + std::to_string(data >> 2));
     case 128: return oriented("stairs_sandstone", data);
     case 131: return oriented("tripWireSource", data);
     case 132: return oriented("tripWire", data);

@@ -440,8 +440,11 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
         // Draw the arm first, then lay a non-block item over it. The item branch
         // used to replace the arm entirely, so holding a tool made the hand
         // disappear; the arm is part of the first-person view either way.
+        // Independent Items that place a tile (cocoa beans, reeds, pot, seeds,
+        // doors...) are held as their items.png sprite, never as the tile.
         const bool heldItem = viewMode != 1 && !inventory_.emptyHand() &&
-                              inventory_.selectedBlockIndex() < 0;
+                              (inventory_.selectedBlockIndex() < 0 ||
+                               hasHeldItemSprite(inventory_.selectedItemId(), inventory_.selectedAux()));
         renderActorOverlay(buffer.data(), width, height, viewMode == 1 ? 1 : 0, walkPhase_, swing_,
                            heldItem ? -1 : inventory_.selectedBlockIndex());
         if (heldItem)

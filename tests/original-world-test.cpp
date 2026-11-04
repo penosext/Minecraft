@@ -210,8 +210,16 @@ void biomeMetadataAndMaterials() {
     }
     for (int data = 8; data < 12; ++data) mapped(64, data, "door_wood_upper_data_" + std::to_string(data));
     mapped(60, 0, "farmland_0"); mapped(60, 7, "farmland_7");
-    for (int data = 0; data < 12; ++data) mapped(127, data, "cocoa_" + std::to_string(data >> 2));
+    // Cocoa facing (data&3) is preserved: direction 0 keeps the per-age key.
+    for (int data = 0; data < 12; ++data)
+        mapped(127, data, data & 3 ? "cocoa_data_" + std::to_string(data) : "cocoa_" + std::to_string(data >> 2));
+    for (int data = 0; data < 12; ++data)
+        assert(legacy::kBlockSpecs[mcworld::OriginalWorld::catalogForTile(127, uint8_t(data)) - 1].data == data);
     rejects([] { mcworld::OriginalWorld::catalogForTile(127, 12); });
+    // VineTile facing bitmask is preserved per data; data0 (roof) and 15 share
+    // the four-sided representative.
+    for (int data = 1; data < 15; ++data) mapped(106, data, "vine_data_" + std::to_string(data));
+    mapped(106, 0, "vine"); mapped(106, 15, "vine");
     mapped(141, 6, "carrots_2"); mapped(142, 7, "potatoes_3");
     for (const auto& tile : std::vector<std::pair<int, std::string>>{
         {29,"pistonStickyBase"}, {46,"tnt"}, {55,"redStoneDust"}, {69,"lever"},

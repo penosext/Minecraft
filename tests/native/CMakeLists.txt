@@ -50,7 +50,7 @@ foreach(NAME IN ITEMS original-world scene combat mining world-interaction item-
     add_test(NAME ${NAME} COMMAND test_${NAME})
     set_tests_properties(${NAME} PROPERTIES TIMEOUT 600)
 endforeach()
-foreach(NAME IN ITEMS actor-renderer mob-renderer world-renderer structure-renderer lighting-celestial lighting-local inventory item-state-inventory item-icons async-chunk world-scene-integration)
+foreach(NAME IN ITEMS plant-placement actor-renderer mob-renderer world-renderer structure-renderer lighting-celestial lighting-local inventory item-state-inventory item-icons async-chunk world-scene-integration)
     if(NAME STREQUAL "world-scene-integration")
         set(SOURCE "${ROOT}/tests/${NAME}.cpp")
     else()

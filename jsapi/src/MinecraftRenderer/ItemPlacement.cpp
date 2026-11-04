@@ -1,4 +1,5 @@
 #include "ItemPlacement.hpp"
+#include "BlockCollision.hpp"
 #include "ItemCatalog.hpp"
 #include "LegacyCatalog.hpp"
 
@@ -24,17 +25,20 @@ int placementState(int tileId, int data) {
         // duplicates (snowy grass, opaque leaves) keep the first canonical key.
         if (std::strstr(state.renderCatalogKey, "_data_")) return state.renderIndex;
     }
-    return result;
+    if (result >= 0 || (tileId != 106 && tileId != 127)) return result;
+    // Vine/cocoa facing states are static generate-terrain additions, absent
+    // from ItemCatalog's pinned 312 rows; their render spec carries the exact
+    // source tileId/data. Limited to these tiles: lever/button/repeater powered
+    // states are deliberately NOT reachable through placement/interaction.
+    for (int i = 0; i < legacy::kBlockCount; ++i)
+        if (legacy::kBlockSpecs[i].tileId == tileId && legacy::kBlockSpecs[i].data == data) return i;
+    return -1;
 }
 namespace {
 struct State { int tile = 0, data = 0; };
 State stateOf(uint16_t block) {
-    if (!block) return {};
-    for (int i = 0; i < sourceitems::blockStateCount(); ++i) {
-        const auto& state = sourceitems::blockStates()[i];
-        if (state.renderIndex == int(block) - 1) return {state.tileId, state.data};
-    }
-    return {-1, -1};
+    const auto state = collisionState(block); // full render catalog, O(1)
+    return {state.tileId, state.data};
 }
 bool stairs(int tile) {
     switch (tile) {
@@ -74,11 +78,27 @@ bool ordinaryMaterial(int tile) {
     case 14: case 15: case 16: case 18: case 20: case 21: case 24: case 35:
     case 46: case 47: case 48: case 49: case 56: case 58: case 73: case 79:
     case 80: case 82: case 87: case 88: case 89: case 98: case 110: case 112:
-    case 121: case 129: case 153: return true;
+    case 121: case 129: case 153:
+    // Plain TileItem/MultiTextureTileItem without a placement hook: web,
+    // monster egg (aux = stone kind) and the neighbour-connected fences/panes,
+    // whose connections are derived from neighbours, never from metadata.
+    case 30: case 85: case 97: case 101: case 102: case 113: return true;
     default: return false;
     }
 }
 bool fence(int tile) { return tile == 85 || tile == 113; }
+// Material::isSolid() is false only for gas/liquid/decoration/portal materials.
+// Used by CactusTile::canSurvive on its four horizontal neighbours.
+bool nonSolidMaterial(int tile) {
+    switch (tile) {
+    case 0: case 8: case 9: case 10: case 11: case 6: case 31: case 32: case 37:
+    case 38: case 39: case 40: case 50: case 51: case 55: case 59: case 63: case 65:
+    case 66: case 68: case 69: case 75: case 76: case 77: case 78: case 83: case 90:
+    case 93: case 94: case 104: case 105: case 106: case 111: case 115: case 119:
+    case 127: case 131: case 132: case 140: case 141: case 142: case 143: case 171: return true;
+    default: return false;
+    }
+}
 bool replaceable(State state) {
     return state.tile == 0 || state.tile == 8 || state.tile == 9 || state.tile == 10 || state.tile == 11 ||
            state.tile == 31 || state.tile == 32 || state.tile == 106 || (state.tile == 78 && state.data == 0);
@@ -138,10 +158,23 @@ bool planItemPlacement(const PlacementSpec& item, const PlacementContext& c, std
         if (hit.tile != 9 || hit.data != 0 || !empty(x,y+1,z) || !emit(x,y+1,z,tile,0)) return false;
         changes.swap(planned); return true;
     }
-    if (tile == 59 || tile == 141 || tile == 142) {
+    if (tile == 59 || tile == 141 || tile == 142 || tile == 115) {
         // SeedItem/SeedFoodItem: exact source ItemSpec result tile; wheat seeds
         // are 295, not the unrelated wheat Item 296. No invented ID alias.
-        if (face != 1 || hit.tile != 60 || !empty(x,y+1,z) || !emit(x,y+1,z,tile,0)) return false;
+        // Nether wart seeds (372) are a SeedItem whose targetLand is soul sand.
+        const int soil = tile == 115 ? 88 : 60;
+        if (face != 1 || hit.tile != soil || !empty(x,y+1,z) || !emit(x,y+1,z,tile,0)) return false;
+        changes.swap(planned); return true;
+    }
+    if (tile == 127) {
+        // DyePowderItem::useOn BROWN: clicked block must be a jungle log, side
+        // faces only, target cell empty. CocoaTile::getPlacedOnFaceDataValue =
+        // DIRECTION_OPPOSITE[FACING_DIRECTION[face]], i.e. Direction toward
+        // the log (S=0,W=1,N=2,E=3). Age 0.
+        static constexpr int cocoa[6] = {-1,-1,0,2,3,1};
+        if (hit.tile != 17 || (hit.data & 3) != 3 || face < 2) return false;
+        const auto* d = offset[face];
+        if (!empty(x+d[0],y+d[1],z+d[2]) || !emit(x+d[0],y+d[1],z+d[2],tile,cocoa[face])) return false;
         changes.swap(planned); return true;
     }
     if (tile == 64 || tile == 71) {
@@ -215,6 +248,57 @@ bool planItemPlacement(const PlacementSpec& item, const PlacementContext& c, std
         const auto below=read(x,y-1,z);
         if (!blocking(x,y-1,z) && below.tile != 18 && !(below.tile == 78 && below.data == 7)) return false;
         data=item.defaultData;
+    } else if (tile == 31 || tile == 32 || tile == 37 || tile == 38 || tile == 39 || tile == 40) {
+        // Bush::mayPlaceOn grass/dirt/farmland (tall grass, flowers);
+        // DeadBushTile sand; Mushroom::canSurvive mycelium or Tile::solid.
+        // Mushroom's daytime-brightness<13 term needs light the planner does
+        // not have, so it is not enforced here.
+        if (!c.available(x,y-1,z)) return false;
+        const int below=read(x,y-1,z).tile;
+        if (tile == 32 ? below != 12 :
+            tile >= 39 ? below != 110 && !cubeSupport(below) :
+                         below != 2 && below != 3 && below != 60) return false;
+        data=item.defaultData;
+    } else if (tile == 81) {
+        // CactusTile::canSurvive: no solid material on the 4 sides; sand/cactus below.
+        for (int f=2; f<6; ++f) {
+            const int nx=x+offset[f][0], nz=z+offset[f][2];
+            if (!c.available(nx,y,nz) || !nonSolidMaterial(read(nx,y,nz).tile)) return false;
+        }
+        if (!c.available(x,y-1,z)) return false;
+        const int below=read(x,y-1,z).tile;
+        if (below != 81 && below != 12) return false;
+        data=0;
+    } else if (tile == 83) {
+        // TilePlanterItem(reeds) -> ReedTile::mayPlace: reed below, or
+        // grass/dirt/sand below with water beside that block.
+        if (!c.available(x,y-1,z)) return false;
+        const int below=read(x,y-1,z).tile;
+        if (below != 83) {
+            if (below != 2 && below != 3 && below != 12) return false;
+            bool water=false;
+            for (int f=2; f<6; ++f) {
+                const int nx=x+offset[f][0], nz=z+offset[f][2];
+                if (!c.available(nx,y-1,nz)) return false;
+                const int t=read(nx,y-1,nz).tile;
+                water = water || t == 8 || t == 9;
+            }
+            if (!water) return false;
+        }
+        data=0;
+    } else if (tile == 140) {
+        // TilePlanterItem(flowerPot) -> FlowerPotTile::mayPlace: top-solid below.
+        if (!top(x,y-1,z)) return false;
+        data=0;
+    } else if (tile == 106) {
+        // VineTile::mayPlace(face) + getPlacedOnFaceDataValue. Only side faces;
+        // the clicked block (cell behind the vine) must be cube-shaped and
+        // motion-blocking. N->VINE_SOUTH(1), S->NORTH(4), W->EAST(8), E->WEST(2).
+        static constexpr int vine[6] = {0,0,1,4,8,2};
+        if (face < 2) return false;
+        const int sx=x-offset[face][0], sz=z-offset[face][2];
+        if (!c.available(sx,y,sz) || !collisionVineAttachable(read(sx,y,sz).tile)) return false;
+        data=vine[face];
     } else {
         // Ordinary source TileItem states only. All other stateful/custom-use
         // shapes (repeater, rails, trapdoors, plants etc.) explicitly unsupported.

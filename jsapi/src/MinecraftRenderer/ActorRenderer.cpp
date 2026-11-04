@@ -444,6 +444,15 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
     if(pixels) draw(pixels,w,h,mesh);
 }
 
+bool hasHeldItemSprite(int itemId,int aux)
+{
+    const std::string key="item:"+std::to_string(itemId)+":"+std::to_string(aux);
+    if(!itemicons::findIcon(key.c_str())) return false;
+    for(const auto& candidate:originalfp::kHeldSprites)
+        if(candidate.itemId==itemId && candidate.aux==aux) return true;
+    return false;
+}
+
 void renderHeldItemOverlay(uint32_t* pixels,int w,int h,int itemId,int aux,float swing,float equip)
 {
     if(!pixels || w<=0 || h<=0 || w>16384 || h>16384) return;

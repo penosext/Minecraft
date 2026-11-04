@@ -231,6 +231,23 @@ STATIC_BLOCKS = [
       for tile, key, suffix, texture in [(75, 'redstoneTorch_off', '（熄灭）', 'redstone_torch_off'),
                                          (76, 'redstoneTorch_on', '（点亮）', 'redstone_torch_on')]
       for d in range(1, 6)],
+    # --- vine facings: VineTile bits 1=south(+Z) 2=west(-X) 4=north(-Z) 8=east(+X) ---
+    # The pinned catalog only carries the four-sided data15 preview, so every
+    # generated/placed vine (tree vines are single-bit) used to collapse onto one
+    # face. Each set bit is the side of the cell the vine hangs against.
+    *[{'key': f'vine_data_{d}', 'name': f'藤蔓 · 附着{d}', 'tile_id': 106, 'shape': 'vine',
+       'textures': {'all': 'vine'}, 'color': '5bab46', 'data': d, 'quality': 'simplified',
+       'notes': 'data位：1南(+Z) 2西(-X) 4北(-Z) 8东(+X)；每个置位画一面贴墙平面。'
+                '顶面悬挂（data0）沿用四面预览；biome色未按邻格计算。'}
+      for d in range(1, 15)],
+    # --- cocoa facings: data&3 = Direction (S,W,N,E) toward the jungle log, >>2 = age ---
+    # The pinned catalog has only direction 0 per age, so pods attached to
+    # west/north/east logs rendered facing south.
+    *[{'key': f'cocoa_data_{(age << 2) | d}', 'name': f'可可果（阶段{age}）· 朝向{d}',
+       'tile_id': 127, 'shape': 'cocoa', 'textures': {'all': f'cocoa_{age}'},
+       'data': (age << 2) | d, 'quality': 'simplified',
+       'notes': 'data&3为朝向（0南1西2北3东，指向所附丛林原木），data>>2为生长阶段。'}
+      for age in range(3) for d in range(1, 4)],
 ]
 
 

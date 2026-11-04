@@ -3124,5 +3124,143 @@ export const terrainBlocks = [
     "name": "红石火把（点亮） · 朝向5",
     "shape": "torch",
     "quality": "simplified"
+  },
+  {
+    "key": "vine_data_1",
+    "name": "藤蔓 · 附着1",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_2",
+    "name": "藤蔓 · 附着2",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_3",
+    "name": "藤蔓 · 附着3",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_4",
+    "name": "藤蔓 · 附着4",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_5",
+    "name": "藤蔓 · 附着5",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_6",
+    "name": "藤蔓 · 附着6",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_7",
+    "name": "藤蔓 · 附着7",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_8",
+    "name": "藤蔓 · 附着8",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_9",
+    "name": "藤蔓 · 附着9",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_10",
+    "name": "藤蔓 · 附着10",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_11",
+    "name": "藤蔓 · 附着11",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_12",
+    "name": "藤蔓 · 附着12",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_13",
+    "name": "藤蔓 · 附着13",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "vine_data_14",
+    "name": "藤蔓 · 附着14",
+    "shape": "vine",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_1",
+    "name": "可可果（阶段0）· 朝向1",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_2",
+    "name": "可可果（阶段0）· 朝向2",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_3",
+    "name": "可可果（阶段0）· 朝向3",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_5",
+    "name": "可可果（阶段1）· 朝向1",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_6",
+    "name": "可可果（阶段1）· 朝向2",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_7",
+    "name": "可可果（阶段1）· 朝向3",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_9",
+    "name": "可可果（阶段2）· 朝向1",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_10",
+    "name": "可可果（阶段2）· 朝向2",
+    "shape": "cocoa",
+    "quality": "simplified"
+  },
+  {
+    "key": "cocoa_data_11",
+    "name": "可可果（阶段2）· 朝向3",
+    "shape": "cocoa",
+    "quality": "simplified"
   }
 ];

@@ -11,6 +11,11 @@ CollisionState collisionState(uint16_t block) {
         std::array<CollisionState, legacy::kBlockCount + 1> result {};
         for (auto& entry : result) entry = {-1, -1};
         result[0] = {0, 0};
+        // Static generate-terrain additions (vine/cocoa facings, redstone
+        // states, ...) are absent from ItemCatalog's pinned 312 states but
+        // carry their exact source tileId/data in the render catalog.
+        for (int i = 0; i < legacy::kBlockCount; ++i)
+            result[size_t(i) + 1] = {legacy::kBlockSpecs[i].tileId, legacy::kBlockSpecs[i].data};
         for (int i = 0; i < sourceitems::blockStateCount(); ++i) {
             const auto& state = sourceitems::blockStates()[i];
             if (state.renderIndex >= 0 && state.renderIndex < legacy::kBlockCount)
@@ -82,6 +87,7 @@ bool vineAttachable(int tile) {
     }
 }
 }
+bool collisionVineAttachable(int tile) { return vineAttachable(tile); }
 bool collisionClimbable(CollisionState s, int x, int y, int z, const CollisionContext& context) {
     if (s.tileId == 65) return true; // LadderTile keeps its face in data; see header.
     if (s.tileId != 106) return false;
@@ -93,9 +99,10 @@ bool collisionClimbable(CollisionState s, int x, int y, int z, const CollisionCo
     };
     // A roof alone supports a hanging vine, matching the source survival rule
     // that only kills a vine with no facings once the block above stops being an
-    // acceptable neighbour. Otherwise any of the four side faces will do: the
-    // current catalog stores one representative vine state (data 15, all four
-    // facings), so all four sides are candidates rather than data-selected.
+    // acceptable neighbour. Otherwise any of the four side faces will do. The
+    // catalog now carries per-facing vine states, but VineTile::updateSurvival
+    // (which would prune unsupported facings) is not ported, so climbing stays
+    // keyed on any real attachment rather than the stored facing bits.
     if (vineAttachable(neighbour(0,1,0).tileId)) return true;
     return vineAttachable(neighbour(-1,0,0).tileId) || vineAttachable(neighbour(1,0,0).tileId) ||
            vineAttachable(neighbour(0,0,-1).tileId) || vineAttachable(neighbour(0,0,1).tileId);

@@ -72,3 +72,8 @@ void renderActorOverlay(uint32_t* pixels, int w, int h, int viewMode,
 // finite values clamp to [0,1]. Does not alter the existing hand/full-cube APIs.
 void renderHeldItemOverlay(uint32_t* pixels, int w, int h, int itemId, int aux,
                            float swing = 0.0f, float equip = 1.0f);
+// True when itemId/aux is an independent Item drawn from items.png in hand
+// (door, seeds, reeds, cocoa beans = dye 351:3, flower pot, ...). Such items
+// may still PLACE a tile, but the source ItemInHandRenderer only renders a
+// block for TileItems; their placed-tile render index is not the held model.
+bool hasHeldItemSprite(int itemId, int aux);

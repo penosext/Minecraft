@@ -480,7 +480,16 @@ Geometry buildGeometry(const legacy::BlockSpec& spec)
     } else if (shape=="pane") {
         box(g,0,0,.46875f,1,1,.53125f);
         box(g,.46875f,0,0,.53125f,1,1);
-    } else if (shape=="ladder" || shape=="vine") {
+    } else if (shape=="vine") {
+        // VineTile facings are a BITMASK, not ladder facing data:
+        // 1=south(+Z) 2=west(-X) 4=north(-Z) 8=east(+X). Data 0 (roof-hung)
+        // has no catalog state of its own and is shown as the 4-sided preview.
+        const int d=spec.data?spec.data:15;
+        if (d&1) plane(g,{0,0,.95f},{1,0,.95f},{0,1,.95f},2);
+        if (d&2) plane(g,{.05f,0,0},{.05f,0,1},{.05f,1,0},5);
+        if (d&4) plane(g,{0,0,.05f},{1,0,.05f},{0,1,.05f},3);
+        if (d&8) plane(g,{.95f,0,0},{.95f,0,1},{.95f,1,0},4);
+    } else if (shape=="ladder") {
         const int d=spec.data;
         if (d==4 || d==5) {
             const float x=d==4?.95f:.05f;
@@ -534,6 +543,37 @@ Geometry buildGeometry(const legacy::BlockSpec& spec)
         box(g,.0625f,0,.0625f,.9375f,.9375f,.9375f);
     } else if (shape=="cactus") {
         box(g,.0625f,0,.0625f,.9375f,1,.9375f);
+    } else if (shape=="cocoa") {
+        // CocoaTile::updateShape pod and TileRenderer::tesselateCocoaInWorld UV
+        // regions (sides 15-w..15 x 4..4+h, top/bottom 0..w', stem 12..16 x
+        // 0..4). Direction S,W,N,E points at the supporting jungle log.
+        constexpr float P=1/16.0f;
+        const int age=std::clamp(spec.data>>2,0,2), dir=spec.data&3;
+        const float w=float(4+age*2), h=float(5+age*2);
+        float ox=8-w/2, oz=15-w;
+        if (dir==2) oz=1;
+        if (dir==1) { ox=1; oz=8-w/2; }
+        if (dir==3) { ox=15-w; oz=8-w/2; }
+        const float x0=ox*P,x1=(ox+w)*P,z0=oz*P,z1=(oz+w)*P,y0=(12-h)*P,y1=12*P;
+        const float su=(15-w)*P, sw=w*P, sv=(4+h)*P, sh=h*P;
+        plane(g,{x0,y0,z0},{x1,y0,z0},{x0,y1,z0},2,su,sv,sw,0,0,-sh);
+        plane(g,{x0,y0,z1},{x1,y0,z1},{x0,y1,z1},3,su,sv,sw,0,0,-sh);
+        plane(g,{x0,y0,z0},{x0,y0,z1},{x0,y1,z0},4,su,sv,sw,0,0,-sh);
+        plane(g,{x1,y0,z0},{x1,y0,z1},{x1,y1,z0},5,su,sv,sw,0,0,-sh);
+        const float t=(w-(age==2?1:0))*P;
+        plane(g,{x0,y1,z0},{x1,y1,z0},{x0,y1,z1},1,0,0,t,0,0,t);
+        plane(g,{x0,y0,z0},{x1,y0,z0},{x0,y0,z1},0,0,0,t,0,0,t);
+        if (dir==0 || dir==2) {
+            const float z=dir==2?0:12*P;
+            plane(g,{.5f,y1,z},{.5f,y1,z+4*P},{.5f,1,z},4,12*P,4*P,4*P,0,0,-4*P);
+        } else {
+            const float x=dir==1?0:12*P;
+            plane(g,{x,y1,.5f},{x+4*P,y1,.5f},{x,1,.5f},2,12*P,4*P,4*P,0,0,-4*P);
+        }
+    } else if (shape=="flower_pot") {
+        // FlowerPotTile::updateDefaultShape: 6/16 cube centred on the cell.
+        // Cell-local projection lands on the pot texels of flower_pot.
+        box(g,5/16.0f,0,5/16.0f,11/16.0f,6/16.0f,11/16.0f);
     } else {
         const float h=shape=="liquid"?.875f:std::clamp(spec.height,0.0f,1.0f);
         box(g,0,0,0,1,h,1);

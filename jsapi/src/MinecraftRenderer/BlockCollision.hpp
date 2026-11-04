@@ -36,6 +36,8 @@ bool collisionLadder(CollisionState state); // ladder or vine; feet-cell test
 // Independent implementation, behaviour verified against observed game rules.
 bool collisionClimbable(CollisionState state, int x, int y, int z,
                         const CollisionContext& context = {});
+// VineTile::isAcceptableNeighbor subset: cube-shaped AND motion-blocking.
+bool collisionVineAttachable(int tileId);
 bool collisionIntersects(const CollisionBox& a, const CollisionBox& b);
 // Absolute world boxes; fence and cobblestone wall extend to y+1.5, so
 // candidate queries must also inspect the cell below the entity.

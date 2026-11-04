@@ -532,12 +532,12 @@ void testRejection()
     require(mcredstone::catalogFor(115, 2) == 0, "nether wart metadata 2 absent");
     require(mcredstone::catalogFor(104, 0) == 0, "melon stem absent");
     require(mcredstone::catalogFor(105, 0) == 0, "pumpkin stem absent");
-    // Cocoa has all three ages for direction 0 but nothing for the other three
-    // mount orientations, so the age chain only exists for one facing.
+    // Cocoa now has every age x facing render state (generate-terrain static
+    // cocoa_data_*); growth itself is still not tick-driven.
     for (int age = 0; age <= 2; ++age)
-        require(mcredstone::catalogFor(127, age << 2) != 0, "cocoa direction 0 ages exist");
-    for (int dir = 1; dir <= 3; ++dir)
-        require(mcredstone::catalogFor(127, dir) == 0, "cocoa other facings are absent");
+        for (int dir = 0; dir <= 3; ++dir)
+            require(mcredstone::catalogFor(127, (age << 2) | dir) != 0, "cocoa age/facing exists");
+    require(!driven(127), "cocoa growth is not driven");
 
     // And present for everything this round does drive.
     for (int d = 0; d <= 7; ++d)
