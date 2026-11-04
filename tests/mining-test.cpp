@@ -10,6 +10,7 @@
 #undef main
 #include <array>
 #include "ToolRules.hpp"
+#include "ItemCatalog.hpp"
 
 uint32_t get32(const Bytes& bytes, size_t offset) {
     assert(offset + 4 <= bytes.size());
@@ -228,6 +229,8 @@ void survivalDrops() {
     assert(drops(-1, 20, 0).empty());             // glass drops nothing
     assert(drops(-1, 7, 0).empty());              // bedrock: known empty
     assert(one(drops(-1, 47, 0), 340, 0, 3));     // bookshelf -> 3 books
+    assert(one(drops(270, 16, 0), 263, 0, 1));    // coal ore + wooden pickaxe -> coal
+    assert(sourceitems::itemIndexForIdAux(263, 0) >= 0); // coal is a real catalog item
 }
 
 int main() {

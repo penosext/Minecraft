@@ -216,6 +216,7 @@ void furnaceSmeltsWithSourceTimings() {
     tick(201);
     view = f.containers.view();
     const bool coalKnown = sourceitems::itemIndexForIdAux(263, 1) >= 0;
+    assert(coalKnown); // merged catalog has coal/charcoal; logs must really make charcoal
     assert((view.slots[2].key == "item:263:1") == coalKnown);
     assert(view.slots[0].count == (coalKnown ? 0 : 1));
 }
