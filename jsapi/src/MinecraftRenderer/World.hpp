@@ -64,7 +64,7 @@ struct ChunkRequest {
     uint64_t epoch = 0;
     uint32_t seed = 0;
     int worldSize = 0, key = -1;
-    bool structures = false, decoration = false;
+    bool structures = false, decoration = false, carvers = false;
 };
 struct GeneratedChunk {
     ChunkRequest request;
@@ -81,12 +81,17 @@ public:
     bool loaded() const { return loaded_; }
     // Only create() makes directories; existing world directories are never reused.
     // The root override is intended for host tests. Production uses /tmp/mc.
-    // Flags apply only to original generation. Decoration creates generator v3;
-    // disabling it selects v1 (no structures) or v2 (structures). Existing saves
-    // ALWAYS retain their generation baseline; open() never upgrades it.
+    // Flags apply only to original generation. Decoration creates generator v4
+    // (v3 + original caves/canyons + ores); disabling it selects v1 (no
+    // structures) or v2 (structures). Existing saves ALWAYS retain their
+    // generation baseline; open() never upgrades it (v3 stays cave-free).
     // Callback runs on the calling/owning thread; throwing cancels transactionally.
     // create() loads only spawn/safety chunks, never the whole render target.
     void create(uint32_t seed, const std::string& root = "/tmp/mc", bool original = true, int worldSize = 5120, bool structures = true, bool decoration = true, ProgressCallback progress = {});
+    // Explicit generation selection, e.g. carvers=false for a v3 baseline.
+    // carvers requires decoration (v4 is v3 + carvers + ores).
+    void createGeneration(uint32_t seed, const std::string& root, bool original, int worldSize, bool structures,
+                          bool decoration, bool carvers, ProgressCallback progress = {});
 
     // Runtime-only settings survive create/open on this object, not save files.
     // Radius 1..12 -> 48..400, minimum safe ray distance radius*16-8. The default
@@ -251,6 +256,7 @@ public:
     uint32_t foliageColorAt(int logicalX, int logicalZ) const;
     bool structuresEnabled() const;
     bool decorationsEnabled() const;
+    bool carversEnabled() const; // v4 caves/canyons/ores
     // Deterministic structure locations, in logical coordinates; no teleport.
     std::string landmarks() const;
     // Source-audited block AABBs with simplified seconds-based gravity, sliding,

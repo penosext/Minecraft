@@ -10,8 +10,9 @@
 
 namespace mcworld {
 // Exclusively owned, single-thread-at-a-time bridge (ownership may transfer):
-// BASE -> structures -> decoration subset -> edits. No internal threads.
-// Not full BiomeDecorator/postProcess equivalence, caves or full-game physics.
+// BASE -> [carvers] -> structures -> [ores] -> decoration subset -> edits.
+// No internal threads. Not full BiomeDecorator/postProcess equivalence or
+// full-game physics. carvers=original caves/canyons + decorateOres (v4).
 class OriginalWorld {
 public:
     static constexpr int Height = 256, DefaultSize = 5120;
@@ -35,12 +36,14 @@ public:
         mutable bool baselineValidated = false;
     };
 
-    // Low-level callers retain the pre-decoration default; World::create()
-    // explicitly passes its public decoration=true default for new worlds.
-    explicit OriginalWorld(uint32_t seed, int worldSize = DefaultSize, bool structures = true, bool decoration = false);
+    // Low-level callers retain the pre-decoration, pre-carver defaults;
+    // World::create() selects v4 (decoration + carvers) for new worlds.
+    explicit OriginalWorld(uint32_t seed, int worldSize = DefaultSize, bool structures = true, bool decoration = false,
+                           bool carvers = false);
     int size() const;
     bool structuresEnabled() const;
     bool decorationsEnabled() const;
+    bool carversEnabled() const;
     struct BiomeMeta { int id; const char* name; const char* sourceName; uint32_t grassColor, foliageColor; };
     // ID 23 is unregistered upstream; unsupported/unregistered IDs throw.
     static const BiomeMeta& biomeMeta(int id);

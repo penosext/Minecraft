@@ -1,0 +1,1 @@
+typedef arrayWithLength<byte> byteArray;

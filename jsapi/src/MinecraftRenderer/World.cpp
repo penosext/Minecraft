@@ -37,6 +37,10 @@ constexpr char OriginalGenerator[] = "original-biomes-density-surfaces-v1";
 constexpr char StructuresGenerator[] = "original-biomes-density-surfaces-structures-v2";
 constexpr char DecorationGenerator[] = "original-biomes-density-surfaces-structures-decoration-v3";
 constexpr char DecorationLimitations[] = "decoration-feature-subset-not-full-BiomeDecorator-postProcess;no-caves-loot-villagers-full-physics;cube-DDA-not-exact-render-shapes;catalog-representative-orientation-state-content-fallback";
+// v4 = v3 + original getChunk caves/canyons + decorateOres. v1..v3 saves keep
+// their generator string and are regenerated without carvers/ores forever.
+constexpr char CarversGenerator[] = "original-biomes-density-surfaces-carvers-structures-ores-decoration-v4";
+constexpr char CarversLimitations[] = "decoration-subset-not-full-BiomeDecorator-postProcess;ores-own-rng-not-original-positions;no-lakes-dungeons-mineshafts-strongholds-loot-villagers-full-physics;cube-DDA-not-exact-render-shapes;catalog-representative-orientation-state-content-fallback";
 constexpr uint32_t OriginalEditVersion = 2;
 constexpr uint32_t OriginalSaveV2 = 2;
 constexpr size_t OriginalV1Fields = 14;
@@ -45,6 +49,14 @@ constexpr size_t MaxDimensionFile = 24 + 16 * 4;
 constexpr int OverworldSlot = 0, MaxDimensionSlot = 15;
 constexpr char TerrainLimitations[] = "no-caves-decoration-trees-ores-structures";
 constexpr char StructuresLimitations[] = "no-caves-decoration-trees-ores-loot-villagers-full-physics;catalog-representative-orientation-state-content-fallback";
+const char* generatorName(const OriginalWorld& w) {
+    return w.carversEnabled() ? CarversGenerator : w.decorationsEnabled() ? DecorationGenerator
+         : w.structuresEnabled() ? StructuresGenerator : OriginalGenerator;
+}
+const char* generatorLimitations(const OriginalWorld& w) {
+    return w.carversEnabled() ? CarversLimitations : w.decorationsEnabled() ? DecorationLimitations
+         : w.structuresEnabled() ? StructuresLimitations : TerrainLimitations;
+}
 constexpr char SourceCommit[] = "09df8928eeb15328bca499d225e48ea95af6d119";
 const unsigned char OriginalChunkMagic[8] = {'M','C','O','C','H','N','K',0};
 const unsigned char OriginalStateMagic[8] = {'M','C','O','S','T','A','T',0};
@@ -651,6 +663,7 @@ uint32_t World::foliageColorAt(int x, int z) const {
 }
 bool World::structuresEnabled() const { requireLoaded(); return original_ && original_->structuresEnabled(); }
 bool World::decorationsEnabled() const { requireLoaded(); return original_ && original_->decorationsEnabled(); }
+bool World::carversEnabled() const { requireLoaded(); return original_ && original_->carversEnabled(); }
 std::string World::biomeInfo() const {
     const int biome = biomeAt(int(std::floor(x_)), int(std::floor(z_)));
     std::ostringstream out;
@@ -996,6 +1009,13 @@ void World::spawnOriginal(const ProgressCallback& progress) {
 }
 
 void World::create(uint32_t seed, const std::string& root, bool original, int worldSize, bool structures, bool decoration, ProgressCallback progress) {
+    // New decorated worlds are v4 (carvers + ores); v1..v3 remain selectable.
+    createGeneration(seed, root, original, worldSize, structures, decoration, decoration, std::move(progress));
+}
+
+void World::createGeneration(uint32_t seed, const std::string& root, bool original, int worldSize, bool structures,
+                             bool decoration, bool carvers, ProgressCallback progress) {
+    if (carvers && !decoration) fail("carver generation v4 requires decoration");
     Directory parent = directory(root, true);
     World candidate;
     candidate.streaming_ = streaming_; candidate.renderRadius_ = renderRadius_; candidate.preloadRadius_ = preloadRadius_;
@@ -1004,7 +1024,7 @@ void World::create(uint32_t seed, const std::string& root, bool original, int wo
     candidate.rootDevice_ = uint64_t(parent.info.st_dev); candidate.rootInode_ = uint64_t(parent.info.st_ino);
     candidate.seed_ = seed;
     if (original) {
-        candidate.original_ = std::make_shared<OriginalWorld>(seed, worldSize, structures, decoration);
+        candidate.original_ = std::make_shared<OriginalWorld>(seed, worldSize, structures, decoration, carvers);
         candidate.configureOriginal(); candidate.spawnOriginal(progress);
         if (candidate.streaming_) candidate.original_->setStreamingCenter(candidate.x_, candidate.z_);
         candidate.loadPlayerSafety();
@@ -1101,11 +1121,11 @@ Bytes World::encodeOriginalMetadata() const {
     level.imbue(std::locale::classic());
     const int size = original_->size();
     level << "{\n\"format\":" << quote(OriginalFormat) << ",\"version\":1,\"generator\":"
-          << quote(original_->decorationsEnabled() ? DecorationGenerator : original_->structuresEnabled() ? StructuresGenerator : OriginalGenerator)
+          << quote(generatorName(*original_))
           << ",\"seed\":" << seed_ << ",\"size\":[" << size << ",256," << size
           << "],\"generationDepth\":128,\"seaLevel\":63,\"biomeCount\":24,\"sourceCommit\":" << quote(SourceCommit)
           << ",\"sourceOrigin\":" << quote("-" + std::to_string(size / 2) + ",0,-" + std::to_string(size / 2))
-          << ",\"limitations\":" << quote(original_->decorationsEnabled() ? DecorationLimitations : original_->structuresEnabled() ? StructuresLimitations : TerrainLimitations);
+          << ",\"limitations\":" << quote(generatorLimitations(*original_));
     if (original_->decorationsEnabled()) level << ",\"structures\":" << (original_->structuresEnabled() ? 1 : 0);
     level << ",\"storage\":\"modified-chunks-uint16-le-yzx-palette-plus-one\""
           << ",\"paletteHash\":" << paletteHash_ << ",\"palette\":[";
@@ -1185,7 +1205,8 @@ void World::open(const std::string& path, const std::string& root) {
     const Json level = JsonParser(std::string(metadata.begin(), metadata.end())).parse();
     if (field(level, "format", Json::String).text == OriginalFormat) {
         const auto& generator = field(level, "generator", Json::String).text;
-        const bool decoration = generator == DecorationGenerator;
+        const bool carvers = generator == CarversGenerator;
+        const bool decoration = carvers || generator == DecorationGenerator;
         const bool structures = decoration ? integer(level, "structures") == 1 : generator == StructuresGenerator;
         const size_t fields = OriginalV1Fields + (decoration ? 1 : 0);
         if (level.object.size() != fields || integer(level, "version") != Version ||
@@ -1193,7 +1214,7 @@ void World::open(const std::string& path, const std::string& root) {
             (generator != OriginalGenerator && generator != StructuresGenerator && !decoration) ||
             integer(level, "generationDepth") != 128 || integer(level, "seaLevel") != 63 || integer(level, "biomeCount") != 24 ||
             field(level, "sourceCommit", Json::String).text != SourceCommit ||
-            field(level, "limitations", Json::String).text != (decoration ? DecorationLimitations : structures ? StructuresLimitations : TerrainLimitations) ||
+            field(level, "limitations", Json::String).text != (carvers ? CarversLimitations : decoration ? DecorationLimitations : structures ? StructuresLimitations : TerrainLimitations) ||
             field(level, "storage", Json::String).text != "modified-chunks-uint16-le-yzx-palette-plus-one")
             fail("unsupported original save metadata");
         const auto& dimensions = field(level, "size", Json::Array).array;
@@ -1235,7 +1256,7 @@ void World::open(const std::string& path, const std::string& root) {
             candidate.originalPalette_.push_back(key.text); remap.push_back(it->second);
         }
         if (paletteHash(candidate.originalPalette_) != candidate.paletteHash_) fail("original palette checksum mismatch");
-        candidate.original_ = std::make_shared<OriginalWorld>(candidate.seed_, size, structures, decoration);
+        candidate.original_ = std::make_shared<OriginalWorld>(candidate.seed_, size, structures, decoration, carvers);
         candidate.configureOriginal();
         for (const auto& file : originalChunkFiles(world.fd.value, size))
             candidate.original_->restoreChunk(file.first, decodeOriginalChunk(file.second, file.first, candidate.seed_, candidate.originalMetadataHash_, remap), true);
@@ -1553,8 +1574,8 @@ std::string World::statusJson() const {
     if (original_) out << ",\"decorations\":" << (decorationsEnabled() ? "true" : "false")
                        << ",\"interactionLimitations\":\"cube-DDA-not-exact-render-shapes;creative-instant-mine-not-survival-drops\""
                        << ",\"blockCountScope\":\"render-window\",\"generation\":"
-                       << quote(decorationsEnabled() ? DecorationGenerator : structuresEnabled() ? StructuresGenerator : OriginalGenerator)
-                       << ",\"limitations\":" << quote(decorationsEnabled() ? DecorationLimitations : structuresEnabled() ? StructuresLimitations : TerrainLimitations);
+                       << quote(generatorName(*original_))
+                       << ",\"limitations\":" << quote(generatorLimitations(*original_));
     out << '}';
     return out.str();
 }

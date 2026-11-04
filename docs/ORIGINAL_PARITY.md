@@ -14,7 +14,7 @@
 4. 洞穴/峡谷和结构阶段。
 5. `postProcess` 中的结构后处理、湖泊、地牢、Biome装饰、生物及冰雪。
 
-当前已接入1–3，原村庄/Scattered建筑选址与模板提取，及树木/植物Feature子集。完整洞穴/峡谷、完整装饰前置随机消耗和所有生成阶段未移植。
+当前已接入1–3；第4步中原 `getChunk` 的洞穴→峡谷（`LargeFeature::apply`、`LargeCaveFeature`、`CanyonFeature` 原字节，v4）；原村庄/Scattered建筑选址与模板提取；第5步中树木/植物Feature子集及 `BiomeDecorator::decorateOres`/`OreFeature`（v4）。废弃矿井、要塞、湖泊、地牢、其余装饰、完整装饰前置随机消耗未移植。
 
 ### 世界大小
 
@@ -31,7 +31,11 @@
 
 **差异：**结构采用canonical whole-piece生成后裁剪，不是原逐chunk后处理调度；树木采用装饰子集调度，省略其他前置阶段的RNG消耗。因此不能承诺同种子每棵树位置、整村落地细节与完整原控制台世界逐块相同。
 
-新建v3世界启用装饰，v1/v2和旧自写世界保留原基准；不静默向旧图加树。
+- `carvers/`（v4）原字节编译 `LargeFeature`、`LargeCaveFeature`、`CanyonFeature`、`OreFeature`、`BiomeDecorator::decorateDepthSpan/decorateDepthAverage/decorateOres` 及原 `getChunk` 洞穴→峡谷调用顺序、`postProcess` 重播种链。
+
+**v4差异：**矿物计划在原重播种后直接运行 `decorateOres`，省略结构后处理/湖泊/岩浆湖/地牢的RNG消耗，也不与树木共享同一随机流（树木子集保持v3调度）；矿脉数量、大小、深度带为原值，位置不等于完整原世界。每个原点矿物计划只读取已雕刻BASE+结构，按原点X后Z合并，仅替换仍为石头的格子。原始矿物 `getHeightmap` 近似为最高非空格之上。
+
+新建v4世界启用装饰+洞穴/峡谷/矿物；v1/v2/v3和旧自写世界保留原基准（测试用旧提交生成的黄金哈希核对）；不静默向旧图加树或洞穴。
 
 ## 2. 第一人称右手的位置、大小与动画
 

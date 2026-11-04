@@ -6,6 +6,7 @@
 #include "original_biomes/Source.h"
 #include "Structures.h"
 #include "Decoration.h"
+#include "Carvers.h"
 
 #include <algorithm>
 #include <atomic>
@@ -224,9 +225,24 @@ struct OriginalWorld::Impl {
         std::vector<uint8_t> tiles, data; // BASE+structures, y-z-x, all 256 levels
         uint64_t used = 0;
     };
+    struct OrePlan {
+        std::vector<original_carvers::Block> blocks; // SOURCE coordinates, origin + one chunk
+        uint64_t used = 0;
+    };
+    // Each FINAL chunk merges four origin plans; each plan reads four structured
+    // chunks. Plans are small (~1-2k cells) and reused by four targets.
+    static constexpr size_t OreCacheLimit = 32;
     // Dependency LRUs remain small even with 625 FINAL targets. One extra FINAL
     // safety slot allows explicit spawn/physics loads without evicting targets.
     static constexpr size_t BaseCacheLimit = 7, StructureCacheLimit = 7;
+    // v4 FINAL chunks read four ore origins x four structured chunks plus the
+    // decoration/structure neighbourhood; 7 slots thrash (measured 53 ms vs
+    // 26 ms/chunk at radius 6). v1..v3 keep 7 (unchanged runtime behaviour).
+    // Bounded: 16*(32 KiB base) + 16*(128 KiB structured) + 32 ore plans
+    // (~30 KiB each) ~= 3.5 MiB, reserved in affordableRadius and reported in
+    // StreamingInfo::cacheBytes.
+    static constexpr size_t CarverBaseCacheLimit = 16, CarverStructureCacheLimit = 16;
+    size_t baseLimit = BaseCacheLimit, structureLimit = StructureCacheLimit;
     int size, chunks;
     uint32_t seed;
     uint64_t epoch = nextEpoch();
@@ -235,6 +251,10 @@ struct OriginalWorld::Impl {
     original_terrain::Generator generator;
     std::unique_ptr<original_structures::Generator> structures;
     std::unique_ptr<original_decoration::Generator> decoration;
+    // v4: original getChunk carvers on BASE and decorateOres plans. Owned per
+    // instance (async contexts are isolated), never shared between threads.
+    std::unique_ptr<original_carvers::Carver> carver;
+    mutable std::map<int, OrePlan> oreCache;
     mutable std::map<int, BaseChunk> baseCache;
     mutable std::map<int, StructureChunk> structureCache;
     mutable std::map<int, Chunk> cache;
@@ -321,7 +341,11 @@ struct OriginalWorld::Impl {
     }
     size_t cacheLimit() const {
         const size_t side = size_t(preloadRadius * 2 + 1);
-        return std::max(CacheLimit, side * side + 1 + BaseCacheLimit + StructureCacheLimit);
+        // FINAL slots are max(50, side^2 + 1) for every version; v4's larger
+        // dependency LRUs are added on top, never taken from FINAL residency
+        // (shrinking FINAL below a 96-wide window's 36 chunks thrashes it).
+        const size_t final = std::max(CacheLimit - BaseCacheLimit - StructureCacheLimit, side * side + 1);
+        return final + baseLimit + structureLimit;
     }
     bool compact() const { return preloadRadius > 3; }
     static uint16_t readCell(const std::vector<uint16_t>& cells, size_t at) {
@@ -408,11 +432,15 @@ struct OriginalWorld::Impl {
         }
     }
 
-    explicit Impl(uint32_t seed, int worldSize, bool enableStructures, bool enableDecoration)
+    explicit Impl(uint32_t seed, int worldSize, bool enableStructures, bool enableDecoration, bool enableCarvers)
         : size(worldSize), chunks(worldSize / 16), seed(seed), source(int64_t(seed)),
           generator(original_terrain::Config{int64_t(seed), worldSize, 63, false, false, false},
                     [this](int x, int z, int w, int h) { return convert(source.raw(x, z, w, h)); },
                     [this](int x, int z, int w, int h) { return convert(source.zoomed(x, z, w, h)); }) {
+        if (enableCarvers) {
+            carver.reset(new original_carvers::Carver(int64_t(seed)));
+            baseLimit = CarverBaseCacheLimit; structureLimit = CarverStructureCacheLimit;
+        }
         if (enableStructures) {
             original_structures::Options options;
             options.generationBiome = [this](int qx, int qz) { return source.raw(qx, qz, 1, 1).at(0).id; };
@@ -462,6 +490,14 @@ struct OriginalWorld::Impl {
         if (raw.tiles.size() != 16 * 128 * 16 || raw.biomes.size() != 256) invalid("malformed original chunk");
         BaseChunk result;
         result.tiles = std::move(raw.tiles);
+        if (carver) {
+            // Original getChunk order: prepareHeights, buildSurfaces, caves,
+            // canyons, then structures. Everything downstream (structure
+            // ground, decoration, ores) therefore sees the carved BASE.
+            std::array<uint8_t, 256> top {};
+            for (size_t i = 0; i < 256; ++i) top[i] = raw.biomes[i].top; // x + z*16
+            carver->apply(cx - chunks / 2, cz - chunks / 2, result.tiles.data(), top.data());
+        }
         for (size_t i = 0; i < 256; ++i) {
             biomeMeta(raw.biomes[i].id); // also reject upstream-unregistered ID 23
             result.biomes[i] = uint8_t(raw.biomes[i].id);
@@ -476,7 +512,7 @@ struct OriginalWorld::Impl {
             }
         }
         result.used = ++clock;
-        if (baseCache.size() >= BaseCacheLimit) {
+        if (baseCache.size() >= baseLimit) {
             const auto oldest = std::min_element(baseCache.begin(), baseCache.end(), [](const auto& a, const auto& b) { return a.second.used < b.second.used; });
             baseCache.erase(oldest);
         }
@@ -504,11 +540,34 @@ struct OriginalWorld::Impl {
             }
         }
         result.used = ++clock;
-        if (structureCache.size() >= StructureCacheLimit) {
+        if (structureCache.size() >= structureLimit) {
             const auto oldest = std::min_element(structureCache.begin(), structureCache.end(), [](const auto& a, const auto& b) { return a.second.used < b.second.used; });
             structureCache.erase(oldest);
         }
         return structureCache.emplace(key, std::move(result)).first->second;
+    }
+
+    // Original decorateOres() plan for app origin chunk (ox,oz), computed from
+    // immutable BASE+structures only (never ores of other origins/decoration).
+    const std::vector<original_carvers::Block>& orePlan(int ox, int oz) const {
+        const int key = oz * chunks + ox;
+        auto it = oreCache.find(key);
+        if (it != oreCache.end()) { it->second.used = ++clock; return it->second.blocks; }
+        OrePlan plan;
+        plan.blocks = original_carvers::planOres(int64_t(seed), ox - chunks / 2, oz - chunks / 2,
+            [this](int sx, int sz, uint8_t* cells) {
+                const int ax = sx + chunks / 2, az = sz + chunks / 2;
+                if (ax < 0 || az < 0 || ax >= chunks || az >= chunks) return false;
+                const auto& tiles = structured(ax, az).tiles; // y-z-x, 16x256x16
+                std::copy(tiles.begin(), tiles.end(), cells);
+                return true;
+            });
+        plan.used = ++clock;
+        if (oreCache.size() >= OreCacheLimit) {
+            const auto oldest = std::min_element(oreCache.begin(), oreCache.end(), [](const auto& a, const auto& b) { return a.second.used < b.second.used; });
+            oreCache.erase(oldest);
+        }
+        return oreCache.emplace(key, std::move(plan)).first->second.blocks;
     }
 
     Chunk& chunk(int cx, int cz) const {
@@ -530,7 +589,7 @@ struct OriginalWorld::Impl {
         std::map<int, Chunk> staged;
         result.used = clock + 1;
         staged.emplace(key, std::move(result));
-        if (cache.size() >= cacheLimit() - BaseCacheLimit - StructureCacheLimit) {
+        if (cache.size() >= cacheLimit() - baseLimit - structureLimit) {
             auto oldest = cache.end();
             for (auto candidate = cache.begin(); candidate != cache.end(); ++candidate) {
                 if (streaming && target.count(candidate->first)) continue;
@@ -564,6 +623,22 @@ struct OriginalWorld::Impl {
             if (!mapped[variant]) { mapping[variant] = catalogForTile(tile, data); mapped[variant] = true; }
             result.baseline[at] = mapping[variant];
         }
+        if (carver) {
+            // Ore writes reach origin..origin+1, so origins cx-1..cx, cz-1..cz.
+            // Fixed X-then-Z merge; a cell is replaced only while it is still
+            // stone, so an earlier origin's vein (or a structure) always wins.
+            static const uint16_t stone = catalogForTile(1, 0);
+            for (int ox = cx - 1; ox <= cx; ++ox) for (int oz = cz - 1; oz <= cz; ++oz) {
+                if (ox < 0 || oz < 0 || ox >= chunks || oz >= chunks) continue;
+                for (const auto& block : orePlan(ox, oz)) {
+                    const int x = block.x + size / 2, z = block.z + size / 2;
+                    if (x / 16 != cx || z / 16 != cz || x < 0 || z < 0) continue;
+                    if (!inside(x, block.y, z, size) || block.y == 0) invalid("ore output outside world");
+                    auto& value = result.baseline[cell(x % 16, block.y, z % 16)];
+                    if (value == stone) value = catalogForTile(block.tile, block.data);
+                }
+            }
+        }
         // Copy before decoration's BASE+structures callbacks evict structured().
         // No generation stage ever reads edits or recursively enters chunk().
         if (decoration) {
@@ -579,13 +654,14 @@ struct OriginalWorld::Impl {
 };
 
 bool OriginalWorld::validSize(int size) { return size == 864 || size == 1024 || size == 3072 || size == 5120; }
-OriginalWorld::OriginalWorld(uint32_t seed, int size, bool structures, bool decoration) {
+OriginalWorld::OriginalWorld(uint32_t seed, int size, bool structures, bool decoration, bool carvers) {
     if (!validSize(size)) invalid("unsupported world size");
-    impl_.reset(new Impl(seed, size, structures, decoration));
+    impl_.reset(new Impl(seed, size, structures, decoration, carvers));
 }
 int OriginalWorld::size() const { return impl_->size; }
 bool OriginalWorld::structuresEnabled() const { return bool(impl_->structures); }
 bool OriginalWorld::decorationsEnabled() const { return bool(impl_->decoration); }
+bool OriginalWorld::carversEnabled() const { return bool(impl_->carver); }
 std::vector<OriginalWorld::Landmark> OriginalWorld::landmarks(int x, int z, int radius) const {
     if (!inside(x, 0, z, impl_->size) || radius < 0 || radius > impl_->size) invalid("invalid landmark query");
     std::vector<Landmark> result;
@@ -638,7 +714,9 @@ int OriginalWorld::affordableRadius(int requested) {
         const size_t window = side * 16 * Height * side * 16 * sizeof(uint16_t);
         const size_t chunks = side * side * size_t(ChunkCells) * sizeof(uint16_t) * 2;
         const size_t lighting = window; // two byte planes, same cell count
-        if (window + chunks + lighting <= budget) return radius;
+        // v4 dependency caches (Impl::Carver*CacheLimit + ore plans), bounded.
+        const size_t dependencies = size_t(4) << 20;
+        if (window + chunks + lighting + dependencies <= budget) return radius;
     }
     return 1;
 }
@@ -716,7 +794,7 @@ std::vector<ChunkRequest> OriginalWorld::chunkRequests(int budget) const {
     for (int key : p.queue) {
         if (result.size() >= size_t(budget)) break;
         if (!p.target.count(key) || p.cache.count(key)) continue;
-        result.push_back({p.epoch, p.seed, p.size, key, bool(p.structures), bool(p.decoration)});
+        result.push_back({p.epoch, p.seed, p.size, key, bool(p.structures), bool(p.decoration), bool(p.carver)});
     }
     return result;
 }
@@ -727,8 +805,9 @@ GeneratedChunk OriginalWorld::generateChunk(const ChunkRequest& request,
     const auto start = std::chrono::steady_clock::now();
     if (!context || !context->impl_->isolated || context->impl_->seed != request.seed ||
         context->size() != request.worldSize || context->structuresEnabled() != request.structures ||
-        context->decorationsEnabled() != request.decoration) {
-        auto next = std::make_unique<OriginalWorld>(request.seed, request.worldSize, request.structures, request.decoration);
+        context->decorationsEnabled() != request.decoration || context->carversEnabled() != request.carvers) {
+        auto next = std::make_unique<OriginalWorld>(request.seed, request.worldSize, request.structures, request.decoration,
+                                                    request.carvers);
         next->impl_->isolated = true;
         context = std::move(next);
     }
@@ -746,7 +825,7 @@ bool OriginalWorld::commitChunk(GeneratedChunk&& generated) {
     const auto& r = generated.request;
     // Stale results are a normal no-op, before inspecting or allocating payloads.
     if (!p.streaming || r.epoch != p.epoch || r.seed != p.seed || r.worldSize != p.size ||
-        r.structures != bool(p.structures) || r.decoration != bool(p.decoration) ||
+        r.structures != bool(p.structures) || r.decoration != bool(p.decoration) || r.carvers != bool(p.carver) ||
         r.key < 0 || r.key >= p.chunks * p.chunks || !p.target.count(r.key) || p.cache.count(r.key)) return false;
     if (generated.baseline.size() != ChunkCells || !std::isfinite(generated.loadMs) || generated.loadMs < 0)
         invalid("malformed generated chunk");
@@ -863,6 +942,8 @@ StreamingInfo OriginalWorld::streamingInfo() const {
     for (const auto& entry : p.baseCache) info.cacheBytes += entry.second.tiles.capacity() + sizeof(entry.second);
     for (const auto& entry : p.structureCache)
         info.cacheBytes += entry.second.tiles.capacity() + entry.second.data.capacity() + sizeof(entry.second);
+    for (const auto& entry : p.oreCache)
+        info.cacheBytes += entry.second.blocks.capacity() * sizeof(original_carvers::Block) + sizeof(entry.second);
     info.windowBytes = sizeof(uint16_t) * p.window.capacity() + p.loadedColumns.capacity();
     info.lastLoadMs = p.lastLoadMs;
     return info;

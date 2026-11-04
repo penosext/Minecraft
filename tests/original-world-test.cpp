@@ -87,7 +87,7 @@ void worldsAndPersistence() {
     assert(std::equal(v.data, v.data + size_t(96) * 256 * 96, s.data));
     assert(!fs::exists(a.path() + "/chunks.bin") && overlays(a.path()) == 0);
     assert(read(a.path() + "/state.bin").size() == 44);
-    assert(text(a.path() + "/level.json").find("original-biomes-density-surfaces-structures-decoration-v3") != std::string::npos);
+    assert(text(a.path() + "/level.json").find("original-biomes-density-surfaces-carvers-structures-ores-decoration-v4") != std::string::npos);
     assert(a.structuresEnabled() && same.structuresEnabled() && large.structuresEnabled());
     assert(a.decorationsEnabled() && same.decorationsEnabled() && large.decorationsEnabled());
     checkWindow(a);

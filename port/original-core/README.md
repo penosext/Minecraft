@@ -40,11 +40,12 @@ ctest --test-dir ~/1234/Minecraft/port/original-core/integration/build --output-
 
 - `structures/`：原村庄选址、拼接与模板，原沙漠/丛林神庙和沼泽小屋；采用记录过的canonical whole-piece处理，并非完整原后处理等价。
 - `decoration/`：原树木和部分植物Feature、选种和数量规则；是装饰子集调度，缺少完整postProcess前置RNG消耗。
-- 应用已按v1/v2/v3区分生成基准，旧存档保持原样。第一人称、原天体与GUI纹理布局的审计清单在应用generated目录及port/assets。
+- `carvers/`（1.0.x v4）：原 `LargeFeature/LargeCaveFeature/CanyonFeature` 洞穴峡谷按原 `getChunk` 顺序作用于BASE，原 `OreFeature` + `BiomeDecorator::decorateOres`；`extract.py --check` 审计字节，清单在 `carvers/generated/source-manifest.json`。矿物使用省略前置阶段的重播种流，非完整 `postProcess` 等价。
+- 应用已按v1/v2/v3/v4区分生成基准，旧存档保持原样。第一人称、原天体与GUI纹理布局的审计清单在应用generated目录及port/assets。
 
 ## 尚未完成
 
-- 原 `RandomLevelSource::getChunk` 的洞穴/峡谷，以及完整 `postProcess` 装饰、湖泊、实体生成、冰雪等；结构和树木已提取接入，但不等价于完整原流程。
+- 原废弃矿井/要塞，以及完整 `postProcess` 装饰、湖泊、地牢、实体生成、冰雪等；洞穴/峡谷、矿物、结构和树木已提取接入，但不等价于完整原流程。
 - 完整Level、LevelChunk、服务器区块缓存、光照、更新/tick。
 - 原Entity/Mob/Player运动、碰撞、跳跃、流体行为。
 - 原始存储、metadata、实体/区块存档，不是现有mcworld-finite。

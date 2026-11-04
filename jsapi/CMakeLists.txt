@@ -17,6 +17,7 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/biomes" "${CMAKE_BIN
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/terrain" "${CMAKE_BINARY_DIR}/original-terrain")
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/structures" "${CMAKE_BINARY_DIR}/original-structures")
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/decoration" "${CMAKE_BINARY_DIR}/original-decoration")
+add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/carvers" "${CMAKE_BINARY_DIR}/original-carvers")
 set(LIB_NAME jsapi_Minecraft)
 set(MID_LIB_NAME iot_sdk_lib)
 
@@ -165,6 +166,7 @@ target_link_libraries(${LIB_NAME} PRIVATE
     original_terrain
     original_structures
     original_decoration
+    original_carvers
     original_biomes
     dl
 

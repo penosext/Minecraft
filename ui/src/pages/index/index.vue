@@ -194,7 +194,7 @@
         </div>
       </div>
       <text class="create-hint">/tmp/mc/* · 设备重启后丢失 · 非原版存档，仅可继续本次世界</text>
-      <text class="generator-hint">多群系 · 建筑依原规则 · 昼夜 20 分钟 · 轻量 AI · 无洞穴</text>
+      <text class="generator-hint">多群系 · 建筑依原规则 · 昼夜 20 分钟 · 轻量 AI · 原洞穴/峡谷/矿物</text>
       <text class="scene-hint">只加载玩家附近 · 进入新区块才排队 · 跨界可能短暂停顿</text>
       <div class="create-radius-row">
         <text class="size-label">渲染距离</text>
