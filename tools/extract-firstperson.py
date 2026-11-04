@@ -256,7 +256,7 @@ def generate(root):
             records.append(dict(source_file=path, git_blob=blob, sha256=hashlib.sha256(data).hexdigest(), size=len(data)))
         return sources[name].decode('utf-8-sig')
     metadata_bytes = (root / 'port/assets/items/items.source.json').read_bytes()
-    if hashlib.sha256(metadata_bytes).hexdigest() != '7b7b571a28f7d4264d250b1d9d05ef687eb8a44a0b6297afd515578d68c0f284':
+    if hashlib.sha256(metadata_bytes).hexdigest() != '9280663f5853409eca555fed88597d1f340e05ac8d2df299c575b3a75005e9f3':
         raise ValueError('canonical sprite metadata pin mismatch')
     metadata = json.loads(metadata_bytes)
     registrations = world_source('Item.cpp')
@@ -268,7 +268,9 @@ def generate(root):
         match = re.search(r'new\s+(\w+)\(\s*(\d+)', registration)
         cls, local_id = match.groups()
         if int(local_id) + 256 != icon['itemId']: raise ValueError('canonical item ID mismatch')
-        base_icon = 'dyePowder' if icon['itemId'] == 351 else icon['icon']
+        # Same rule as generate-item-icons.py: dye and coal register one base icon;
+        # charcoal is CoalItem aux 1, not a separate registration.
+        base_icon = 'dyePowder' if icon['itemId'] == 351 else 'coal' if icon['itemId'] == 263 else icon['icon']
         if 'setIconName(L"' + base_icon + '")' not in registration: raise ValueError('canonical icon mismatch')
         hand_equipped, mirrored, chain = None, None, []
         current = cls
@@ -292,7 +294,7 @@ def generate(root):
         if hand_equipped is None or mirrored is None: raise ValueError('missing held item property')
         items.append(dict(key=icon['key'], item_id=icon['itemId'], aux=icon['aux'], icon=icon['icon'],
                           source_class=cls, ancestry=chain, hand_equipped=hand_equipped, mirrored=mirrored))
-    if len(items) != 63 or sum(x['hand_equipped'] for x in items) != 26:
+    if len(items) != 82 or sum(x['hand_equipped'] for x in items) != 26:
         raise ValueError('expected 63 sprites, 25 tools plus handEquipped stick')
 
     def cpp(value): return f'{float(value):.9g}' + ('.0' if float(value).is_integer() else '') + 'f'
