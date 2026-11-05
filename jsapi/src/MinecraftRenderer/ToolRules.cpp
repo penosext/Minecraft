@@ -262,6 +262,22 @@ bool knownDropRule(int tileId) {
 int itemForTile(int tileId, int data);
 
 std::vector<BlockDrop> drops(int heldItemId, int tileId, int data) {
+    // Shears-only plants: LeafTile/TallGrass/DeadBushTile/VineTile::playerDestroy
+    // drop the block itself only when the selected item is shears. Without
+    // shears this port drops nothing (the source's random sapling/apple/seed
+    // loot is deliberately not reproduced).
+    constexpr int kShearsId = 359; // Item::shears (Item.cpp:399, id 256 + 103)
+    switch (tileId) {
+    case 18: // leaves: LeafTile.cpp:271, data & LEAF_TYPE_MASK
+        return heldItemId == kShearsId ? std::vector<BlockDrop>{{18, data & 3, 1}} : std::vector<BlockDrop>{};
+    case 31: // tall grass / fern: TallGrass.cpp:82, keeps data
+        return heldItemId == kShearsId ? std::vector<BlockDrop>{{31, data, 1}} : std::vector<BlockDrop>{};
+    case 32: // dead bush: DeadBushTile.cpp:30
+        return heldItemId == kShearsId ? std::vector<BlockDrop>{{32, 0, 1}} : std::vector<BlockDrop>{};
+    case 106: // vine: VineTile.cpp:372, aux 0
+        return heldItemId == kShearsId ? std::vector<BlockDrop>{{106, 0, 1}} : std::vector<BlockDrop>{};
+    default: break;
+    }
     for (const auto& drop : kDrops) {
         if (drop.tileId != tileId) continue;
         // First match wins. Known empty drops (count 0) and tool-gated ores

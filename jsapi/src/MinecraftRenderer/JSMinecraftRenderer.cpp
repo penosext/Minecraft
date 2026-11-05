@@ -456,9 +456,10 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
             swing_ += elapsed * (20.0f / 6.0f);
             if (swing_ >= 1.0f) { swing_ = 0; swinging_ = false; }
         }
-        // Draw the arm first, then lay a non-block item over it. The item branch
-        // used to replace the arm entirely, so holding a tool made the hand
-        // disappear; the arm is part of the first-person view either way.
+        // ItemInHandRenderer::render (ItemInHandRenderer.cpp:565-686) draws the
+        // arm ONLY for an empty hand; a held item or block replaces it. Drawing
+        // the empty-hand arm pose under a tool sprite left the tool floating
+        // beside a disembodied hand.
         // Independent Items that place a tile (cocoa beans, reeds, pot, seeds,
         // doors...) are held as their items.png sprite, never as the tile.
         // TileItems outside TileRenderer::canRender (torch, flower, vine, rail...)
@@ -467,9 +468,10 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
                               (inventory_.selectedBlockIndex() < 0 ||
                                hasHeldItemSprite(inventory_.selectedItemId(), inventory_.selectedAux()) ||
                                hasHeldTileSprite(inventory_.selectedItemId(), inventory_.selectedAux()));
-        renderActorOverlay(buffer.data(), width, height, viewMode == 1 ? 1 : 0, walkPhase_, swing_,
-                           heldItem ? -1 : inventory_.selectedBlockIndex());
-        if (heldItem)
+        if (!heldItem)
+            renderActorOverlay(buffer.data(), width, height, viewMode == 1 ? 1 : 0, walkPhase_, swing_,
+                               inventory_.selectedBlockIndex());
+        else
             renderHeldItemOverlay(buffer.data(), width, height, inventory_.selectedItemId(), inventory_.selectedAux(), swing_);
         if (containers_.opened())
             mcinventory::renderContainerOverlay(buffer.data(), width, height, inventory_, containers_.view());

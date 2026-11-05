@@ -231,6 +231,18 @@ void survivalDrops() {
     assert(one(drops(-1, 47, 0), 340, 0, 3));     // bookshelf -> 3 books
     assert(one(drops(270, 16, 0), 263, 0, 1));    // coal ore + wooden pickaxe -> coal
     assert(sourceitems::itemIndexForIdAux(263, 0) >= 0); // coal is a real catalog item
+    // Shears-only plants: nothing by hand, with any other tool, or with a block.
+    for (int held : {-1, 270, 271, 267, 3}) {
+        assert(drops(held, 18, 2).empty());       // leaves
+        assert(drops(held, 31, 1).empty());       // tall grass
+        assert(drops(held, 31, 2).empty());       // fern
+        assert(drops(held, 32, 0).empty());       // dead bush
+        assert(drops(held, 106, 5).empty());      // vine (facing bits)
+    }
+    assert(one(drops(359, 18, 2 | 4), 18, 2, 1)); // birch leaves, decay bits stripped
+    assert(one(drops(359, 31, 2), 31, 2, 1));      // fern keeps its data
+    assert(one(drops(359, 32, 0), 32, 0, 1));
+    assert(one(drops(359, 106, 5), 106, 0, 1));    // vine drops aux 0
 }
 
 int main() {
