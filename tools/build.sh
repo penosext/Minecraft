@@ -121,7 +121,11 @@ function build_native() {
     log_info "Building native library..."
 
     local build_dir="$BUILD_DIR"
-    if ! cmake -DCMAKE_BUILD_TYPE=Release -S jsapi -B "$build_dir"; then
+    # Run the generators with the python3 on PATH (the one that has Pillow).
+    # Without this, a cross build may let FindPython3 pick another interpreter.
+    local python_bin
+    python_bin=$(command -v python3) || { log_error "python3 not found"; return 1; }
+    if ! cmake -DCMAKE_BUILD_TYPE=Release -DPython3_EXECUTABLE="$python_bin" -S jsapi -B "$build_dir"; then
         log_error "CMake configuration failed"
         return 1
     fi
