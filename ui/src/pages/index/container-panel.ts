@@ -18,7 +18,8 @@ export type PanelTap =
   | { kind: 'craft' };
 
 export const CONTAINER_SLOT_COUNT: Record<ContainerKind, number> = { inventory: 4, workbench: 9, chest: 27, furnace: 3 };
-const MAX_SCALE = 1.25;
+// Same cap as InventoryRenderer.hpp kMaxGuiScale and index.ts GUI_MAX_SCALE.
+const MAX_SCALE = 1.5;
 
 function round(value: number): number { return Math.round(value); }
 function scaled(x: number, y: number, w: number, h: number, s: number, ox: number, oy: number): PanelRect {

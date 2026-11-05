@@ -685,7 +685,7 @@ test('Falcon template and Less compile, and the chat layout clears every control
   assert.ok(css.includes('.seed-input-hit'), 'Less compiles and emits .seed-input-hit');
   // Geometry is asserted against the numbers the template/Less declare.
   const CHAT_BUTTON = [740, 6, 80, 40];
-  const CHAT_LOG = [200, 104, 392, 100];
+  const CHAT_LOG = [200, 100, 392, 90];
   const inside = ([x, y, w, hh]) => x >= 0 && y >= 0 && x + w <= 960 && y + hh <= 266;
   assert.ok(inside(CHAT_BUTTON), 'The chat button fits the 960x266 surface');
   assert.ok(inside(CHAT_LOG), 'The chat log fits the 960x266 surface');
@@ -694,14 +694,17 @@ test('Falcon template and Less compile, and the chat layout clears every control
   // HUD and the three top-right buttons.
   for (const [name, box] of [
     ['movement pad', [12, 174, 180, 84]],
-    ['primary', [600, 218, 120, 40]],
-    ['secondary', [730, 218, 120, 40]],
-    ['jump', [872, 218, 76, 40]],
+    ['primary', [626, 218, 104, 40]],
+    ['secondary', [738, 218, 104, 40]],
+    ['jump', [850, 218, 98, 40]],
     ['hud', [12, 6, 430, 56]],
     ['settings', [540, 6, 80, 40]],
     ['bag', [640, 6, 80, 40]],
     ['chat button', CHAT_BUTTON],
-    ['hotbar', [367, 238, 225, 28]],
+    // 1.5× native hotbar incl. selection frames, and the survival HUD rows above it.
+    ['hotbar', [341, 231, 277, 35]],
+    ['survival hud', [343, 191, 273, 28]],
+    ['status bar', [12, 68, 936, 30]],
   ]) {
     assert.equal(overlaps(CHAT_LOG, box), false, 'The chat log must not cover the ' + name);
   }

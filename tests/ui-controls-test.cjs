@@ -311,23 +311,27 @@ test('native primary/secondary/jump zones match the rendered button geometry', (
     h.frame();
     return role;
   };
-  // Left button (600,218) 120×40; right button (730,218) 120×40; jump (872,218) 76×40.
-  for (const [x, y] of [[600, 218], [660, 238], [720, 258]]) {
+  // Left button (626,218) 104×40; right button (738,218) 104×40; jump (850,218) 98×40.
+  for (const [x, y] of [[626, 218], [678, 238], [730, 258]]) {
     assert.equal(roleAt(x, y), 'primary', 'primary at ' + x + ',' + y);
   }
-  for (const [x, y] of [[730, 218], [790, 238], [850, 258]]) {
+  for (const [x, y] of [[738, 218], [790, 238], [842, 258]]) {
     assert.equal(roleAt(x, y), 'secondary', 'secondary at ' + x + ',' + y);
   }
-  for (const [x, y] of [[872, 218], [910, 238], [948, 258]]) {
+  for (const [x, y] of [[850, 218], [899, 238], [948, 258]]) {
     assert.equal(roleAt(x, y), 'jump', 'jump at ' + x + ',' + y);
   }
+  // The 1.5× hotbar box (x 341..618) ends before the strip; the gaps are free look.
+  assert.equal(roleAt(622, 240), 'look');
+  assert.equal(roleAt(734, 240), 'look');
+  assert.equal(roleAt(846, 240), 'look');
   // The zones are disjoint and the movement pad keeps its own roles.
   assert.equal(roleAt(90, 190), 'forward');
   assert.equal(roleAt(40, 238), 'left');
   assert.equal(roleAt(100, 238), 'backward');
   assert.equal(roleAt(160, 238), 'right');
   // Above the strip is still free look, so the buttons never steal camera drags.
-  assert.equal(roleAt(660, 200), 'look');
+  assert.equal(roleAt(678, 200), 'look');
   assert.equal(roleAt(790, 200), 'look');
 });
 
@@ -530,8 +534,8 @@ test('the freed top-right strip and the open inventory panel leave no dead zones
   // Opening the inventory hides both, but world input is blocked, so every
   // contact is ignored wholesale rather than by a leftover button rectangle.
   p.openInventory();
-  assert.equal(withClass(p, 'settings-button').length, 0, 'Settings hidden under the 1.25× panel');
-  assert.equal(withClass(p, 'bag-button').length, 0, 'Bag hidden under the 1.25× panel');
+  assert.equal(withClass(p, 'settings-button').length, 0, 'Settings hidden under the 1.5× panel');
+  assert.equal(withClass(p, 'bag-button').length, 0, 'Bag hidden under the 1.5× panel');
   assert.equal(p.worldInputBlocked, true);
   assert.equal(roleAt(560, 26), 'ignore');
   assert.equal(roleAt(896, 26), 'ignore');
@@ -577,10 +581,10 @@ test('inventory tools keep only the needed actions, held item and migration warn
     filename: path.join(pageDir, 'index.less'),
   })).css;
   // Less geometry must match CONTROL_BOUNDS exactly.
-  assert.match(css, /\.primary-button\s*\{[^}]*left: 600px;[^}]*width: 120px;/);
-  assert.match(css, /\.secondary-button\s*\{[^}]*left: 730px;[^}]*width: 120px;/);
+  assert.match(css, /\.primary-button\s*\{[^}]*left: 626px;[^}]*width: 104px;/);
+  assert.match(css, /\.secondary-button\s*\{[^}]*left: 738px;[^}]*width: 104px;/);
   assert.match(css, /\.primary-button,\s*\n\.secondary-button,\s*\n\.jump-button\s*\{[^}]*bottom: 8px;[^}]*height: 40px;/);
-  assert.match(css, /\.jump-button\s*\{\s*right: 12px;/);
+  assert.match(css, /\.jump-button\s*\{\s*right: 12px;\s*width: 98px;/); // 960-12-98 = 850
   for (const removed of ['.camera-button', '.mine-button', '.attack-button', '.place-button', '.save-button']) {
     assert.equal(css.includes(removed), false, removed + ' removed from Less');
   }

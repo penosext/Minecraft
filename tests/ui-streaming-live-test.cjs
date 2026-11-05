@@ -234,7 +234,7 @@ function noStreamingNotice(h) {
 test('busy=false/loading=true/queued>0 stays live across 90 real render ticks', () => {
   const h = make();
   h.enter();
-  // 650 is inside the left-button zone (600..720); with no mob target it mines.
+  // 650 is inside the left-button zone (626..730); with no mob target it mines.
   h.setTouches([{ id: 1, x: 90, y: 190 }, { id: 2, x: 650, y: 235 }, { id: 3, x: 450, y: 82 }]);
   const before = count(h, 'frame');
   const startTicks = h.ticks;
@@ -502,9 +502,9 @@ test('real exclusive WorldJob preserves progress/cancel/ready and stops timers/r
   assert.match(css, /\.settings-hint\s*\{\s*top: 142px;/);
   assert.match(css, /\.world-job-panel\s*\{[^}]*left: 230px;[^}]*top: 50px;[^}]*width: 500px;[^}]*height: 150px;/);
   assert.match(css, /\.job-progress-track\s*\{[^}]*width: 400px;[^}]*height: 14px;/);
-  // The two side columns must clear the 1.25× panel, whose right edge is x=590.
-  assert.match(css, /\.inventory-status\s*\{[^}]*left: 598px;/);
-  assert.match(css, /\.inventory-tools\s*\{[^}]*left: 598px;/);
+  // The two side columns must clear the 1.5× panel, whose right edge is x=612.
+  assert.match(css, /\.inventory-status\s*\{[^}]*left: 620px;/);
+  assert.match(css, /\.inventory-tools\s*\{[^}]*left: 620px;[^}]*width: 328px;/);
   assert.equal(parsed.descriptor.template.content.includes('正在加载附近区块'), false);
   assert.equal(parsed.descriptor.template.content.includes('chunkLoading'), false);
   test('Falcon template and Less compile with non-red diagnostic hint and unchanged WorldJob geometry', () => {});

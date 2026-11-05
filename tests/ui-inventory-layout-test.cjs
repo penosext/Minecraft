@@ -1,5 +1,5 @@
 // The transparent Vue hit cells must land exactly on the slots native draws.
-// Expected values below are mcinventory::inventoryLayout(960, 266) at the 1.25x
+// Expected values below are mcinventory::inventoryLayout(960, 266) at the 1.5x
 // GUI scale; they are hardcoded on purpose, because the native inventory test
 // already locks them down, so this file fails if either side drifts.
 // Reuses the real-TS/VM mock pattern from tests/ui-streaming-live-test.cjs.
@@ -37,41 +37,45 @@ function test(name, run) {
   console.log('PASS ' + name);
 }
 
-// --- Native inventoryLayout(960, 266) expectations, scale 1.25 --------------
-const NATIVE_SCALE = 1.25;
-const NATIVE_PANEL = [370, 29, 220, 208];
-const NATIVE_HOTBAR = [366, 238, 228, 28];
+// --- Native inventoryLayout(960, 266) expectations, scale 1.5 ---------------
+const NATIVE_SCALE = 1.5;
+const NATIVE_PANEL = [348, 8, 264, 249];
+const NATIVE_HOTBAR = [343, 233, 273, 33];
 // tileHitSlots, indexed by inventory id (0..8 panel hotbar row, 9..35 main grid).
 const NATIVE_TILE_HITS = [
-  [379, 205, 22, 23], [401, 205, 23, 23], [424, 205, 22, 23], [446, 205, 23, 23], [469, 205, 22, 23],
-  [491, 205, 23, 23], [514, 205, 22, 23], [536, 205, 23, 23], [559, 205, 22, 23],
-  [379, 133, 22, 22], [401, 133, 23, 22], [424, 133, 22, 22], [446, 133, 23, 22], [469, 133, 22, 22],
-  [491, 133, 23, 22], [514, 133, 22, 22], [536, 133, 23, 22], [559, 133, 22, 22],
-  [379, 155, 22, 23], [401, 155, 23, 23], [424, 155, 22, 23], [446, 155, 23, 23], [469, 155, 22, 23],
-  [491, 155, 23, 23], [514, 155, 22, 23], [536, 155, 23, 23], [559, 155, 22, 23],
-  [379, 178, 22, 22], [401, 178, 23, 22], [424, 178, 22, 22], [446, 178, 23, 22], [469, 178, 22, 22],
-  [491, 178, 23, 22], [514, 178, 22, 22], [536, 178, 23, 22], [559, 178, 22, 22],
+  [359, 220, 27, 27], [386, 220, 27, 27], [413, 220, 27, 27], [440, 220, 27, 27], [467, 220, 27, 27],
+  [494, 220, 27, 27], [521, 220, 27, 27], [548, 220, 27, 27], [575, 220, 27, 27],
+  [359, 133, 27, 27], [386, 133, 27, 27], [413, 133, 27, 27], [440, 133, 27, 27], [467, 133, 27, 27],
+  [494, 133, 27, 27], [521, 133, 27, 27], [548, 133, 27, 27], [575, 133, 27, 27],
+  [359, 160, 27, 27], [386, 160, 27, 27], [413, 160, 27, 27], [440, 160, 27, 27], [467, 160, 27, 27],
+  [494, 160, 27, 27], [521, 160, 27, 27], [548, 160, 27, 27], [575, 160, 27, 27],
+  [359, 187, 27, 27], [386, 187, 27, 27], [413, 187, 27, 27], [440, 187, 27, 27], [467, 187, 27, 27],
+  [494, 187, 27, 27], [521, 187, 27, 27], [548, 187, 27, 27], [575, 187, 27, 27],
 ];
 // tileSlots: the 16x16 source icons native actually paints inside those cells.
 const NATIVE_TILE_SLOTS = [
-  [380, 207, 20, 20], [403, 207, 20, 20], [425, 207, 20, 20], [448, 207, 20, 20], [470, 207, 20, 20],
-  [493, 207, 20, 20], [515, 207, 20, 20], [538, 207, 20, 20], [560, 207, 20, 20],
-  [380, 134, 20, 20], [403, 134, 20, 20], [425, 134, 20, 20], [448, 134, 20, 20], [470, 134, 20, 20],
-  [493, 134, 20, 20], [515, 134, 20, 20], [538, 134, 20, 20], [560, 134, 20, 20],
-  [380, 157, 20, 20], [403, 157, 20, 20], [425, 157, 20, 20], [448, 157, 20, 20], [470, 157, 20, 20],
-  [493, 157, 20, 20], [515, 157, 20, 20], [538, 157, 20, 20], [560, 157, 20, 20],
-  [380, 179, 20, 20], [403, 179, 20, 20], [425, 179, 20, 20], [448, 179, 20, 20], [470, 179, 20, 20],
-  [493, 179, 20, 20], [515, 179, 20, 20], [538, 179, 20, 20], [560, 179, 20, 20],
+  [360, 221, 24, 24], [387, 221, 24, 24], [414, 221, 24, 24], [441, 221, 24, 24], [468, 221, 24, 24],
+  [495, 221, 24, 24], [522, 221, 24, 24], [549, 221, 24, 24], [576, 221, 24, 24],
+  [360, 134, 24, 24], [387, 134, 24, 24], [414, 134, 24, 24], [441, 134, 24, 24], [468, 134, 24, 24],
+  [495, 134, 24, 24], [522, 134, 24, 24], [549, 134, 24, 24], [576, 134, 24, 24],
+  [360, 161, 24, 24], [387, 161, 24, 24], [414, 161, 24, 24], [441, 161, 24, 24], [468, 161, 24, 24],
+  [495, 161, 24, 24], [522, 161, 24, 24], [549, 161, 24, 24], [576, 161, 24, 24],
+  [360, 188, 24, 24], [387, 188, 24, 24], [414, 188, 24, 24], [441, 188, 24, 24], [468, 188, 24, 24],
+  [495, 188, 24, 24], [522, 188, 24, 24], [549, 188, 24, 24], [576, 188, 24, 24],
 ];
 const NATIVE_HOTBAR_SLOTS = [
-  [367, 238, 25, 28], [392, 238, 25, 28], [417, 238, 25, 28], [442, 238, 25, 28], [467, 238, 25, 28],
-  [492, 238, 25, 28], [517, 238, 25, 28], [542, 238, 25, 28], [567, 238, 25, 28],
+  [345, 233, 30, 33], [375, 233, 30, 33], [405, 233, 30, 33], [435, 233, 30, 33], [465, 233, 30, 33],
+  [495, 233, 30, 33], [525, 233, 30, 33], [555, 233, 30, 33], [585, 233, 30, 33],
 ];
 const NATIVE_HOTBAR_SELECTIONS = [
-  [365, 237, 30, 27], [390, 237, 30, 27], [415, 237, 30, 27], [440, 237, 30, 27], [465, 237, 30, 27],
-  [490, 237, 30, 27], [515, 237, 30, 27], [540, 237, 30, 27], [565, 237, 30, 27],
+  [341, 231, 37, 34], [372, 231, 36, 34], [402, 231, 36, 34], [432, 231, 36, 34], [462, 231, 36, 34],
+  [492, 231, 36, 34], [522, 231, 36, 34], [552, 231, 36, 34], [582, 231, 36, 34],
 ];
-const NATIVE_ARMOR_SLOTS = [[380, 39, 20, 20], [380, 62, 20, 20], [380, 84, 20, 20], [380, 107, 20, 20]];
+// Native mcplayer::hudLayout(960, 266) rows above the hotbar (survival-hud-test
+// pins the same values): hearts/food on yLine1, armor/air on yLine2.
+const NATIVE_HUD_ROWS = [['hearts', [343, 206, 122, 13]], ['food', [495, 206, 121, 13]],
+  ['armor', [343, 191, 122, 13]], ['air', [495, 191, 121, 13]]];
+const NATIVE_ARMOR_SLOTS = [[360, 20, 24, 24], [360, 47, 24, 24], [360, 74, 24, 24], [360, 101, 24, 24]];
 
 function rect(value) { return [value.x, value.y, value.width, value.height]; }
 function inside(box) {
@@ -278,7 +282,8 @@ test('the mirrored layout reproduces native inventoryLayout(960,266) exactly', (
   }
   // Sizes must be the difference of two scaled edges, never a scaled width, so
   // adjacent cells tile exactly. Derive the rule here independently.
-  const edge = unit => Math.round(unit * NATIVE_SCALE);
+  // std::lround: halves away from zero (at 1.5x the selection's -1 unit is -1.5 -> -2).
+  const edge = unit => Math.sign(unit) * Math.round(Math.abs(unit * NATIVE_SCALE));
   for (let slot = 0; slot < 9; slot += 1) {
     const left = -1 + slot * 20;
     assert.equal(GUI_LAYOUT.hotbarSelections[slot].width, edge(left + 24) - edge(left));
@@ -352,7 +357,7 @@ function templateCellTest(css) {
   const panelLayer = box('.inventory-panel-hit');
   const hotbarLayer = box('.hotbar-hit-layer');
   assert.deepEqual(panelLayer, NATIVE_PANEL, 'The panel hit layer is the native panel box');
-  assert.deepEqual(hotbarLayer, [367, 238, 225, 28], 'The hotbar hit layer spans the native slot cells');
+  assert.deepEqual(hotbarLayer, [345, 233, 270, 33], 'The hotbar hit layer spans the native slot cells');
   // Per-slot size comes from the layout at runtime, never from Less.
   for (const selector of ['.inventory-slot-hit', '.hotbar-hit']) {
     const body = new RegExp('\\' + selector + '\\s*\\{([^}]*)\\}').exec(css);
@@ -390,8 +395,8 @@ test('the enlarged hotbar ignore box matches the native hotbar and selection fra
   h.enter();
   const p = h.page;
   const { HOTBAR_IGNORE } = h.exported;
-  // Native draws hotbar (366,238) 228x28 plus 30x27 selection frames from x=365.
-  assert.deepEqual(rect(HOTBAR_IGNORE), [365, 237, 230, 29]);
+  // Native draws hotbar (343,233) 273x33 plus 36/37x34 selection frames from x=341.
+  assert.deepEqual(rect(HOTBAR_IGNORE), [341, 231, 277, 35]);
   assert.ok(inside(rect(HOTBAR_IGNORE)), 'The ignore box stays inside the surface');
   const roleAt = (x, y) => {
     h.setTouches([{ id: 1, x, y }]);
@@ -403,14 +408,40 @@ test('the enlarged hotbar ignore box matches the native hotbar and selection fra
   };
   // Everything native paints is ignored, including the widened left/right ends
   // that the former 1x box at (388..572, 244..266) did not cover.
-  for (const [x, y] of [[365, 237], [366, 240], [390, 250], [480, 265], [594, 240], [592, 265]]) {
+  for (const [x, y] of [[341, 231], [343, 240], [390, 250], [480, 265], [618, 240], [615, 265]]) {
     assert.equal(roleAt(x, y), 'ignore', 'hotbar ignore at ' + x + ',' + y);
   }
   // Just outside it is an ordinary look area, not a dead zone.
-  assert.equal(roleAt(360, 250), 'look');
-  assert.equal(roleAt(480, 236), 'look');
-  // The left-mouse strip starts at x=600 and still wins over the hotbar box.
-  assert.equal(roleAt(600, 250), 'primary');
+  assert.equal(roleAt(336, 250), 'look');
+  assert.equal(roleAt(480, 228), 'look');
+  assert.equal(roleAt(622, 250), 'look', 'The gap between hotbar and left-mouse button is free look');
+  // The left-mouse strip now starts at x=626, right of the whole hotbar box.
+  assert.equal(roleAt(626, 250), 'primary');
+});
+
+test('hotbar, selection frames and survival HUD rows overlap no world control', () => {
+  const h = make();
+  const { HOTBAR_IGNORE, CONTROL_BOUNDS } = h.exported;
+  const controls = JSON.parse(JSON.stringify(CONTROL_BOUNDS)).map(b => [b.role, [b.x, b.y, b.width, b.height]]);
+  assert.equal(controls.length, 7, 'Every movement, mouse and jump control is checked');
+  // Fixed Less boxes of the world-mode overlays (index.less).
+  const fixed = [['debug hud', [12, 6, 430, 56]], ['settings', [540, 6, 80, 40]], ['bag', [640, 6, 80, 40]],
+    ['chat button', [740, 6, 80, 40]], ['chat log', [200, 100, 392, 90]], ['movement pad', [12, 174, 180, 84]]];
+  const native = [['hotbar', NATIVE_HOTBAR], ['hotbar ignore', rect(HOTBAR_IGNORE)], ...NATIVE_HUD_ROWS,
+    ...NATIVE_HOTBAR_SELECTIONS.map((box, i) => ['selection ' + i, box])];
+  for (const [name, box] of native) {
+    assert.ok(inside(box), name + ' inside the surface');
+    for (const [control, bounds] of [...controls, ...fixed]) {
+      assert.equal(overlaps(box, bounds), false, name + ' ' + box + ' overlaps ' + control + ' ' + bounds);
+    }
+  }
+  // The right-hand controls stay reasonably large and disjoint from each other.
+  for (let i = 0; i < controls.length; i += 1) {
+    assert.ok(controls[i][1][2] >= 56 && controls[i][1][3] >= 40, controls[i][0] + ' keeps a usable size');
+    for (let j = i + 1; j < controls.length; j += 1) {
+      assert.equal(overlaps(controls[i][1], controls[j][1]), false, controls[i][0] + '/' + controls[j][0]);
+    }
+  }
 });
 
 test('save/exit lives only in the settings panel and the top buttons survive the panel', () => {
@@ -436,7 +467,7 @@ test('save/exit lives only in the settings panel and the top buttons survive the
   assert.deepEqual(h.calls.filter(call => call[0] === 'ranges'), [['ranges', 7, 12]]);
   assert.equal(count(h, 'radius'), 0);
   assert.equal(withClass(p, 'hotbar-hit-layer').length, 0, 'Settings owns input, not native GUI pixels');
-  // The 1.25x panel reaches x=590, so both top-right buttons hide while it is
+  // The 1.5x panel spans x 348..612, so both top-right buttons hide while it is
   // open and come back afterwards; the settings button is then still clickable.
   assert.equal(withClass(p, 'settings-button').length, 1);
   p.closeWorldSettings();
@@ -459,12 +490,12 @@ test('save/exit lives only in the settings panel and the top buttons survive the
   const css = (await less.render(fs.readFileSync(path.join(pageDir, 'index.less'), 'utf8'), {
     filename: path.join(pageDir, 'index.less'),
   })).css;
-  // The side columns must clear the panel's right edge at x=590.
+  // The side columns must clear the panel's right edge at x=612.
   for (const selector of ['.inventory-tools', '.inventory-status']) {
     const left = new RegExp('\\' + selector + '\\s*\\{[^}]*left:\\s*(\\d+)px').exec(css);
     assert.ok(left, selector + ' declares left');
     assert.ok(Number(left[1]) >= NATIVE_PANEL[0] + NATIVE_PANEL[2],
-      selector + ' at x=' + left[1] + ' overlaps the 1.25x panel');
+      selector + ' at x=' + left[1] + ' overlaps the 1.5x panel');
   }
   assert.equal(css.includes('.save-button'), false, '.save-button removed from Less');
   assert.match(css, /\.settings-save-exit\s*\{/);

@@ -214,6 +214,12 @@ void layoutAndPixels() {
     const float s = l.scale;
     const auto at = [&](float unit) { return int(std::lround(unit * s)); };
     assert(s > 1 && s <= kMaxGuiScale);
+    // 960x266 reaches the 1.5x cap: hotbar (343,233) 273x33, panel (348,8) 264x249.
+    assert(s == 1.5f && kMaxGuiScale == 1.5f);
+    assert(l.hotbar.x == 343 && l.hotbar.y == 233 && l.hotbar.w == 273 && l.hotbar.h == 33);
+    assert(l.panel.x == 348 && l.panel.y == 8 && l.panel.w == 264 && l.panel.h == 249);
+    // Selection frames span x 341..618; the left-mouse button (index.ts) starts at 626.
+    assert(l.hotbarSelections[0].x == 341 && l.hotbarSelections[8].x + l.hotbarSelections[8].w == 618);
     assert(l.hotbar.w == at(182) && l.hotbar.h == at(22));
     assert(l.hotbar.x == 960 / 2 - at(91) && l.hotbar.y == 266 - at(22));
     assert(l.panel.w == at(176) && l.panel.h == at(166));

@@ -31,13 +31,16 @@ struct InventoryLayout {
 };
 // Platform adaptation of the source 1x GUI units. The source 184x168 minimum is
 // enlarged by whole quarter steps when the viewport allows it, so 960x266 renders
-// at 1.25x instead of the previous fixed 1x; viewports below the source minimum
-// still shrink uniformly. The cap is 1.25x because a wider hotbar would reach the
-// left-mouse control strip at x=600. Texture aspect is never stretched: both axes
+// at 1.5x; viewports below the source minimum still shrink uniformly. The cap is
+// 1.5x because that is the largest quarter step whose 168-unit chest panel fits
+// the 266 px height (1.75x would need 294 px), and every source texel then maps
+// to whole or half pixels. At 1.5x the hotbar spans x 343..616 (selection frames
+// 341..618); the right-side world buttons start at x=626 to stay clear of it.
+// Texture aspect is never stretched: both axes
 // use one scale. No invented safe-zone, console split-screen or user GUI-scale
 // setting. Integer edge rounding is shared by renderer and hit testing. Panel
 // centered, hotbar bottom-center, no controls.
-inline constexpr float kMaxGuiScale = 1.25f;
+inline constexpr float kMaxGuiScale = 1.5f;
 InventoryLayout inventoryLayout(int w, int h);
 // Panel figure drawn inside layout.playerView only, for the full inventory.
 //

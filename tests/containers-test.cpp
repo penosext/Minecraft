@@ -247,7 +247,7 @@ void layoutAt960x266() {
     using mcinventory::ContainerLayout;
     for (auto kind : {PanelKind::Inventory, PanelKind::Workbench, PanelKind::Chest, PanelKind::Furnace}) {
         const auto layout = mcinventory::containerLayout(960, 266, kind);
-        assert(layout.scale == 1.25f);
+        assert(layout.scale == 1.5f);
         assert(layout.panel.x >= 0 && layout.panel.y >= 0 && layout.panel.x + layout.panel.w <= 960 &&
                layout.panel.y + layout.panel.h <= 266);
         std::vector<std::pair<mcinventory::Rect, int>> hits;
@@ -275,7 +275,13 @@ void layoutAt960x266() {
         }
     }
     const auto chest = mcinventory::containerLayout(960, 266, PanelKind::Chest);
-    assert(chest.panel.h == 210 && chest.panel.y == 28);
+    // 168 source units at 1.5x = 252 px, centred in 266 px.
+    assert(chest.panel.h == 252 && chest.panel.y == 7 && chest.panel.x == 348 && chest.panel.w == 264);
+    const auto furnace = mcinventory::containerLayout(960, 266, PanelKind::Furnace);
+    assert(furnace.panel.x == 348 && furnace.panel.y == 8 && furnace.panel.w == 264 && furnace.panel.h == 249);
+    // The Vue side column (index.less .container-tools/.inventory-tools) starts at x=620.
+    for (auto kind : {PanelKind::Inventory, PanelKind::Workbench, PanelKind::Chest, PanelKind::Furnace})
+        assert(mcinventory::containerLayout(960, 266, kind).panel.x + mcinventory::containerLayout(960, 266, kind).panel.w <= 620);
     std::vector<uint32_t> buffer(960 * 266, 0xff336699u);
     Fixture f;
     for (auto kind : {PanelKind::Inventory, PanelKind::Workbench, PanelKind::Chest, PanelKind::Furnace}) {

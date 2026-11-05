@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <!-- The 1.25× native panel reaches x=590, so both top-right buttons are hidden
+    <!-- The 1.5× native panel spans x 348..612, y 7..259, so the top-right buttons are hidden
          while it is open; world input is blocked then, so no dead zone remains. -->
     <div v-if="worldMode && !inventoryPanelOpen && !containerPanelOpen" class="settings-button" @touchstart="onControlTouch" @touchmove="onControlTouch" @click="openWorldSettings">
       <text class="button-text">设置</text>
@@ -104,7 +104,7 @@
       <text class="death-error">{{ respawnError }}</text>
     </div>
 
-    <!-- Native 1.25× GUI. Vue provides transparent hits only, never item/count rendering.
+    <!-- Native 1.5× GUI. Vue provides transparent hits only, never item/count rendering.
          Every offset and size comes from the mirrored native layout in index.ts. -->
     <div v-if="worldMode && !worldInputBlocked" class="hotbar-hit-layer"
       @touchstart="onControlTouch" @touchmove="onControlTouch">

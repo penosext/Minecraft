@@ -35,10 +35,24 @@ bool overlaps(mcinventory::Rect a, mcinventory::Rect b) {
 int main() {
     const auto inv = mcinventory::inventoryLayout(W, H);
     const auto hud = mcplayer::hudLayout(W, H);
-    // Scale 1.25: yLine1 = hotbar.y + lround(-22.5) = 215, shared rounding with the hotbar.
-    assert(inv.scale == 1.25f && inv.hotbar.y == 238 && inv.hotbar.x == 366);
-    assert(hud.hearts[0].x == 366 && hud.hearts[0].y == 215 && hud.hearts[0].w == 11 && hud.hearts[0].h == 12);
-    assert(hud.food[0].x + hud.food[0].w == 366 + 228 && hud.armor[0].y < hud.hearts[0].y);
+    // Scale 1.5: yLine1 = hotbar.y + lround(-27) = 206, yLine2 = 233 + lround(-42) = 191,
+    // shared rounding with the hotbar.
+    assert(inv.scale == 1.5f && inv.hotbar.y == 233 && inv.hotbar.x == 343 && inv.hotbar.w == 273);
+    assert(hud.hearts[0].x == 343 && hud.hearts[0].y == 206 && hud.hearts[0].w == 14 && hud.hearts[0].h == 13);
+    assert(hud.armor[0].x == 343 && hud.armor[0].y == 191 && hud.air[0].y == 191);
+    assert(hud.food[0].x + hud.food[0].w == 343 + 273 && hud.armor[0].y < hud.hearts[0].y);
+    // World controls (index.ts CONTROL_BOUNDS, y 218..258): movement pad ends at
+    // x=192, the left-mouse button starts at x=626. Neither the HUD rows, the
+    // hotbar nor its selection frames may reach them. The chat log (index.less,
+    // 200,100 392x90) ends at y=190, above the top HUD row.
+    const mcinventory::Rect controls[] = {{74, 174, 56, 40}, {12, 218, 56, 40}, {74, 218, 56, 40}, {136, 218, 56, 40},
+        {626, 218, 104, 40}, {738, 218, 104, 40}, {850, 218, 98, 40}, {200, 100, 392, 90}};
+    for (const auto& c : controls) {
+        assert(!overlaps(c, inv.hotbar));
+        for (const auto& s : inv.hotbarSelections) assert(!overlaps(c, s));
+        for (int i = 0; i < 10; ++i)
+            for (auto r : {hud.hearts[i], hud.armor[i], hud.food[i], hud.air[i]}) assert(!overlaps(c, r));
+    }
     for (int i = 0; i < 10; ++i) {
         for (auto r : {hud.hearts[i], hud.armor[i], hud.food[i], hud.air[i]}) {
             assert(r.y >= 0 && r.y + r.h <= inv.hotbar.y && r.x >= 0 && r.x + r.w <= W);
@@ -46,7 +60,7 @@ int main() {
         }
         for (int j = 0; j < 10; ++j) assert(!overlaps(hud.hearts[i], hud.food[j]));
     }
-    std::puts("PASS layout: Gui.cpp yLine1/yLine2/xLeft/xRight at the hotbar's 1.25x scale, no hotbar overlap");
+    std::puts("PASS layout: Gui.cpp yLine1/yLine2/xLeft/xRight at the hotbar's 1.5x scale, no hotbar/control overlap");
 
     // Atlas really is the runtime 1_2_2 sheet: food cells are not empty.
     int foodAlpha = 0;

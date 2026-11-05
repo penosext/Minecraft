@@ -195,7 +195,7 @@ const INVENTORY_INTERVAL_MS = 500;
 const GUI_SURFACE_WIDTH = 960;
 const GUI_SURFACE_HEIGHT = 266;
 // InventoryRenderer.hpp kMaxGuiScale, with the source 184×168 minimum fit.
-const GUI_MAX_SCALE = 1.25;
+const GUI_MAX_SCALE = 1.5;
 const GUI_MIN_WIDTH = 184;
 const GUI_MIN_HEIGHT = 168;
 // InventoryAssets.hpp source units.
@@ -366,10 +366,11 @@ const CONTROL_BOUNDS: { role: ControlRole; x: number; y: number; width: number; 
   { role: 'left', x: 12, y: 218, width: 56, height: 40 },
   { role: 'backward', x: 74, y: 218, width: 56, height: 40 },
   { role: 'right', x: 136, y: 218, width: 56, height: 40 },
-  // The two mouse buttons share the former place/attack/mine strip.
-  { role: 'primary', x: 600, y: 218, width: 120, height: 40 },
-  { role: 'secondary', x: 730, y: 218, width: 120, height: 40 },
-  { role: 'jump', x: 872, y: 218, width: 76, height: 40 },
+  // Right-hand strip starts at x=626, clear of the 1.5x hotbar, its selection
+  // frames (x 341..618) and the survival HUD rows above it (x 343..616).
+  { role: 'primary', x: 626, y: 218, width: 104, height: 40 },
+  { role: 'secondary', x: 738, y: 218, width: 104, height: 40 },
+  { role: 'jump', x: 850, y: 218, width: 98, height: 40 },
 ];
 
 function clockNow(): number {
@@ -437,7 +438,7 @@ function nativeTouchRole(x: number, y: number, statusVisible: boolean, hudHeight
   // Save/exit now lives inside the settings panel, so the former (844,6)-(948,46)
   // reservation is gone: an area with no button must never swallow a look drag.
   // The first-person/preview toggle no longer exists either.
-  // The native hotbar box is derived from the real 1.25× layout, selection frame
+  // The native hotbar box is derived from the real 1.5× layout, selection frame
   // included, instead of being written down at the old 1× coordinates.
   if ((hudHeight > 0 && x >= 12 && x <= 442 && y >= 6 && y <= 6 + hudHeight) ||
     (x >= 540 && x <= 620 && y >= 6 && y <= 46) ||
@@ -665,7 +666,7 @@ function readWorldMetadata(json: string): WorldMetadata {
 
 // Exported for the layout regression only: it asserts this mirror against the
 // native inventoryLayout values that the native tests already lock down.
-export { guiLayout, GUI_LAYOUT, HOTBAR_HITS, INVENTORY_HITS, HOTBAR_IGNORE, HOTBAR_HIT_LAYER, INVENTORY_HIT_LAYER };
+export { guiLayout, GUI_LAYOUT, HOTBAR_HITS, INVENTORY_HITS, HOTBAR_IGNORE, HOTBAR_HIT_LAYER, INVENTORY_HIT_LAYER, CONTROL_BOUNDS };
 
 const index = defineComponent({
   data() {

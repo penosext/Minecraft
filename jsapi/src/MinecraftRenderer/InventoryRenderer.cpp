@@ -307,7 +307,7 @@ ContainerLayout containerLayout(int w, int h, PanelKind kind) {
     if (kind == PanelKind::None || w <= 0 || h <= 0 || w > 32768 || h > 32768) return result;
     const int panelH = kind == PanelKind::Chest ? 168 : 166;
     // Same scale rule as inventoryLayout (184x168 minimum), so every screen
-    // shares one GUI scale; the 168-unit chest still fits 266 px at 1.25x.
+    // shares one GUI scale; the 168-unit chest (252 px) still fits 266 px at 1.5x.
     const float fit = std::min({kMaxGuiScale, w / 184.0f, h / 168.0f});
     result.scale = fit >= 1.0f ? std::floor(fit * 4.0f) / 4.0f : fit;
     const float s = result.scale;
