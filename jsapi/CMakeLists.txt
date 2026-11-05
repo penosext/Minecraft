@@ -3,10 +3,19 @@ cmake_minimum_required(VERSION 3.10)
 if(DEFINED ENV{CROSS_TOOLCHAIN_PREFIX} AND NOT "$ENV{CROSS_TOOLCHAIN_PREFIX}" STREQUAL "")
     set(CMAKE_C_COMPILER "$ENV{CROSS_TOOLCHAIN_PREFIX}gcc")
     set(CMAKE_CXX_COMPILER "$ENV{CROSS_TOOLCHAIN_PREFIX}g++")
-    # The device toolchain targets the aarch64 pen; tell CMake so the
-    # original-core ARM64 checks see the target, not the x86 build host.
+    # Tell CMake the pen is the target, so the original-core architecture
+    # checks see it instead of the x86 build host. The processor comes from
+    # the toolchain triple: aarch64 (X7, P5) or 32-bit ARM (S6P, A6P, X5).
+    execute_process(COMMAND "$ENV{CROSS_TOOLCHAIN_PREFIX}gcc" -dumpmachine
+                    OUTPUT_VARIABLE CROSS_TARGET_TRIPLE OUTPUT_STRIP_TRAILING_WHITESPACE)
     set(CMAKE_SYSTEM_NAME Linux)
-    set(CMAKE_SYSTEM_PROCESSOR aarch64)
+    if(CROSS_TARGET_TRIPLE MATCHES "^aarch64")
+        set(CMAKE_SYSTEM_PROCESSOR aarch64)
+    elseif(CROSS_TARGET_TRIPLE MATCHES "^arm")
+        set(CMAKE_SYSTEM_PROCESSOR armv7l)
+    else()
+        message(FATAL_ERROR "Unsupported device toolchain target: ${CROSS_TARGET_TRIPLE}")
+    endif()
 endif()
 
 project(jsapi_Minecraft C CXX)

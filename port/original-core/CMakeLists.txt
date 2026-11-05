@@ -17,8 +17,14 @@ endif()
 if(CMAKE_CROSSCOMPILING AND BUILD_TESTING)
     message(FATAL_ERROR "Standalone original-core tests must run natively; build them on aarch64")
 endif()
+if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64|ARM64|arm.*)$")
+    message(FATAL_ERROR "Original core requires an ARM target; got ${CMAKE_SYSTEM_PROCESSOR}")
+endif()
 if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64|ARM64)$")
-    message(FATAL_ERROR "ARM64 baseline requires an aarch64/arm64 target; got ${CMAKE_SYSTEM_PROCESSOR}")
+    # The audit and every regression ran on aarch64. 32-bit ARM uses the same
+    # explicit int32/int64 types and IEEE float with -ffp-contract=off, but
+    # its world-generation output has not been compared against aarch64.
+    message(WARNING "32-bit ARM target ${CMAKE_SYSTEM_PROCESSOR}: builds, but generation equivalence is unverified")
 endif()
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang)$")
     message(FATAL_ERROR "This baseline requires GCC or Clang for the audited compiler flags")

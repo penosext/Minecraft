@@ -32,8 +32,11 @@ using byte = unsigned char;
 using BYTE = unsigned char;
 using DWORD = std::uint32_t;
 using BOOL = int;
-static_assert(CHAR_BIT == 8 && sizeof(int) == 4 && sizeof(long) == 8 &&
-              sizeof(std::int64_t) == 8, "Original layers require native LP64");
+// The compiled original layer sources use int and long long / int64_t, never
+// bare long (checked over every file in the .o.d dependency lists), so ILP32
+// 32-bit ARM is fine; what matters is 32-bit int and 64-bit long long.
+static_assert(CHAR_BIT == 8 && sizeof(int) == 4 && sizeof(long long) == 8 &&
+              sizeof(std::int64_t) == 8, "Original layers require 32-bit int and 64-bit long long");
 static_assert((-1 >> 1) == -1, "Original coordinate math needs arithmetic right shift");
 
 // Native thread-local implementation of the three Win32 TLS primitives used by
