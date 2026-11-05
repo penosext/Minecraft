@@ -562,10 +562,11 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
 {
     if(diagnostics) *diagnostics={};
     if(w<=0 || h<=0 || w>16384 || h>16384) return;
-    auto finite=[](float value,float fallback) { return std::isfinite(value)?value:fallback; };
+    // Not named `finite`: uClibc <math.h> defines a one-argument finite() macro.
+    auto finiteOr=[](float value,float fallback) { return std::isfinite(value)?value:fallback; };
     FirstPersonState state=input;
-    state.swing=std::clamp(finite(state.swing,0),0.0f,1.0f);
-    state.equip=std::clamp(finite(state.equip,1),0.0f,1.0f);
+    state.swing=std::clamp(finiteOr(state.swing,0),0.0f,1.0f);
+    state.equip=std::clamp(finiteOr(state.equip,1),0.0f,1.0f);
     float aspectScale=1,fovScale=1,fudgeX=0,fudgeY=0;
     if(state.viewport==FirstPersonViewport::SplitHorizontal) {
         aspectScale=originalfp::kHorizontalAspect;fovScale=originalfp::kHorizontalFov;
@@ -573,23 +574,23 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
     } else if(state.viewport==FirstPersonViewport::SplitVertical) {
         aspectScale=originalfp::kVerticalAspect;fudgeX=originalfp::kVerticalFudgeX;
     }
-    float aspect=finite(state.aspect,0);
+    float aspect=finiteOr(state.aspect,0);
     if(aspect<=0) aspect=float(w)/h/aspectScale;
     // Finite extreme inputs must not overflow reciprocal perspective or raster ints.
     aspect=std::clamp(aspect*aspectScale,1.0f/65536,65536.0f);
-    const float fov=std::clamp(finite(state.fov,originalfp::kDefaultFov),1.0f,179.0f)*fovScale;
+    const float fov=std::clamp(finiteOr(state.fov,originalfp::kDefaultFov),1.0f,179.0f)*fovScale;
     const float near=originalfp::kNearPlane;
-    const float far=std::clamp(finite(state.farPlane,512),near+0.01f,1.0e6f);
+    const float far=std::clamp(finiteOr(state.farPlane,512),near+0.01f,1.0e6f);
     const float cot=1/std::tan(fov*kPi/360);
     Matrix projection;
     projection.m={{cot/aspect,0,0,0, 0,cot,0,0,
                    0,0,-(far+near)/(far-near),-2*far*near/(far-near), 0,0,-1,0}};
     Matrix model;
-    if(state.bob) applyOriginalBob(model,std::remainder(finite(state.bobPhase,0),2.0f),
-        std::clamp(finite(state.bobAmount,0),0.0f,1.0f),
-        std::remainder(finite(state.bobTilt,0),360.0f));
-    applyOriginalViewLag(model,std::remainder(finite(state.pitchLag,0),360.0f),
-                              std::remainder(finite(state.yawLag,0),360.0f));
+    if(state.bob) applyOriginalBob(model,std::remainder(finiteOr(state.bobPhase,0),2.0f),
+        std::clamp(finiteOr(state.bobAmount,0),0.0f,1.0f),
+        std::remainder(finiteOr(state.bobTilt,0),360.0f));
+    applyOriginalViewLag(model,std::remainder(finiteOr(state.pitchLag,0),360.0f),
+                              std::remainder(finiteOr(state.yawLag,0),360.0f));
     // Inventory selection is explicit. Unsupported shapes never masquerade as
     // empty hand; the block subset is reported by diagnostics below.
     const bool held=state.heldBlockIndex>=0;
