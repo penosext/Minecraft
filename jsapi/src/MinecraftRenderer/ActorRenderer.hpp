@@ -24,6 +24,12 @@ struct FirstPersonState {
     int heldBlockIndex = -1; // inventory catalog index; -1 empty hand, not an item id
 };
 
+// How the source holds a TileItem (ItemInHandRenderer.cpp:241): Block3D when the
+// tile's render shape passes TileRenderer::canRender (TileRenderer.cpp:8512),
+// Sprite (extruded terrain icon, like any Item) otherwise, None when no TileItem
+// holds that catalog state (liquids, fire, door halves, crops, ...).
+enum class HeldBlockPath { None, Block3D, Sprite };
+
 // Native diagnostics use the exact same matrices/vertices as rasterization.
 // Matrices are row-major, applied to COLUMN vectors (OpenGL postmultiply order).
 struct FirstPersonVertex { float x = 0, y = 0, z = 0; };
@@ -31,7 +37,8 @@ struct FirstPersonProjectedVertex { float x = 0, y = 0, depth = 0; bool inFrustu
 struct FirstPersonUV { float u = 0, v = 0; }; // source texel coordinates, not normalized
 struct FirstPersonDiagnostics {
     bool valid = false;
-    bool heldBlockSupported = false;
+    bool heldBlockSupported = false; // a Block3D held model was drawn
+    HeldBlockPath heldPath = HeldBlockPath::None;
     float aspect = 0, fov = 0;
     std::array<float, 16> modelView{}, projection{};
     std::array<FirstPersonVertex, 8> modelVertices{}, cameraVertices{};
@@ -70,6 +77,8 @@ void renderActorOverlay(uint32_t* pixels, int w, int h, int viewMode,
 // normalization, if required, belongs to the caller. Same straight ARGB32 and
 // viewport guards as renderActorOverlay. Nonfinite swing/equip become 0/1;
 // finite values clamp to [0,1]. Does not alter the existing hand/full-cube APIs.
+// Also draws TileItems whose shape is NOT in canRender (torch, flower, vine,
+// rail, ladder, pane, ...) as their terrain-atlas icon tinted by the item colour.
 void renderHeldItemOverlay(uint32_t* pixels, int w, int h, int itemId, int aux,
                            float swing = 0.0f, float equip = 1.0f);
 // True when itemId/aux is an independent Item drawn from items.png in hand
@@ -77,3 +86,9 @@ void renderHeldItemOverlay(uint32_t* pixels, int w, int h, int itemId, int aux,
 // may still PLACE a tile, but the source ItemInHandRenderer only renders a
 // block for TileItems; their placed-tile render index is not the held model.
 bool hasHeldItemSprite(int itemId, int aux);
+// Catalog render index -> held path; cached per index, cheap per frame.
+HeldBlockPath heldBlockPath(int blockIndex);
+// True when itemId/aux is a TileItem held as its terrain icon (heldBlockPath ==
+// Sprite and not already an items.png sprite). renderActorOverlay draws nothing
+// for such an index; the caller draws the arm and then renderHeldItemOverlay.
+bool hasHeldTileSprite(int itemId, int aux);

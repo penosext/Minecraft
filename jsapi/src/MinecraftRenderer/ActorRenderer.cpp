@@ -4,6 +4,8 @@
 #include "LegacyCatalog.hpp"
 #include "LegacyTextures.hpp"
 #include "ItemIcons.hpp"
+#include "ItemCatalog.hpp"
+#include "WorldRenderer.hpp"
 
 #include <algorithm>
 #include <array>
@@ -11,7 +13,9 @@
 #include <cmath>
 #include <cstddef>
 #include <limits>
+#include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace {
@@ -228,30 +232,230 @@ std::array<int,4> meshBounds(const Mesh& mesh,int w,int h) {
              int(std::ceil(std::clamp(x1,0.0f,float(w)))),
              int(std::ceil(std::clamp(y1,0.0f,float(h))))}};
 }
-void buildOriginalHeldCube(Mesh& mesh,const std::array<Vec3,8>& camera,
-                           const Matrix& projection,int w,int h,int index,
-                           FirstPersonDiagnostics& diagnostics) {
+// ---- Held TileItems (ItemInHandRenderer::renderItem, ItemInHandRenderer.cpp:241) ----
+// A TileItem whose tile render shape passes TileRenderer::canRender
+// (TileRenderer.cpp:8512) is drawn by TileRenderer::renderTile(tile, aux)
+// (TileRenderer.cpp:7925) as 3D geometry; every other TileItem goes down the
+// same extruded-icon branch as a plain Item (ItemInHandRenderer.cpp:253-301).
+// Catalog shapes map to source render shapes as follows:
+//   SHAPE_BLOCK  (Tile.cpp:632): cube, grass, leaves, slab, snow, button,
+//                pressure_plate, carpet; drawn with tile->updateDefaultShape()
+//   SHAPE_PISTON_BASE (PistonBaseTile.cpp:112) piston, data forced Facing::UP
+//   SHAPE_PORTAL_FRAME (TheEndPortalFrameTile.cpp:46) endframe, 13/16 high
+//   SHAPE_ENTITYTILE_ANIMATED (ChestTile.cpp:37) chest
+//   SHAPE_CACTUS (CactusTile.cpp:74), SHAPE_STAIRS (StairTile.cpp:47),
+//   SHAPE_FENCE (FenceTile.cpp:112), SHAPE_WALL (WallTile.cpp:34)
+// Everything else (cross, torch, ladder, rail, lever, vine, lilypad, pane,
+// tripwire_hook, ...) is not in canRender and is held as its icon sprite.
+struct HeldQuad {
+    std::array<Vec3,4> p;              // tile-local [0,1]^3 (fence rails exceed it)
+    std::array<FirstPersonUV,4> uv;    // atlas texels
+    int u0, v0, u1, v1;                // inclusive atlas texel limits
+    uint32_t tint;
+};
+struct HeldModel {
+    HeldBlockPath path = HeldBlockPath::None;
+    // The SHAPE_BLOCK/TREE/QUARTZ/PISTON_BASE/PORTAL_FRAME and
+    // ENTITYTILE_ANIMATED branches add glRotatef(90,0,1,0) + translate(-.5)
+    // (TileRenderer.cpp:7963-7965, 8151-8152); CACTUS/STAIRS/FENCE/WALL only
+    // translate (TileRenderer.cpp:8107, 8177, 8277, 8364).
+    bool rotated = true;
+    std::vector<HeldQuad> quads;
+    std::array<uint32_t,16*16> sprite{}; // terrain icon, same layout as itemicons
+    uint32_t spriteTint = 0xffffff;
+};
+const legacy::IconSpec* findAtlasIcon(const wchar_t* name) {
+    for(const auto& spec:legacy::kIconSpecs) if(std::wstring(spec.name)==name) return &spec;
+    return nullptr;
+}
+// Item colour the source applies (glColor before renderItem, ItemInHandRenderer.cpp:449;
+// renderTile re-applies tile->getColor(data), TileRenderer.cpp:7936). The catalog
+// colour is a WORLD biome sample (e.g. vine 5bab46), not the item colour. Values are
+// port/assets/colours.xml: Foliage_Default 48b518, Evergreen 619961, Birch 80a755,
+// Tile_WaterLily 208030. Item::getColor defaults to white (Item.cpp:848).
+uint32_t heldItemColour(const legacy::BlockSpec& block) {
+    switch(block.tileId) {
+    case 2: return block.color; // GrassTile top only; handled by the grass flag
+    case 18: // LeafTileItem::getColor / LeafTile::getColor(data) (LeafTile.cpp:41)
+        if((block.data&3)==1) return 0x619961;
+        if((block.data&3)==2) return 0x80a755;
+        return 0x48b518;
+    case 31: // ColoredTileItem -> TallGrass::getColor(aux) (TallGrass.cpp:36)
+        return (block.data==0)?0xffffff:0x48b518;
+    case 106: return 0x48b518; // ColoredTileItem -> VineTile::getColor(aux) (VineTile.cpp:181)
+    case 111: return 0x208030; // WaterLilyTileItem -> WaterlilyTile::getColor (WaterLilyTile.cpp:47)
+    default: return block.color; // white for every other held catalog entry
+    }
+}
+struct HeldBox { float x0,y0,z0,x1,y1,z1; };
+// Emit the six faces of a box with the vertex order of the existing unit cube
+// (kCubeFaces/kCubeUV) and the sub-rectangle UVs of renderFaceDown/Up/North/
+// South/West/East (TileRenderer.cpp:7200, 7310, 7423, 7542, 7661, 7779):
+// down/up u=X0..X1 v=Z0..Z1, north/south u=X0..X1 v=16-Y1..16-Y0,
+// west/east u=Z0..Z1 v=16-Y1..16-Y0; an axis outside [0,1] uses the full icon.
+// inset moves the four side faces inwards (cactus t->addOffset, 8121-8143).
+void heldBoxQuads(HeldModel& model,const HeldBox& b,const wchar_t* const faces[6],
+                  uint32_t tint,bool grass,float inset=0,bool fullUV=false) {
+    const float lo[3]={b.x0,b.y0,b.z0},hi[3]={b.x1,b.y1,b.z1};
+    for(int face=0;face<6;++face) {
+        const auto* icon=findAtlasIcon(faces[face]);
+        if(!icon) continue;
+        const float iu0=icon->u0*legacy::kAtlasWidth,iv0=icon->v0*legacy::kAtlasHeight;
+        const float iu1=icon->u1*legacy::kAtlasWidth,iv1=icon->v1*legacy::kAtlasHeight;
+        const int uAxis=face<4?0:2;
+        const bool vIsZ=face<2;
+        const auto range=[&](int axis,bool invert,float& a,float& c) {
+            if(fullUV || lo[axis]<0 || hi[axis]>1) {a=0;c=1;return;}
+            a=invert?1-hi[axis]:lo[axis]; c=invert?1-lo[axis]:hi[axis];
+        };
+        float ua,ub,va,vb;
+        range(uAxis,false,ua,ub);
+        range(vIsZ?2:1,!vIsZ,va,vb);
+        HeldQuad q;
+        for(int i=0;i<4;++i) {
+            const int k=originalfp::kCubeFaces[face][i];
+            // Point layout {x0,y0,z0},{x1,y0,z0},{x1,y1,z0},{x0,y1,z0},{x0,y0,z1}...
+            const bool fx=k==1||k==2||k==5||k==6, fy=k==2||k==3||k==6||k==7, fz=k>=4;
+            Vec3 p{fx?b.x1:b.x0,fy?b.y1:b.y0,fz?b.z1:b.z0};
+            if(inset!=0) {
+                if(face==2) p.z+=inset; else if(face==3) p.z-=inset;
+                else if(face==4) p.x+=inset; else if(face==5) p.x-=inset;
+            }
+            q.p[i]=p;
+            const float fu=originalfp::kCubeUV[face][i][0]?ub:ua;
+            const float fv=originalfp::kCubeUV[face][i][1]?vb:va;
+            q.uv[i]={iu0+(iu1-iu0)*fu,iv0+(iv1-iv0)*fv};
+        }
+        const float minU=iu0+(iu1-iu0)*ua,maxU=iu0+(iu1-iu0)*ub;
+        const float minV=iv0+(iv1-iv0)*va,maxV=iv0+(iv1-iv0)*vb;
+        q.u0=int(std::floor(minU+1e-4f));q.v0=int(std::floor(minV+1e-4f));
+        q.u1=std::max(q.u0,int(std::ceil(maxU-1e-4f))-1);
+        q.v1=std::max(q.v0,int(std::ceil(maxV-1e-4f))-1);
+        q.tint=grass?(face==1?tint:0xffffff):tint;
+        model.quads.push_back(q);
+    }
+}
+HeldModel buildHeldModel(int index) {
+    HeldModel model;
     const auto& block=legacy::kBlockSpecs[index];
-    const bool grass=std::string(block.shape)=="grass";
-    if((!grass && std::string(block.shape)!="cube") || block.height!=1) return;
+    const std::string_view shape=block.shape;
+    const uint32_t colour=heldItemColour(block);
+    const bool grass=shape=="grass";
+    const auto box=[&](HeldBox b,float inset=0,bool fullUV=false) {
+        heldBoxQuads(model,b,block.faces,grass?block.color:colour,grass,inset,fullUV);
+    };
+    // Reuse the world geometry where the item shape IS the default world shape.
+    const auto world=[&](int data) {
+        legacy::BlockSpec copy=block; copy.data=data;
+        for(const auto& b:worldrender::buildGeometry(copy).boxes)
+            box({b.low.x,b.low.y,b.low.z,b.high.x,b.high.y,b.high.z});
+    };
+    constexpr float P=1/16.0f;
+    model.path=HeldBlockPath::Block3D;
+    if((shape=="cube" && block.height==1) || grass || shape=="leaves" || shape=="piston") {
+        // renderTile SHAPE_BLOCK: updateDefaultShape() = full cell. Leaves keep
+        // cutout alpha (alpha-0 texels are skipped). Piston: data=Facing::UP
+        // (TileRenderer.cpp:7959) = the catalog's top/bottom/side faces.
+        box({0,0,0,1,1,1});
+    } else if(shape=="slab") {
+        world(block.data&7); // HalfSlabTile::updateDefaultShape (0,0,0,1,.5,1) (HalfSlabTile.cpp:45)
+    } else if(shape=="snow") {
+        world(0);            // TopSnowTile::updateShape(0) = 2/16 (TopSnowTile.cpp:66)
+    } else if(shape=="carpet") {
+        world(0);            // WoolCarpetTile::updateShape(0) = 1/16 (WoolCarpetTile.cpp:54)
+    } else if(shape=="pressure_plate") {
+        // BasePressurePlateTile::updateDefaultShape: centred 16x4x16 (BasePressurePlateTile.cpp:173).
+        box({0,.5f-2*P,0,1,.5f+2*P,1});
+    } else if(shape=="button") {
+        // ButtonTile::updateDefaultShape: centred 6x4x4 (ButtonTile.cpp:276).
+        box({.5f-3*P,.5f-2*P,.5f-2*P,.5f+3*P,.5f+2*P,.5f+2*P});
+    } else if(shape=="endframe") {
+        // SHAPE_PORTAL_FRAME takes the SHAPE_BLOCK branch first (TileRenderer.cpp:7955) with
+        // TheEndPortalFrameTile::updateDefaultShape 13/16 (TheEndPortalFrameTile.cpp:51).
+        box({0,0,0,1,13*P,1});
+    } else if(shape=="chest") {
+        // SHAPE_ENTITYTILE_ANIMATED -> EntityTileRenderer -> ChestRenderer with data 0
+        // (ChestRenderer.cpp:47, rot 0): the ChestModel (ChestModel.cpp:7-20) is a
+        // 14x14x14 box, latch on +Z. The chest_* atlas icons are composited from
+        // that model's chest.png faces (tools/generate-terrain.py:289), so draw
+        // the world chest box with those icons, front moved to the latch side.
+        // Platform choice: the 2x4x1 latch is part of chest_front, not a cuboid.
+        const wchar_t* faces[6]={block.faces[0],block.faces[1],block.faces[3],
+                                 block.faces[2],block.faces[4],block.faces[5]};
+        heldBoxQuads(model,{P,0,P,15*P,14*P,15*P},faces,colour,false,0,true);
+    } else if(shape=="cactus") {
+        // SHAPE_CACTUS: full cell, sides offset 1/16 inwards (TileRenderer.cpp:8104).
+        model.rotated=false;
+        box({0,0,0,1,1,1},P);
+    } else if(shape=="stairs") {
+        // SHAPE_STAIRS item boxes (TileRenderer.cpp:8172-8173).
+        model.rotated=false;
+        box({0,0,0,1,1,.5f});
+        box({0,0,.5f,1,.5f,1});
+    } else if(shape=="fence") {
+        // SHAPE_FENCE item boxes (TileRenderer.cpp:8271-8276): two posts, two rails.
+        model.rotated=false;
+        float w=2*P;
+        box({.5f-w,0,0,.5f+w,1,w*2});
+        box({.5f-w,0,1-w*2,.5f+w,1,1});
+        w=P;
+        box({.5f-w,1-w*3,-w*2,.5f+w,1-w,1+w*2});
+        box({.5f-w,.5f-w*3,-w*2,.5f+w,.5f-w,1+w*2});
+    } else if(shape=="wall") {
+        // SHAPE_WALL item boxes (TileRenderer.cpp:8361-8362), WallTile.cpp:9-12.
+        model.rotated=false;
+        box({0,0,.5f-3*P,1,13*P,.5f+3*P});
+        box({.5f-4*P,0,.5f-4*P,.5f+4*P,1,.5f+4*P});
+    } else if(shape=="air" || shape=="liquid" || shape=="fire" || shape=="door" ||
+              shape=="repeater" || shape=="wire" || shape=="crops" || shape=="cocoa" ||
+              shape=="flower_pot" || shape=="cauldron" || shape=="tripwire" ||
+              shape=="cube") {
+        // No TileItem holds these states: liquids/fire have no creative item, and
+        // doors/repeater/dust/crops/cocoa/pot/cauldron/string are independent
+        // Items with items.png sprites (hasHeldItemSprite). Non-unit "cube"
+        // catalog entries stay unsupported rather than guessing their bounds.
+        model.path=HeldBlockPath::None;
+    } else {
+        // Not in canRender: TileItem::getIcon(aux) = tile->getTexture(Facing::UP, aux)
+        // (TileItem.cpp:40), drawn like any item from the terrain atlas.
+        model.path=HeldBlockPath::Sprite;
+        model.spriteTint=colour;
+        const auto* icon=findAtlasIcon(block.faces[1]);
+        if(!icon) {model.path=HeldBlockPath::None;return model;}
+        const int x0=int(std::lround(icon->u0*legacy::kAtlasWidth));
+        const int y0=int(std::lround(icon->v0*legacy::kAtlasHeight));
+        for(int y=0;y<16;++y) for(int x=0;x<16;++x)
+            model.sprite[size_t(y)*16+x]=legacy::kAtlasPixels[size_t(y0+y)*legacy::kAtlasWidth+x0+x];
+    }
+    if(model.path==HeldBlockPath::Block3D && model.quads.empty()) model.path=HeldBlockPath::None;
+    return model;
+}
+// Built lazily once per catalog index (the first frame an item is held), never
+// rebuilt: no per-frame icon-name search or mesh construction. Building all 544
+// eagerly costs ~27 ms on the host (icon-name search), too long for one frame.
+const HeldModel& cachedHeldModel(int index) {
+    thread_local std::vector<std::unique_ptr<HeldModel>> models(legacy::kBlockCount);
+    auto& slot=models[size_t(index)];
+    if(!slot) slot=std::make_unique<HeldModel>(buildHeldModel(index));
+    return *slot;
+}
+void buildOriginalHeldBlock(Mesh& mesh,const Matrix& model,const Matrix& projection,
+                            int w,int h,const HeldModel& held,
+                            FirstPersonDiagnostics& diagnostics) {
     // renderTile is called with its default fAlpha=1; catalog world-overlay
     // opacity (e.g. glass .65) is NOT a held-item transform/material parameter.
     diagnostics.heldBlockSupported=true;
-    for(int face=0;face<6;++face) {
-        const legacy::IconSpec* icon=nullptr;
-        for(const auto& spec:legacy::kIconSpecs)
-            if(std::wstring(spec.name)==block.faces[face]) {icon=&spec;break;}
-        if(!icon) continue;
-        const int u0=int(std::lround(icon->u0*legacy::kAtlasWidth));
-        const int v0=int(std::lround(icon->v0*legacy::kAtlasHeight));
-        const int u1=int(std::lround(icon->u1*legacy::kAtlasWidth));
-        const int v1=int(std::lround(icon->v1*legacy::kAtlasHeight));
-        auto& uv=diagnostics.faceUV[face];
-        for(int i=0;i<4;++i) uv[i]={float(originalfp::kCubeUV[face][i][0]?u1:u0),
-                                                  float(originalfp::kCubeUV[face][i][1]?v1:v0)};
-        const uint32_t tint=grass?(face==1?block.color:0xffffff):block.color;
-        originalFace(mesh,camera,originalfp::kCubeFaces[face],uv,projection,w,h,u0,v0,u1-1,v1-1,
-                     legacy::kAtlasPixels,legacy::kAtlasWidth,tint);
+    static constexpr int order[4]={0,1,2,3};
+    for(size_t i=0;i<held.quads.size();++i) {
+        const HeldQuad& q=held.quads[i];
+        std::array<Vec3,8> camera{};
+        for(int k=0;k<4;++k) {
+            const Vec4 c=model.apply({q.p[k].x,q.p[k].y,q.p[k].z,1});
+            camera[k]={c.x,c.y,c.z};
+        }
+        if(i<6) diagnostics.faceUV[i]=q.uv;
+        originalFace(mesh,camera,order,q.uv,projection,w,h,q.u0,q.v0,q.u1,q.v1,
+                     legacy::kAtlasPixels,legacy::kAtlasWidth,q.tint);
     }
 }
 uint32_t shade(uint32_t pixel, unsigned light)
@@ -389,8 +593,16 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
     // Inventory selection is explicit. Unsupported shapes never masquerade as
     // empty hand; the block subset is reported by diagnostics below.
     const bool held=state.heldBlockIndex>=0;
-    if(held) applyOriginalHeldBlock(model,state.swing,state.equip,fudgeX,fudgeY,0);
-    else {
+    const HeldModel* heldModel=held && state.heldBlockIndex<legacy::kBlockCount?
+        &cachedHeldModel(state.heldBlockIndex):nullptr;
+    if(held) {
+        applyOriginalHeldBlock(model,state.swing,state.equip,fudgeX,fudgeY,0);
+        // Shapes without renderTile's glRotatef(90,0,1,0): undo it around the
+        // cell centre, leaving exactly the translate(-.5) those branches apply.
+        if(heldModel && heldModel->path==HeldBlockPath::Block3D && !heldModel->rotated) {
+            model.translate(.5f,.5f,.5f);model.rotate(-90,0,1,0);model.translate(-.5f,-.5f,-.5f);
+        }
+    } else {
         applyOriginalEmptyHand(model,state.swing,state.equip,fudgeX,fudgeY,0);
         model.translate(originalfp::kArmPivot[0]*originalfp::kModelScale,
                         originalfp::kArmPivot[1]*originalfp::kModelScale,
@@ -398,11 +610,14 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
         model.rotate(originalfp::kRestZRadians*180/kPi,0,0,1);
         model.scale(originalfp::kModelScale,originalfp::kModelScale,originalfp::kModelScale);
     }
-    Mesh mesh;
+    // Fence = 24 quads, each at most eight triangles after six-plane clipping.
+    thread_local std::array<Triangle,64*8> storage;
+    Mesh mesh(storage.data(),storage.size());
     std::array<Vec3,8> camera{};
     FirstPersonDiagnostics local;
     auto& d=diagnostics?*diagnostics:local;
     d.valid=true;d.aspect=aspect;d.fov=fov;d.modelView=model.m;d.projection=projection.m;
+    d.heldPath=heldModel?heldModel->path:HeldBlockPath::None;
     static constexpr int faces[6][4]={{5,1,2,6},{0,4,7,3},{5,4,0,1},
                                      {2,3,7,6},{1,0,3,2},{4,5,6,7}};
     const float x0=held?0:originalfp::kArmOrigin[0],y0=held?0:originalfp::kArmOrigin[1],
@@ -437,9 +652,10 @@ void renderOriginalHand(uint32_t* pixels,int w,int h,const FirstPersonState& inp
                 int(std::min(t[0],t[2])),int(std::min(t[1],t[3])),
                 int(std::max(t[0],t[2]))-1,int(std::max(t[1],t[3]))-1);
         }
-    } else if(state.heldBlockIndex<legacy::kBlockCount) {
-        buildOriginalHeldCube(mesh,camera,projection,w,h,state.heldBlockIndex,d);
+    } else if(heldModel && heldModel->path==HeldBlockPath::Block3D) {
+        buildOriginalHeldBlock(mesh,model,projection,w,h,*heldModel,d);
     }
+    // Sprite-path tiles draw nothing here: renderHeldItemOverlay owns them.
     d.triangleCount=mesh.count;d.rasterBounds=meshBounds(mesh,w,h);
     if(pixels) draw(pixels,w,h,mesh);
 }
@@ -453,25 +669,26 @@ bool hasHeldItemSprite(int itemId,int aux)
     return false;
 }
 
-void renderHeldItemOverlay(uint32_t* pixels,int w,int h,int itemId,int aux,float swing,float equip)
+HeldBlockPath heldBlockPath(int blockIndex)
 {
-    if(!pixels || w<=0 || h<=0 || w>16384 || h>16384) return;
-    // Do not mask aux, consult world state, infer block indices, or fall back to
-    // an arbitrary damage-zero icon. The caller supplies a canonical identity.
-    const std::string key="item:"+std::to_string(itemId)+":"+std::to_string(aux);
-    const auto* icon=itemicons::findIcon(key.c_str());
-    if(!icon) return;
-    const originalfp::HeldSpriteSpec* spec=nullptr;
-    for(const auto& candidate:originalfp::kHeldSprites)
-        if(candidate.itemId==itemId && candidate.aux==aux) {spec=&candidate;break;}
-    if(!spec) return;
+    if(blockIndex<0 || blockIndex>=legacy::kBlockCount) return HeldBlockPath::None;
+    return cachedHeldModel(blockIndex).path;
+}
+
+namespace {
+// ItemInHandRenderer::renderItem's extruded icon (listItem/listTerrain share the
+// same 16x16 texel-cube layout, ItemInHandRenderer.cpp:40-115). pixels is the
+// 16x16 icon in itemicons layout; tint is Item::getColor (glColor, line 449).
+void renderHeldSprite(uint32_t* target,int w,int h,const uint32_t* icon,uint32_t tint,
+                      bool mirrored,float swing,float equip)
+{
     swing=std::isfinite(swing)?std::clamp(swing,0.0f,1.0f):0;
     equip=std::isfinite(equip)?std::clamp(equip,0.0f,1.0f):1;
     Matrix model;
     // isHandEquipped is audited class metadata, NOT a first-person pose switch:
     // the source only uses that switch in third-person PlayerRenderer. Tools
     // and materials share this branch; their actual icon geometry differs.
-    applyOriginalHeldSprite(model,swing,equip,0,0,0,spec->mirrored);
+    applyOriginalHeldSprite(model,swing,equip,0,0,0,mirrored);
     const float near=originalfp::kNearPlane,far=512;
     const float cot=1/std::tan(originalfp::kDefaultFov*kPi/360);
     Matrix projection;
@@ -485,11 +702,11 @@ void renderHeldItemOverlay(uint32_t* pixels,int w,int h,int itemId,int aux,float
     static_assert(size==16,"Original sprite extrusion uses 16x16 texels");
     auto opaque=[&](int x,int y) {
         return x>=0 && y>=0 && x<size && y<size &&
-               (icon->pixels[(size-1-y)*size+size-1-x]>>24)==255;
+               (icon[(size-1-y)*size+size-1-x]>>24)==255;
     };
     for(int y=0;y<size;++y) for(int x=0;x<size;++x) {
         const int u=size-1-x,v=size-1-y;
-        if(!(icon->pixels[v*size+u]>>24)) continue;
+        if(!(icon[v*size+u]>>24)) continue;
         const float x0=float(x)/size,x1=float(x+1)/size;
         const float y0=float(y)/size,y1=float(y+1)/size;
         const float z=-originalfp::kSpriteDepth;
@@ -506,9 +723,49 @@ void renderHeldItemOverlay(uint32_t* pixels,int w,int h,int itemId,int aux,float
                              opaque(x,y-1),opaque(x,y+1)};
         for(int face=0;face<6;++face) if(!hidden[face])
             originalFace(mesh,camera,originalfp::kSpriteFaces[face],uv,projection,w,h,
-                         u,v,u,v,icon->pixels,size,0xffffff,true);
+                         u,v,u,v,icon,size,tint,true);
     }
-    draw(pixels,w,h,mesh);
+    draw(target,w,h,mesh);
+}
+// Canonical item id/aux -> catalog render index, cached for the per-frame caller.
+int heldTileIndex(int itemId,int aux)
+{
+    thread_local int lastId=-2,lastAux=-2,lastIndex=-1;
+    if(itemId!=lastId || aux!=lastAux) {
+        const int item=sourceitems::itemIndexForIdAux(itemId,aux);
+        lastId=itemId;lastAux=aux;
+        lastIndex=item>=0?sourceitems::kItems[item].renderIndex:-1;
+    }
+    return lastIndex;
+}
+} // namespace
+
+bool hasHeldTileSprite(int itemId,int aux)
+{
+    return !hasHeldItemSprite(itemId,aux) &&
+           heldBlockPath(heldTileIndex(itemId,aux))==HeldBlockPath::Sprite;
+}
+
+void renderHeldItemOverlay(uint32_t* pixels,int w,int h,int itemId,int aux,float swing,float equip)
+{
+    if(!pixels || w<=0 || h<=0 || w>16384 || h>16384) return;
+    // Do not mask aux, consult world state, infer block indices, or fall back to
+    // an arbitrary damage-zero icon. The caller supplies a canonical identity.
+    const std::string key="item:"+std::to_string(itemId)+":"+std::to_string(aux);
+    const auto* icon=itemicons::findIcon(key.c_str());
+    const originalfp::HeldSpriteSpec* spec=nullptr;
+    if(icon) for(const auto& candidate:originalfp::kHeldSprites)
+        if(candidate.itemId==itemId && candidate.aux==aux) {spec=&candidate;break;}
+    if(icon && spec) {
+        renderHeldSprite(pixels,w,h,icon->pixels,0xffffff,spec->mirrored,swing,equip);
+        return;
+    }
+    // TileItem outside canRender: its terrain icon, tinted by the item colour.
+    // TileItem/ColoredTileItem never set isMirroredArt (Item.cpp default false).
+    const int index=heldTileIndex(itemId,aux);
+    if(heldBlockPath(index)!=HeldBlockPath::Sprite) return;
+    const HeldModel& model=cachedHeldModel(index);
+    renderHeldSprite(pixels,w,h,model.sprite.data(),model.spriteTint,false,swing,equip);
 }
 
 void renderActorOverlay(uint32_t* pixels, int w, int h, int viewMode,
