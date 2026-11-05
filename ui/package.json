@@ -1,7 +1,7 @@
 {
   "name": "Minecraft",
   "appid": "6d696e6563726166",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "minecraft-console 草方块渲染 ARM64 移植测试",
   "icon": "app_icon.png",
   "quickjs": {
