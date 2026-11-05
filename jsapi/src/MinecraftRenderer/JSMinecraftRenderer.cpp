@@ -3,6 +3,7 @@
 #include "WorldRenderer.hpp"
 #include "ActorRenderer.hpp"
 #include "MobRenderer.hpp"
+#include "ItemEntityRenderer.hpp"
 #include "InventoryRenderer.hpp"
 #include "SurvivalFrame.hpp"
 #include "SurvivalHud.hpp"
@@ -25,11 +26,14 @@ namespace
 
 JSMinecraftRenderer::JSMinecraftRenderer()
 {
-    // Container tiles: Tile::use opens a panel; non-empty ones refuse breaking.
+    // Container tiles: Tile::use opens a panel; only the open panel's block
+    // refuses breaking. A broken container's contents and a survival break's
+    // drops become item entities in the scene (onRemove / Tile::popResource).
     gameActions_.setTileHooks({
         [this](int x, int y, int z) { return containers_.canBreak(x, y, z); },
-        [this](int x, int y, int z) { containers_.removed(x, y, z); },
-        [this](int x, int y, int z) { return containers_.interact(world_, x, y, z); }});
+        [this](int x, int y, int z) { scene_.dropContents(x, y, z, containers_.removed(x, y, z)); },
+        [this](int x, int y, int z) { return containers_.interact(world_, x, y, z); },
+        [this](int x, int y, int z, int item, int aux, int count) { scene_.popResource(x, y, z, item, aux, count); }});
 }
 JSMinecraftRenderer::~JSMinecraftRenderer() = default;
 
@@ -444,6 +448,8 @@ void JSMinecraftRenderer::renderWorld(JQFunctionInfo& info)
                               float(std::clamp(pitch, -80.0, 80.0)));
         renderMobOverlay(buffer.data(), width, height, world_, float(std::remainder(yaw, 360.0)),
                          float(std::clamp(pitch, -80.0, 80.0)), scene_.mobs(), scene_.daylight());
+        renderItemOverlay(buffer.data(), width, height, world_, float(std::remainder(yaw, 360.0)),
+                          float(std::clamp(pitch, -80.0, 80.0)), scene_.items(), scene_.daylight(), scene_.partialTick());
         walkPhase_ += elapsed * ((std::abs(forward) + std::abs(strafe)) > 0.01 ? 9.0f : 0.0f);
         if (swinging_) {
             // LivingEntity's uneffected swing duration is six 20 Hz ticks.

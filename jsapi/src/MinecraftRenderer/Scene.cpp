@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include "Inventory.hpp"
 #include "World.hpp"
 #include "WorldRules.hpp"
 #include "LegacyCatalog.hpp"
@@ -73,6 +74,18 @@ constexpr size_t V2RecordBytes = 56, RecordBytes = 60, HeaderBytes = 64;
 constexpr float Epsilon = .0001f, Pi = 3.141592654f;
 constexpr unsigned char Magic[8] = {'M','C','S','C','E','N','E',0};
 constexpr uint32_t Version = 3;
+// items.bin v1, little-endian, FNV protected like scene.bin:
+//   magic "MCITEMS\0", u32 version, seed, width, height, depth, dimension,
+//   flags (bit 0 = death drops applied), u64 serial, u32 count     (48 bytes)
+//   per item: u32 itemId, aux, count, damage; f64 x, y, z; f32 xd, yd, zd;
+//   u32 age, pickupDelay, health; f32 bobOffs; u32 onGround        (72 bytes)
+//   u32 checksum
+// Written only when there is something to record (items or the applied flag)
+// or a previous file must be replaced, so an untouched old save stays as-is.
+constexpr unsigned char ItemsMagic[8] = {'M','C','I','T','E','M','S',0};
+constexpr uint32_t ItemsVersion = 1, ItemsFlagDeathDropsApplied = 1;
+constexpr size_t ItemsHeaderBytes = 48, ItemRecordBytes = 72;
+constexpr size_t ItemsMaxBytes = ItemsHeaderBytes + size_t(ItemEntities::Capacity) * ItemRecordBytes + 4;
 // Player.cpp:1597 supplies TOTAL attribute damage, not a weapon-only bonus.
 // LivingEntity.cpp:785-798 compares raw lastHurt before actuallyHurt applies
 // armor (1085-1094, 1129-1133). No crit/loot/full combat or original AI here.
@@ -141,29 +154,33 @@ Directory pinnedDirectory(const std::string& root, const std::string& name,
     result.path = root + "/" + name;
     return result;
 }
-Bytes readOptional(int dir) {
-    FD fd(::openat(dir, "scene.bin", O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC));
-    if (fd.value < 0) { if (errno == ENOENT) return {}; systemFail("open scene.bin"); }
+// One reader/writer for every binary scene-owned file (scene.bin, items.bin):
+// regular, single-link, bounded, unchanged while reading.
+Bytes readOptional(int dir, const char* name = "scene.bin",
+                   size_t maximum = HeaderBytes + Population * RecordBytes + 4) {
+    const std::string file(name);
+    FD fd(::openat(dir, name, O_RDONLY | O_NOFOLLOW | O_NONBLOCK | O_CLOEXEC));
+    if (fd.value < 0) { if (errno == ENOENT) return {}; systemFail("open " + file); }
     struct stat info {};
-    if (::fstat(fd.value, &info) != 0) systemFail("stat scene.bin");
+    if (::fstat(fd.value, &info) != 0) systemFail("stat " + file);
     if (!S_ISREG(info.st_mode) || info.st_nlink != 1 || info.st_size < 1 ||
-        uint64_t(info.st_size) > HeaderBytes + Population * RecordBytes + 4) fail("invalid scene.bin file type/size/link count");
+        uint64_t(info.st_size) > maximum) fail("invalid " + file + " file type/size/link count");
     Bytes bytes(size_t(info.st_size));
     size_t offset = 0;
     while (offset < bytes.size()) {
         ssize_t count = ::read(fd.value, bytes.data() + offset, bytes.size() - offset);
         if (count < 0 && errno == EINTR) continue;
-        if (count <= 0) fail("truncated scene.bin");
+        if (count <= 0) fail("truncated " + file);
         offset += size_t(count);
     }
     unsigned char extra;
     ssize_t count;
     do { count = ::read(fd.value, &extra, 1); } while (count < 0 && errno == EINTR);
-    if (count != 0) fail("scene.bin changed while reading");
+    if (count != 0) fail(file + " changed while reading");
     struct stat after {}, named {};
-    if (::fstat(fd.value, &after) || ::fstatat(dir, "scene.bin", &named, AT_SYMLINK_NOFOLLOW)) systemFail("restat scene.bin");
+    if (::fstat(fd.value, &after) || ::fstatat(dir, name, &named, AT_SYMLINK_NOFOLLOW)) systemFail("restat " + file);
     if (after.st_size != info.st_size || named.st_dev != info.st_dev || named.st_ino != info.st_ino ||
-        !S_ISREG(named.st_mode) || named.st_nlink != 1) fail("scene.bin replaced while reading");
+        !S_ISREG(named.st_mode) || named.st_nlink != 1) fail(file + " replaced while reading");
     return bytes;
 }
 uint32_t hash(const unsigned char* bytes, size_t count) {
@@ -188,28 +205,30 @@ struct Reader {
     float number() { uint32_t bits = u32(); float value; std::memcpy(&value, &bits, 4); if (!std::isfinite(value)) fail("nonfinite mob state"); return value; }
     double fraction() { uint64_t bits = u64(); double value; std::memcpy(&value, &bits, 8); if (!std::isfinite(value)) fail("nonfinite time remainder"); return value; }
 };
-void atomicWrite(int dir, const Bytes& bytes, const Bytes& expected) {
-    if (readOptional(dir) != expected) fail("refusing to overwrite changed/unknown scene.bin");
-    const std::string temp = ".scene.bin.tmp-" + std::to_string(::getpid()) + "-" + std::to_string(++tempCounter);
+void atomicWrite(int dir, const Bytes& bytes, const Bytes& expected, const char* name = "scene.bin",
+                 size_t maximum = HeaderBytes + Population * RecordBytes + 4) {
+    const std::string file(name);
+    if (readOptional(dir, name, maximum) != expected) fail("refusing to overwrite changed/unknown " + file);
+    const std::string temp = "." + file + ".tmp-" + std::to_string(::getpid()) + "-" + std::to_string(++tempCounter);
     FD fd(::openat(dir, temp.c_str(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC, 0600));
-    if (fd.value < 0) systemFail("create temporary scene");
+    if (fd.value < 0) systemFail("create temporary " + file);
     try {
         size_t offset = 0;
         while (offset < bytes.size()) {
             ssize_t count = ::write(fd.value, bytes.data() + offset, bytes.size() - offset);
             if (count < 0 && errno == EINTR) continue;
-            if (count <= 0) systemFail("write scene");
+            if (count <= 0) systemFail("write " + file);
             offset += size_t(count);
         }
-        if (::fsync(fd.value) != 0) systemFail("flush scene");
+        if (::fsync(fd.value) != 0) systemFail("flush " + file);
         int raw = fd.value; fd.value = -1;
-        if (::close(raw) != 0) systemFail("close scene");
-        if (readOptional(dir) != expected) fail("refusing to overwrite changed/unknown scene.bin");
+        if (::close(raw) != 0) systemFail("close " + file);
+        if (readOptional(dir, name, maximum) != expected) fail("refusing to overwrite changed/unknown " + file);
         if (expected.empty()) {
             // Atomic no-replace creation, even if a target appears after check.
-            if (::linkat(dir, temp.c_str(), dir, "scene.bin", 0) != 0) systemFail("commit new scene");
-            if (::unlinkat(dir, temp.c_str(), 0) != 0) systemFail("unlink temporary scene");
-        } else if (::renameat(dir, temp.c_str(), dir, "scene.bin") != 0) systemFail("replace scene");
+            if (::linkat(dir, temp.c_str(), dir, name, 0) != 0) systemFail("commit new " + file);
+            if (::unlinkat(dir, temp.c_str(), 0) != 0) systemFail("unlink temporary " + file);
+        } else if (::renameat(dir, temp.c_str(), dir, name) != 0) systemFail("replace " + file);
         if (::fsync(dir) != 0) systemFail("flush world directory");
     } catch (...) { ::unlinkat(dir, temp.c_str(), 0); throw; }
 }
@@ -454,6 +473,8 @@ void Scene::open(const World& world) {
     dir = pinnedDirectory(candidate.root_, candidate.name_, candidate.rootDevice_, candidate.rootInode_,
                           candidate.worldDevice_, candidate.worldInode_);
     candidate.seed_ = world.seed(); candidate.width_ = world.width(); candidate.height_ = world.height(); candidate.depth_ = world.depth();
+    candidate.dimension_ = world.currentDimension();
+    candidate.items_.reset(candidate.seed_);
     candidate.opened_ = true;
     // Rules first: population below must already honour DoMobSpawning.
     candidate.openRules(dir.fd.value);
@@ -514,6 +535,7 @@ void Scene::open(const World& world) {
         }
         if (r.u32() != hash(bytes.data(), bytes.size() - 4)) fail("scene checksum mismatch");
     }
+    candidate.openItems(dir.fd.value);
     // The celestial freeze offset is only meaningful against the loaded tick
     // count, so it is validated here rather than when rules.json is parsed.
     if (candidate.frozenTicks_ > candidate.ticks_) fail("frozen day-cycle ticks exceed scene ticks");
@@ -541,6 +563,81 @@ void Scene::saveRules(int worldDirectory) {
     if (text == persistedRules_) return;
     atomicWriteRules(worldDirectory, text, persistedRules_);
     persistedRules_ = text;
+}
+
+void Scene::openItems(int worldDirectory) {
+    const Bytes bytes = readOptional(worldDirectory, "items.bin", ItemsMaxBytes);
+    if (bytes.empty()) return; // Old save (or nothing ever dropped): no items.
+    if (bytes.size() < ItemsHeaderBytes + 4 || std::memcmp(bytes.data(), ItemsMagic, 8)) fail("invalid items.bin magic/size");
+    if (hash(bytes.data(), bytes.size() - 4) != Reader {bytes, bytes.size() - 4}.u32()) fail("items.bin checksum mismatch");
+    Reader r {bytes, 8};
+    if (r.u32() != ItemsVersion || r.u32() != seed_ || r.u32() != uint32_t(width_) || r.u32() != uint32_t(height_) ||
+        r.u32() != uint32_t(depth_) || r.u32() != uint32_t(dimension_)) fail("invalid items.bin version/world header");
+    const uint32_t flags = r.u32();
+    if (flags & ~ItemsFlagDeathDropsApplied) fail("unknown items.bin flags");
+    const uint64_t serial = r.u64();
+    const uint32_t count = r.u32();
+    if (count > uint32_t(ItemEntities::Capacity) || bytes.size() != ItemsHeaderBytes + size_t(count) * ItemRecordBytes + 4)
+        fail("invalid item count/items.bin size");
+    std::vector<ItemEntity> items;
+    for (uint32_t i = 0; i < count; ++i) {
+        ItemEntity e;
+        e.itemId = int(r.u32()); e.aux = int(r.u32()); e.count = int(r.u32()); e.damage = int(r.u32());
+        const auto f64 = [&] { uint64_t bits = r.u64(); double v; std::memcpy(&v, &bits, 8); return v; };
+        const auto f32 = [&] { uint32_t bits = r.u32(); float v; std::memcpy(&v, &bits, 4); return v; };
+        e.x = f64(); e.y = f64(); e.z = f64(); e.xd = f32(); e.yd = f32(); e.zd = f32();
+        const uint32_t age = r.u32(), delay = r.u32(), health = r.u32();
+        e.bobOffs = f32();
+        const uint32_t ground = r.u32();
+        if (age > uint32_t(INT32_MAX) || delay > uint32_t(INT32_MAX) || health > uint32_t(INT32_MAX) || ground > 1)
+            fail("invalid item timers");
+        e.age = int(age); e.pickupDelay = int(delay); e.health = int(health); e.onGround = ground != 0;
+        // Lateral bounds: an item must lie inside the finite world.
+        if (!(e.x >= 0 && e.x <= width_ && e.z >= 0 && e.z <= depth_ && e.y <= height_ + 64.0)) fail("item outside world");
+        items.push_back(e);
+    }
+    if (!items_.replace(std::move(items), serial)) fail("invalid item record");
+    deathDropsApplied_ = (flags & ItemsFlagDeathDropsApplied) != 0;
+    persistedItems_ = bytes;
+}
+void Scene::saveItems(int worldDirectory) {
+    const auto& items = items_.items();
+    // Untouched old save: no file yet and nothing to record.
+    if (persistedItems_.empty() && items.empty() && !deathDropsApplied_) return;
+    Bytes bytes(std::begin(ItemsMagic), std::end(ItemsMagic));
+    for (uint32_t value : {ItemsVersion, seed_, uint32_t(width_), uint32_t(height_), uint32_t(depth_), uint32_t(dimension_),
+                           deathDropsApplied_ ? ItemsFlagDeathDropsApplied : 0u}) put32(bytes, value);
+    put64(bytes, items_.serial()); put32(bytes, uint32_t(items.size()));
+    for (const auto& e : items) {
+        put32(bytes, uint32_t(e.itemId)); put32(bytes, uint32_t(e.aux)); put32(bytes, uint32_t(e.count)); put32(bytes, uint32_t(e.damage));
+        putDouble(bytes, e.x); putDouble(bytes, e.y); putDouble(bytes, e.z);
+        putFloat(bytes, e.xd); putFloat(bytes, e.yd); putFloat(bytes, e.zd);
+        put32(bytes, uint32_t(e.age)); put32(bytes, uint32_t(e.pickupDelay)); put32(bytes, uint32_t(e.health));
+        putFloat(bytes, e.bobOffs); put32(bytes, e.onGround ? 1 : 0);
+    }
+    put32(bytes, hash(bytes.data(), bytes.size()));
+    if (bytes == persistedItems_) return;
+    atomicWrite(worldDirectory, bytes, persistedItems_, "items.bin", ItemsMaxBytes);
+    persistedItems_ = std::move(bytes);
+}
+
+void Scene::popResource(int x, int y, int z, int itemId, int aux, int count) {
+    if (!opened_ || !tileDropsEnabled()) return;
+    for (int i = 0; i < count; ++i) items_.popResource(x, y, z, itemId, aux, 1);
+}
+void Scene::dropContents(int x, int y, int z, const std::vector<mcinventory::Slot>& slots) {
+    if (opened_) items_.dropContents(x, y, z, slots);
+}
+int Scene::pickupItems(const World& world, mcinventory::Inventory& inventory, bool alive) {
+    requireWorld(world);
+    return items_.pickup(world, inventory, alive);
+}
+void Scene::dropInventory(const World& world, const mcinventory::Inventory& inventory) {
+    requireWorld(world);
+    const float x = world.playerX(), y = world.playerY(), z = world.playerZ();
+    for (const auto& slot : inventory.slots()) if (slot.count) items_.dropFromPlayer(x, y, z, slot);
+    for (const auto& slot : inventory.armor()) if (slot.count) items_.dropFromPlayer(x, y, z, slot);
+    deathDropsApplied_ = true;
 }
 
 bool Scene::setRule(mcworld::WorldRule rule, bool value) { return rules_.set(rule, value); }
@@ -592,6 +689,8 @@ void Scene::save(const World& world) {
     // Separate file, written after scene.bin. scene.bin remains byte-identical
     // to previous versions, so an older build still opens this world.
     saveRules(dir.fd.value);
+    // items.bin follows the same rule: an older build simply ignores it.
+    saveItems(dir.fd.value);
 }
 
 std::string Scene::targetInfo(const World& world, float yaw, float pitch, bool farPickRange) const {
@@ -827,6 +926,7 @@ void Scene::tick(const World& world) {
         }
         ++i;
     }
+    items_.tick(world);
     // Reserve two slots for night creatures by retiring two passive platform
     // entries at night. Fixed ids remain unchanged for every surviving mob.
     if (ticks_ % 100 == 0) {
@@ -863,7 +963,7 @@ std::string Scene::summaryJson() const {
         << ",\"dayTicks\":" << dayTicks() << ",\"rules\":" << rules_.toJson()
         << ",\"ticksPerSecond\":20,\"ticksPerDay\":24000,\"timeOfDay\":" << timeOfDay()
         << ",\"phase\":" << timeOfDay() << ",\"daylight\":" << daylight() << ",\"ai\":\"lightweight-platform-wander-not-original-pathfinding\",\"mobCount\":"
-        << mobs_.size() << ",\"killCount\":" << killCount_ << ",\"combat\":\"unarmed-subset-not-original-full-combat\",\"mobs\":[";
+        << mobs_.size() << ",\"itemCount\":" << items_.size() << ",\"killCount\":" << killCount_ << ",\"combat\":\"unarmed-subset-not-original-full-combat\",\"mobs\":[";
     bool first = true;
     for (const auto& mob : mobs_) {
         if (!first) out << ',';

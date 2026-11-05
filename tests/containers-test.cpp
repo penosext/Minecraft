@@ -7,6 +7,7 @@
 #include "GameActions.hpp"
 #include "Inventory.hpp"
 #include "InventoryRenderer.hpp"
+#include "Scene.hpp"
 #include "ItemCatalog.hpp"
 #include "Smelting.hpp"
 
@@ -116,12 +117,13 @@ void workbenchShapedCraftAndInventoryFull() {
     assert(f.containers.craft(f.world, f.inventory) == CR::NoRecipe);
     assert(f.containers.close(f.world, f.inventory) == 0);
     f.saveAll(); f.reopen();
-    // A leftover that cannot return stays in the persisted bench and blocks breaking.
+    // A leftover that cannot return stays in the persisted bench. Breaking is
+    // allowed now (removed() hands the leftover back to drop as an item).
     assert(f.containers.interact(f.world, CX, CY, 102));
     f.put("item:280:0", 8);
     full = filled(f.inventory);
     assert(f.containers.close(f.world, full) == 1);
-    assert(!f.containers.opened() && !f.containers.canBreak(CX, CY, 102));
+    assert(!f.containers.opened() && f.containers.canBreak(CX, CY, 102));
     f.saveAll(); f.reopen();
     assert(f.containers.interact(f.world, CX, CY, 102));
     assert(f.containers.view().slots[8].key == "item:280:0");
@@ -129,13 +131,16 @@ void workbenchShapedCraftAndInventoryFull() {
     assert(f.containers.canBreak(CX, CY, 102));
 }
 
-void chestPersistsAndRefusesBreakWhileFull() {
+void chestPersistsAndBreakDropsContents() {
     Fixture f;
+    mcscene::Scene scene; scene.open(f.world);
     assert(f.inventory.addItem(4, 0, 40) && f.inventory.addItem(265, 0, 5));
     mcgame::GameActions actions;
+    // Same wiring as JSMinecraftRenderer: contents and drops become item entities.
     actions.setTileHooks({[&](int x, int y, int z) { return f.containers.canBreak(x, y, z); },
-                          [&](int x, int y, int z) { f.containers.removed(x, y, z); },
-                          [&](int x, int y, int z) { return f.containers.interact(f.world, x, y, z); }});
+                          [&](int x, int y, int z) { scene.dropContents(x, y, z, f.containers.removed(x, y, z)); },
+                          [&](int x, int y, int z) { return f.containers.interact(f.world, x, y, z); },
+                          [&](int x, int y, int z, int item, int aux, int count) { scene.popResource(x, y, z, item, aux, count); }});
     // Right click (GameActions::use) opens the chest through the hook before
     // any placement, so the held cobblestone is not consumed.
     const int before = f.count("item:4:0");
@@ -154,23 +159,32 @@ void chestPersistsAndRefusesBreakWhileFull() {
     assert(slots[0].key == "item:265:0" && slots[0].count == 3 && slots[26].key == "item:4:0" && slots[26].count == 40);
     assert(f.containers.infoJson(f.inventory).find("\"type\":\"chest\"") != std::string::npos);
     assert(f.containers.close(f.world, f.inventory) == 0);
-    // Mining a non-empty chest is refused (no item entities to drop into).
-    const auto& refused = actions.tickMining(f.world, f.inventory, 180, -45, true, .05f);
-    assert(refused.protectedBlock && !refused.broken);
-    assert(f.world.blockAt(CX, CY, 98) == blockId("chest_data_2"));
-    assert(actions.miningInfoJson().find("\"protectedBlock\":true") != std::string::npos);
-    // Empty it with quick moves, then it breaks and its record goes away.
+    // The open panel's own block is the only one that refuses a break.
     assert(f.containers.interact(f.world, CX, CY, 98));
-    assert(f.containers.quickMove(f.world, f.inventory, 0) && f.containers.quickMove(f.world, f.inventory, 26));
-    assert(!f.containers.canBreak(CX, CY, 98)); // the open panel's own block
+    const auto& refused = actions.tickMining(f.world, f.inventory, 180, -45, true, .05f);
+    assert(refused.protectedBlock && !refused.broken && !f.containers.canBreak(CX, CY, 98));
+    assert(actions.miningInfoJson().find("\"protectedBlock\":true") != std::string::npos);
     f.containers.close(f.world, f.inventory);
     actions.resetMining();
+    // A FULL chest breaks (creative here) and its contents fall out as item
+    // entities: 3 iron + 40 cobblestone, split into 10..30 stacks
+    // (ChestTile::onRemove); creative yields no chest item itself.
     bool broke = false;
     for (int i = 0; i < 40 && !broke; ++i) broke = actions.tickMining(f.world, f.inventory, 180, -45, true, .05f).broken;
     assert(broke && f.world.blockAt(CX, CY, 98) == 0);
-    f.saveAll(); f.reopen();
-    assert(f.count("item:4:0") == 40 && f.count("item:265:0") == 5);
+    int iron = 0, cobble = 0;
+    for (const auto& e : scene.items()) {
+        assert(e.count >= 1 && e.count <= 30 && e.pickupDelay == 0);
+        assert(e.x >= CX + .1 && e.x <= CX + .9 && e.z >= 98.1 && e.z <= 98.9);
+        if (e.itemId == 265) iron += e.count; else if (e.itemId == 4) cobble += e.count; else assert(!"unexpected drop");
+    }
+    assert(iron == 3 && cobble == 40 && scene.items().size() >= 3);
+    assert(f.count("item:4:0") == 0 && f.count("item:265:0") == 2); // inventory untouched until pickup
+    // Its record is gone: the contents cannot come back on reopen (no duplicate).
+    f.saveAll(); scene.save(f.world); f.reopen();
     assert(!f.containers.interact(f.world, CX, CY, 98)); // air now
+    mcscene::Scene reopened; reopened.open(f.world);
+    assert(reopened.items().size() == scene.items().size());
 }
 
 void furnaceSmeltsWithSourceTimings() {
@@ -200,7 +214,7 @@ void furnaceSmeltsWithSourceTimings() {
     tick(150);
     view = f.containers.view();
     assert(view.lit && view.burnProgress == 18 && view.litProgress == 6);
-    assert(!f.containers.canBreak(102, CY, 100)); // burning
+    assert(!f.containers.canBreak(102, CY, 100)); // its panel is open (a lit furnace may break otherwise)
     // State survives save/reopen (FurnaceTileEntity BurnTime/CookTime).
     f.containers.close(f.world, f.inventory);
     f.saveAll(); f.reopen();
@@ -298,7 +312,7 @@ int main() {
     layoutAt960x266();
     inventoryGridCraftsAndReturnsOnClose();
     workbenchShapedCraftAndInventoryFull();
-    chestPersistsAndRefusesBreakWhileFull();
+    chestPersistsAndBreakDropsContents();
     furnaceSmeltsWithSourceTimings();
-    std::cout << "containers-test: 2x2/3x3 crafting, close-return, chest persistence/break guard, furnace ticks/fuel/persistence, layout passed\n";
+    std::cout << "containers-test: 2x2/3x3 crafting, close-return, chest persistence/break drops contents, furnace ticks/fuel/persistence, layout passed\n";
 }

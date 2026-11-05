@@ -172,6 +172,7 @@ set_source_files_properties(
     src/MinecraftRenderer/WorldRenderer.cpp
     src/MinecraftRenderer/ActorRenderer.cpp
     src/MinecraftRenderer/MobRenderer.cpp
+    src/MinecraftRenderer/ItemEntityRenderer.cpp
     PROPERTIES COMPILE_OPTIONS "-O3"
 )
 target_link_libraries(${LIB_NAME} PRIVATE

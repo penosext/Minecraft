@@ -20,3 +20,21 @@ struct Mob {
     float hurtTime = 0;
 };
 } // namespace mcscene
+
+namespace mcscene {
+// Dropped item (ItemEntity.cpp). Shared contract between the item store, the
+// renderer and the save file. Absolute world coordinates; y is the BOTTOM of
+// the .25 x .25 x .25 box (Entity bb->y0); the source entity's y is
+// y0 + heightOffset (.125, ItemEntity.cpp:30), which the renderer adds back.
+struct ItemEntity {
+    int itemId = 0, aux = 0, count = 0, damage = 0; // ItemInstance id/aux/count/damage
+    double x = 0, y = 0, z = 0;
+    float xd = 0, yd = 0, zd = 0;  // Velocity per 20 Hz tick.
+    int age = 0;                   // ItemEntity::age; removed at LIFETIME (6000).
+    int pickupDelay = 0;           // ItemEntity::throwTime (10 block drop, 40 player drop).
+    int health = 5;                // ItemEntity::health (lava/fire damage).
+    float bobOffs = 0;             // Random phase for bob/spin (ItemEntity.cpp:23).
+    bool onGround = false;
+    int stackLimit = 64;           // Transient cache: 1 for damageable items.
+};
+} // namespace mcscene

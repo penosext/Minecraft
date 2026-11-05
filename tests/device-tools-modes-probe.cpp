@@ -4,6 +4,7 @@
 #include "InventoryRenderer.hpp"
 #include "ItemCatalog.hpp"
 #include "ItemIcons.hpp"
+#include "Scene.hpp"
 #include "ToolRules.hpp"
 #include "World.hpp"
 #include <cstdio>
@@ -20,6 +21,9 @@ int main(){
     mcworld::World world; world.create(2468,root,true,864,false,false);
     mcinventory::Inventory inv; inv.open(world);
     mcgame::GameActions actions;
+    // Survival drops are item entities in the scene (Tile::popResource).
+    mcscene::Scene scene; scene.open(world);
+    actions.setTileHooks({nullptr,nullptr,nullptr,[&](int x,int y,int z,int id,int aux,int count){ scene.popResource(x,y,z,id,aux,count); }});
     require(inv.gameMode()==mcinventory::GameMode::Creative,"old save defaults to creative");
     // Source-pinned numbers reaching the runtime.
     require(mcgame::attackDamage(276)==8.0f,"diamond sword total damage");
@@ -40,9 +44,9 @@ int main(){
     for(;survivalTicks<600&&!mined;++survivalTicks) mined=actions.tickMining(world,inv,0,-90,true,.05f).broken;
     require(mined&&survivalTicks>1,"survival mining takes time");
     require(inv.selectedDamage()==1,"mining wear");
-    int stacks=0; std::string drop;
-    for(const auto& slot:inv.slots()) if(slot.count){ ++stacks; if(slot.key!="item:278:0"&&drop.empty()) drop=slot.key; }
-    require(stacks==2&&!drop.empty(),"survival drop collected");
+    int stacks=0; for(const auto& slot:inv.slots()) if(slot.count) ++stacks;
+    require(stacks==1&&!scene.items().empty(),"survival drop spawned as an item entity");
+    const std::string drop="item:"+std::to_string(scene.items()[0].itemId)+":"+std::to_string(scene.items()[0].aux);
     std::printf("survival PASS ticks=%d wear=%d drop=%s\n",survivalTicks,inv.selectedDamage(),drop.c_str());
     // Durability and mode survive a save/reopen; creative give is refused in survival.
     require(!inv.selectHotbarItem(1,indexOf(264,0),1),"survival refuses creative give");

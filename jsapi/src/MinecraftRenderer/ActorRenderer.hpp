@@ -92,3 +92,25 @@ HeldBlockPath heldBlockPath(int blockIndex);
 // Sprite and not already an items.png sprite). renderActorOverlay draws nothing
 // for such an index; the caller draws the arm and then renderHeldItemOverlay.
 bool hasHeldTileSprite(int itemId, int aux);
+
+// Read-only view of the cached held model of a catalog index, for world item
+// entities: ItemRenderer.cpp:83-118 draws the same renderTile mesh (Block3D)
+// and items.png/terrain icons (Sprite) as the held item. Points are tile-local
+// [0,1]^3, uv are atlas texels with inclusive limits u0..u1/v0..v1. rotated
+// = the renderTile branch adds glRotatef(90,0,1,0) before translate(-.5).
+// Pointers stay valid for the thread's lifetime (models are never rebuilt).
+struct HeldModelQuad {
+    float p[4][3];
+    float uv[4][2];
+    int u0, v0, u1, v1;
+    uint32_t tint;
+};
+struct HeldModelView {
+    HeldBlockPath path = HeldBlockPath::None;
+    bool rotated = true;
+    const HeldModelQuad* quads = nullptr;
+    size_t quadCount = 0;
+    const uint32_t* sprite = nullptr; // 16x16 terrain icon (Sprite path), itemicons layout
+    uint32_t spriteTint = 0xffffff;
+};
+HeldModelView heldModelView(int blockIndex);

@@ -58,10 +58,12 @@ bool GameActions::finishMining(mcworld::World& world, mcinventory::Inventory& in
     const int tile = tileOf(hit.block);
     const int data = dataOf(hit.block);
     if (hooks_.canBreak && !hooks_.canBreak(hit.x, hit.y, hit.z)) {
-        mining_.protectedBlock = true; // Contents would be lost: no item entities.
+        mining_.protectedBlock = true; // The open container panel's own block.
         return false;
     }
     if (mode_ == mcinventory::GameMode::Creative) {
+        // Creative breaks drop nothing of the block itself (no playerDestroy);
+        // container contents still fall out through removed() (onRemove).
         if (!world.mine(yaw, pitch, blockReach(mode_))) return false;
         if (hooks_.removed) hooks_.removed(hit.x, hit.y, hit.z);
         return true;
@@ -76,17 +78,10 @@ bool GameActions::finishMining(mcworld::World& world, mcinventory::Inventory& in
         return true;
     }
     const auto gathered = drops(inventory.selectedItemId(), tile, data);
-    // Stage the inventory mutation first, but treat an overflow as "break the
-    // block, drop nothing" rather than refusing the break. A full inventory
-    // must not make an otherwise-breakable block un-minable.
+    // Drops become item entities in the world (Tile::popResource), never
+    // inventory items, so a full inventory cannot affect the break. Only the
+    // tool wear is staged, and committed once the block is really gone.
     auto candidate = inventory;
-    bool overflow = false;
-    for (const auto& drop : gathered) {
-        if (!candidate.addItem(drop.itemId, drop.aux, drop.count)) {
-            overflow = true;
-            break;
-        }
-    }
     const int wear = miningWear(inventory.selectedItemId(), tile);
     if (wear > 0) {
         // Tool wear failure means the tool would break: refuse the whole
@@ -96,22 +91,15 @@ bool GameActions::finishMining(mcworld::World& world, mcinventory::Inventory& in
     }
     if (!world.mine(yaw, pitch, blockReach(mode_))) return false;
     if (hooks_.removed) hooks_.removed(hit.x, hit.y, hit.z);
-    if (overflow) {
-        // Block is gone; the dropped items are discarded. This mirrors the
-        // source when the player's inventory is full: the block still breaks
-        // and the drops are lost (they fall on the ground, which this port
-        // does not model as an entity). Report it so the UI can warn.
-        mining_.inventoryFull = true;
-        return true;
-    }
     inventory = std::move(candidate);
+    if (hooks_.drop)
+        for (const auto& drop : gathered) hooks_.drop(hit.x, hit.y, hit.z, drop.itemId, drop.aux, drop.count);
     return true;
 }
 
 const MiningState& GameActions::tickMining(mcworld::World& world, mcinventory::Inventory& inventory,
                                            float yaw, float pitch, bool held, float dt) {
     mining_.broken = false;
-    mining_.inventoryFull = false;
     mining_.unsupportedLoot = false;
     mining_.protectedBlock = false;
     if (inventory.opened() && inventory.gameMode() != mode_) {
@@ -193,7 +181,9 @@ std::string GameActions::miningInfoJson() const {
         << ",\"broken\":" << (mining_.broken ? "true" : "false")
         << ",\"progress\":" << mining_.progress
         << ",\"x\":" << mining_.x << ",\"y\":" << mining_.y << ",\"z\":" << mining_.z
-        << ",\"inventoryFull\":" << (mining_.inventoryFull ? "true" : "false")
+        // Kept for the UI contract: drops are item entities now, so a full
+        // inventory never affects mining.
+        << ",\"inventoryFull\":false"
         << ",\"unsupportedLoot\":" << (mining_.unsupportedLoot ? "true" : "false")
         << ",\"protectedBlock\":" << (mining_.protectedBlock ? "true" : "false") << '}';
     return out.str();

@@ -14,18 +14,21 @@ namespace mcgame {
 struct MiningState {
     bool active = false;
     bool broken = false; // Successful break during the most recent tickMining call.
-    bool inventoryFull = false;
     bool unsupportedLoot = false; // Survival pauses rather than inventing unknown drops.
-    bool protectedBlock = false; // TileHooks::canBreak refused (e.g. non-empty chest).
+    bool protectedBlock = false; // TileHooks::canBreak refused (the open container's block).
     float progress = 0; // Normalized [0,1], for UI; no crack-animation requirement.
     int x = 0, y = 0, z = 0;
 };
 
-// Optional block-entity hooks (containers). Empty hooks keep the old behaviour.
+// Optional block-entity hooks (containers) and the item-entity sink.
 struct TileHooks {
     std::function<bool(int x, int y, int z)> canBreak; // false => refuse the break.
-    std::function<void(int x, int y, int z)> removed;  // after a successful break.
+    std::function<void(int x, int y, int z)> removed;  // after a successful break (Tile::onRemove).
     std::function<bool(int x, int y, int z)> use;      // Tile::use; true consumes the click.
+    // Tile::popResource for a survival break's drops, called after removed()
+    // (Level::setTile -> onRemove, then Tile::playerDestroy -> spawnResources).
+    // The sink owns DoTileDrops; without a sink the drops are simply not spawned.
+    std::function<void(int x, int y, int z, int itemId, int aux, int count)> drop = nullptr;
 };
 
 // Main-thread gameplay policy over World/Inventory/Scene; no saving, UI or SDK.

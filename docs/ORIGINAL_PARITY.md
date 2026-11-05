@@ -128,6 +128,19 @@
 
 设备实查为RK3562/Mali-Bifrost，`/dev/mali0`及内核驱动存在；但搜索和运行时`dlopen`均未找到EGL/GLES/libmali用户态库。DRM/RGA显示/二维合成及RKNPU节点不等于可用3D渲染。未建立EGL context，未取得GL_RENDERER，未启用GPU世界渲染，未改系统库或接管显示。只读探针结果保存在`dist/device-gpu-runtime-1.0.13.log`。
 
+## 8b. 掉落物实体（未发布）
+
+| 行为 | 原代码依据 | 本移植 |
+|---|---|---|
+| 物理 | `ItemEntity::tick` ItemEntity.cpp:72-133；`Entity::move` Entity.cpp:701-890；`Entity::checkInTile` Entity.cpp:1873-1934 | 重力0.04、阻力0.98、落地摩擦0.6×方块摩擦（冰0.98，IceTile.cpp:11）、反弹×-0.5，按Y/X/Z顺序与`BlockCollision`碰撞箱裁剪；`ItemEntities.cpp` |
+| 合并/寿命 | `mergeWithNeighbours`/`merge` ItemEntity.cpp:135-167；`LIFETIME` ItemEntity.h:16 | 外扩(0.5,0,0.5)、大堆吸收小堆、不超堆叠上限、有耐久的不合并；6000刻消失 |
+| 生成 | `Tile::popResource` Tile.cpp:929-940、`spawnResources` 917-925；`ChestTile::onRemove` ChestTile.cpp:214-256；`FurnaceTile::onRemove` FurnaceTile.cpp:162-210；`Player::drop` Player.cpp:1168-1187；`Inventory::dropAll` Inventory.cpp:661-679 | 同样的偏移、速度、拾取延迟（10/0/40）与10–30拆堆；DoTileDrops只管方块掉落 |
+| 拾取 | `Player::aiStep` Player.cpp:1039-1064；`ItemEntity::playerTouch` ItemEntity.cpp:221-264；`Inventory::add` Inventory.cpp:365-415 | 玩家框外扩(1,0.5,1)，可部分拾取，创造模式装不下就销毁 |
+| 上限 | `ServerLevel::addEntity` ServerLevel.cpp:1307-1315，`MAX_ITEM_ENTITIES = 200` | 平台上限128，满时删最旧的 |
+| 外观 | `ItemRenderer::render` ItemRenderer.cpp:60-197，`renderItemBillboard` 199-262 | 浮动/自转公式与份数规则相同；方块用手持方块网格缩到1/4；图标用一张双面平面代替原版1/16厚的立体图标（正侧面看会消失）；地形遮挡与`MobRenderer`相同的分块DDA |
+
+平台差异：未加载区块里的物品冻结；液体不推动物品；随机数用原版`Random`按事件取种子，不是`Math::random`；生物没有掉落。
+
 ## 9. 验证与仍缺的完整系统
 
 1.0.10最终19/19联合回归通过，原函数字节及纹理哈希可检查；真机安装/启动返回0。独立同代码设备进程验证125/126/312目录计数、54个楼梯状态归一、真实材质aux、门堆叠1、canonical库存、四朝向/上下台阶/两格门规则，以及自然地形实际放置1格和保存重开。实际AMR保存v2 `item:…`库存；完整GUI逐项隔离验收未完成，不把本地mock视为设备验证。1.0.8库存、放置/挖掘文件及v3世界副本重载旧验证仍保留。

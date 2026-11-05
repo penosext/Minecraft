@@ -809,3 +809,28 @@ void renderActorOverlay(uint32_t* pixels, int w, int h, int viewMode,
     }
     draw(pixels, w, h, mesh);
 }
+
+HeldModelView heldModelView(int blockIndex)
+{
+    HeldModelView view;
+    if(blockIndex<0 || blockIndex>=legacy::kBlockCount) return view;
+    const HeldModel& model=cachedHeldModel(blockIndex);
+    thread_local std::vector<std::unique_ptr<std::vector<HeldModelQuad>>> converted(legacy::kBlockCount);
+    auto& quads=converted[size_t(blockIndex)];
+    if(!quads) {
+        quads=std::make_unique<std::vector<HeldModelQuad>>();
+        for(const auto& q:model.quads) {
+            HeldModelQuad out{};
+            for(int i=0;i<4;++i) {
+                out.p[i][0]=q.p[i].x;out.p[i][1]=q.p[i].y;out.p[i][2]=q.p[i].z;
+                out.uv[i][0]=q.uv[i].u;out.uv[i][1]=q.uv[i].v;
+            }
+            out.u0=q.u0;out.v0=q.v0;out.u1=q.u1;out.v1=q.v1;out.tint=q.tint;
+            quads->push_back(out);
+        }
+    }
+    view.path=model.path;view.rotated=model.rotated;
+    view.quads=quads->data();view.quadCount=quads->size();
+    if(model.path==HeldBlockPath::Sprite) {view.sprite=model.sprite.data();view.spriteTint=model.spriteTint;}
+    return view;
+}

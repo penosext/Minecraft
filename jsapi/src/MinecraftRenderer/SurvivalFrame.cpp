@@ -13,7 +13,7 @@ FrameResult survivalFrame(Survival& survival, mcworld::World& world, mcscene::Sc
     const bool creative = inventory.gameMode() == mcinventory::GameMode::Creative;
     // A death saved before its drops were applied (crash/kill between saves).
     if (survival.deathDropsPending()) {
-        applyDeathDrops(survival, world, inventory, scene.keepInventoryEnabled(), false);
+        applyDeathDrops(survival, world, scene, inventory, scene.keepInventoryEnabled(), false);
         result.inventoryChanged = true;
     }
     survival.setArmorValue(inventory.armorValue());
@@ -41,9 +41,12 @@ FrameResult survivalFrame(Survival& survival, mcworld::World& world, mcscene::Sc
     if (survival.takeDied()) {
         result.died = true;
         survival.setDeathDropsPending(true);
-        applyDeathDrops(survival, world, inventory, scene.keepInventoryEnabled(), true);
+        applyDeathDrops(survival, world, scene, inventory, scene.keepInventoryEnabled(), true);
         result.inventoryChanged = true;
     }
+    // ItemEntity::playerTouch for every item in reach (both game modes).
+    result.pickedUp = scene.pickupItems(world, inventory, !survival.dead());
+    if (result.pickedUp) result.inventoryChanged = true;
     // Monster targeting: survival, alive, not peaceful (Player.cpp:1400-1402
     // zeroes mob damage on peaceful anyway).
     scene.setPlayerTargetable(!creative && !survival.dead() && survival.difficulty() > 0);
@@ -60,15 +63,28 @@ bool useHeldItem(Survival& survival, mcinventory::Inventory& inventory, bool hel
     return pressed && inventory.equipSelectedArmor();
 }
 
-void applyDeathDrops(Survival& survival, mcworld::World& world, mcinventory::Inventory& inventory,
-                     bool keepInventory, bool persist) {
-    // Persist the pending flag first; a failed save is retried by autosave and
-    // never blocks the in-memory transaction.
-    if (persist) { try { survival.save(world); } catch (const std::exception&) {} }
-    if (!keepInventory) inventory.clearMainAndArmor();
+void applyDeathDrops(Survival& survival, mcworld::World& world, mcscene::Scene& scene,
+                     mcinventory::Inventory& inventory, bool keepInventory, bool persist) {
+    // Failed saves are retried by autosave and never block the in-memory
+    // transaction (the scene is saved before inventory/survival there too).
     if (persist) {
-        try { inventory.save(world); survival.setDeathDropsPending(false); survival.save(world); }
-        catch (const std::exception&) { survival.setDeathDropsPending(false); }
-    } else survival.setDeathDropsPending(false);
+        // The flag belongs to the previous death: it must be off on disk
+        // before this death's pending flag can be.
+        if (scene.deathDropsApplied()) {
+            scene.setDeathDropsApplied(false);
+            try { scene.save(world); } catch (const std::exception&) {}
+        }
+        try { survival.save(world); } catch (const std::exception&) {}
+    }
+    // An already applied drop (crash after step 2) only clears the inventory,
+    // whatever KeepInventory says now: the items already lie in the world.
+    const bool drop = !keepInventory || scene.deathDropsApplied();
+    if (drop) {
+        if (!scene.deathDropsApplied()) scene.dropInventory(world, inventory);
+        try { scene.save(world); } catch (const std::exception&) {}
+        inventory.clearMainAndArmor();
+    }
+    try { inventory.save(world); survival.setDeathDropsPending(false); survival.save(world); }
+    catch (const std::exception&) { survival.setDeathDropsPending(false); }
 }
 } // namespace mcplayer

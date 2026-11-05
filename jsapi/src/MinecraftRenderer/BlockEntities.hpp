@@ -37,7 +37,7 @@ public:
     // Closes the panel. Crafting grids (2x2 and workbench) return their items
     // to the inventory like CraftingMenu::removed / InventoryMenu::removed;
     // whatever does not fit stays in the grid record (persisted) instead of
-    // the source's player->drop, because this port has no item entities.
+    // the source's player->drop (crafting-grid spill is not an item entity yet).
     // Chest/furnace slots are never touched. Returns items left behind.
     int close(const World&, Inventory&);
     bool opened() const { return screen_ != Screen::None; }
@@ -60,10 +60,11 @@ public:
     // whether or not its panel is open. dt is clamped to 0.1 s per call.
     void update(World&, float dt);
     // Main MUST check canBreak before mining, then call removed after success.
-    // Non-empty chests/furnaces/grids and burning furnaces refuse the break
-    // (source drops contents as item entities; this port has none).
+    // Only the open panel's block refuses the break. removed() erases the
+    // record and returns its non-empty stacks for the caller to drop as item
+    // entities (ChestTile::onRemove ChestTile.cpp:214-256, FurnaceTile.cpp:162).
     bool canBreak(int x, int y, int z) const;
-    void removed(int x, int y, int z);
+    std::vector<mcinventory::Slot> removed(int x, int y, int z);
     // Atomically stage main+armor into a persistent, dimension-bound death pile;
     // legacy protected data is untouched. Collection leaves any unaccepted stack.
     void dropOnDeath(const World&, Inventory&);

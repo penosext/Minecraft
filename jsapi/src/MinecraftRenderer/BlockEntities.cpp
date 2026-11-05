@@ -794,17 +794,24 @@ void Containers::update(World& world, float dt) {
 }
 
 bool Containers::canBreak(int x, int y, int z) const {
+    // Only the block whose panel is open is protected: its slots are live in
+    // the UI. Everything else may break; removed() hands its contents back so
+    // the caller drops them as item entities (ChestTile/FurnaceTile::onRemove).
     if (screen_ == Screen::Workbench || screen_ == Screen::Chest || screen_ == Screen::Furnace)
-        if (selected_ == Position {x, y, z}) return false; // Never break the open panel's block.
-    const auto found = entities_.find({x, y, z});
-    if (found == entities_.end()) return true;
-    return !nonEmpty(found->second.slots) && found->second.burn <= 0;
+        if (selected_ == Position {x, y, z}) return false;
+    return true;
 }
 
-void Containers::removed(int x, int y, int z) {
+std::vector<mcinventory::Slot> Containers::removed(int x, int y, int z) {
+    std::vector<mcinventory::Slot> contents;
     const auto found = entities_.find({x, y, z});
-    if (found == entities_.end() || !canBreak(x, y, z)) return;
+    if (found == entities_.end() || !canBreak(x, y, z)) return contents;
+    // Every stored stack leaves the record, whatever its tile type: a chest,
+    // a furnace (input, fuel, result; the remaining burn is lost, as upstream)
+    // or a workbench's persisted leftovers.
+    for (const auto& slot : found->second.slots) if (slot.count) contents.push_back(slot);
     entities_.erase(found); dirty_ = true;
+    return contents;
 }
 
 void Containers::dropOnDeath(const World& world, Inventory& inventory) {

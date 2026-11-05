@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ItemEntities.hpp"
 #include "SceneTypes.hpp"
 #include "WorldRules.hpp"
 
@@ -8,6 +9,7 @@
 #include <vector>
 
 namespace mcworld { class World; }
+namespace mcinventory { class Inventory; }
 
 namespace mcscene {
 // Original day/sky functions and original Random, with deliberately lightweight
@@ -94,6 +96,31 @@ public:
     struct PlayerHit { int mobId; float damage; };
     std::vector<PlayerHit> takePlayerHits() { std::vector<PlayerHit> out; out.swap(playerHits_); return out; }
 
+    // --- Dropped items (ItemEntity) ----------------------------------------
+    // Ticked inside update() at the scene's 20 Hz and persisted in items.bin
+    // (independent of scene.bin, like rules.json, so scene.bin stays readable
+    // by older builds; a missing items.bin is an old save with no items).
+    const std::vector<ItemEntity>& items() const { return items_.items(); }
+    ItemEntities& itemStore() { return items_; }
+    // Fraction of the next 20 Hz tick already elapsed (render interpolation "a").
+    float partialTick() const { return float(remainder_); }
+    // Tile::popResource for each drop of a survival block break: nothing when
+    // DoTileDrops is off (Tile.cpp:931). Each unit is its own entity, as
+    // Tile::spawnResources pops count single items (Tile.cpp:917-925).
+    void popResource(int x, int y, int z, int itemId, int aux, int count);
+    // Container onRemove: contents always drop (no DoTileDrops check upstream).
+    void dropContents(int x, int y, int z, const std::vector<mcinventory::Slot>& slots);
+    // Player::aiStep pickup for this frame; returns items taken (0 if none).
+    int pickupItems(const mcworld::World& world, mcinventory::Inventory& inventory, bool alive);
+    // Inventory::dropAll (Inventory.cpp:661-679) via Player::drop(item, true):
+    // main then armor, at the player's position. Leaves the inventory alone;
+    // the caller clears it. Marks the drop applied (see deathDropsApplied).
+    void dropInventory(const mcworld::World& world, const mcinventory::Inventory& inventory);
+    // Persisted with the items: the CURRENT pending death's inventory is
+    // already in the world. Survival's pending flag decides whether it matters.
+    bool deathDropsApplied() const { return deathDropsApplied_; }
+    void setDeathDropsApplied(bool value) { deathDropsApplied_ = value; }
+
 private:
     struct Brain {
         float velocityY = 0;
@@ -112,6 +139,8 @@ private:
     // save that loads defaults and writes nothing until save().
     void openRules(int worldDirectory);
     void saveRules(int worldDirectory);
+    void openItems(int worldDirectory);
+    void saveItems(int worldDirectory);
 
     bool opened_ = false;
     std::string root_, path_, name_;
@@ -135,5 +164,10 @@ private:
     std::string persistedRules_;
     bool playerTargetable_ = false;
     std::vector<PlayerHit> playerHits_;
+    ItemEntities items_;
+    bool deathDropsApplied_ = false;
+    int dimension_ = 0;
+    // Last accepted items.bin bytes, empty when the file does not exist.
+    std::vector<unsigned char> persistedItems_;
 };
 } // namespace mcscene
