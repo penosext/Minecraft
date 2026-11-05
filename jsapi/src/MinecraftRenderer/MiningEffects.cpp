@@ -135,12 +135,14 @@ void MiningEffects::render(uint32_t* pixels,int w,int h,const mcworld::World& wo
     bind(world);if(w>16384||h>16384||uint64_t(w)*uint64_t(h)>uint64_t(std::numeric_limits<int>::max()))return;
     const Camera cam=makeCamera(world,w,h,yaw,pitch);
     // Each pixel uses the same center-ray DDA semantics as World::pick. The hit
-    // target and face gate prevents cracks being projected through a front wall.
+    // target gate (first block hit must be the mined one) keeps cracks off
+    // blocks in front; every visible face of the block gets the crack, as in
+    // the original destroy-stage overlay.
     if(stage_>=0&&block_&&world.blockAt(x_,y_,z_)==block_&&crackSupported(block_)){
         const auto center=world.pick(yaw,pitch,5.0f);
         if(center.hit&&center.x==x_&&center.y==y_&&center.z==z_&&center.face>=0){
             const int crack=textureIndex((std::wstring(L"destroy_")+std::to_wstring(stage_)).c_str());
-            if(crack>=0){const float limit=center.distance+0.015f;int x0,y0,x1,y1;if(blockScreenBounds(cam,x_,y_,z_,w,h,x0,y0,x1,y1))for(int py=y0;py<=y1;++py)for(int px=x0;px<=x1;++px){const float sx=(px-cam.cx)/cam.focal,sy=(cam.cy-py)/cam.focal;const V3 ray=normalized(add(cam.forward,add(mul(cam.right,sx),mul(cam.up,sy))));const RayHit hit=trace(world,cam.eye,ray,limit);if(!hit.hit||hit.x!=x_||hit.y!=y_||hit.z!=z_||hit.face!=center.face)continue;
+            if(crack>=0){const float limit=center.distance+1.75f;int x0,y0,x1,y1;if(blockScreenBounds(cam,x_,y_,z_,w,h,x0,y0,x1,y1))for(int py=y0;py<=y1;++py)for(int px=x0;px<=x1;++px){const float sx=(px-cam.cx)/cam.focal,sy=(cam.cy-py)/cam.focal;const V3 ray=normalized(add(cam.forward,add(mul(cam.right,sx),mul(cam.up,sy))));const RayHit hit=trace(world,cam.eye,ray,limit);if(!hit.hit||hit.x!=x_||hit.y!=y_||hit.z!=z_)continue;
                     const V3 point=add(cam.eye,mul(ray,hit.t+CrackOffset));float u,v;faceUV(hit.face,point,x_,y_,z_,u,v);const uint32_t texel=sample(crack,u,v);const float alpha=float(texel>>24)/255.0f;if(alpha<=0.1f)continue;const std::size_t index=std::size_t(py)*w+px;pixels[index]=mixPixel(pixels[index],texel,std::min(0.75f,alpha*0.62f));}}
         }
     }
