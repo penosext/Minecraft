@@ -4,7 +4,7 @@
 
 namespace mcgame {
 
-enum class ToolKind { None, Sword, Shovel, Pickaxe, Axe, Hoe, Armor };
+enum class ToolKind { None, Sword, Shovel, Pickaxe, Axe, Hoe, Armor, Shears };
 
 struct ToolProperties {
     int itemId = 0, maxDamage = 0, armorSlot = -1, defense = 0, tierLevel = 0;

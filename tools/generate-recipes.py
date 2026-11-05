@@ -651,7 +651,8 @@ def validate(data, known, by_id):
     for row in data['notcovered']:
         require(row['reason'] and row['source']['line'] >= 1, 'Notcovered row lacks a reason or provenance')
     # The audited counts this round must stay exact.
-    tool_rows = [r for r in recipes if r['origin'].startswith('ToolRecipies.cpp')]
+    # The 20 matrix tools (5 materials x 4 types) plus the inline shears recipe.
+    tool_rows = [r for r in recipes if r['origin'].startswith('ToolRecipies.cpp') and r['product']['itemId'] != 359]
     require(len(tool_rows) == 20, f'Expected 20 tool recipes (5 materials x 4 types), got {len(tool_rows)}')
     require(len({r['product']['itemId'] for r in tool_rows}) == 20, 'Tool recipes must have 20 distinct products')
     weapon_rows = [r for r in recipes if r['origin'].startswith('WeaponRecipies.cpp')]
@@ -660,11 +661,14 @@ def validate(data, known, by_id):
     require(len(armor_rows) == 16, f'Expected 16 armor recipes (4 pieces x 4 materials), got {len(armor_rows)}')
     require(not any(r['product']['itemId'] in (302, 303, 304, 305) for r in recipes),
             'Chain armor must have no recipe')
-    # Shears exists upstream but its item (359) is absent from the item catalog,
-    # so its recipe must be reported as notcovered, never silently dropped.
-    require(not any(r['product']['itemId'] == 359 for r in recipes), 'Shears is not a catalog item')
-    require(any('359' in row['reason'] for row in data['notcovered']),
-            'Shears must be recorded in notcovered with its missing product')
+    # ToolRecipies.cpp:106: shears are two iron ingots on the diagonal (" #", "# ").
+    shears = [r for r in recipes if r['product']['itemId'] == 359]
+    require(len(shears) == 1 and shears[0]['origin'].startswith('ToolRecipies.cpp') and
+            shears[0]['product']['count'] == 1 and (shears[0]['width'], shears[0]['height']) == (2, 2) and
+            [None if c is None else (c['itemId'], c['aux']) for c in shears[0]['cells']] == [None, (265, ANY_AUX), (265, ANY_AUX), None],
+            'Expected exactly one source shears recipe: 2x2 iron ingots on the anti-diagonal')
+    require(not any('item:359' in row['reason'] for row in data['notcovered']),
+            'Shears are a catalog item; their recipe must not be notcovered')
     # Workbench and furnace are the two structure recipes this round must carry.
     keys = {r['productKey'] for r in recipes}
     for key, label in (('item:58:0', 'workBench'), ('item:61:0', 'furnace')):

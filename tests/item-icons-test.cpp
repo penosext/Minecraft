@@ -50,7 +50,7 @@ constexpr Expected expected[] = {
     {390,0,208,176,"flowerPot"}, {391,0,128,112,"carrots"},
     {392,0,112,112,"potato"},
 };
-// The original 13 expectations above stay unchanged; these 69 come from
+// The original 13 expectations above stay unchanged; these 70 come from
 // Item.cpp setIconName plus the ITEM branch of ADD_ICON(row, column, name).
 constexpr Expected added[] = {
     {268,0,0,64,"swordWood"}, {272,0,16,64,"swordStone"},
@@ -92,11 +92,12 @@ constexpr Expected added[] = {
     {366,0,160,112,"chickenCooked"}, {393,0,96,112,"potatoBaked"},
     {396,0,96,144,"carrotGolden"}, {400,0,128,144,"pumpkinPie"},
     {337,0,144,48,"clay"}, {365,0,144,112,"chickenRaw"},
+    {359,0,208,80,"shears"}, // ADD_ICON(5, 13, L"shears")
     {263,0,112,0,"coal"}, {263,1,128,160,"charcoal"}, {351,2,224,96,"dyePowder_green"},
 };
-static_assert(std::size(expected) == 13 && std::size(added) == 69);
+static_assert(std::size(expected) == 13 && std::size(added) == 70);
 constexpr auto allExpected = [] {
-    std::array<Expected, 82> result {};
+    std::array<Expected, 83> result {};
     for (size_t i = 0; i < std::size(expected); ++i) result[i] = expected[i];
     for (size_t i = 0; i < std::size(added); ++i) result[i + 13] = added[i];
     return result;
@@ -172,8 +173,8 @@ void addExpectedSprite(Image& image, int w, int h, mcinventory::Rect r,
         }
 }
 void checkPixels(Fixture& f, const std::vector<unsigned char>& png) {
-    check(itemicons::kIconCount == 82 && std::size(itemicons::kIcons) == 82 && itemicons::kIconSize == 16,
-          "Exact 82-item sprite scope");
+    check(itemicons::kIconCount == 83 && std::size(itemicons::kIcons) == 83 && itemicons::kIconSize == 16,
+          "Exact 83-item sprite scope");
     check(!itemicons::findIcon(nullptr) && !itemicons::findIcon("") && !itemicons::findIcon("item:351:0") &&
           !itemicons::findIcon("item:324:1") && !itemicons::findIcon("item:276:1") &&
           !itemicons::findIcon("item:388:0") &&
@@ -263,7 +264,7 @@ int main(int argc, char** argv) {
         const fs::path png = argc > 1 ? fs::path(argv[1]) : fs::path(__FILE__).parent_path().parent_path() / "port/assets/items/items.png";
         const auto decoded = decodePng(png);
         Fixture f; checkPixels(f,decoded); checkCanonicalStates(f);
-        std::cout << "PASS 82 item sprites (13 original + 45 tools/armor + 5 materials + 14 foods + 5 smelting materials): pinned actual PNG/blob, exact RGBA/alpha, creative Inventory, hotbar/panel/scaling/guards, counts and original canonical state invariance\n";
+        std::cout << "PASS 83 item sprites (13 original + 45 tools/armor + 5 materials + 14 foods + 5 smelting materials + shears): pinned actual PNG/blob, exact RGBA/alpha, creative Inventory, hotbar/panel/scaling/guards, counts and original canonical state invariance\n";
         return 0;
     } catch (const std::exception& error) {
         std::cerr << "FAIL item icons: " << error.what() << '\n'; return 1;

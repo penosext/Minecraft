@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "scope": "82 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green and raw chicken; no item engine or world-state icons.",
+  "scope": "83 canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green, raw chicken and shears; no item engine or world-state icons.",
   "repository": "https://github.com/gstaaij/minecraft-console",
   "commit": "09df8928eeb15328bca499d225e48ea95af6d119",
   "texture": {
@@ -2222,6 +2222,33 @@
       ]
     },
     {
+      "key": "item:359:0",
+      "itemId": 359,
+      "aux": 0,
+      "icon": "shears",
+      "crop": [
+        208,
+        80,
+        16,
+        16
+      ],
+      "rgbaSha256": "e5de9ad787edeefbb6cd9e7aba6f9434140fa66bb48b251b316a95d19a614783",
+      "sources": [
+        {
+          "path": "Minecraft.World/Item.cpp",
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "line": 399,
+          "anchor": "Item::shears = static_cast<ShearsItem *>((new ShearsItem(103))->setIconName(L\"shears\")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool, eMaterial_shears)->setDescriptionId(IDS_ITEM_SHEARS)->setUseDescriptionId(IDS_DESC_SHEARS));"
+        },
+        {
+          "path": "Minecraft.Client/PreStitchedTextureMap.cpp",
+          "sha256": "0bbef250317693276e94382d5760ae57d1254e5098f0a166face91a5c6c5a7e7",
+          "line": 433,
+          "anchor": "\t\tADD_ICON(5,\t\t13,\tL\"shears\")"
+        }
+      ]
+    },
+    {
       "key": "item:263:0",
       "itemId": 263,
       "aux": 0,
@@ -2358,7 +2385,7 @@
     }
   ],
   "limitations": [
-    "Only these 82 keys have sprites; other canonical items retain representative mesh thumbnails.",
+    "Only these 83 keys have sprites; other canonical items retain representative mesh thumbnails.",
     "Inventory/hotbar sprites only; first-person held items are not rendered.",
     "Not a full upstream ItemRenderer, item/tool engine or world renderer.",
     "Pinned local C++ sources are required for offline anchor verification."

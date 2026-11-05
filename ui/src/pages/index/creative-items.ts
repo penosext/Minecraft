@@ -2928,6 +2928,21 @@ export const sourceItems: SourceItem[] = [
     "creative": true,
     "placeable": false,
     "kind": "food"
+  },
+  {
+    "key": "item:359:0",
+    "name": "剪刀",
+    "itemId": 359,
+    "aux": 0,
+    "itemIndex": 195,
+    "tileId": -1,
+    "defaultData": -1,
+    "renderIndex": -1,
+    "renderCatalogKey": "",
+    "maxStack": 1,
+    "creative": true,
+    "placeable": false,
+    "kind": "tool"
   }
 ];
 export const creativeItems: SourceItem[] = sourceItems.filter(item => item.creative);

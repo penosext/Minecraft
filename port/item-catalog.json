@@ -19955,12 +19955,98 @@
           }
         }
       ]
+    },
+    {
+      "key": "item:359:0",
+      "name": "剪刀",
+      "itemId": 359,
+      "aux": 0,
+      "kind": "tool",
+      "toolKind": "shears",
+      "iconName": "shears",
+      "sourceClass": "ShearsItem",
+      "sourceSymbol": "shears",
+      "maxStack": 1,
+      "durability": 238,
+      "attackDamage": null,
+      "enchantmentValue": 0,
+      "sources": [
+        {
+          "path": "port/upstream/Minecraft.World/Item.cpp",
+          "line": 399,
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "anchor": "Item::shears = static_cast<ShearsItem *>((new ShearsItem(103))->setIconName(L\"shears\")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool, eMaterial_shears)->setDescriptionId(IDS_ITEM_SHEARS)->setUseDescriptionId(IDS_DESC_SHEARS));"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 6,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "ShearsItem::ShearsItem(int itemId) : Item(itemId)"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 8,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "setMaxStackSize(1);"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 9,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "setMaxDamage(238);"
+        }
+      ],
+      "tileId": -1,
+      "defaultData": -1,
+      "renderIndex": -1,
+      "creative": true,
+      "placeable": false,
+      "itemIndex": 195,
+      "renderCatalogKey": "",
+      "stackSources": [
+        {
+          "path": "port/upstream/Minecraft.World/Item.cpp",
+          "line": 399,
+          "sha256": "263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d",
+          "anchor": "Item::shears = static_cast<ShearsItem *>((new ShearsItem(103))->setIconName(L\"shears\")->setBaseItemTypeAndMaterial(eBaseItemType_devicetool, eMaterial_shears)->setDescriptionId(IDS_ITEM_SHEARS)->setUseDescriptionId(IDS_DESC_SHEARS));"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 6,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "ShearsItem::ShearsItem(int itemId) : Item(itemId)"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 8,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "setMaxStackSize(1);"
+        },
+        {
+          "path": "port/upstream/Minecraft.World/ShearsItem.cpp",
+          "line": 9,
+          "sha256": "b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba",
+          "anchor": "setMaxDamage(238);"
+        }
+      ],
+      "placementSources": [],
+      "creativeSources": [
+        {
+          "group": "eCreativeInventory_ToolsArmourWeapons",
+          "source": {
+            "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_CreativeMenu.cpp",
+            "line": 480,
+            "sha256": "a1908358a3c9a60f3eeb8b2e70c7c2f38799c509accb6dd4cfb0b67d42171277",
+            "anchor": "ITEM(Item::shears_Id)"
+          }
+        }
+      ]
     }
   ],
   "sourceRegistry": {
     "registeredItemCount": 332,
-    "supportedItemCount": 195,
-    "creativeItemCount": 194,
+    "supportedItemCount": 196,
+    "creativeItemCount": 195,
     "noncreativeItemKeys": [
       "item:44:2"
     ],
@@ -27076,26 +27162,6 @@
             "line": 322,
             "sha256": "a1908358a3c9a60f3eeb8b2e70c7c2f38799c509accb6dd4cfb0b67d42171277",
             "anchor": "ITEM(Item::bed_Id)"
-          }
-        }
-      ]
-    },
-    {
-      "key": "item:359:0",
-      "itemId": 359,
-      "aux": 0,
-      "sourceSymbol": "shears",
-      "sourceClass": "ShearsItem",
-      "status": "notcovered",
-      "reason": "No supported representative among the pinned 312 render states; original item behavior/icon is not implemented by this subset.",
-      "sources": [
-        {
-          "group": "eCreativeInventory_ToolsArmourWeapons",
-          "source": {
-            "path": "port/upstream/Minecraft.Client/Common/UI/IUIScene_CreativeMenu.cpp",
-            "line": 480,
-            "sha256": "a1908358a3c9a60f3eeb8b2e70c7c2f38799c509accb6dd4cfb0b67d42171277",
-            "anchor": "ITEM(Item::shears_Id)"
           }
         }
       ]

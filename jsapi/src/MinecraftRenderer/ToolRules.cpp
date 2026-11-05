@@ -127,6 +127,7 @@ ToolKind kindOf(const sourceitems::ToolArmorSpec& spec) {
     if (!std::strcmp(spec.sourceClass, "PickaxeItem")) return ToolKind::Pickaxe;
     if (!std::strcmp(spec.sourceClass, "HatchetItem")) return ToolKind::Axe;
     if (!std::strcmp(spec.sourceClass, "HoeItem")) return ToolKind::Hoe;
+    if (!std::strcmp(spec.sourceClass, "ShearsItem")) return ToolKind::Shears;
     return ToolKind::None;
 }
 bool listed(const int* begin, const int* end, int tileId) {
@@ -143,6 +144,18 @@ float swordSpeed(int tileId) {
             return 1.5f;
         default: return 1;
     }
+}
+// Source ShearsItem::getDestroySpeed: web and leaves 15, wool 5, else Item default 1.
+float shearsSpeed(int tileId) {
+    if (tileId == 30 || tileId == 18) return 15;
+    if (tileId == 35) return 5;
+    return 1;
+}
+// Source ShearsItem::canDestroySpecial: web, redstone dust, tripwire.
+bool shearsHarvest(int tileId) { return tileId == 30 || tileId == 55 || tileId == 132; }
+// Source ShearsItem::mineBlock: leaves, web, tallgrass, vine, tripwire cost 1.
+bool shearsWear(int tileId) {
+    return tileId == 18 || tileId == 30 || tileId == 31 || tileId == 106 || tileId == 132;
 }
 } // namespace
 
@@ -189,10 +202,13 @@ float blockHardness(int tileId) {
 }
 
 bool canHarvest(int itemId, int tileId, int) {
-    const float hardness = blockHardness(tileId);
-    if (hardness < 0) return false;
     const auto* properties = toolProperties(itemId);
     const ToolKind kind = properties ? properties->kind : ToolKind::None;
+    // Player::canDestroy asks the held item first; shears accept these tiles
+    // independently of the partial hardness audit.
+    if (kind == ToolKind::Shears && shearsHarvest(tileId)) return true;
+    const float hardness = blockHardness(tileId);
+    if (hardness < 0) return false;
     if (kind == ToolKind::Sword) return tileId == 30; // Source: only web.
     int required = -1;
     for (const auto& entry : kHarvest)
@@ -214,6 +230,7 @@ float destroyProgress(int itemId, int tileId, int data, bool, bool inWater) {
             case ToolKind::Pickaxe: speed = listed(std::begin(kPickaxeTiles), std::end(kPickaxeTiles), tileId) ? properties->speed : 1.0f; break;
             case ToolKind::Shovel: speed = listed(std::begin(kShovelTiles), std::end(kShovelTiles), tileId) ? properties->speed : 1.0f; break;
             case ToolKind::Axe: speed = listed(std::begin(kAxeTiles), std::end(kAxeTiles), tileId) ? properties->speed : 1.0f; break;
+            case ToolKind::Shears: speed = shearsSpeed(tileId); break;
             default: speed = 1.0f; break; // Hoe and armor never speed up mining.
         }
     }
@@ -226,7 +243,11 @@ float destroyProgress(int itemId, int tileId, int data, bool, bool inWater) {
 
 int miningWear(int itemId, int tileId) {
     const auto* properties = toolProperties(itemId);
-    if (!properties || blockHardness(tileId) == 0) return 0;
+    if (!properties) return 0;
+    // ShearsItem::mineBlock hurts the shears for these tiles even at hardness 0
+    // (tallgrass); anything else falls through to Item::mineBlock, which costs nothing.
+    if (properties->kind == ToolKind::Shears) return shearsWear(tileId) ? 1 : 0;
+    if (blockHardness(tileId) == 0) return 0;
     switch (properties->kind) {
         case ToolKind::Sword: return 2; // Source WeaponItem::mineBlock
         case ToolKind::Shovel:

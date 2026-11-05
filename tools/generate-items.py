@@ -102,6 +102,9 @@ PINS = {
     # Coal/charcoal aux constants (STONE_COAL / CHAR_COAL) and stacked-by-data class.
     'CoalItem.h': '2f4312e368beaf46ea180b7ce3438ac8d728a0d5432f6b1262ba403a2c834f54',
     'CoalItem.cpp': '68bd59ec2ff7d0fce91efd41139076615b845d0ed88a9474e2d340639c324a6f',
+    # Shears: plain Item subclass with its own stack size and durability.
+    'ShearsItem.h': 'd439480c23c782bef13e3a3ddc4dc7cb11d4f6862452dd529a5cca18f1fb5758',
+    'ShearsItem.cpp': 'b7e2c61e4a607b32c866144bd95d59bf7d6e5ca1277d9c0c0d2a15372e0873ba',
 }
 
 # Upstream tool classes mapped to this catalog's tool kind. Base attack damage is
@@ -388,6 +391,27 @@ def parse_tools_and_armor(s, c, registry):
     require(sum(r['kind'] == 'ingredient' for r in rows) == len(INGREDIENTS), 'Ingredient count mismatch')
     require(len({r['key'] for r in rows}) == len(rows), 'Duplicate tool/armor/ingredient key')
     return rows
+
+
+def parse_shears(s, registry):
+    """Item::shears (Item.cpp ctor 103): ShearsItem sets stack 1 and its own max damage."""
+    regs = [reg for reg in registry.values() if reg.get('symbol') == 'shears' and 'registration' in reg]
+    require(len(regs) == 1 and regs[0]['class'] == 'ShearsItem', 'Item::shears is not a single ShearsItem registration')
+    reg = regs[0]
+    require('class ShearsItem : public Item' in s.code['ShearsItem.h'], 'ShearsItem no longer derives from Item')
+    ctor = re.search(r'ShearsItem::ShearsItem\(int itemId\) : Item\(itemId\)\s*\{\s*setMaxStackSize\((\d+)\);\s*setMaxDamage\((\d+)\);\s*\}',
+                     s.code['ShearsItem.cpp'])
+    require(ctor is not None, 'ShearsItem ctor changed')
+    require(not re.search(r'setMaxStackSize\(|setMaxDamage\(', reg['registration']), 'Item::shears overrides ctor stack/damage')
+    icon = re.search(r'setIconName\(L"([^"]+)"\)', reg['registration'])
+    require(icon is not None, 'Item::shears has no icon name')
+    refs = [reg['source'], s.ref('ShearsItem.cpp', ctor[0].split('{')[0].strip()),
+            s.ref('ShearsItem.cpp', 'setMaxStackSize(' + ctor[1] + ');'),
+            s.ref('ShearsItem.cpp', 'setMaxDamage(' + ctor[2] + ');')]
+    return {'key': f'item:{reg["itemId"]}:0', 'name': '剪刀', 'itemId': reg['itemId'], 'aux': 0,
+            'kind': 'tool', 'toolKind': 'shears', 'iconName': icon[1], 'sourceClass': 'ShearsItem',
+            'sourceSymbol': 'shears', 'maxStack': int(ctor[1]), 'durability': int(ctor[2]),
+            'attackDamage': None, 'enchantmentValue': 0, 'sources': refs}
 
 
 def parse_food(s, registry):
@@ -737,6 +761,13 @@ def build(s):
                       'tileId': -1, 'defaultData': -1, 'renderIndex': -1, 'creative': True, 'placeable': False,
                       'itemIndex': len(items), 'renderCatalogKey': '', 'stackSources': refs,
                       'placementSources': [], 'creativeSources': creative.get(pair, [])})
+    # Shears follow every earlier row so all existing itemIndex values stay stable.
+    shears = parse_shears(s, registry)
+    require(shears['key'] not in {it['key'] for it in items}, 'Shears collide with an existing item')
+    items.append({**shears, 'tileId': -1, 'defaultData': -1, 'renderIndex': -1,
+                  'creative': (shears['itemId'], 0) in creative, 'placeable': False,
+                  'itemIndex': len(items), 'renderCatalogKey': '', 'stackSources': shears['sources'],
+                  'placementSources': [], 'creativeSources': creative.get((shears['itemId'], 0), [])})
     by_key = {it['key']: it['itemIndex'] for it in items}
     for row in state_rows:
         row['itemIndex'] = by_key.get(row['itemKey'], -1)
@@ -884,8 +915,8 @@ def cpp(catalog, manifest):
         values = [q(it['key']), q(it['iconName']), q(it['sourceClass']), str(it['itemId']),
                   '1' if tool else '2', str(it['maxStack']), str(it['durability']),
                   str(it['attackDamage']) if tool and it['attackDamage'] is not None else '-1',
-                  str(it['tierLevel']) if tool else '-1',
-                  str(it['tierSpeed']) if tool else '-1',
+                  str(it['tierLevel']) if tool and 'tierLevel' in it else '-1',
+                  str(it['tierSpeed']) if tool and 'tierSpeed' in it else '-1',
                   '-1' if tool else str(it['armorSlot']),
                   '-1' if tool else str(it['defense']),
                   str(it['enchantmentValue'])]
@@ -988,7 +1019,8 @@ def tests(catalog, manifest, creative):
     # upstream tables, so a drifting parser cannot silently agree with itself.
     require(len([it for it in catalog['items'] if it['placeable']]) == 126, 'Original 126 block items must be preserved')
     require(len(manifest['blockStates']) == 312, 'Original 312 render states must be preserved')
-    tools = [it for it in catalog['items'] if it.get('kind') == 'tool']
+    # Tier tools only; the tier-less ShearsItem is checked separately below.
+    tools = [it for it in catalog['items'] if it.get('kind') == 'tool' and it.get('toolKind') != 'shears']
     armor = [it for it in catalog['items'] if it.get('kind') == 'armor']
     require(len(tools) == 25 and len(armor) == 20, 'Expected 25 tools and 20 armor pieces')
     require(all(it['maxStack'] == 1 for it in tools + armor), 'Every tool/armor stacks to exactly 1')
@@ -1061,6 +1093,14 @@ def tests(catalog, manifest, creative):
                 f'Material row missing/wrong: {key}')
     for excluded in (322, 282, 365, 367, 375, 394):  # golden apple, stew, raw chicken, flesh, eye, poison potato
         require(excluded not in foods, f'Food with unported behavior exported: {excluded}')
+    # Shears: Item.cpp ctor 103 -> 359, ShearsItem ctor stack 1 / damage 238,
+    # creative ITEM(Item::shears_Id), appended as the last row (stable indices).
+    shears = [it for it in catalog['items'] if it.get('toolKind') == 'shears']
+    require(len(shears) == 1, 'Expected exactly one shears row')
+    row = shears[0]
+    require(row['key'] == 'item:359:0' and row['iconName'] == 'shears' and row['sourceClass'] == 'ShearsItem' and
+            row['maxStack'] == 1 and row['durability'] == 238 and row['creative'] and not row['placeable'] and
+            row['itemIndex'] == len(catalog['items']) - 1 == 195, 'Wrong shears row')
     broken = copy.deepcopy(catalog); broken['items'].append(copy.deepcopy(broken['items'][0]))
     try: validate(broken, manifest, creative)
     except ValueError: pass

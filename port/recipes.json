@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "source-pinned-shaped-recipe-subset",
   "sourceCommit": "09df8928eeb15328bca499d225e48ea95af6d119",
-  "itemCatalogSha256": "03979af52af038871909e4f7265507f65295a4d8386095379f7ce1878f8a0b48",
+  "itemCatalogSha256": "9b2c1227e818d2c6a5fe8842273e3897567579100d19fc46f15515deda5efb51",
   "scope": "Shaped crafting recipes whose product and ingredients all exist in port/item-catalog.json. Not an item engine and not a crafting UI.",
   "contract": {
     "productKey": "item:<itemId>:<aux>, identical to port/item-catalog.json keys",
@@ -50,7 +50,7 @@
       "anchor": "pItemInstance= new ItemInstance(pTile,1,ANY_AUX_VALUE);"
     }
   },
-  "recipeCount": 83,
+  "recipeCount": 84,
   "recipes": [
     {
       "product": {
@@ -5829,6 +5829,45 @@
     },
     {
       "product": {
+        "itemId": 359,
+        "aux": 0,
+        "count": 1
+      },
+      "width": 2,
+      "height": 2,
+      "cells": [
+        null,
+        {
+          "itemId": 265,
+          "aux": -1
+        },
+        {
+          "itemId": 265,
+          "aux": -1
+        },
+        null
+      ],
+      "group": "tool",
+      "origin": "ToolRecipies.cpp:106",
+      "line": 106,
+      "source": {
+        "path": "port/upstream/Minecraft.World/ToolRecipies.cpp",
+        "line": 106,
+        "sha256": "fbce8b5faaabd537a942b9ff0f0b01373a9eab72ff9eff931356ab24c0837c55",
+        "anchor": "r->addShapedRecipy(new ItemInstance(static_cast<Item *>(Item::shears)),"
+      },
+      "productKey": "item:359:0",
+      "productName": "剪刀",
+      "cellKeys": [
+        null,
+        "item:265:*",
+        "item:265:*",
+        null
+      ],
+      "index": 82
+    },
+    {
+      "product": {
         "itemId": 380,
         "aux": 0,
         "count": 1
@@ -5889,7 +5928,7 @@
         "item:265:*",
         "item:265:*"
       ],
-      "index": 82
+      "index": 83
     }
   ],
   "tables": {
@@ -7244,17 +7283,6 @@
         "line": 157,
         "sha256": "69a57902a9fd55720e9421de300a843fc976f78e9cf49213dc7189e78742e738",
         "anchor": "r->addShapedRecipy(new ItemInstance(Tile::beacon, 1), //"
-      }
-    },
-    {
-      "origin": "ToolRecipies.cpp:106",
-      "kind": "shaped",
-      "reason": "Not in port/item-catalog.json: product item:359:0",
-      "source": {
-        "path": "port/upstream/Minecraft.World/ToolRecipies.cpp",
-        "line": 106,
-        "sha256": "fbce8b5faaabd537a942b9ff0f0b01373a9eab72ff9eff931356ab24c0837c55",
-        "anchor": "r->addShapedRecipy(new ItemInstance(static_cast<Item *>(Item::shears)),"
       }
     }
   ],

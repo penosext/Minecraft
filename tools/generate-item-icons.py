@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Embed 77 audited canonical inventory sprites, not a general item engine.
+"""Embed the audited canonical inventory sprites, not a general item engine.
 
 No arguments regenerates items.png (byte copy if missing), items.source.json and
 ItemIcons.hpp. --check validates pinned catalog/sources/PNG/anchors and exact
@@ -22,7 +22,7 @@ PNG_PATH = 'Minecraft.Client/Common/res/TitleUpdate/res/items.png'
 PNG_SHA = '1562d583262f494526f9ae34047ecbe6af060a237d3e30c751940c239b371064'
 PNG_BLOB = '5456083c02957afa9d7b136980e7513ad5520b2f'
 RGBA_SHA = '31076214c9426183e99cceaedec141f27cdb2f4086731a5503ff728159864da6'
-CATALOG_SHA = '03979af52af038871909e4f7265507f65295a4d8386095379f7ce1878f8a0b48'
+CATALOG_SHA = '9b2c1227e818d2c6a5fe8842273e3897567579100d19fc46f15515deda5efb51'
 PINS = {
     'Minecraft.World/Item.cpp': '263adb75f312ef20dee9634d24ebe0c547e8a53a2702e4a5f3d3f5fcba5e9c0d',
     'Minecraft.World/DyePowderItem.cpp': 'ee56e201d95c98e6a815eb68e79e929bbbd73157cb9ceeacf46b89d0c3a471b3',
@@ -117,6 +117,8 @@ NEW_ITEMS = [
     # Smelting/drop materials exported by generate-items.py MATERIAL_ITEMS.
     (337, 'clay', 'clay', 3, 9),
     (365, 'chicken_raw', 'chickenRaw', 7, 9),
+    # ShearsItem (Item.cpp ctor 103), ADD_ICON(5, 13, L"shears").
+    (359, 'shears', 'shears', 5, 13),
 ]
 # Aux-variant sprites: (itemId, aux, symbol, icon name, row, column).
 AUX_ITEMS = [
@@ -149,7 +151,7 @@ def build(png):
     catalog = json.loads(catalog_bytes)['items']
     creative = {entry['key'] for entry in catalog if entry['creative'] and entry['renderIndex'] == -1}
     new_keys = {f'item:{iid}:0' for iid, *_ in NEW_ITEMS} | {f'item:{iid}:{aux}' for iid, aux, *_ in AUX_ITEMS}
-    require(len(NEW_ITEMS) + len(AUX_ITEMS) == len(new_keys) == 69, 'Expected 69 distinct new item keys')
+    require(len(NEW_ITEMS) + len(AUX_ITEMS) == len(new_keys) == 70, 'Expected 70 distinct new item keys')
     require(new_keys == creative, 'New sprites must exactly cover creative items without a block thumbnail')
     require(all(not entry['placeable'] for entry in catalog if entry['key'] in new_keys),
             'New item sprite must not be a placeable block')
@@ -215,7 +217,7 @@ def build(png):
                          'crop': [x, y, 16, 16], 'rgbaSha256': sha(crop), 'sources': refs})
             crops.append(crop)
     manifest = {
-        'schema_version': 1, 'scope': f'{ICON_COUNT} canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green and raw chicken; no item engine or world-state icons.',
+        'schema_version': 1, 'scope': f'{ICON_COUNT} canonical inventory sprites: original 13 plus 25 tools, 20 armor pieces, 5 materials, 14 plain foods, coal/charcoal, clay, cactus green, raw chicken and shears; no item engine or world-state icons.',
         'repository': REPO, 'commit': COMMIT,
         'texture': {'path': PNG_PATH, 'sha256': PNG_SHA, 'gitBlob': PNG_BLOB,
                     'sizeBytes': len(png), 'width': 256, 'height': 256, 'mode': 'RGBA', 'rgbaSha256': RGBA_SHA},

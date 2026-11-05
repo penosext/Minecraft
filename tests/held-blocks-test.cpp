@@ -115,7 +115,7 @@ void testEveryCreativeItem()
                   std::string("sprite diagnostics ") + it.key);
         }
     }
-    check(total == 194, "creative catalog size " + std::to_string(total));
+    check(total == 195, "creative catalog size " + std::to_string(total)); // 194 + shears
     check(tileSprite == 18, "sprite TileItems " + std::to_string(tileSprite));
     std::cout << "creative items " << total << ": 3D TileItems " << tile3d << ", icon-sprite TileItems "
               << tileSprite << ", rest items.png\n";
