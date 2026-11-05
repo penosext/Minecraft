@@ -25,6 +25,11 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_SUPPRESS_REGENERATION ON)
 set(BUILD_TESTING OFF CACHE BOOL "Build standalone module tests" FORCE)
 set(ORIGINAL_BIOMES_BUILD_TESTS OFF CACHE BOOL "Build standalone biome tests" FORCE)
+# The Buildroot cross GCCs default to -fno-use-cxa-atexit. thread_local
+# destructors then register with a null DSO, and the pen's glibc dereferences a
+# null link_map: the first thread_local in the WorldJob thread (biome Source
+# cache) crashed the miniapp when creating a world. Applies to original-core too.
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fuse-cxa-atexit>)
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core" "${CMAKE_BINARY_DIR}/original-core")
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/biomes" "${CMAKE_BINARY_DIR}/original-biomes")
 add_subdirectory("${CMAKE_SOURCE_DIR}/../port/original-core/terrain" "${CMAKE_BINARY_DIR}/original-terrain")
