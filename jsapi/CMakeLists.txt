@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.10)
 if(DEFINED ENV{CROSS_TOOLCHAIN_PREFIX} AND NOT "$ENV{CROSS_TOOLCHAIN_PREFIX}" STREQUAL "")
     set(CMAKE_C_COMPILER "$ENV{CROSS_TOOLCHAIN_PREFIX}gcc")
     set(CMAKE_CXX_COMPILER "$ENV{CROSS_TOOLCHAIN_PREFIX}g++")
+    # The device toolchain targets the aarch64 pen; tell CMake so the
+    # original-core ARM64 checks see the target, not the x86 build host.
+    set(CMAKE_SYSTEM_NAME Linux)
+    set(CMAKE_SYSTEM_PROCESSOR aarch64)
 endif()
 
 project(jsapi_Minecraft C CXX)

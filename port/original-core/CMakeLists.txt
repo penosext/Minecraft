@@ -11,11 +11,14 @@ cmake_path(IS_PREFIX CORE_ROOT "${BUILD_ROOT}" NORMALIZE BUILD_INSIDE_CORE)
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR AND NOT BUILD_INSIDE_CORE)
     message(FATAL_ERROR "Keep standalone build outputs inside port/original-core (for example -B build)")
 endif()
-if(CMAKE_CROSSCOMPILING)
-    message(FATAL_ERROR "This target is the native baseline, not a cross-compilation target")
+# The audited arithmetic targets ARM64. A cross build for an aarch64 target
+# (the app's device toolchain) is allowed; only the standalone tests must run
+# natively, because they execute on the build machine.
+if(CMAKE_CROSSCOMPILING AND BUILD_TESTING)
+    message(FATAL_ERROR "Standalone original-core tests must run natively; build them on aarch64")
 endif()
 if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64|arm64|ARM64)$")
-    message(FATAL_ERROR "ARM64 native baseline requires aarch64/arm64; got ${CMAKE_SYSTEM_PROCESSOR}")
+    message(FATAL_ERROR "ARM64 baseline requires an aarch64/arm64 target; got ${CMAKE_SYSTEM_PROCESSOR}")
 endif()
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang)$")
     message(FATAL_ERROR "This baseline requires GCC or Clang for the audited compiler flags")

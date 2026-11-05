@@ -1,7 +1,7 @@
 #include "PlatformPch.h"
 
 #include <cerrno>
-#include <filesystem>
+#include <string>
 
 namespace original_layers {
 namespace {
@@ -21,8 +21,21 @@ BOOL TlsSetValue(DWORD index, void* value) {
 HANDLE CreateFile(const char* path, DWORD, DWORD, void*, DWORD, DWORD, void*) {
     return std::fopen(path, "rb");
 }
+// wchar_t is UTF-32 on Linux; encode it as UTF-8, which is what
+// std::filesystem::path(...).string() produced. Hand-written so the shim does
+// not need <filesystem>, which the GCC 7 device cross toolchain lacks.
 HANDLE CreateFile(const wchar_t* path, DWORD a, DWORD b, void* c, DWORD d, DWORD e, void* f) {
-    return CreateFile(std::filesystem::path(path).string().c_str(), a, b, c, d, e, f);
+    std::string utf8;
+    for (; *path; ++path) {
+        const auto cp = static_cast<unsigned long>(*path);
+        if (cp < 0x80) utf8 += char(cp);
+        else if (cp < 0x800) { utf8 += char(0xC0 | (cp >> 6)); utf8 += char(0x80 | (cp & 0x3F)); }
+        else if (cp < 0x10000) { utf8 += char(0xE0 | (cp >> 12)); utf8 += char(0x80 | ((cp >> 6) & 0x3F));
+                                 utf8 += char(0x80 | (cp & 0x3F)); }
+        else { utf8 += char(0xF0 | (cp >> 18)); utf8 += char(0x80 | ((cp >> 12) & 0x3F));
+               utf8 += char(0x80 | ((cp >> 6) & 0x3F)); utf8 += char(0x80 | (cp & 0x3F)); }
+    }
+    return CreateFile(utf8.c_str(), a, b, c, d, e, f);
 }
 DWORD GetLastError() { return static_cast<DWORD>(errno); }
 DWORD GetFileSize(HANDLE file, void*) {
