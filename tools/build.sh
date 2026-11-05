@@ -39,6 +39,24 @@ function show_help() {
     echo "  --native            Build with the local native gcc/g++"
 }
 
+# CMake build directory for the selected compiler (set by select_build_dir).
+BUILD_DIR=""
+
+# Remove everything a previous run of this script produced, so each build
+# compiles from scratch: the CMake build directory, the copied .so files, the
+# packaged UI and the .amr packages. Other trees under jsapi/build (the native
+# test build, jsapi/build/generated) are not this script's outputs and are kept.
+function clean_previous_build() {
+    log_info "Cleaning previous build outputs..."
+    if [ -z "$BUILD_DIR" ]; then
+        log_error "Build directory is not set"
+        return 1
+    fi
+    rm -rf -- "$BUILD_DIR" ui/libs ui/.falcon_
+    rm -f -- ui/*.amr dist/*.amr
+    log_info "Removed $BUILD_DIR, ui/libs, ui/.falcon_ and old .amr packages"
+}
+
 # Create necessary directories
 function create_directories() {
     log_info "Creating necessary directories..."
@@ -90,16 +108,19 @@ function setup_toolchain() {
     log_info "Using cross compiler prefix: $CROSS_TOOLCHAIN_PREFIX"
 }
 
+function select_build_dir() {
+    if [ "$NATIVE" = true ]; then
+        BUILD_DIR="jsapi/build/native-arm64"
+    else
+        BUILD_DIR="jsapi/build/$(basename "$CROSS_TOOLCHAIN_PREFIX")"
+    fi
+}
+
 # Build native library
 function build_native() {
     log_info "Building native library..."
 
-    local build_dir
-    if [ "$NATIVE" = true ]; then
-        build_dir="jsapi/build/native-arm64"
-    else
-        build_dir="jsapi/build/$(basename "$CROSS_TOOLCHAIN_PREFIX")"
-    fi
+    local build_dir="$BUILD_DIR"
     if ! cmake -DCMAKE_BUILD_TYPE=Release -S jsapi -B "$build_dir"; then
         log_error "CMake configuration failed"
         return 1
@@ -192,9 +213,11 @@ function main() {
         esac
     done
 
-    create_directories || exit 1
-    setup_toolchain    || exit 1
-    build_native       || exit 1
+    setup_toolchain      || exit 1
+    select_build_dir
+    clean_previous_build || exit 1
+    create_directories   || exit 1
+    build_native         || exit 1
     package_ui         || exit 1
     create_distribution || exit 1
 

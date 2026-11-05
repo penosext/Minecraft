@@ -743,6 +743,12 @@ def main():
     # Same rule as generate-items.py: the reference checkout is a required
     # generation input, so when it is absent reuse the committed outputs rather
     # than failing the build. Generation is skipped, never fabricated.
+    # Fall back to the tracked port/upstream checkout first, exactly like
+    # generate-items.py; a fresh clone (CI) has no generated Recipes.hpp to reuse.
+    upstream = gi.ROOT / 'port/upstream'
+    if args.client_root == gi.DEFAULT_CLIENT and not (args.client_root / gi.CREATIVE_REL).exists() and \
+            (upstream / gi.CREATIVE_REL).exists():
+        args.client_root = upstream
     if not (args.client_root / gi.CREATIVE_REL).exists():
         missing = [path for path in (JSON_OUT, HPP_OUT) if not path.exists()]
         require(not missing, 'Reference checkout absent and generated outputs missing: '
