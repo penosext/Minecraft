@@ -116,6 +116,20 @@ void MiningEffects::update(const mcworld::World& world,float dt,const mcgame::Mi
     const int stage=std::clamp(int(mining.progress*10.0f),0,9);stage_=stage;
 }else stage_=-1;
 }
+// Screen rectangle covered by block (bx,by,bz). Edges crossing the near plane
+// are clipped so a block touching the camera still yields its visible part.
+bool blockScreenBounds(const Camera& cam,int bx,int by,int bz,int w,int h,int& x0,int& y0,int& x1,int& y1) {
+    V3 c[8];for(int i=0;i<8;++i)c[i]=cam.toCamera({float(bx+(i&1)),float(by+((i>>1)&1)),float(bz+((i>>2)&1))});
+    float minX=1e30f,minY=1e30f,maxX=-1e30f,maxY=-1e30f;bool any=false;
+    auto add=[&](V3 p){const float q=1/p.z,sx=cam.cx+cam.focal*p.x*q,sy=cam.cy-cam.focal*p.y*q;minX=std::min(minX,sx);maxX=std::max(maxX,sx);minY=std::min(minY,sy);maxY=std::max(maxY,sy);any=true;};
+    for(int i=0;i<8;++i)if(c[i].z>=NearPlane)add(c[i]);
+    for(int i=0;i<8;++i)for(int bit=1;bit<8;bit<<=1)if(!(i&bit)){const V3 a=c[i],b=c[i|bit];
+        if((a.z<NearPlane)!=(b.z<NearPlane)){const float t=(NearPlane-a.z)/(b.z-a.z);add({a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t,NearPlane});}}
+    if(!any||!std::isfinite(minX)||!std::isfinite(maxX)||!std::isfinite(minY)||!std::isfinite(maxY))return false;
+    x0=std::max(0,int(std::floor(minX))-1);y0=std::max(0,int(std::floor(minY))-1);
+    x1=std::min(w-1,int(std::ceil(maxX))+1);y1=std::min(h-1,int(std::ceil(maxY))+1);
+    return x0<=x1&&y0<=y1;
+}
 void MiningEffects::render(uint32_t* pixels,int w,int h,const mcworld::World& world,float yaw,float pitch) {
     if(!pixels||w<=0||h<=0||!std::isfinite(yaw)||!std::isfinite(pitch)||!world.loaded())return;
     bind(world);if(w>16384||h>16384||uint64_t(w)*uint64_t(h)>uint64_t(std::numeric_limits<int>::max()))return;
@@ -126,7 +140,7 @@ void MiningEffects::render(uint32_t* pixels,int w,int h,const mcworld::World& wo
         const auto center=world.pick(yaw,pitch,5.0f);
         if(center.hit&&center.x==x_&&center.y==y_&&center.z==z_&&center.face>=0){
             const int crack=textureIndex((std::wstring(L"destroy_")+std::to_wstring(stage_)).c_str());
-            if(crack>=0){const float limit=center.distance+0.015f;for(int py=0;py<h;++py)for(int px=0;px<w;++px){const float sx=(px-cam.cx)/cam.focal,sy=(cam.cy-py)/cam.focal;const V3 ray=normalized(add(cam.forward,add(mul(cam.right,sx),mul(cam.up,sy))));const RayHit hit=trace(world,cam.eye,ray,limit);if(!hit.hit||hit.x!=x_||hit.y!=y_||hit.z!=z_||hit.face!=center.face)continue;
+            if(crack>=0){const float limit=center.distance+0.015f;int x0,y0,x1,y1;if(blockScreenBounds(cam,x_,y_,z_,w,h,x0,y0,x1,y1))for(int py=y0;py<=y1;++py)for(int px=x0;px<=x1;++px){const float sx=(px-cam.cx)/cam.focal,sy=(cam.cy-py)/cam.focal;const V3 ray=normalized(add(cam.forward,add(mul(cam.right,sx),mul(cam.up,sy))));const RayHit hit=trace(world,cam.eye,ray,limit);if(!hit.hit||hit.x!=x_||hit.y!=y_||hit.z!=z_||hit.face!=center.face)continue;
                     const V3 point=add(cam.eye,mul(ray,hit.t+CrackOffset));float u,v;faceUV(hit.face,point,x_,y_,z_,u,v);const uint32_t texel=sample(crack,u,v);const float alpha=float(texel>>24)/255.0f;if(alpha<=0.1f)continue;const std::size_t index=std::size_t(py)*w+px;pixels[index]=mixPixel(pixels[index],texel,std::min(0.75f,alpha*0.62f));}}
         }
     }
