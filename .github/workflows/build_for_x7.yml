@@ -18,8 +18,15 @@ jobs:
           node-version: 18
           cache: ''
 
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install dependencies & toolchain
         run: |
+          # The offline asset generators (tools/*.py) decode PNGs with Pillow.
+          python -m pip install --upgrade pillow
           npm install -g pnpm@latest-10
           pnpm install --verbose -C ./ui
           mkdir -p ./jsapi/toolchains
