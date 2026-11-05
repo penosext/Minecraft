@@ -1,0 +1,31 @@
+{
+  "toolchainBaseUrl": "https://github.com/penosext/Cloudpan/releases/download/toolchains/",
+  "devices": [
+    {
+      "id": "x7",
+      "name": "X7",
+      "toolchain": "aarch64--glibc--stable-2018.11-1.tar.bz2",
+      "glibcMax": "2.36"
+    },
+    {
+      "id": "p5",
+      "name": "P5",
+      "toolchain": "aarch64--glibc--stable-2018.11-1.tar.bz2"
+    },
+    {
+      "id": "s6p",
+      "name": "S6P",
+      "toolchain": "armv7-eabihf--glibc--stable-2018.11-1.tar.bz2"
+    },
+    {
+      "id": "a6p",
+      "name": "A6P",
+      "toolchain": "armv7-eabihf--uclibc--bleeding-edge-2018.11-1.tar.bz2"
+    },
+    {
+      "id": "x5",
+      "name": "X5",
+      "toolchain": "arm-unknown-linux-gnueabihf.tar.xz"
+    }
+  ]
+}

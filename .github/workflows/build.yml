@@ -1,0 +1,109 @@
+name: Build All Devices & Upload AMR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  # Read the device list (name, toolchain, optional glibc limit) from
+  # .github/devices/cfg.json and turn it into the build matrix below.
+  # Adding or changing a pen only needs an edit to that file.
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.devices.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read device config
+        id: devices
+        run: |
+          cfg=.github/devices/cfg.json
+          jq -e '
+            (.devices | type == "array" and length > 0) and
+            all(.devices[]; (.id | type == "string" and test("^[a-z0-9]+$")) and
+                            (.name | type == "string") and (.toolchain | type == "string")) and
+            ((.devices | map(.id) | unique | length) == (.devices | length))
+          ' "$cfg" > /dev/null || { echo "::error file=$cfg::invalid device config"; exit 1; }
+          matrix=$(jq -c '.toolchainBaseUrl as $base | {include: [.devices[] |
+            . + {toolchainUrl: (if (.toolchain | test("://")) then .toolchain else $base + .toolchain end),
+                 glibcMax: (.glibcMax // "")}]}' "$cfg")
+          jq -r '.include[] | "\(.name)\t\(.toolchainUrl)\tglibc<=\(if .glibcMax == "" then "-" else .glibcMax end)"' <<< "$matrix"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: setup
+    name: Build ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      # One pen failing must not cancel the others.
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: ''
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies & toolchain
+        run: |
+          # The offline asset generators (tools/*.py) decode PNGs with Pillow.
+          python -m pip install --upgrade pillow
+          npm install -g pnpm@latest-10
+          pnpm install --verbose -C ./ui
+          mkdir -p ./jsapi/toolchains
+          archive="./jsapi/toolchains/${{ matrix.toolchain }}"
+          wget -q "${{ matrix.toolchainUrl }}" -O "$archive"
+          tar -xf "$archive" -C ./jsapi/toolchains
+          rm -f "$archive"
+
+      - name: Build
+        run: |
+          # The aiot-vue-cli Vue 3 / TypeScript patches are applied by
+          # tools/patch-cli.cjs inside build.sh (idempotent).
+          sed -i '/project(/a\set(CMAKE_DEPEND_INFO_SKIP 1)\nset(CMAKE_LINK_DEPENDS_USE_LINKER 0)' ./jsapi/CMakeLists.txt
+          chmod +x ./tools/build.sh
+          ./tools/build.sh
+
+      - name: Check device glibc compatibility
+        if: ${{ matrix.glibcMax != '' }}
+        run: |
+          # A newer glibc symbol version than the pen provides makes the app fail
+          # to load. readelf reads the ARM ELF on the x86 runner.
+          so=ui/libs/libjsapi_Minecraft.so
+          limit="GLIBC_${{ matrix.glibcMax }}"
+          max=$(readelf -V --wide "$so" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -1)
+          echo "highest required: ${max:-none}, device provides: $limit"
+          [ -z "$max" ] || [ "$(printf '%s\n%s\n' "$max" "$limit" | sort -V | tail -1)" = "$limit" ] || {
+            echo "::error::${{ matrix.name }}: library requires $max > $limit"; exit 1; }
+
+      - name: Rename AMR files with device and build number
+        id: rename
+        run: |
+          num=$(printf '%s' "${{ github.run_number }}" | md5sum | cut -c1-6)
+          echo "num=$num" >> "$GITHUB_OUTPUT"
+          cd ./dist
+          found=0
+          for f in *.amr; do
+            [ -e "$f" ] || continue
+            base="${f%.amr}"
+            mv "$f" "${base}-${{ matrix.id }}-${num}.amr"
+            echo "Renamed to ${base}-${{ matrix.id }}-${num}.amr"
+            found=1
+          done
+          [ "$found" = 1 ] || { echo "::error::no .amr produced for ${{ matrix.name }}"; exit 1; }
+
+      - name: Upload AMR artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.id }}-amr-files-${{ steps.rename.outputs.num }}
+          path: './dist/*.amr'
+          if-no-files-found: error
+          retention-days: 1
