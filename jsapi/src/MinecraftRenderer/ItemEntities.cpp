@@ -204,14 +204,22 @@ bool stackable(const ItemEntity& a, const ItemEntity& b) {
 
 bool parseItemKey(const char* key, int& itemId, int& aux) {
     if (!key || std::strncmp(key, "item:", 5)) return false;
-    char* end = nullptr;
-    const long id = std::strtol(key + 5, &end, 10);
-    if (end == key + 5 || *end != ':') return false;
-    const char* auxStart = end + 1;
-    const long value = std::strtol(auxStart, &end, 10);
-    if (end == auxStart || *end) return false;
-    if (id < 0 || id > 32767 || value < 0 || value > 32767) return false;
-    itemId = int(id); aux = int(value);
+    // Hand-rolled parsing on purpose: strtol pulls in __isoc23_strtol@GLIBC_2.38
+    // on newer hosts, which the device's glibc 2.36 cannot resolve (Crafting.cpp).
+    const auto digits = [](const char*& p, int& out) {
+        const char* start = p;
+        int value = 0;
+        while (*p >= '0' && *p <= '9') {
+            if (p - start >= 5) return false;
+            value = value * 10 + (*p++ - '0');
+        }
+        out = value;
+        return p != start && value <= 32767;
+    };
+    const char* p = key + 5;
+    int id = 0, value = 0;
+    if (!digits(p, id) || *p++ != ':' || !digits(p, value) || *p) return false;
+    itemId = id; aux = value;
     return true;
 }
 
