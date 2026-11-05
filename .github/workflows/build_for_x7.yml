@@ -3,12 +3,12 @@ name: Build For X7 & Upload AMR
 on:
   workflow_dispatch:
 
-env:
-  TOOLCHAIN_URL: https://github.com/penosext/Cloudpan/releases/download/toolchains/aarch64--glibc--stable-2018.11-1.tar.bz2
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # port/original-core only builds natively on aarch64 (it rejects cross
+    # compilation), so build on GitHub's ARM64 runner instead of an x86 runner
+    # with a cross toolchain. Ubuntu 24.04 / GCC 13 matches the dev machine.
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
 
@@ -18,13 +18,10 @@ jobs:
           node-version: 18
           cache: ''
 
-      - name: Install dependencies & toolchain
+      - name: Install dependencies
         run: |
           npm install -g pnpm@latest-10
           pnpm install --verbose -C ./ui
-          mkdir -p ./jsapi/toolchains
-          wget -q ${{ env.TOOLCHAIN_URL }} -O ./jsapi/toolchains/aarch64--glibc--stable-2018.11-1.tar.bz2
-          tar -xjf ./jsapi/toolchains/aarch64--glibc--stable-2018.11-1.tar.bz2 -C ./jsapi/toolchains
 
       - name: Build
         run: |
@@ -32,7 +29,15 @@ jobs:
           # tools/patch-cli.cjs inside build.sh (idempotent).
           sed -i '/project(/a\set(CMAKE_DEPEND_INFO_SKIP 1)\nset(CMAKE_LINK_DEPENDS_USE_LINKER 0)' ./jsapi/CMakeLists.txt
           chmod +x ./tools/build.sh
-          ./tools/build.sh
+          ./tools/build.sh --native
+
+      - name: Check device glibc compatibility
+        run: |
+          # The pen runs glibc 2.36; a newer symbol version makes the app fail to load.
+          so=jsapi/build/native-arm64/libjsapi_Minecraft.so
+          max=$(objdump -T "$so" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -1)
+          echo "highest required: $max"
+          [ "$(printf '%s\nGLIBC_2.36\n' "$max" | sort -V | tail -1)" = "GLIBC_2.36" ] || { echo "requires $max > GLIBC_2.36"; exit 1; }
 
       - name: Collect AMR files
         run: |
