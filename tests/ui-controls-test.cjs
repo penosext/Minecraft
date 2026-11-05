@@ -224,6 +224,42 @@ test('left button mines when no mob is under the crosshair', () => {
   assert.ok(mines.every(call => call[1] === p.yaw && call[2] === p.pitch), 'mineWorld(yaw, pitch) unchanged');
 });
 
+test('left button holds native mining every frame so survival blocks can break', () => {
+  // Regression: the UI used to call only mineWorld every 250 ms while native
+  // renderWorld ticked mining with held=false each frame, zeroing the destroy
+  // progress, so in survival only instant (hardness 0) blocks could be mined.
+  const h = make();
+  const held = [];
+  h.native.setMiningInput = (on, yaw, pitch) => { held.push([on, yaw, pitch]); h.calls.push(['hold', on]); return true; };
+  h.enter();
+  const p = h.page;
+  p.refreshTargetInfo();
+  assert.equal(p.targetHP, null);
+  h.setTouches([{ id: 1, x: 700, y: 250 }]);
+  for (let i = 0; i < 20; i += 1) h.frame();
+  assert.equal(p.primaryHeld, true);
+  const pressed = held.filter(call => call[0] === true);
+  assert.ok(pressed.length >= 10, 'setMiningInput(true) is refreshed every frame while held');
+  assert.ok(pressed.every(call => call[1] === p.yaw && call[2] === p.pitch), 'held mining uses the current aim');
+  assert.equal(held.some(call => call[0] === false), false, 'mining is not released while the button is held');
+  assert.equal(count(h, 'mine'), 0, 'the legacy one-step mineWorld is not used when held mining exists');
+  h.setTarget(MOB);
+  p.refreshTargetInfo();
+  h.frame();
+  assert.equal(held[held.length - 1][0], false, 'a mob under the crosshair releases mining before attacking');
+  h.setTarget(null);
+  p.refreshTargetInfo();
+  h.frame();
+  assert.equal(held[held.length - 1][0], true, 'losing the mob resumes held mining');
+  h.setTouches([]);
+  for (let i = 0; i < 3; i += 1) h.frame();
+  assert.equal(p.primaryHeld, false);
+  assert.equal(held[held.length - 1][0], false, 'lifting the finger releases native mining');
+  const releases = held.filter(call => call[0] === false).length;
+  for (let i = 0; i < 5; i += 1) h.frame();
+  assert.equal(held.filter(call => call[0] === false).length, releases, 'release is sent once, not every frame');
+});
+
 test('the left button switches between attack and mine as the target appears and dies', () => {
   const h = make();
   h.enter();

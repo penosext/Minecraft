@@ -775,6 +775,8 @@ const index = defineComponent({
       primaryHeld: false,
       primaryTouches: [] as string[],
       nextPrimaryAt: 0,
+      // Whether native held mining (setMiningInput) is currently pressed.
+      miningInputHeld: false,
       secondaryHeld: false,
       secondaryTouches: [] as string[],
       nextSecondaryAt: 0,
@@ -2331,18 +2333,47 @@ const index = defineComponent({
       if (held === this.primaryHeld) return;
       this.primaryHeld = held;
       this.nextPrimaryAt = 0;
+      if (!held) this.setMiningInput(false);
       if (held && !this.nativeTouchAvailable) this.tickPrimary(clockNow());
     },
 
     // Original left button: a mob under the crosshair is attacked, anything else is mined.
+    // Native mining advances every rendered frame while setMiningInput holds
+    // it, so a survival block accumulates destroy progress (hardness / tool).
+    // Release it whenever the button is up, input is blocked or a mob is under
+    // the crosshair; otherwise progress would keep running behind a panel.
     tickPrimary(now: number) {
       if (!this.worldMode || this.chunkLoading || this.worldInputBlocked || !this.pageVisible ||
-        !this.primaryHeld || now < this.nextPrimaryAt) return;
-      if (this.targetHP) this.attackPrimary(now);
-      else this.minePrimary(now);
+        !this.primaryHeld) {
+        this.setMiningInput(false);
+        return;
+      }
+      if (this.targetHP) {
+        this.setMiningInput(false);
+        if (now >= this.nextPrimaryAt) this.attackPrimary(now);
+        return;
+      }
+      this.minePrimary(now);
+    },
+
+    setMiningInput(held: boolean) {
+      if (!held && !this.miningInputHeld) return;
+      this.miningInputHeld = held;
+      try {
+        if (worldRenderer.setMiningInput) worldRenderer.setMiningInput(held, this.yaw, this.pitch);
+      } catch (_) { this.miningInputHeld = false; }
     },
 
     minePrimary(now: number) {
+      if (worldRenderer.setMiningInput) {
+        // Refresh the held aim every frame; native breaks the block when its
+        // destroy progress reaches 1 and reports it through the next frame.
+        this.setMiningInput(true);
+        this.worldDirty = true;
+        return;
+      }
+      // Legacy native without held mining: one 50 ms step per interval.
+      if (now < this.nextPrimaryAt) return;
       this.nextPrimaryAt = now + MINE_INTERVAL_MS;
       try {
         if (worldRenderer.mineWorld && worldRenderer.mineWorld(this.yaw, this.pitch) === true) {
